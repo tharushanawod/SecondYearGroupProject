@@ -1,0 +1,81 @@
+@import url("https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "DM Sans", sans-serif;
+}
+
+body {
+  background-image: url(./images/background.png);
+  background-size: cover;
+}
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px 10%;
+  background: transparent;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  z-index: 100;
+  border: 2px solid black;
+}
+
+.logo {
+  font-size: 25px;
+  font-weight: 700;
+  color: white;
+  text-decoration: none;
+  border: 2px solid black;
+}
+
+.navbar a {
+  font-size: 21px;
+  color: black;
+  text-decoration: none;
+  font-weight: 700;
+  border: 2px solid black;
+  margin-left: 120px;
+}
+.home {
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  border: 2px solid black;
+  padding: 0% 10%;
+}
+
+.home-content {
+  max-width: 400px;
+  height: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  border: 2px solid black;
+}
+
+.home-content h1 {
+  font-size: 64px;
+  font-weight: 900;
+}
+
+.home-button a {
+  text-decoration: none;
+  color: white;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.home-button {
+  background-color: #64aa1e;
+  width: 200px;
+  height: 50px;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+}
