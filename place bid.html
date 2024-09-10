@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Bid</title>
+    <link rel="stylesheet" href="place bid.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Place Bid</h1>
+        <input type="text" id="search" placeholder="Search products...">
+        <button id="searchBtn">Search</button>       
+    </div>
+
+    <div class="container">
+        
+        <div class="product-card">
+            <img src="images/img7.jpeg" alt="Product Image" class="product-img">
+            <div class="product-details">
+                <h3>Product Name</h3>
+                <p>Current Bid Amount: LKR 1000</p>
+                <p>Number of Bids: 5</p>
+                <p>Time Remaining: 02:25:45</p>
+                <p>Seller: John Doe</p>
+
+            </div>
+        </div>
+        <div class="increase-bid">
+            <div>
+                <h2>Place Your Bid</h2>
+                <p>You are about to bid on this product. Make sure to place a bid higher than the current bid to increase your chances of winning.</p>
+            </div>
+            <div>
+                <input type="number" id="newBid" placeholder="Enter your bid">
+                <button class="submit-btn">Place Bid</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
