@@ -6,11 +6,9 @@
     <link rel="stylesheet" href="buyer.css">
 </head>
 <body>
-    <!-- Header -->
     <header>
         <div class="logo">
-            <img src="images\corn.png" alt="CornCradle Logo">
-            
+            <img src="images/corn.png" alt="CornCradle Logo">
         </div>
         <nav>
             <ul>
@@ -24,54 +22,205 @@
     </header>
 
     <div class="dashboard-container">
-        <!-- Sidebar -->
+        
         <div class="sidebar">
             <div class="profile">
-                <img src="images\img.jpg" alt="Profile Picture">
+                <img src="images/img.jpg" alt="Profile Picture">
                 <p>Welcome</p>
                 <p>Jennie</p>
-                <a href="#">Manage Profile</a>
             </div>
             <ul>
-                <li><a href="landing page.html">Bid on Products</a></li>
+                <li><a href="#">Manage Profile</a></li>
+                <li><a href="landing page.html">View Bids</a></li>
+                <li><a href="bid product.html">Bid On Products</a></li>
+                <li><a href="cancel bid.html">Cancel Bids</a></li>
                 <li><a href="purchase history.html">Purchase History</a></li>
-                <li><a href="#">Filter Products</a></li>
-                <li><a href="#">Request Help</a></li>
+                <li><a href="Contact Us.html">Request Help</a></li>
             </ul>
-            
         </div>
 
-        
         <div class="main-content">
             <div class="main-content-header">
             <h1>Buyer Dashboard</h1>
             </div>
-            <div class="featured-content">
+
+            <div class="cardBox">
                 <div class="card">
-                    <h3>Featured Products</h3>
-                    <!-- Featured Products Content -->
+                    <div>
+                        <div class="numbers">1,504</div>
+                        <div class="cardName">Daily Views</div>
+                    </div>
                 </div>
+
                 <div class="card">
-                    <h3>Customers</h3>
-                    <!-- Bidding Opportunities Content -->
+                    <div>
+                        <div class="numbers">80</div>
+                        <div class="cardName">Sales</div>
+                    </div>
                 </div>
+
                 <div class="card">
-                    <h3>Notifications</h3>
-                    <!-- Recent Purchases Content -->
+                    <div>
+                        <div class="numbers">284</div>
+                        <div class="cardName">Comments</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div>
+                        <div class="numbers">LKR 77,842</div>
+                        <div class="cardName">Earning</div>
+                    </div>
                 </div>
             </div>
             
-            <!-- Bottom Content: Notifications and Quick Help -->
-            <div class="bottom-content">
-                <div class="bottom-card">
-                    <h3>Recent Purchases</h3>
-                        <p>Notification 1</p>
-                        <p>Notification 2</p>
-                        <p>Notification 3</p>
-                        <p>Notification 4</p>
+           
+            <div class="details">
+                <div class="recentOrders">
+                    <div class="cardHeader">
+                        <h2>Recent Bids</h2>
+                        <a href="bid product.html" class="btn">View All</a>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>Product Name</td>
+                                <td>Bid Amount</td>
+                                <td>Status</td>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>Dry Maize</td>
+                                <td>LKR 1200</td>
+                                <td><span class="status delivered">Accepted</span></td>
+                            </tr>
+
+                            <tr>
+                                <td>Fresh Maize</td>
+                                <td>LKR 2500</td>
+                                <td><span class="status pending">Pending</span></td>
+                            </tr>
+
+                            <tr>
+                                <td>Dry Maize</td>
+                                <td>LKR 1200</td>
+                                <td><span class="status return">Rejected</span></td>
+                            </tr>
+
+                            <tr>
+                                <td>Fresh Maize</td>
+                                <td>LKR 1700</td>
+                                <td><span class="status inProgress">Pending</span></td>
+                            </tr>
+
+                            <tr>
+                                <td>Dry Maize</td>
+                                <td>LKR 1200</td>
+                                <td><span class="status delivered">Accepted</span></td>
+                            </tr>
+
+                            <tr>
+                                <td>Fresh Maize</td>
+                                <td>LKR 2000</td>
+                                <td><span class="status pending">Pending</span></td>
+                            </tr>
+
+                            <tr>
+                                <td>Dry Maize</td>
+                                <td>LKR 1500</td>
+                                <td><span class="status return">Rejected</span></td>
+                            </tr>
+
+                            <tr>
+                                <td>Fresh Maize</td>
+                                <td>LKR 1000</td>
+                                <td><span class="status inProgress">Pending</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="bottom-card">
-                    <h3>Bidding Opportunities</h3>
+
+                <div class="recentCustomers">
+                    <div class="cardHeader">
+                        <h2>Recent Customers</h2>
+                    </div>
+
+                    <table>
+                        <tr>
+                            <td width="60px">
+                                <div class="imgBx"><img src="images/img2.jpg" alt=""></div>
+                            </td>
+                            <td>
+                                <h4> Sunil <br> <span> Anuradhapura</span></h4>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td width="60px">
+                                <div class="imgBx"><img src="images/img2.jpg" alt=""></div>
+                            </td>
+                            <td>
+                                <h4> Nimal<br> <span> Ampara</span></h4>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td width="60px">
+                                <div class="imgBx"><img src="images/img2.jpg" alt=""></div>
+                            </td>
+                            <td>
+                                <h4> Gamage<br> <span>Anuradhapura</span></h4>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td width="60px">
+                                <div class="imgBx"><img src="images/img2.jpg" alt=""></div>
+                            </td>
+                            <td>
+                                <h4> Siriwardhana<br> <span>Anuradhapura</span></h4>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td width="60px">
+                                <div class="imgBx"><img src="images/img2.jpg" alt=""></div>
+                            </td>
+                            <td>
+                                <h4>Dissanyaka <br> <span>Puttlam</span></h4>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td width="60px">
+                                <div class="imgBx"><img src="images/img2.jpg" alt=""></div>
+                            </td>
+                            <td>
+                                <h4>Ranathunga <br> <span>Kurunegala</span></h4>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td width="60px">
+                                <div class="imgBx"><img src="images/img2.jpg" alt=""></div>
+                            </td>
+                            <td>
+                                <h4>Somapala <br> <span>Ampara</span></h4>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td width="60px">
+                                <div class="imgBx"><img src="images/img2.jpg" alt=""></div>
+                            </td>
+                            <td>
+                                <h4>Sarath<br> <span>Anuradhapura</span></h4>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>
