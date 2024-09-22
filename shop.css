@@ -1,0 +1,249 @@
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif; 
+    background: linear-gradient(180deg, #ececd9, #e2e4d0);
+    margin: 0;
+    padding: 0;
+    background-size: cover;
+    background-position: center;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f2fbf4;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+header .logo {
+    display: flex;
+    align-items: center;
+}
+
+header .logo img {
+    height: 60px;
+    margin-right: 10px;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+header nav ul li {
+    margin-right: 40px; 
+}
+
+header nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+}
+
+header .profile-picture {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 35px;
+}
+
+
+header .profile-picture img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 35px;
+}
+
+header .cart-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 35px;
+}
+
+header .cart-icon img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 35px;
+}
+
+header .cart-icon-row {
+    display: flex;
+    align-items: center;
+}
+
+header ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    margin-left: 150px;
+}
+
+header ul li {
+    margin-right: 40px;
+}
+
+header ul li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+}
+
+.container {
+    margin-top: 100px;
+    display: flex;
+    padding: 20px;
+}
+
+.sidebar {
+    width: 25%;
+    padding: 20px;
+    background-color: #fff;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-box {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.search-box input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px 0 0 5px;
+}
+
+.search-box button {
+    padding: 10px;
+    border: none;
+    background-color: #4CAF50;
+    color: #fff;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+}
+
+.filter h2, .categories h2 {
+    margin-top: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.slider {
+    width: 100%;
+    margin: 10px 0;
+}
+
+.price-range {
+    display: flex;
+    justify-content: space-between;
+    color: #888;
+}
+
+.categories ul {
+    list-style: none;
+    padding: 0;
+}
+
+.categories ul li {
+    margin: 10px 0;
+}
+
+.categories ul li a {
+    text-decoration: none;
+    color: #4CAF50;
+}
+
+.product-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+    width: 75%;
+}
+
+.inside {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.inside h1 {
+    font-size: 36px;
+    color: #4CAF50;
+    margin: 0;
+}
+
+.inside p {
+    color: #888;
+    margin: 5px 0 0;
+}
+
+.product {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 300px;
+    max-height: 350px;
+    text-align: center;
+    flex-direction: column;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.product img {
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.product .category {
+    color: #888;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.product h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.product .price {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.product .old-price {
+    text-decoration: line-through;
+    color: #888;
+    margin-right: 5px;
+}
+
+.sale-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+}

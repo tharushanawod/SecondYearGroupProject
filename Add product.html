@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products Page</title>
+    <link rel="stylesheet" href="Add product.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="images/corn.png" alt="CornCradle Logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+        <button class="logout-button">Log Out</button>
+    </header>
+    <div class="container">
+        <h1>Add Products</h1>
+        <button id="addProductBtn" class="add-product-btn">Add Product</button>
+        
+        <table id="productTable">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Nitrogen-rich fertilizer</td>
+                    <td>Fertilizer</td>
+                    <td>LKR 1200</td>
+                    <td>50</td>
+                    <td class="actions add-product-btn-row">
+                        <button class="edit">Edit</button>
+                        <button class="delete">Delete</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Potassium-rich fertilizer</td>
+                    <td>Fertilizer</td>
+                    <td>LKR 1500</td>
+                    <td>10</td>
+                    <td class="actions add-product-btn-row">
+                        <button class="edit">Edit</button>
+                        <button class="delete">Delete</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Organic pesticide</td>
+                    <td>Pesticide</td>
+                    <td>LKR 1000</td>
+                    <td>5</td>
+                    <td class="actions add-product-btn-row">
+                        <button class="edit">Edit</button>
+                        <button class="delete">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        
+        <div id="productFormModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 id="formTitle">Add Product</h2>
+                <form id="productForm">
+                    <label for="productName">Product Name:</label>
+                    <input type="text" id="productName" required>
+                    
+                    <label for="category">Category:</label>
+                    <select id="category" required>
+                        <option value="Category 1">Fertilizer</option>
+                        <option value="Category 2">Seeds</option>
+                        <option value="Category 3">Pest Control</option>
+                    </select>
+
+                    <label for="price">Price:</label>
+                    <input type="number" id="price" required>
+
+                    <label for="stock">Stock:</label>
+                    <input type="number" id="stock" required>
+
+                    <label for="imageUpload">Product Image:</label>
+                    <input type="file" id="imageUpload" accept="image/*">
+                    <img id="imagePreview" src="" alt="Image Preview" style="display:none;">
+
+                    <div class="form-buttons">
+                        <button type="submit" id="saveBtn">Save</button>
+                        <button type="button" id="cancelBtn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="Add product.js"></script>
+</body>
+</html>
