@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="Editprofile.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <aside class="sidebar">
+        <div class="profile-logo">
+          <img src="../images/profile logo.jpg" alt="User Profile" />
+        </div>
+        <ul>
+          <li>
+            <h3>Manage Profile</h3>
+            <ul>
+              <li><a href="#">Log out</a></li>
+            </ul>
+          </li>
+          <li>
+            <h3>Activities</h3>
+            <ul>
+              <li><a href="nee.html">Bidding</a></li>
+              <li><a href="#">Delete Products</a></li>
+              <li><a href="#">Labour Requests</a></li>
+              <li><a href="#">help & Support</a></li>
+            </ul>
+          </li>
+
+          <li>
+            <h3>Reports</h3>
+            <ul>
+              <li><a href="#">Generate Reports</a></li>
+            </ul>
+          </li>
+        </ul>
+      </aside>
+
+      <main class="main-content">
+        <h1>Moderator Dashboard</h1>
+        <h2>Edit Your Profile</h2>
+        <form action="">
+          <label for="Name">Name</label><br />
+          <input
+            type="text"
+            id="Name"
+            name="Name"
+            placeholder="First Name"
+            required
+          /><br />
+          <label for="Contact_Number">Contact Number</label><br />
+          <input
+            type="text"
+            id="Contact_Number"
+            name="Contact_Number"
+            placeholder="070-xxxxxxx"
+          /><br />
+          <label for="Email">Email</label><br />
+          <input
+            type="text"
+            id="Email"
+            name="Email"
+            placeholder="example@gmail.com"
+            required
+          /><br />
+          <label for="Password">Password</label><br />
+          <input
+            type="password"
+            id="Password"
+            name="Password"
+            placeholder="Password"
+            required
+          /><br />
+          <label for="Confirm_Password">Confirm Password</label><br />
+          <input
+            type="password"
+            id="Confirm_Password"
+            name="Confirm_Password"
+            placeholder="Confirm Password"
+            required
+          /><br />
+          <input type="submit" value="Update Details" />
+        </form>
+      </main>
+    </div>
+  </body>
+</html>

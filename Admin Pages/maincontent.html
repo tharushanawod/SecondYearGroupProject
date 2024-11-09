@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Main Content</title>
+    <style>
+        * {
+
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+
+
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            text-align: center;
+            height: 400px;
+            /* Adjust this value as needed */
+
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            max-width: 400px;
+            margin: 20px auto;
+            /* Center the container */
+        }
+
+        .search-input {
+            flex: 1;
+            /* Takes up remaining space */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px 0 0 4px;
+            font-size: 16px;
+        }
+
+        .search-button {
+            padding: 10px 20px;
+            border: 1px solid #ccc;
+            border-radius: 0 4px 4px 0;
+            background-color: #007bff;
+            /* Button color */
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .search-button:hover {
+            background-color: #0056b3;
+            /* Darker button color on hover */
+        }
+
+        .main-content h1 {
+            color: white;
+            font-size: 28px;
+            margin-bottom: 20px;
+            background-color: black;
+            padding: 10px 10px;
+        }
+
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-table th,
+        .user-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .user-table th {
+            background-color: #333;
+            color: white;
+        }
+
+        .user-table td button {
+            padding: 6px 12px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .user-table td button:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Admin Dashboard</h1>
+
+    <h2>User</h2>
+    <div class="search-container">
+        <input type="text" class="search-input" placeholder="Search By Name..." />
+        <button class="search-button">Search</button>
+    </div>
+    <table class="user-table">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="user-table-body">
+            <!-- Data will be injected here -->
+        </tbody>
+    </table>
+
+    <script>
+        // Define users as an empty array to hold the fetched data
+        let users = [];
+
+        // Fetch the data from users.json and render the table
+        fetch("users.json")
+            .then((response) => response.json())
+            .then((data) => {
+                users = data;
+                renderTableData();
+            })
+            .catch((error) => console.error("Error fetching user data:", error));
+
+        function renderTableData() {
+            const tableBody = document.getElementById("user-table-body");
+            tableBody.innerHTML = ""; // Clear any existing content
+
+            users.forEach((user) => {
+                const row = document.createElement("tr");
+
+                row.innerHTML = `
+                <td>${user.id}</td>
+                <td>${user.name}</td>
+                <td>${user.role}</td>
+                <td><button onclick="updateUser('${user.id}')">Update</button></td>
+            `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function updateUser(userId) {
+            alert(`Update user with ID: ${userId}`);
+        }
+    </script>
+</body>
+
+</html>

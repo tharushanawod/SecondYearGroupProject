@@ -1,0 +1,43 @@
+/* Reset some default styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Style the user management section */
+.user-management {
+  background-color: #f9f9f9;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Style the form labels */
+.moderator-form label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* Style the input fields */
+.moderator-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Style the Add button */
+.moderator-form button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.moderator-form button:hover {
+  background-color: #0056b3;
+}

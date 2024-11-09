@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Update Users</title>
+  <link rel="stylesheet" href="UpdateUsers.css" />
+</head>
+
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="profile-logo">
+        <img src="../images/farmer.png" alt="User profile-logo">
+      </div>
+      <ul>
+        <li>
+          <h3>Manage Profile</h3>
+          <ul>
+            <li><a href="#">Log out</a></li>
+          </ul>
+        </li>
+        <li>
+          <h3>User Management</h3>
+          <ul>
+            <li><a href="delete.html">Remove Users</a></li>
+            <li><a href="update.html">Update User Details</a></li>
+            <li><a href="addmoderators.html">Add Moderators</a></li>
+          </ul>
+        </li>
+
+        <li>
+          <h3>Reports</h3>
+          <ul>
+            <li><a href="#">Generate Reports</a></li>
+          </ul>
+        </li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <h1>Admin Dashboard</h1>
+
+      <h2>Update Users</h2>
+      <div class="search-container">
+        <input type="text" id="search-input" class="search-input" placeholder="Search By Name..." />
+        <button class="search-button" onclick="filterUsers()">Search</button>
+      </div>
+      <div class="table-container">
+        <table class="user-table">
+          <thead>
+            <tr>
+              <th>User ID</th>
+              <th>Name</th>
+              <th>Role</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody id="user-table-body">
+            <!-- Data will be injected here -->
+          </tbody>
+        </table>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    let users = [];
+
+    // Fetch the data from users.json and render the table
+    fetch("users.json")
+      .then((response) => response.json())
+      .then((data) => {
+        users = data;
+        renderTableData(users); // Pass the complete user list
+      })
+      .catch((error) => console.error("Error fetching user data:", error));
+
+    function renderTableData(filteredUsers) {
+      const tableBody = document.getElementById("user-table-body");
+      tableBody.innerHTML = ""; // Clear any existing content
+
+      filteredUsers.forEach((user) => {
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+                    <td>${user.id}</td>
+                    <td>${user.name}</td>
+                    <td>${user.role}</td>
+                    <td><button onclick="updateUser('${user.id}')">Update</button></td>
+                `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    // Search and filter users based on input
+    function filterUsers() {
+      const searchTerm = document.getElementById("search-input").value.toLowerCase();
+      const filteredUsers = users.filter(user =>
+        user.name.toLowerCase().includes(searchTerm)
+      );
+      renderTableData(filteredUsers); // Render the filtered user list
+    }
+
+    function updateUser(userId) {
+      alert(`Update user with ID: ${userId}`);
+    }
+  </script>
+</body>
+
+</html>
