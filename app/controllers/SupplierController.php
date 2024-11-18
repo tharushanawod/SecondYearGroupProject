@@ -39,7 +39,7 @@ class SupplierController extends Controller {
 
     public function productManagement(){
         $data = [];
-        $this->View('Ingredient Supplier/Add product', $data);
+        $this->View('Ingredient Supplier/Product Management', $data);
     }
 
     public function viewOrders(){

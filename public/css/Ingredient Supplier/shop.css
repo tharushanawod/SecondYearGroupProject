@@ -247,3 +247,12 @@ header ul li a {
     border-radius: 5px;
     font-size: 12px;
 }
+
+.add-to-cart{
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}

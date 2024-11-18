@@ -1,4 +1,5 @@
 <?php
+
 class ProductController {
     private $productModel;
 
@@ -6,9 +7,13 @@ class ProductController {
         $this->productModel = new Product();
     }
 
+    public function index() {
+        $products = $this->productModel->getAllProducts();
+        return $this->renderView('products.index', ['data' => $products]);
+    }
+
     public function add() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Handle file upload
             $image = '';
             if (isset($_FILES['image'])) {
                 $image = $this->uploadImage($_FILES['image']);
@@ -27,7 +32,9 @@ class ProductController {
                 header('Location: /admin/products?success=1');
                 exit;
             }
-        }
+        } 
+
+        return view('products.add');       
     }
 
     public function update() {
@@ -47,11 +54,13 @@ class ProductController {
                 $productData['image'] = $_POST['existing_image'];
             }
 
-            if ($this->productModel->updateProduct($productData)) {
+            if ($this->productModel->updateProduct($productData['id'], $productData)) {
                 header('Location: /admin/products?updated=1');
                 exit;
             }
         }
+
+        return view('products.update');
     }
 
     public function delete() {
@@ -61,7 +70,13 @@ class ProductController {
                 exit;
             }
         }
+
         echo json_encode(['success' => false]);
+    }
+
+    private function renderView($view, $data = []) {
+        extract($data);
+        include "../views/{$view}.php";
     }
 
     private function uploadImage($file) {
@@ -73,7 +88,7 @@ class ProductController {
         if (move_uploaded_file($file["tmp_name"], $target_file)) {
             return $newFileName;
         }
+
         return '';
     }
 }
-?>

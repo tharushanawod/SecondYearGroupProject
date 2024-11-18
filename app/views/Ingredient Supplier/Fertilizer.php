@@ -40,8 +40,7 @@
                 <img src="<?php echo URLROOT;?>/images/<?php echo $product->image; ?>" alt="<?php echo $product->product_name; ?>">
                 <p class="category"><?php echo $product->category; ?></p>
                 <h3><?php echo $product->product_name; ?></h3>
-                <p class="price">LKR <?php echo $product->price; ?></p>
-                <a href="<?php echo URLROOT;?>/SupplierController/productDetails/<?php echo $product->id; ?>">View Details</a>
+                <p class="price">LKR <?php echo $product->price; ?></p>                
             </div>
             <?php endforeach; ?>
         </main>

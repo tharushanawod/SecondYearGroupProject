@@ -23,20 +23,18 @@
                 </tr>
             </thead>
             <tbody>
-            <?php if (!empty($products) && is_array($products)): ?>
-                <?php foreach ($products as $product): ?>
+            <?php foreach ($data as $product) : ?>
                 <tr>
-                    <td><?php echo $product['product_name']; ?></td>
-                    <td><?php echo $product['category']; ?></td>
-                    <td>LKR <?php echo $product['price']; ?></td>
-                    <td><?php echo $product['stock']; ?></td>
+                    <td><?= $product['name'] ?></td>
+                    <td><?= $product['category'] ?></td>
+                    <td><?= $product['price'] ?></td>
+                    <td><?= $product['stock'] ?></td>
                     <td>
-                        <a href="index.php?action=edit&id=<?php echo $product['id']; ?>">Edit</a>
-                        <a href="index.php?action=delete&id=<?php echo $product['id']; ?>" onclick="return confirm('Are you sure?')">Delete</a>
+                        <a href="<?= URLROOT ?>/product/edit/<?= $product['id'] ?>">Edit</a>
+                        <a href="<?= URLROOT ?>/product/delete/<?= $product['id'] ?>">Delete</a>
                     </td>
                 </tr>
-                <?php endforeach; ?>
-            <?php endif; ?>
+            <?php endforeach; ?>
             </tbody>
         </table>
         
@@ -44,7 +42,7 @@
             <div class="modal-content">
                 <span class="close">&times;</span>
                 <h2 id="formTitle">Add Product</h2>
-                <form id="productForm" action="<?php echo URLROOT; ?>/SupplierController/updateProduct" method="post">
+                <form id="productForm" action="<?php echo URLROOT; ?>/SupplierController/" method="post">
                     <input type="hidden" id="productId" name="id">
                     <input type="hidden" id="productImage" name="image">
                     <label for="productName">Product Name:</label>

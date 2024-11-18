@@ -41,6 +41,7 @@
                 <p class="category">Fertilizers</p>
                 <h3>Nitrogen-Rich Corn Fertilizer</h3>
                 <span class="price">LKR 2500.00</span>
+                <button class="add-to-cart">Add to Cart</button>
             </div>
             <div class="product">
                 <img src="<?php echo URLROOT;?>/images/images/img47.jpeg" alt="Phosphate-Rich Corn Fertilizer">
@@ -48,6 +49,7 @@
                 <h3>Phosphate-Rich Corn Fertilizer</h3>
                 <p class="price"><span class="old-price">LKR 3500.00</span> LKR 2500.00</p>
                 <span class="sale-badge">Sale!</span>
+                <button class="add-to-cart">Add to Cart</button>
             </div>
             <div class="product">
                 <img src="<?php echo URLROOT;?>/images/images/img50.jpeg" alt="Potassium-Rich Corn Fertilizer">
@@ -55,24 +57,28 @@
                 <h3>Potassium-Rich Corn Fertilizer</h3>
                 <p class="price"><span class="old-price">LKR 3500.00</span> LKR 2500.00</p>
                 <span class="sale-badge">Sale!</span>
+                <button class="add-to-cart">Add to Cart</button>
             </div>
             <div class="product">
                 <img src="<?php echo URLROOT;?>/images/images/img48.jpeg" alt="Organic Insecticide">
                 <p class="category">Insecticides</p>
                 <h3>Organic Insecticide</h3>
                 <span class="price">LKR 3500.00</span>
+                <button class="add-to-cart">Add to Cart</button>
             </div>
             <div class="product">
                 <img src="<?php echo URLROOT;?>/images/images/img44.jpeg" alt="Organic Seeds">
                 <p class="category">Seeds</p>
                 <h3>Organic Seeds</h3>
                 <span class="price">LKR 3500.00</span>
+                <button class="add-to-cart">Add to Cart</button>
             </div>
             <div class="product">
                 <img src="<?php echo URLROOT;?>/images/images/img43.jpeg" alt="Organic Pesticide">
                 <p class="category">Pesticides</p>
                 <h3>Organic Pesticide</h3>
                 <span class="price">LKR 3500.00</span>
+                <button class="add-to-cart">Add to Cart</button>
             </div>
         </main>
     </div>
