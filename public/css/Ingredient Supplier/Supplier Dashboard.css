@@ -9,7 +9,7 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background: linear-gradient(180deg, #bcf0ca, #e2e8e4, #eef1ea);
+  background-color: #f0fbf6;
   background-size: cover;
   background-position: center;
 }
@@ -45,7 +45,7 @@ body {
 
 .cardBox .card {
   position: relative;
-  background-color: #c7cec8;
+  background-color: #90c9a6;
   padding: 30px;
   border-radius: 20px;
   display: flex;
@@ -57,18 +57,18 @@ body {
 .cardBox .card .numbers {
   position: relative;
   font-weight: 500;
-  font-size: 25px;
-  color: #032b03;
+  font-size: 30px;
+  color: #000000;
 }
 
 .cardBox .card .cardName {
-  color: #032b03;
+  color: #000000;
   font-size: 20px;
   margin-top: 5px;
 }
 
 .cardBox .card:hover {
-  background-color: #d2e9d7;
+  background-color: #e9f4ec;
 }
 
 .cardBox .card:hover .numbers,
@@ -80,7 +80,7 @@ body {
   position: relative;
   display: grid;
   min-height: 500px;
-  background-color: #d1f6da;
+  background-color: #d9f8f0;
   padding: 20px;
   box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
   border-radius: 20px;
@@ -91,7 +91,7 @@ body {
   display: grid;
   min-height: 500px;
   padding: 20px;
-  background-color: #c8f6d2;
+  background-color: #d9f8f0;
   box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
   border-radius: 20px;
 }
