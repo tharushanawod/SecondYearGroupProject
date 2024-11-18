@@ -1,0 +1,57 @@
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+  }
+  
+  nav {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    font-size: 1.3rem;
+  }
+  
+  nav ul {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+  }
+  nav ul a:hover {
+    color: rgb(45, 176, 12);
+  }
+  
+  nav ul li {
+    margin-right: 2rem;
+  }
+  
+  nav ul li a {
+    text-decoration: none;
+  }
+  
+  nav a {
+    text-decoration: none;
+    color: black;
+  }
+  
+  .logo {
+    height: 7rem;
+  }
+  
+  .logo img {
+    height: 100%;
+    width: auto;
+  }
+  
+  .sign-up-btn {
+    background-color: rgb(45, 176, 12);
+    color: white;
+    padding: 0.7rem 1.5rem;
+    border-radius: 2rem;
+  }
+  
+  .sign-up-btn:hover {
+    background-color: rgb(28, 126, 6);
+    color: white;
+  }
