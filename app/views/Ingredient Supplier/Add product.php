@@ -9,7 +9,7 @@
 <body>
 <?php require 'header.php';?>
     <div class="container">
-        <h1>Add Products</h1>
+        <h1>Products Management</h1>
         <button id="addProductBtn" class="add-product-btn">Add Product</button>
         
         <table id="productTable">
