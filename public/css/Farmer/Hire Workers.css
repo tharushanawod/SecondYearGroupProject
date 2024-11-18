@@ -1,0 +1,156 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color:#d2edda;
+    background-size: cover;
+    background-position: center;
+  }
+
+.sub-header {
+    text-align: center;
+    padding: 50px 20px;
+    background: linear-gradient(to bottom, #e0f7fa, #b2ebf2);
+}
+
+.sub-header h2 {
+    font-size: 2.5em;
+}
+
+.sub-header p {
+    font-size: 1.2em;
+}
+
+.cta-buttons {
+    margin: 20px 0;
+}
+
+.cta-btn {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1em;
+    cursor: pointer;
+    margin: 0 10px;
+    border-radius: 5px;
+}
+
+.how-it-works {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.steps {
+    display: flex;
+    justify-content: space-around;
+}
+
+.step {
+    width: 30%;
+}
+
+.step svg {
+    width: 30px;
+    height:30px;
+    color: #4caf50;
+}
+
+.featured-workers {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.worker-card {
+    display: inline-block;
+    width: 200px;
+    margin: 20px;
+    padding: 10px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.worker-card img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.action-btn {
+    background-color: #2196f3;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin: 5px 0;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.categories {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.category-cards {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.category-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 200px;
+    transition: transform 0.2s;
+    text-align: center;
+}
+
+.category-card:hover {
+    transform: scale(1.05);
+}
+
+.category-card h4 {
+    margin: 10px 0;
+    font-size: 20px;
+}
+
+.category-card p {
+    font-size: 15px;
+    color: #555;
+}
+
+.search-filter {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.search-filter input {
+    padding: 10px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.filter-btn {
+    padding: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.feedbacks {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: #e0f7fa;
+}
+
+.cta-bottom {
+    text-align: center;
+    padding: 40px 20px;
+}
+
