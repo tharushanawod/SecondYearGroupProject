@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Farmworker Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <h2>Farmworker</h2>
+            <ul>
+                <li><a href="index.html">Dashboard</a></li>
+                <li><a href="job-requests.html">Job Requests</a></li>
+                <li><a href="training-selection.html">Training</a></li>
+                <li><a href="support.html">Help & Support</a></li>
+                <li><a href="edit-profile.html">Edit Profile</a></li>
+                <li><a href="login.html">Log Out</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <h1>Farmworker Dashboard</h1>
+            </header>
+
+            <section class="dashboard-overview">
+                <div class="card">Pending Job Requests: <strong>3</strong></div>
+                <div class="card">Accepted Jobs: <strong>5</strong></div>
+                <div class="card">Trainings Completed: <strong>2</strong></div>
+            </section>
+
+            <section class="dashboard-actions">
+                <h2>Quick Actions</h2>
+                <button onclick="navigate('job-requests.html')">View Job Requests</button>
+                <button onclick="navigate('training-selection.html')">Select Training</button>
+                <button onclick="navigate('support.html')">Request Support</button>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

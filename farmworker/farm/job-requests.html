@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Job Requests</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <h2>Farmworker</h2>
+            <ul>
+                <li><a href="index.html">Dashboard</a></li>
+                <li><a href="job-requests.html">Job Requests</a></li>
+                <li><a href="training-selection.html">Training</a></li>
+                <li><a href="support.html">Help & Support</a></li>
+                <li><a href="edit-profile.html">Edit Profile</a></li>
+                <li><a href="login.html">Log Out</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <header><h1>Job Requests</h1></header>
+            <table class="job-requests-table">
+                <tr>
+                    <th>Job</th><th>Location</th><th>Status</th><th>Actions</th>
+                </tr>
+                <tr>
+                    <td>Harvesting</td><td>Field 1</td><td>Pending</td>
+                    <td>
+                        <button onclick="acceptRequest(this)">Accept</button>
+                        <button onclick="rejectRequest(this)">Reject</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Weeding</td><td>Field 2</td><td>Pending</td>
+                    <td>
+                        <button onclick="acceptRequest(this)">Accept</button>
+                        <button onclick="rejectRequest(this)">Reject</button>
+                    </td>
+                </tr>
+            </table>
+        </main>
+    </div>
+</body>
+</html>
