@@ -1,10 +1,10 @@
 <?php 
 
 class SupplierController extends Controller {
-    private $pagesModel;
+    private $Product;
 
     public function __construct() {
-        $this->pagesModel = $this->model('Supplier');
+        $this->Product = $this->model('Product');
     }
 
     public function dashboard() {
@@ -15,6 +15,19 @@ class SupplierController extends Controller {
     public function landingPage(){
         $data = [];
         $this->View('Ingredient Supplier/landing page', $data);
+    }
+
+    public function productManagement() {
+        // Fetch products from the model
+        $products = $this->Product->getProducts();
+
+        // Check if products were fetched successfully
+        if (!$products) {
+            $products = []; // Initialize as an empty array to avoid null errors
+        }
+
+        // Pass the data to the view
+        $this->view('Ingredient Supplier/Product Management', ['products' => $products]);
     }
 
     public function shop(){
@@ -35,12 +48,7 @@ class SupplierController extends Controller {
     public function pestControl(){
         $data = $this->pagesModel->getProductsByCategory('Pest Control');
         $this->View('Ingredient Supplier/PestControl', $data);
-    }
-
-    public function productManagement(){
-        $data = [];
-        $this->View('Ingredient Supplier/Product Management', $data);
-    }
+    }    
 
     public function viewOrders(){
         $data = [];
@@ -60,7 +68,7 @@ class SupplierController extends Controller {
     public function viewCart(){
         $data = [];
         $this->View('Ingredient Supplier/View cart', $data);
-    }
+    }   
 
     public function checkout(){
         $data = [];

@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supplier Dashboard</title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Ingredient Supplier/Supplier Dashboard.css">
 </head>
 <body>
-<?php require 'header.php';?>
+
 
     <div class="dashboard-container">
         

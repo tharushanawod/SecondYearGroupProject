@@ -63,19 +63,17 @@ header .profile-picture img {
 }
 
 header .cart-icon {
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     margin-right: 35px;
 }
-
-header .cart-icon img {
-    width: 50px;
-    height: 50px;
+header .cart-icon svg {
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     margin-right: 35px;
 }
-
 header .cart-icon-row {
     display: flex;
     align-items: center;
@@ -174,7 +172,7 @@ header ul li a {
     flex-wrap: wrap;
     gap: 20px;
     justify-content: flex-start;
-    width: 75%;
+    width: 75%;    
 }
 
 .inside {
@@ -193,13 +191,13 @@ header ul li a {
     margin: 5px 0 0;
 }
 
-.product {
+.product {  
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 10px;
     padding: 20px;
-    max-width: 300px;
-    max-height: 350px;
+    width: calc(75% / 3) ;
+    max-height: 400px;    
     text-align: center;
     flex-direction: column;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -210,6 +208,7 @@ header ul li a {
     width: 200px;
     height: 200px;
     border-radius: 10px;
+    margin-top: 10px;
     margin-bottom: 10px;
 }
 
@@ -248,11 +247,17 @@ header ul li a {
     font-size: 12px;
 }
 
-.add-to-cart{
-    background-color: #4CAF50;
+.add-to-cart-button {
+    background-color: #4CAF50; 
     color: white;
-    border: none;
     padding: 10px 20px;
+    border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
 }
+
+.add-to-cart-button:hover {
+    background-color: #45a049;
+}
+

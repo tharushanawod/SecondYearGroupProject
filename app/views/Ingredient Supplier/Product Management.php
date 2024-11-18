@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products Page</title>
-    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Ingredient Supplier/Add product.css">
+    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Ingredient Supplier/ProductManagement.css">
 </head>
 <body>
-<?php require 'header.php';?>
+
     <div class="container">
         <h1>Products Management</h1>
         <button id="addProductBtn" class="add-product-btn">Add Product</button>
@@ -23,19 +23,26 @@
                 </tr>
             </thead>
             <tbody>
-            <?php foreach ($data as $product) : ?>
-                <tr>
-                    <td><?= $product['name'] ?></td>
-                    <td><?= $product['category'] ?></td>
-                    <td><?= $product['price'] ?></td>
-                    <td><?= $product['stock'] ?></td>
-                    <td>
-                        <a href="<?= URLROOT ?>/product/edit/<?= $product['id'] ?>">Edit</a>
-                        <a href="<?= URLROOT ?>/product/delete/<?= $product['id'] ?>">Delete</a>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-            </tbody>
+    <?php if (!empty($data['products'])) : ?>
+        <?php foreach ($data['products'] as $product) : ?>
+            <tr>
+                <td><?= htmlspecialchars($product->product_name) ?></td>
+                <td><?= htmlspecialchars($product->category) ?></td>
+                <td><?= htmlspecialchars($product->price) ?></td>
+                <td><?= htmlspecialchars($product->stock) ?></td>
+                <td>
+                    <button class="edit-btn" onclick="location.href='<?= URLROOT ?>/product/edit/<?= $product->id ?>'">Edit</button>
+                    <button class="delete-btn" onclick="location.href='<?= URLROOT ?>/product/delete/<?= $product->id ?>'">Delete</button>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    <?php else : ?>
+        <tr>
+            <td colspan="5">No products available.</td>
+        </tr>
+    <?php endif; ?>
+</tbody>
+
         </table>
         
         <div id="productFormModal" class="modal">
