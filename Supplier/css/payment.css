@@ -1,0 +1,263 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #e5f5e9;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f2fbf4;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+header .logo {
+    display: flex;
+    align-items: center;
+}
+
+header .logo img {
+    height: 60px;
+    margin-right: 10px;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+header nav ul li {
+    margin-right: 40px; 
+}
+
+header nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+}
+
+header .profile-picture {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 35px;
+}
+
+header .profile-picture img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 35px;
+}
+
+header .cart-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 35px;
+}
+
+header .cart-icon img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 35px;
+}
+
+header .cart-icon-row {
+    display: flex;
+    align-items: center;
+}
+
+header ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    margin-left: 150px;
+}
+
+header ul li {
+    margin-right: 40px;
+}
+
+header ul li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+}
+
+.product-page {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #f2f3e7;
+    margin: 20px;
+    margin-top: 100px;
+}
+
+.image-card {
+    background-color: #8e8a8a;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 48%;
+}
+
+.image-card img {
+    max-width: 600px;
+    height: 500px;
+    border-radius: 8px;
+    background-color: #686968;
+}
+
+.details-card {
+    background-color: #ecf3e0;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 48%;
+}
+
+.product-details {
+    margin-top: 20px;
+    margin-left: 40px;
+    margin-top: 60px;
+}
+
+.product-details h1 {
+    margin: 0;
+    font-size: 35px;
+    font-weight: bold;
+    color: #094110;
+}
+
+.price {
+    color: #28a745;
+    font-size: 20px;
+    margin: 10px 0;
+}
+
+.stock{
+    color: #058819;
+    font-size: 14px;
+    margin: 10px 0;
+}
+
+
+.description {
+    margin: 10px 0;
+}
+
+.add-to-cart {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.add-to-cart input {
+    width: 50px;
+    margin-right: 10px;
+    padding: 5px;
+}
+
+.add-to-cart button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.category a {
+    color: #28a745;
+    text-decoration: none;
+}
+
+.tabs {
+    display: flex;
+    margin: 20px;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    background-color: #f2f3f2;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    margin-right: 5px;
+    border-radius: 4px;
+}
+
+.tab-button.active {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.tab-content {
+    display: none;
+    padding: 20px;
+    background-color: #d4f6d9;
+    margin: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.related-products {
+    padding: 20px;
+    background-color: #ebe6e6;
+    margin: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.related-products h2 {
+    margin-top: 20px;
+    font-size: 40px;
+    font-weight: bold;
+    color: #094110;
+    text-align: center;
+}
+
+.product-list {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    align-items: center;
+}
+
+.product-item {
+    text-align: center;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #ddf0e1;
+}
+
+.product-item img {
+    max-width: 200px;
+    height: 200px;
+    border-radius: 8px;
+}
+
+.product-item .price {
+    color: #28a745;
+    font-size: 16px;
+    margin: 10px 0;
+    margin-top: 10px;
+}
