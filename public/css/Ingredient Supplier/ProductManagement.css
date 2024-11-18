@@ -2,14 +2,14 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #deede2;
+    background-color: #eef4f0;
 }
 
 .container {
     max-width: 1000px;
-    margin: auto;
+    margin-left: 380px;
     margin-top: 20px;
-    background: #c4c4c4;
+    background: #fbf9f9;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -17,7 +17,9 @@ body {
 
 h1 {
     text-align: center;
-    font-size: 40px;
+    margin-left: 400px;
+    font-size: 50px;
+    color: #063f14;
 }
 
 .add-product-btn {
@@ -29,14 +31,8 @@ h1 {
     cursor: pointer;
     margin-bottom: 20px;
     display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.add-product-btn-row {
-    display: flex;
-    gap: 20px;
-    align-items: center;
+    margin-left: 900px;
+    
 }
 
 .add-product-btn:hover {
@@ -44,30 +40,64 @@ h1 {
 }
 
 table {
-    width: 100%;
-    border-collapse: collapse;
+    width: 75%;
+    border-collapse: separate; 
+    border-spacing: 0 8px; 
+    margin-left:330px;
     margin-bottom: 20px;
-}
-
-table, th, td {
-    border: 1px solid #ddd;
-}
-
-th, td {
-    padding: 10px;
-    text-align: left;
+    border-radius: 15px; 
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #e5faec;
+    padding: 5px;    
 }
 
 th {
-    background-color: #daeed6;
+    background-color: #b3e4b4; 
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    padding: 15px;
+    text-align: center;   
 }
 
-tr{
-    background-color: #bec9be;
+tr {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    border-radius: 10px; 
+    overflow: hidden; 
+    
+}
+
+tr:hover {
+    background-color: #d8e8e1; 
+    cursor: pointer;
+}
+
+tr:nth-child(even) {
+    background-color: #e7f8ec; 
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+td {
+    padding: 15px;
+    text-align: center;
+    font-size: 14px;
+    color: #333;    
+}
+
+button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    color: white;
+    cursor: pointer;
 }
 
 .edit-btn{
-    background-color: #1b79dd;
+    background-color: #007bff;
     color: #fff;
     width: 80px;
     height: 30px;
@@ -77,12 +107,12 @@ tr{
 }
 
 .edit-btn:hover {
-    background-color: #717171;
+    background-color: #076395;
     color: #f8f5f5;
 }
 
 .delete-btn{
-    background-color: #dc3545;
+    background-color: #e41025;
     color: #fff;
     width: 80px;
     height: 30px;
@@ -91,7 +121,7 @@ tr{
 }
 
 .delete-btn:hover {
-    background-color: #424141;
+    background-color: #b74343;
     color: #f8f5f5;
 }
 

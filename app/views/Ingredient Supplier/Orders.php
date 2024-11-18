@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orders Page</title>
-    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Ingredient Supplier/Orders.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo URLROOT;?>/public/css/ingredient supplier/Orders.css">
 </head>
 <body>
-<?php require 'header.php';?>
-    <div class="container">
+<?php require 'sidebar.php';?>
+
+    
         <h1>Orders</h1>
         <div class="filter-options">
             <label for="statusFilter">Filter by Status:</label>
@@ -56,7 +57,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    
     <script src="<?php echo URLROOT;?>/js/Ingredient Supplier/Orders.js"></script>    
 </body>
 </html>

@@ -7,11 +7,9 @@
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Ingredient Supplier/Supplier Dashboard.css">
 </head>
 <body>
-
-
     <div class="dashboard-container">
         
-        <?php require 'sidebar.php';?>
+    <?php require 'sidebar.php';?>
 
         <div class="main-content">
             <div class="main-content-header">

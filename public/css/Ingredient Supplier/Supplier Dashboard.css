@@ -19,64 +19,6 @@ body {
   margin-top: 20px;
 }
 
-.sidebar {
-  width: 250px;
-  background-color: #27b938;
-  padding: 20px;
-  border-right: 1px solid #ddd;
-  height: 100%;
-  position: fixed;
-  border-top-right-radius: 25px;
-}
-
-.sidebar .profile {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.sidebar .profile img {
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
-}
-
-.sidebar .profile p {
-  margin: 5px 0;
-  font-size: 16px;
-  color: #faf7f7;
-}
-
-.sidebar .profile a {
-  text-decoration: none;
-  color: #f8f8f8;
-  font-size: 14px;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-}
-
-.sidebar ul li {
-  margin-bottom: 10px;
-}
-
-.sidebar ul li a {
-  text-decoration: none;
-  color: #111010;
-  display: block;
-  padding: 10px;
-  background-color: #e7e7e7;
-  border-radius: 25px;
-  text-align: center;
-  font-size: 16px;
-  border: 1px solid #dddddd;
-}
-
-.sidebar ul li a:hover {
-  background-color: #ddd;
-}
-
 .main-content {
   margin-left: 270px;
   padding: 20px;

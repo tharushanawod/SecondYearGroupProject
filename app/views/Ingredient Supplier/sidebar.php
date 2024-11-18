@@ -1,3 +1,5 @@
+<link rel="stylesheet" type="text/css" href="<?php echo URLROOT;?>/public/css/ingredient supplier/sidebar.css">
+
 <div class="sidebar">
             <div class="profile">
                 <img src="<?php echo URLROOT;?>/images/images/img.jpg" alt="Profile Picture">

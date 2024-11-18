@@ -7,8 +7,9 @@
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Ingredient Supplier/ProductManagement.css">
 </head>
 <body>
+<?php require 'sidebar.php';?>
 
-    <div class="container">
+    
         <h1>Products Management</h1>
         <button id="addProductBtn" class="add-product-btn">Add Product</button>
         
@@ -82,7 +83,7 @@
                 </form>
             </div>
         </div>
-    </div>
+    
     <script src="<?php echo URLROOT;?>/js/Ingredient Supplier/Add product.js"></script>
 </body>
 </html>
