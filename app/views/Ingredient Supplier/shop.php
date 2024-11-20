@@ -25,9 +25,9 @@
             <div class="categories">
                 <h2>Categories</h2>
                 <ul>
-                    <li><a href="<?php echo URLROOT;?>/SupplierController/fertilizer">Fertilizer (10)</a></li>
-                    <li><a href="<?php echo URLROOT;?>/SupplierController/seeds">Seeds (9)</a></li>
-                    <li><a href="<?php echo URLROOT;?>/SupplierController/pestControl">Pest Controls (10)</a></li>
+                    <li><a href="<?php echo URLROOT;?>/SupplierController/fertilizer">Fertilizer (<?php echo count($data['fertilizerProducts']); ?>)</a></li>
+                    <li><a href="<?php echo URLROOT;?>/SupplierController/seeds">Seeds (<?php echo count($data['seedsProducts']); ?>)</a></li>
+                    <li><a href="<?php echo URLROOT;?>/SupplierController/pestControl">Pest Controls (<?php echo count($data['pestControlProducts']); ?>)</a></li>
                 </ul>
             </div>
         </aside>
@@ -36,62 +36,17 @@
                 <h1>Shop</h1>
                 <p>Home / All Products</p>
             </div>
-                <div class="product">
-                <img src="<?php echo URLROOT;?>/images/images/img49.jpeg" alt="Nitrogen-Rich Corn Fertilizer">
-                <p class="category">Fertilizers</p>
-                <h3>Nitrogen-Rich Corn Fertilizer</h3>
-                <span class="price">LKR 2500.00</span>
-                <div class="add-to-cart">
-                <button>Add to Cart</button>
-                </div>
-            </div>
+            <?php foreach ($data['products'] as $product): ?>
             <div class="product">
-                <img src="<?php echo URLROOT;?>/images/images/img47.jpeg" alt="Phosphate-Rich Corn Fertilizer">
-                <p class="category">Fertilizers</p>
-                <h3>Phosphate-Rich Corn Fertilizer</h3>
-                <p class="price"><span class="old-price">LKR 3500.00</span> LKR 2500.00</p>
-                <span class="sale-badge">Sale!</span> 
-                <div class="add-to-cart">
-                <button>Add to Cart</button>
-                </div>
+                <img src="<?php echo URLROOT;?>/images/<?php echo $product->image; ?>" alt="<?php echo $product->product_name; ?>">
+                <p class="category"><?php echo $product->category; ?></p>
+                <h3><?php echo $product->product_name; ?></h3>
+                <p class="price">LKR <?php echo $product->price; ?></p>
+                <form action="<?php echo URLROOT; ?>/SupplierController/viewCart/<?php echo $product->id; ?>" method="get">
+                    <button type="submit" class="add-to-cart-button">Add to Cart</button>
+                </form>                 
             </div>
-            <div class="product">
-                <img src="<?php echo URLROOT;?>/images/images/img50.jpeg" alt="Potassium-Rich Corn Fertilizer">
-                <p class="category">Fertilizers</p>
-                <h3>Potassium-Rich Corn Fertilizer</h3>
-                <p class="price"><span class="old-price">LKR 3500.00</span> LKR 2500.00</p>
-                <span class="sale-badge">Sale!</span>
-                <div class="add-to-cart">
-                <button>Add to Cart</button>
-                </div>
-            </div>
-            <div class="product">
-                <img src="<?php echo URLROOT;?>/images/images/img48.jpeg" alt="Organic Insecticide">
-                <p class="category">Insecticides</p>
-                <h3>Organic Insecticide</h3>
-                <span class="price">LKR 3500.00</span>
-                <div class="add-to-cart">
-                <button>Add to Cart</button>
-                </div>
-            </div>
-            <div class="product">
-                <img src="<?php echo URLROOT;?>/images/images/img44.jpeg" alt="Organic Seeds">
-                <p class="category">Seeds</p>
-                <h3>Organic Seeds</h3>
-                <span class="price">LKR 3500.00</span>
-                <div class="add-to-cart">
-                <button>Add to Cart</button>
-                </div>
-            </div>
-            <div class="product">
-                <img src="<?php echo URLROOT;?>/images/images/img43.jpeg" alt="Organic Pesticide">
-                <p class="category">Pesticides</p>
-                <h3>Organic Pesticide</h3>
-                <span class="price">LKR 3500.00</span>
-                <div class="add-to-cart">
-                <button>Add to Cart</button>
-            </div>
-            </div>
+            <?php endforeach; ?>
         </main>
     </div>
 </body>

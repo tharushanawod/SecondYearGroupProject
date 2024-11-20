@@ -7,110 +7,185 @@ class SupplierController extends Controller {
         $this->Product = $this->model('Product');
     }
 
-    public function dashboard() {
-        $data = [];
-        $this->View('Ingredient Supplier/Supplier Dashboard', $data);
+    public function index() {
+        $this->productManagement();
     }
 
-    public function landingPage(){
+    public function dashboard() {
         $data = [];
-        $this->View('Ingredient Supplier/landing page', $data);
+        $this->view('Ingredient Supplier/Supplier Dashboard', $data);
+    }
+
+    public function landingPage() {
+        $data = [];
+        $this->view('Ingredient Supplier/landing page', $data);
     }
 
     public function productManagement() {
-        // Fetch products from the model
         $products = $this->Product->getProducts();
-
-        // Check if products were fetched successfully
-        if (!$products) {
-            $products = []; // Initialize as an empty array to avoid null errors
-        }
-
-        // Pass the data to the view
         $this->view('Ingredient Supplier/Product Management', ['products' => $products]);
     }
 
-    public function shop(){
-        $data = [];
-        $this->View('Ingredient Supplier/shop', $data);
+    public function add() {
+        $this->view('Ingredient Supplier/Add Product');
     }
 
-    public function fertilizer(){
-        $data = $this->pagesModel->getProductsByCategory('Fertilizer');
-        $this->View('Ingredient Supplier/Fertilizer', $data);
-    }
+    public function save() {
+        $data = [
+            'product_name' => $_POST['product_name'],
+            'category' => $_POST['category'],
+            'price' => $_POST['price'],
+            'stock' => $_POST['stock'],
+            'description' => $_POST['description'],
+            'image' => $_FILES['image']['name']
+        ];
+        move_uploaded_file($_FILES['image']['tmp_name'], 'path/to/upload/' . $_FILES['image']['name']);
+        $this->Product->addProduct($data);
 
-    public function seeds(){
-        $data = $this->pagesModel->getProductsByCategory('Seeds');
-        $this->View('Ingredient Supplier/Seeds', $data);
-    }
-
-    public function pestControl(){
-        $data = $this->pagesModel->getProductsByCategory('Pest Control');
-        $this->View('Ingredient Supplier/PestControl', $data);
-    }    
-
-    public function viewOrders(){
-        $data = [];
-        $this->View('Ingredient Supplier/Orders', $data);
-    }
-
-    public function requestHelp(){
-        $data = [];
-        $this->View('Ingredient Supplier/Contact us', $data);
-    }
-
-    public function payment(){
-        $data = [];
-        $this->View('Ingredient Supplier/Payment', $data);
-    }
-
-    public function viewCart(){
-        $data = [];
-        $this->View('Ingredient Supplier/View cart', $data);
-    }   
-
-    public function checkout(){
-        $data = [];
-        $this->View('Ingredient Supplier/Checkout', $data);
-    }
-
-    public function checkoutConfirmation(){
-        $data = [];
-        $this->View('Ingredient Supplier/Checkout Confirmation', $data);
-    }   
-
-    public function productDetails($id) {
-        $data = $this->pagesModel->getProductById($id);
-        $this->View('Ingredient Supplier/Payment', $data);
-    }
-
-    public function updateProduct() {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $data = [
-                'id' => trim($_POST['id']),
-                'product_name' => trim($_POST['product_name']),
-                'category' => trim($_POST['category']),
-                'price' => trim($_POST['price']),
-                'stock' => trim($_POST['stock']),
-                'description' => trim($_POST['description']),
-                'image' => trim($_POST['image'])
-            ];
-
-            if ($this->pagesModel->updateProductDetails($data)) {
-                header('location: ' . URLROOT . '/SupplierController/productManagement');
-            } else {
-                die('Something went wrong');
-            }
+        // Redirect to the relevant category page
+        switch ($_POST['category']) {
+            case 'Fertilizer':
+                header('Location: ' . URLROOT . '/SupplierController/fertilizer');
+                break;
+            case 'Seeds':
+                header('Location: ' . URLROOT . '/SupplierController/seeds');
+                break;
+            case 'Pest Control':
+                header('Location: ' . URLROOT . '/SupplierController/pestControl');
+                break;
+            default:
+                header('Location: ' . URLROOT . '/SupplierController/productManagement');
+                break;
         }
     }
 
-    public function deleteProduct($id) {
-        if ($this->pagesModel->deleteProduct($id)) {
-            header('location: ' . URLROOT . '/SupplierController/productManagement');
-        } else {
-            die('Something went wrong');
+    public function edit($product_id = null) {
+        if ($product_id === null) {
+            header('Location: ' . URLROOT . '/SupplierController/productManagement');
+            exit();
         }
+        $product = $this->Product->getProduct($product_id);
+        $this->view('Ingredient Supplier/Edit Product', ['product' => $product]);
+    }
+
+    public function update() {
+        $data = [
+            'id' => $_POST['id'],
+            'product_name' => $_POST['product_name'],
+            'category' => $_POST['category'],
+            'price' => $_POST['price'],
+            'stock' => $_POST['stock'],
+            'description' => $_POST['description'],
+            'image' => $_FILES['image']['name']
+        ];
+        move_uploaded_file($_FILES['image']['tmp_name'], 'path/to/upload/' . $_FILES['image']['name']);
+        $this->Product->updateProduct($data);
+
+        // Redirect to the relevant category page
+        switch ($_POST['category']) {
+            case 'Fertilizer':
+                header('Location: ' . URLROOT . '/SupplierController/fertilizer');
+                break;
+            case 'Seeds':
+                header('Location: ' . URLROOT . '/SupplierController/seeds');
+                break;
+            case 'Pest Control':
+                header('Location: ' . URLROOT . '/SupplierController/pestControl');
+                break;
+            default:
+                header('Location: ' . URLROOT . '/SupplierController/productManagement');
+                break;
+        }
+    }
+
+    public function delete($product_id = null) {
+        if ($product_id === null) {
+            header('Location: ' . URLROOT . '/SupplierController/productManagement');
+            exit();
+        }
+        $product = $this->Product->getProduct($product_id);
+        $this->view('Ingredient Supplier/Delete Product', ['product' => $product]);
+    }
+
+    public function destroy() {
+        $this->Product->deleteProduct($_POST['product_id']);
+        header('Location: ' . URLROOT . '/SupplierController/productManagement');
+    }
+
+    public function shop() {
+        $products = $this->Product->getProducts();
+        $fertilizerProducts = $this->Product->getProductsByCategory('Fertilizer');
+        $seedsProducts = $this->Product->getProductsByCategory('Seeds');
+        $pestControlProducts = $this->Product->getProductsByCategory('Pest Control');
+        $this->view('Ingredient Supplier/shop', [
+            'products' => $products,
+            'fertilizerProducts' => $fertilizerProducts,
+            'seedsProducts' => $seedsProducts,
+            'pestControlProducts' => $pestControlProducts
+        ]);
+    }
+
+    public function fertilizer() {
+        $products = $this->Product->getProductsByCategory('Fertilizer');
+        $seedsProducts = $this->Product->getProductsByCategory('Seeds');
+        $pestControlProducts = $this->Product->getProductsByCategory('Pest Control');
+        $this->view('Ingredient Supplier/Fertilizer', [
+            'products' => $products,
+            'seedsProducts' => $seedsProducts,
+            'pestControlProducts' => $pestControlProducts
+        ]);
+    }
+
+    public function seeds() {
+        $products = $this->Product->getProductsByCategory('Seeds');
+        $fertilizerProducts = $this->Product->getProductsByCategory('Fertilizer');
+        $pestControlProducts = $this->Product->getProductsByCategory('Pest Control');
+        $this->view('Ingredient Supplier/Seeds', [
+            'products' => $products,
+            'fertilizerProducts' => $fertilizerProducts,
+            'pestControlProducts' => $pestControlProducts
+        ]);
+    }
+
+    public function pestControl() {
+        $products = $this->Product->getProductsByCategory('Pest Control');
+        $seedsProducts = $this->Product->getProductsByCategory('Seeds');
+        $fertilizerProducts = $this->Product->getProductsByCategory('Fertilizer');
+        $this->view('Ingredient Supplier/PestControl', [
+            'products' => $products,
+            'seedsProducts' => $seedsProducts,
+            'fertilizerProducts' => $fertilizerProducts
+        ]);
+    }
+
+    public function viewOrders() {
+        $data = [];
+        $this->view('Ingredient Supplier/Orders', $data);
+    }
+
+    public function requestHelp() {
+        $data = [];
+        $this->view('Ingredient Supplier/Contact us', $data);
+    }
+
+    public function payment() {
+        $data = [];
+        $this->view('Ingredient Supplier/Payment', $data);
+    }
+
+    public function viewCart() {
+        $data = [];
+        $this->view('Ingredient Supplier/View cart', $data);
+    }
+
+    public function checkout() {
+        $data = [];
+        $this->view('Ingredient Supplier/Checkout', $data);
+    }
+
+    public function checkoutConfirmation() {
+        $data = [];
+        $this->view('Ingredient Supplier/Checkout Confirmation', $data);
     }
 }
 ?>

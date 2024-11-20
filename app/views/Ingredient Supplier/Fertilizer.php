@@ -25,8 +25,9 @@
             <div class="categories">
                 <h2>Categories</h2>
                 <ul>
-                    <li><a href="<?php echo URLROOT;?>/SupplierController/fertilizer">Fertilizer (10)</a></li>
-                    <li><a href="<?php echo URLROOT;?>/SupplierController/seeds">Seeds (9)</a></li>
+                    <li><a href="<?php echo URLROOT;?>/SupplierController/fertilizer">Fertilizer (<?php echo count($data['products']); ?>)</a></li>
+                    <li><a href="<?php echo URLROOT;?>/SupplierController/seeds">Seeds (<?php echo count($data['seedsProducts']); ?>)</a></li>
+                    <li><a href="<?php echo URLROOT;?>/SupplierController/pestControl">Pest Control (<?php echo count($data['pestControlProducts']); ?>)</a></li>
                 </ul>
             </div>
         </aside>
@@ -35,7 +36,7 @@
                 <h1>Fertilizer</h1>
                 <p>Home / Fertilizer</p>
             </div>
-            <?php foreach ($data as $product): ?>
+            <?php foreach ($data['products'] as $product): ?>
             <div class="product">
                 <img src="<?php echo URLROOT;?>/images/<?php echo $product->image; ?>" alt="<?php echo $product->product_name; ?>">
                 <p class="category"><?php echo $product->category; ?></p>

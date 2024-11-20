@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PestControls</title>
+    <title>Pest Control</title>
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Ingredient Supplier/shop.css">
 </head>
 <body>
@@ -25,29 +25,29 @@
             <div class="categories">
                 <h2>Categories</h2>
                 <ul>
-                    <li><a href="<?php echo URLROOT;?>/SupplierController/pestControl">PestControls (10)</a></li>
-                    <li><a href="<?php echo URLROOT;?>/SupplierController/fertilizer">Fertilizer(9)</a></li>
+                    <li><a href="<?php echo URLROOT;?>/SupplierController/pestControl">Pest Control (<?php echo count($data['products']); ?>)</a></li>
+                    <li><a href="<?php echo URLROOT;?>/SupplierController/seeds">Seeds (<?php echo count($data['seedsProducts']); ?>)</a></li>
+                    <li><a href="<?php echo URLROOT;?>/SupplierController/fertilizer">Fertilizer (<?php echo count($data['fertilizerProducts']); ?>)</a></li>
                 </ul>
             </div>
         </aside>
         <main class="product-list">
             <div class="inside">
-                <h1>PestControls</h1>
-                <p>Home / PestControls</p>
+                <h1>Pest Control</h1>
+                <p>Home / Pest Control</p>
             </div>
-            <?php foreach ($data as $product): ?>
+            <?php foreach ($data['products'] as $product): ?>
             <div class="product">
                 <img src="<?php echo URLROOT;?>/images/<?php echo $product->image; ?>" alt="<?php echo $product->product_name; ?>">
                 <p class="category"><?php echo $product->category; ?></p>
                 <h3><?php echo $product->product_name; ?></h3>
-                <p class="price">LKR <?php echo $product->price; ?></p> 
+                <p class="price">LKR <?php echo $product->price; ?></p>
                 <form action="<?php echo URLROOT; ?>/SupplierController/viewCart/<?php echo $product->id; ?>" method="get">
                     <button type="submit" class="add-to-cart-button">Add to Cart</button>
-                </form>               
+                </form>                 
             </div>
             <?php endforeach; ?>
         </main>
     </div>
 </body>
 </html>
-
