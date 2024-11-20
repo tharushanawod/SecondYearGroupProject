@@ -1,0 +1,81 @@
+@import url(sidebar.css);
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-image: url("../../images/images/1.svg");
+  background-position: right bottom; /* Position it in the bottom-right corner */
+  background-repeat: no-repeat; /* Prevent the image from repeating */
+}
+
+.container {
+  margin-left: 400px;
+  max-width: 600px;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-group {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+.profile-picture {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-right: 20px;
+  object-fit: cover;
+  object-position: center;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  box-sizing: border-box;
+  transition: all 0.3s ease; /* Smooth transition for better effect */
+}
+input:hover {
+  border-color: #74dbb2;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Optional: Add shadow for more emphasis */
+}
+.btn {
+  background-color: #ddf6ed;
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  float: right;
+  text-decoration: none;
+  transition: all 0.3s ease; /* Smooth transition for better effect */
+}
+.btn:hover {
+  transform: scale(1.04);
+  background-color: #74dbb2;
+}
+
+@media (max-width: 1500px) {
+  body {
+    background-image: none;
+  }
+}

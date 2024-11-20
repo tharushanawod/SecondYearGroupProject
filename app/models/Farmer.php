@@ -14,12 +14,12 @@ class Farmer {
         return $results;
     }
 
-    public function addProduct($data){
-        $this->db->query('INSERT INTO inventory (product_name, category, price, stock) VALUES(:product_name, :category, :price, :stock)');
-        $this->db->bind(':product_name', $data['product_name']);
-        $this->db->bind(':category', $data['category']);
+    public function AddProduct($data){
+        $this->db->query('INSERT INTO products (type, price,quantity,userid) VALUES(:type, :price, :quantity,:userid)');
+        $this->db->bind(':type', $data['type']);
         $this->db->bind(':price', $data['price']);
-        $this->db->bind(':stock', $data['stock']);
+        $this->db->bind(':quantity', $data['quantity']);
+        $this->db->bind(':userid', $data['userid']);
 
         if($this->db->execute()){
             return true;
@@ -42,17 +42,7 @@ class Farmer {
             return false;
         }
     }
-
-    public function deleteProduct($id){
-        $this->db->query('DELETE FROM inventory WHERE id = :id');
-        $this->db->bind(':id', $id);
-
-        if($this->db->execute()){
-            return true;
-        } else {
-            return false;
-        }
-    }
+   
 
     public function getOrders(){
         $this->db->query('SELECT * FROM orders');
@@ -78,6 +68,24 @@ class Farmer {
             return false;
         }
     }
+
+    public function getProductsByFarmerId($farmerId) {
+        $this->db->query('SELECT * FROM products WHERE userid = :userid');
+        $this->db->bind(':userid', $farmerId);
+        return $this->db->resultSet(); // Fetch all products
+    }
+
+    public function deleteProduct($id){
+        $this->db->query('DELETE FROM products WHERE productid = :id');
+        $this->db->bind(':id', $id);
+
+        if($this->db->execute()){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
 
     
 }

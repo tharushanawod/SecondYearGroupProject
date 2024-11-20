@@ -9,10 +9,10 @@
     
 </head>
 <body>
-
+<?php require 'sidebar.php';?>
 
     <div class="container">
-    <?php require sidebar.php;?>
+  
         <h1>Orders</h1>
         <div class="filter-options">
             <label for="statusFilter">Filter by Status:</label>

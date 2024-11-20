@@ -72,12 +72,16 @@ body {
 }
 
 .container {
-  margin-left: 400px;
+  margin-left: 300px;
   margin-top: 20px;
   background: #c4c4c4;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center; /* Align items vertically */
+  justify-content: center; /* Optional: Align items horizontally */
+  gap: 20px; /* Space between image and form */
 }
 
 h1 {
@@ -221,4 +225,14 @@ tr {
 
 #closeBtn:hover {
   background-color: #5a6268;
+}
+
+svg {
+  height: 15px;
+  width: 15px;
+}
+.links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
