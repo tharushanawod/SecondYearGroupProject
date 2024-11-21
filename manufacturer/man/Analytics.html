@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<header>
+    <h1>Analytics Overview</h1>
+</header>
+
+<div class="container">
+    <aside class="sidebar">
+        <h2>Dashboard</h2>
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="analytics.html">Analytics</a></li>
+            <li><a href="manage-products.html">Manage Products</a></li>
+            <li><a href="orders.html">Orders</a></li>
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="settings.html">Settings</a></li>
+            <li><a href="help.html">Help</a></li>
+            <li><a href="logout.html">Logout</a></li>
+        </ul>
+    </aside>
+
+    <div class="main-content">
+        <h2>Sales and Orders Analytics</h2>
+
+        <!-- Graphs Section -->
+        <div class="analytics-section">
+            <h3>Total Sales Over Time</h3>
+            <canvas id="salesChart"></canvas>
+        </div>
+
+        <div class="analytics-section">
+            <h3>Top Performing Products</h3>
+            <canvas id="topProductsChart"></canvas>
+        </div>
+
+        <div class="analytics-section">
+            <h3>Order Distribution by Region</h3>
+            <canvas id="orderDistributionChart"></canvas>
+        </div>
+
+        <div class="analytics-section">
+            <h3>Customer Acquisition</h3>
+            <canvas id="customerAcquisitionChart"></canvas>
+        </div>
+
+        <div class="dashboard-actions">
+            <a href="download-report.html" class="action-btn">Download Full Report</a>
+        </div>
+    </div>
+</div>
+
+<script>
+// Random data generator for the charts
+function generateRandomData(labels) {
+    return labels.map(() => Math.floor(Math.random() * 100) + 1);
+}
+
+// Sales over time graph
+var ctx1 = document.getElementById('salesChart').getContext('2d');
+var salesChart = new Chart(ctx1, {
+    type: 'line',
+    data: {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        datasets: [{
+            label: 'Total Sales',
+            data: generateRandomData(['January', 'February', 'March', 'April', 'May', 'June', 'July']),
+            borderColor: 'rgb(75, 192, 192)',
+            fill: false,
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            x: { 
+                beginAtZero: true
+            },
+            y: { 
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+// Top performing products graph
+var ctx2 = document.getElementById('topProductsChart').getContext('2d');
+var topProductsChart = new Chart(ctx2, {
+    type: 'bar',
+    data: {
+        labels: ['Product A', 'Product B', 'Product C', 'Product D', 'Product E'],
+        datasets: [{
+            label: 'Product Performance',
+            data: generateRandomData(['Product A', 'Product B', 'Product C', 'Product D', 'Product E']),
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            x: {
+                beginAtZero: true
+            },
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+// Order distribution graph by region
+var ctx3 = document.getElementById('orderDistributionChart').getContext('2d');
+var orderDistributionChart = new Chart(ctx3, {
+    type: 'pie',
+    data: {
+        labels: ['North', 'South', 'East', 'West'],
+        datasets: [{
+            label: 'Order Distribution',
+            data: generateRandomData(['North', 'South', 'East', 'West']),
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#FF5733'],
+        }]
+    },
+    options: {
+        responsive: true
+    }
+});
+
+// Customer acquisition graph
+var ctx4 = document.getElementById('customerAcquisitionChart').getContext('2d');
+var customerAcquisitionChart = new Chart(ctx4, {
+    type: 'doughnut',
+    data: {
+        labels: ['Facebook', 'Instagram', 'Google', 'Other'],
+        datasets: [{
+            label: 'Customer Acquisition Channels',
+            data: generateRandomData(['Facebook', 'Instagram', 'Google', 'Other']),
+            backgroundColor: ['#FF8C00', '#008080', '#800080', '#FFD700'],
+        }]
+    },
+    options: {
+        responsive: true
+    }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manufacturer Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+    <h1>Welcome to Your Manufacturer Dashboard</h1>
+</header>
+
+<div class="container">
+    <aside class="sidebar">
+        <h2>Dashboard</h2>
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="analytics.html">Analytics</a></li>
+            <li><a href="manage-products.html">Manage Products</a></li>
+            <li><a href="orders.html">Orders</a></li>
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="settings.html">Settings</a></li>
+            <li><a href="help.html">Help</a></li>
+            <li><a href="logout.html">Logout</a></li>
+        </ul>
+    </aside>
+
+    <div class="main-content">
+        <div class="card">
+            <h2>Total Products</h2>
+            <p>150</p>
+        </div>
+        <div class="card">
+            <h2>Orders Received</h2>
+            <p>45</p>
+        </div>
+        <div class="card">
+            <h2>Pending Approvals</h2>
+            <p>12</p>
+        </div>
+
+        <div class="dashboard-actions">
+            <a href="add-product.html" class="action-btn">Add New Product</a>
+            <a href="manage-pricing.html" class="action-btn">Manage Pricing</a>
+            <a href="support-request.html" class="action-btn">Request Support</a>
+        </div>
+
+        <h2>Recent Orders</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>#12345</td>
+                    <td>Shipped</td>
+                    <td><a href="view-order.html" class="action-btn">View</a></td>
+                </tr>
+                <tr>
+                    <td>#12346</td>
+                    <td>Pending</td>
+                    <td><a href="view-order.html" class="action-btn">View</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

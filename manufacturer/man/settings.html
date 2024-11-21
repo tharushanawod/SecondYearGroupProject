@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+    <h1>Account Settings</h1>
+</header>
+
+<div class="container">
+    <aside class="sidebar">
+        <h2>Dashboard</h2>
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="analytics.html">Analytics</a></li>
+            <li><a href="manage-products.html">Manage Products</a></li>
+            <li><a href="orders.html">Orders</a></li>
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="settings.html">Settings</a></li>
+            <li><a href="help.html">Help</a></li>
+            <li><a href="logout.html">Logout</a></li>
+        </ul>
+    </aside>
+
+    <div class="main-content">
+        <h2>Change Your Settings</h2>
+
+        <form action="update-settings.html" method="POST">
+            <label for="password">New Password</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="language">Preferred Language</label>
+            <select id="language" name="language">
+                <option value="en">English</option>
+                <option value="tm">Tamil</option>
+                <option value="sn">sinhala</option>
+                
+            </select>
+
+            <label for="timezone">Timezone</label>
+            <select id="timezone" name="timezone">
+                <option value="ist">srilanka -IST</option>
+                
+            </select>
+
+            <button type="submit">Save Settings</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+    <h1>Need Help?</h1>
+</header>
+
+<div class="container">
+    <aside class="sidebar">
+        <h2>Dashboard</h2>
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="analytics.html">Analytics</a></li>
+            <li><a href="manage-products.html">Manage Products</a></li>
+            <li><a href="orders.html">Orders</a></li>
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="settings.html">Settings</a></li>
+            <li><a href="help.html">Help</a></li>
+            <li><a href="logout.html">Logout</a></li>
+        </ul>
+    </aside>
+
+    <div class="main-content">
+        <h2>Contact Support</h2>
+        <p>If you're having trouble, please reach out to our support team:</p>
+
+        <form action="submit-ticket.html" method="POST">
+            <label for="issue">Describe Your Issue</label>
+            <textarea id="issue" name="issue" rows="6"></textarea>
+
+            <label for="email">Your Email Address</label>
+            <input type="email" id="email" name="email" required>
+
+            <button type="submit">Submit Support Ticket</button>
+        </form>
+
+        <h2>Frequently Asked Questions</h2>
+        <ul>
+            <li><a href="#">How do I add a new product?</a></li>
+            <li><a href="#">How can I track my orders?</a></li>
+            <li><a href="#">How do I update my profile?</a></li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>
