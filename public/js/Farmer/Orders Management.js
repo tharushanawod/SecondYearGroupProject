@@ -8,10 +8,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusFilter = document.getElementById('statusFilter');
 
     const sampleOrders = [
-        { id: 1, product: 'Fertilizer', buyer: 'John Doe', price: 1000, payment: 'Cash', quantity: '200 kg', status: 'Pending', address: '123 Main St', instructions: 'Leave at the front door' },
-        { id: 2, product: 'Pesticide', buyer: 'Jane Smith', price: 1500, payment: 'Credit Card', quantity: '50 kg', status: 'Accepted', address: '456 Oak St', instructions: 'Ring the bell' },
+        { id: 1, product: 'Fertilizer', buyer: 'Johanson ', price: 1000, payment: 'Cash', quantity: '200 kg', status: 'Pending', address: '123 Main St', instructions: 'Leave at the front door' },
+        { id: 2, product: 'Pesticide', buyer: 'shermi', price: 1500, payment: 'Credit Card', quantity: '50 kg', status: 'Accepted', address: '456 Oak St', instructions: 'Ring the bell' },
         { id: 3, product: 'Seed', buyer: 'Bob Johnson', price: 2000, payment: 'Cash', quantity: '250 kg', status: 'Delivered', address: '789 Pine St', instructions: 'Call upon arrival' },
+        { id: 4, product: 'Organic Compost', buyer: 'Alice Brown', price: 1200, payment: 'Bank Transfer', quantity: '300 kg', status: 'Pending', address: '321 Maple St', instructions: 'Leave at the side gate' },
+        { id: 5, product: 'Insecticide', buyer: 'Charlie Davis', price: 1800, payment: 'Cash', quantity: '100 kg', status: 'Delivered', address: '654 Elm St', instructions: 'Knock twice' },
+        { id: 6, product: 'Herbicide', buyer: 'Emily Clark', price: 1400, payment: 'Credit Card', quantity: '150 kg', status: 'Accepted', address: '987 Cedar St', instructions: 'Place near the garage' },
+        { id: 7, product: 'Crop Nutrients', buyer: 'Michael Wright', price: 1700, payment: 'Cash', quantity: '180 kg', status: 'Pending', address: '159 Birch St', instructions: 'Deliver after 5 PM' },
+        { id: 8, product: 'Growth Regulator', buyer: 'Sophia Lopez', price: 1100, payment: 'UPI', quantity: '120 kg', status: 'Delivered', address: '753 Spruce St', instructions: 'Call before delivery' },
+        { id: 9, product: 'Mulch', buyer: 'David Wilson', price: 900, payment: 'Cash', quantity: '220 kg', status: 'Accepted', address: '246 Willow St', instructions: 'Drop in the backyard' },
+        { id: 10, product: 'Manure', buyer: 'Isabella Martinez', price: 1300, payment: 'Credit Card', quantity: '350 kg', status: 'Pending', address: '369 Redwood St', instructions: 'Knock and wait' }
     ];
+    
 
     function loadOrders(orders) {
         ordersTable.innerHTML = ''; // Clear table

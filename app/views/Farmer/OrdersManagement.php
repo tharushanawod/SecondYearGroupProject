@@ -12,9 +12,10 @@
 <?php require 'sidebar.php';?>
 
     <div class="container">
-  
-        <h1>Orders</h1>
-        <div class="filter-options">
+    <h1>Orders</h1>
+
+    <div class="main-container">
+    <div class="filter-options">
             <label for="statusFilter">Filter by Status:</label>
             <select id="statusFilter">
                 <option value="all">All</option>
@@ -61,6 +62,9 @@
             </div>
         </div>
     </div>
+    </div>
+        
+      
     <script src="Orders Management.js"></script>
 </body>
 </html>

@@ -1,87 +1,23 @@
-body {
-  font-family: Arial, sans-serif;
+@import url(sidebar.css);
+* {
   margin: 0;
   padding: 0;
-  background-color: #deede2;
+  box-sizing: border-box;
+  font-family: sans-serif;
+
 }
 
-.sidebar {
-  width: 250px;
-  background-color: white;
-  padding: 20px;
-  border-right: 1px solid #ddd;
-  height: 100%;
-  position: fixed;
-  border-top-right-radius: 25px;
-  border: none;
-}
-
-.sidebar .profile {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.sidebar .profile img {
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
-}
-
-.sidebar .profile p {
-  margin: 5px 0;
-  font-size: 16px;
-  color: black;
-}
-
-.sidebar .profile a {
-  text-decoration: none;
-  color: #f8f8f8;
-  font-size: 14px;
-}
-
-.sidebar ul {
-  list-style: none;
+body {
+  margin: 0;
   padding: 0;
-}
 
-.sidebar ul li {
-  margin-bottom: 10px;
-}
-
-.sidebar ul li a {
-  text-decoration: none;
-  color: #111010;
-  display: block;
-  padding: 10px;
-
-  border-radius: 25px;
-  font-size: 16px;
-}
-
-.sidebar ul li a {
-  transition: all 0.3s ease; /* Smooth transition for better effect */
-}
-
-.sidebar ul li a:hover {
-  background-color: #ddd;
-  border-radius: 10px; /* Add border radius */
-  transform: scale(
-    1.04
-  ); /* Optional: Slightly scale the row for a nice effect */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for more emphasis */
 }
 
 .container {
   margin-left: 300px;
-  margin-top: 20px;
-  background: #c4c4c4;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center; /* Align items vertically */
-  justify-content: center; /* Optional: Align items horizontally */
   gap: 20px; /* Space between image and form */
+  height: 100vh;
+  padding: 40px;
 }
 
 h1 {
@@ -98,27 +34,37 @@ label {
 }
 
 select {
-  padding: 5px;
+  padding: 10px;
   border-radius: 4px;
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
+
 }
 
-table,
-th,
-td {
-  border: 1px solid #ddd;
-}
+
 
 th,
 td {
-  padding: 10px;
+  padding: 15px;
   text-align: left;
+
+}
+
+table tbody tr {
+  transition: all 0.3s ease; /* Smooth transition for better effect */
+}
+
+tr:hover {
+  background-color: #74dbb2;
+  transform: scale(
+    1.02
+  ); /* Optional: Slightly scale the row for a nice effect */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for more emphasis */
 }
 
 th {
@@ -126,7 +72,7 @@ th {
 }
 
 tr {
-  background-color: #bec9be;
+  background-color: #eafaf6;
 }
 
 .actions button {
@@ -225,14 +171,4 @@ tr {
 
 #closeBtn:hover {
   background-color: #5a6268;
-}
-
-svg {
-  height: 15px;
-  width: 15px;
-}
-.links {
-  display: flex;
-  align-items: center;
-  gap: 10px;
 }

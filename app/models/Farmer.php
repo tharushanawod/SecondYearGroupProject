@@ -14,13 +14,16 @@ class Farmer {
         return $results;
     }
 
-    public function AddProduct($data){
-        $this->db->query('INSERT INTO products (type, price,quantity,userid) VALUES(:type, :price, :quantity,:userid)');
+    public function AddProduct($data) {
+        $this->db->query('INSERT INTO products (type, price, quantity, media, expiry_date, userid) 
+        VALUES(:type, :price, :quantity, :media, :expiry_date, :userid)');
         $this->db->bind(':type', $data['type']);
         $this->db->bind(':price', $data['price']);
         $this->db->bind(':quantity', $data['quantity']);
+        $this->db->bind(':media', $data['media']);
+        $this->db->bind(':expiry_date', $data['expiry_date']); 
         $this->db->bind(':userid', $data['userid']);
-
+    
         if($this->db->execute()){
             return true;
         } else {
@@ -28,20 +31,41 @@ class Farmer {
         }
     }
 
-    public function editProduct($data){
-        $this->db->query('UPDATE inventory SET product_name = :product_name, category = :category, price = :price, stock = :stock WHERE id = :id');
-        $this->db->bind(':id', $data['id']);
-        $this->db->bind(':product_name', $data['product_name']);
-        $this->db->bind(':category', $data['category']);
+    public function getProducts($id){
+        $this->db->query('SELECT * FROM products WHERE productid = :id');
+        $this->db->bind(':id', $id);
+        $result = $this->db->single();
+        return $result;
+    }
+    
+
+    public function editProduct($data) {
+        $this->db->query('UPDATE products 
+            SET type = :type, 
+                price = :price, 
+                quantity = :quantity, 
+                media = :media, 
+                expiry_date = :expiry_date, 
+                userid = :userid 
+            WHERE productid = :id');
+    
+        // Bind parameters to query
+        $this->db->bind(':type', $data['type']);
         $this->db->bind(':price', $data['price']);
-        $this->db->bind(':stock', $data['stock']);
-
-        if($this->db->execute()){
+        $this->db->bind(':quantity', $data['quantity']);
+        $this->db->bind(':media', $data['media']);
+        $this->db->bind(':expiry_date', $data['expiry_date']);
+        $this->db->bind(':userid', $data['userid']);
+        $this->db->bind(':id', $data['id']); // Bind the product ID to :id
+    
+        // Execute the query and return the result
+        if ($this->db->execute()) {
             return true;
         } else {
             return false;
         }
     }
+    
    
 
     public function getOrders(){
