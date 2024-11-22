@@ -7,16 +7,17 @@
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Buyer/purchase history.css">
 </head>
 <body>
-<?php require 'header.php';?>
-    <div class="header1">
-        <div class="header-content">
-            <h1>Purchase History</h1>
-            <div class="search-container">
-                <input type="text" id="search" placeholder="Search products..." onkeyup="filterProducts()">
-                <button id="searchBtn">Search</button>
-            </div>
-        </div>        
-    </div>
+    
+<?php require 'sidebar.php';?>
+    
+    <div class="header-content">
+        <h1>Purchase History</h1>
+        <div class="search-container">
+            <input type="text" id="search" placeholder="Search products..." onkeyup="filterProducts()">
+            <button id="searchBtn">Search</button>
+        </div>
+    </div>        
+       
 
     <div class="container">
         <table id="purchaseHistory">

@@ -7,17 +7,16 @@
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Buyer/place bid.css">
 </head>
 <body>
-<?php require 'header.php';?>
-    <div class="header1">
-        <div class="header-content">
-            <h1>Place Your Bid</h1>
-            <div class="search-container">
-                <input type="text" id="search" placeholder="Search products..." onkeyup="filterProducts()">
-                <button id="searchBtn">Search</button>
-            </div>
-        </div>        
-    </div>
-
+<?php require 'sidebar.php';?>
+    
+    <div class="header-content">
+        <h1>Place Your Bid</h1>
+        <div class="search-container">
+            <input type="text" id="search" placeholder="Search products..." onkeyup="filterProducts()">
+            <button id="searchBtn">Search</button>
+        </div>
+    </div>       
+    
     <div class="container1">
         <div class="product-card">
             <img src="<?php echo URLROOT;?>/images/images/img7.jpeg" alt="Product Image" class="product-img">

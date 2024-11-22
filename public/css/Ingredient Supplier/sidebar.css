@@ -53,3 +53,16 @@
   .sidebar ul li a:hover {
     background-color: #ddd;
   }
+
+  .links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  svg {
+    height: 15px;
+    width: 15px;
+  }
+
+  

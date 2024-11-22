@@ -7,17 +7,17 @@
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Buyer/cancel bid.css">
 </head>
 <body>
-    <?php require 'header.php';?>
+    
+<?php require 'sidebar.php';?>
 
-    <div class="header1">
-        <div class="header-content">
-            <h1>Cancel Bid</h1>
-            <div class="search-container">
-                <input type="text" id="search" placeholder="Search products..." onkeyup="filterProducts()">
-                <button id="searchBtn">Search</button>
-            </div>
-        </div>        
-    </div>
+    <div class="header-content">
+        <h1>Cancel Bid</h1>
+        <div class="search-container">
+            <input type="text" id="search" placeholder="Search products..." onkeyup="filterProducts()">
+            <button id="searchBtn">Search</button>
+        </div>
+    </div>        
+    
 
     <div class="container">
         <div class="product-card">

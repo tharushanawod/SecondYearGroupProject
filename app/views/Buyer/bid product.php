@@ -6,19 +6,20 @@
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Buyer/bid product.css">
 </head>
 <body>
-<?php require 'header.php';?>
-    <div class="header1">
-        <div class="header-content">
-            <h1>Bid On Products</h1>
-            <p class="header1-subtitle">Explore our active bids and secure your favorite items.</p>
-            <div class="search-container">
-                <input type="text" id="search" placeholder="Search products..." onkeyup="filterProducts()">
-                <button id="searchBtn">Search</button>
-            </div>
-        </div>        
-    </div>
+
+<?php require 'sidebar.php';?>
+
+    <div class="header-content">
+        <h1>Bid On Products</h1>
+        <p class="header1-subtitle">Explore our active bids and secure your favorite items.</p>
+        <div class="search-container">
+            <input type="text" id="search" placeholder="Search products..." onkeyup="filterProducts()">
+            <button id="searchBtn">Search</button>
+        </div>
+    </div>        
+    
     <div class="main-content">
-        <div class="sidebar">
+        <div class="filter-bar">
             <h3>Filter Products</h3>
             <div class="filter-section">
                 <h4>Breed</h4>
@@ -51,8 +52,8 @@
                     <p>Specifications: Large, Yellow, Non-Organic</p>
                     <p>Quantity: 200 kg</p>
                     <div class="button-row">
-                        <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn">Place Bid</a>
-                        <a href="<?php echo URLROOT;?>/BuyerController/viewDetails" target="content-frame" class="action-btn">View Details</a>
+                        <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn"><b>Place Bid</b></a>
+                        
                     </div>
                 </div>
                 <div class="bid-card" data-category="fresh" data-quantity="100">
@@ -64,8 +65,8 @@
                     <p>Specifications: Large, Yellow, Organic</p>                    
                     <p>Quantity: 100 kg</p>
                     <div class="button-row">
-                        <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn">Place Bid</a>
-                        <a href="<?php echo URLROOT;?>/BuyerController/viewDetails" target="content-frame" class="action-btn">View Details</a>
+                        <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn"><b>Place Bid</b></a>
+                        
                     </div>
                 </div>
                 <div class="bid-card" data-category="dry" data-quantity="50">
@@ -77,8 +78,8 @@
                     <p>Specifications: Small, White, Non-Organic</p>                    
                     <p>Quantity: 50 kg</p>
                     <div class="button-row">
-                        <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn">Place Bid</a>
-                        <a href="<?php echo URLROOT;?>/BuyerController/viewDetails" target="content-frame" class="action-btn">View Details</a>
+                        <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn"><b>Place Bid</b></a>
+                       
                     </div>
                 </div>
                 <div class="bid-card" data-category="processed" data-quantity="200">
@@ -90,8 +91,8 @@
                     <p>Specifications: Medium, Yellow, Organic</p>                    
                     <p>Quantity: 200 kg</p>
                     <div class="button-row">
-                        <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn">Place Bid</a>
-                        <a href="<?php echo URLROOT;?>/BuyerController/viewDetails" target="content-frame" class="action-btn">View Details</a>
+                        <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn"><b>Place Bid</b></a>
+                        
                     </div>
                 </div>
                 <div class="bid-card" data-category="fresh" data-quantity="150">
@@ -103,8 +104,8 @@
                     <p>Specifications: Medium, White, Non-Organic</p>                    
                     <p>Quantity: 150 kg</p>
                     <div class="button-row">
-                        <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn">Place Bid</a>
-                        <a href="<?php echo URLROOT;?>/BuyerController/viewDetails" target="content-frame" class="action-btn">View Details</a>
+                        <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn"><b>Place Bid</b></a>
+                        
                     </div>
                 </div>
                 <div class="bid-card" data-category="processed" data-quantity="100">
@@ -116,8 +117,8 @@
                     <p>Specifications: Large, Yellow, Non-Organic</p>                    
                     <p>Quantity: 100 kg</p>
                     <div class="button-row">
-                        <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn">Place Bid</a>
-                        <a href="<?php echo URLROOT;?>/BuyerController/viewDetails" target="content-frame" class="action-btn">View Details</a>
+                        <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn"><b>Place Bid</b></a>
+                       
                     </div>
                 </div>
                 <div class="bid-card" data-category="dry" data-quantity="75">
@@ -129,8 +130,8 @@
                     <p>Specifications: Small, Yellow, Organic</p>                    
                     <p>Quantity: 75 kg</p>
                     <div class="button-row">
-                        <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn">Place Bid</a>
-                        <a href="<?php echo URLROOT;?>/BuyerController/viewDetails" target="content-frame" class="action-btn">View Details</a>
+                        <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn"><b>Place Bid</b></a>
+                       
                     </div>
                 </div>             
             </div>

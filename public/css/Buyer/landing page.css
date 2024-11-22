@@ -1,6 +1,6 @@
 body {
     font-family: 'Helvetica Neue', Arial, sans-serif; 
-    background: linear-gradient(180deg, #d3f0ce, #eaebdf);
+    background-color:#f8f9f1;
     margin: 0;
     padding: 0;
     background-size: cover;
@@ -24,7 +24,7 @@ body {
 }
 
 .container-card {
-    background-color: rgba(92, 189, 12, 0.5); 
+    background-color: rgba(187, 231, 151, 0.5); 
     padding: 40px;
     border-radius: 10px;
     text-align: center;
@@ -70,7 +70,7 @@ body {
 .active-bids {
     margin: 40px 20px;
     padding: 40px;
-    background-color: #d9f2e2;
+    background-color: #e6f9ed;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -158,7 +158,7 @@ body {
 .bid-history {
     margin: 40px 20px;
     padding: 40px;
-    background-color: #caf1d5;
+    background-color: #d9f4e1;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -251,6 +251,13 @@ body {
     margin: 5px 0;
     font-size: 1em;
     color: #333;
+}
+
+.rate-card img{
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    margin-bottom: 10px;
 }
 
 .feedback {

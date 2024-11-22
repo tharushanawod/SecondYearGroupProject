@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Buyer/landing page.css">
 </head>
 <body>
-    <?php require 'header.php';?>
+    <?php require 'navbar.php';?>
 
     <div class="content-wrapper">
         <img src="<?php echo URLROOT;?>/images/images/img39.png" alt="Product Image" class="large-image">
@@ -31,7 +31,7 @@
                 <p>Buyer: John Doe</p>
                 <div class="button-row">
                 <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn">Place Bid</a>
-                <a href="<?php echo URLROOT;?>/BuyerController/viewDetails" target="content-frame" class="action-btn">View Details</a>
+                
                 </div>
             </div>
             <div class="bid-card">
@@ -44,7 +44,7 @@
                 <p>Buyer: John Doe</p>
                 <div class="button-row">
                 <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn">Place Bid</a>
-                <a href="<?php echo URLROOT;?>/BuyerController/viewDetails" target="content-frame" class="action-btn">View Details</a>
+                
                 </div>
             </div>
             <div class="bid-card">
@@ -57,7 +57,7 @@
                 <p>Buyer: John Doe</p>
                 <div class="button-row">
                 <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn">Place Bid</a>
-                <a href="<?php echo URLROOT;?>/BuyerController/viewDetails" target="content-frame" class="action-btn">View Details</a>
+                
                 </div>
             </div>
             <div class="bid-card">
@@ -69,8 +69,7 @@
                 <p>Specifications: Size, Color, Material</p>                
                 <p>Buyer: John Doe</p>
                 <div class="button-row">
-                <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn">Place Bid</a>
-                <a href="<?php echo URLROOT;?>/BuyerController/viewDetails" target="content-frame" class="action-btn">View Details</a>
+                <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn">Place Bid</a>               
                 </div>
             </div>
         </div>
@@ -121,26 +120,26 @@
         <div class="rates-grid">
             <div class="rate-card">
                 <img src="<?php echo URLROOT;?>/images/images/img65.png" alt="Company Logo">
-                <h3>Company A</h3>
-                <p>Product: Corn</p>
+                <h3>Prima</h3>
+                <p>Product: Dry Corn</p>
                 <p>Rate: LKR 1200</p>
             </div>
             <div class="rate-card">
                 <img src="<?php echo URLROOT;?>/images/images/img66.png" alt="Company Logo">
-                <h3>Company B</h3>
-                <p>Product: Corn</p>
+                <h3>Munchee</h3>
+                <p>Product: Dry Corn</p>
                 <p>Rate: LKR 1150</p>
             </div>
             <div class="rate-card">
                 <img src="<?php echo URLROOT;?>/images/images/img67.jpeg" alt="Company Logo">
-                <h3>Company C</h3>
-                <p>Product: Corn</p>
+                <h3>Maliban</h3>
+                <p>Product: Dry Corn</p>
                 <p>Rate: LKR 1180</p>
             </div>
             <div class="rate-card">
-                <img src="<?php echo URLROOT;?>/images/images/img65.png" alt="Company Logo">
-                <h3>Company D</h3>
-                <p>Product: Corn</p>
+                <img src="<?php echo URLROOT;?>/images/images/img70.png" alt="Company Logo">
+                <h3>Cargills</h3>
+                <p>Product: Dry Corn</p>
                 <p>Rate: LKR 1220</p>
             </div>
         </div>
@@ -151,30 +150,30 @@
             <div class="review-card">
                 <div class="review-content">
                     <div class="rating">★★★★★</div>
-                    <p>Click edit button to change this text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.</p>
+                    <p>The farmer was communicative, and the delivery was on time. The corn was well-dried and exactly what I needed for livestock feed.</p>
                     <div class="reviewer">
-                        <img src="<?php echo URLROOT;?>/images/images/img25.jpg" alt="Mila Kunis">
-                        <p>Mila Kunis</p>
+                        <img src="<?php echo URLROOT;?>/images/images/img69.jpg" alt="Mila Kunis">
+                        <p>Bandara Dissanayake</p>
                     </div>
                 </div>
             </div>
             <div class="review-card">
                 <div class="review-content">
                     <div class="rating">★★★★★</div>
-                    <p>Click edit button to change this text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.</p>
+                    <p>The dry corn retained its sweetness and was great for making cornmeal. Highly recommend these farmers for their dedication to quality.</p>
                     <div class="reviewer">
                         <img src="<?php echo URLROOT;?>/images/images/img25.jpg" alt="Mila Kunis">
-                        <p>Mila Kunis</p>
+                        <p>Samantha Perera</p>
                     </div>
                 </div>
             </div>            
             <div class="review-card">
                 <div class="review-content">
                     <div class="rating">★★★★★</div>
-                    <p>Click edit button to change this text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.</p>
+                    <p>I’ve been buying dry corn for months now, and the quality has been consistent. It's also much cheaper than other farmers.</p>
                     <div class="reviewer">
-                        <img src="<?php echo URLROOT;?>/images/images/img25.jpg" alt="Mila Kunis">
-                        <p>Mila Kunis</p>
+                        <img src="<?php echo URLROOT;?>/images/images/img68.jpg" alt="Mila Kunis">
+                        <p>Niroshan Silva</p>
                     </div>
                 </div>
             </div>

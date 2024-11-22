@@ -2,38 +2,39 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background: linear-gradient(180deg, #f0efe1, #eeeeea, #eef1ea);
-  background-size: cover;
+  background-color: #f9f8f2;
+  background-size: cover;  
   background-position: center;
 }
 
-.header1 {
-  display: flex;
+/* .header1 {
+  border-left: 400px;
   align-items: center;
   background: linear-gradient(170deg, #e2e8e1, #abe4c0 );
   color: #033c1f;
-  padding: 40px;
-  position: relative;
+  padding: 40px;  
   border-radius: 10px;
-}
+} */
 
-.header-content {
-  flex: 1;
+.header-content { 
   padding: 20px;
 }
 
 .header-content h1 {
-  font-size: 80px;
+  font-size: 70px;
   margin: 0;
+  color:#034209;
   text-align: center;
+  margin-top: 60px;
+  margin-left: 300px;
 }
 
-.search-container {
-  display: flex;
+.search-container {    
   margin-top: 20px;
+  margin-left: 200px;
 }
 
-.header1 input[type="text"] {
+input[type="text"] {
   padding: 10px;
   border-radius: 5px;
   border: none;
@@ -41,7 +42,7 @@ body {
   margin-left: 510px;
 }
 
-.header1 button {
+button {
   padding: 10px 20px;
   background-color: #4CAF50;
   color: white;
@@ -51,7 +52,7 @@ body {
   margin-left: 5px;
 }
 
-.header1 button:hover {
+button:hover {
   background-color: #45a049;
 }
 
@@ -80,33 +81,53 @@ body {
 }
 
 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 40px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-table th, table td {
-    padding: 12px 15px;
-    border-radius: 2px solid #062e0d;
-    text-align: left;
+  width: 90%;
+  border-collapse: separate; 
+  border-spacing: 0 8px; 
+  margin-left:200px;
+  margin-bottom: 20px;
+  border-radius: 15px; 
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #e5faec;
+  padding: 5px;  
 }
 
 table th {
-    background-color: #5e6460;
-    color: white;
-    font-weight: bold;
+  background-color: #b3e4b4; 
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+  padding: 15px;
+  text-align: center;
+  /* border-radius: 10px; 
+  overflow: hidden;     */
 }
 
 table tr {
-    background-color: #ecede5;
-    border-bottom: 1px solid #cfefd5;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  border-radius: 10px; 
+  /* overflow: hidden;  */
+  
 }
 
-table tr:hover {
-    background-color: #f1f1f1;
+tr:hover {
+  background-color: #d8e8e1; 
+  cursor: pointer;
+}
+
+tr:nth-child(even) {
+  background-color: #e7f8ec; 
+}
+
+tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+td {
+  padding: 15px;
+  text-align: center;
+  font-size: 14px;
+  color: #333;    
 }
 
 table td .action-btn {

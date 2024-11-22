@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Buyer/buyer dashboard.css">
 </head>
 <body>
-<?php require 'header.php';?>
 
     <div class="dashboard-container">
         
@@ -53,7 +52,7 @@
                 <div class="recentOrders">
                     <div class="cardHeader">
                         <h2>Recent Bids</h2>
-                        <a href="bid product.html" class="btn">View All</a>
+                        <a href="<?php echo URLROOT;?>/BuyerController/bidProduct" class="btn">View All</a>
                     </div>
 
                     <table>
