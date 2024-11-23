@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Ingredient Supplier/shop.css">
 </head>
 <body>
-    <?php require 'shop header.php';?>
+<?php require 'navbar.php';?>
     <div class="container">
         <aside class="sidebar">
             <div class="search-box">
@@ -38,7 +38,7 @@
             </div>
             <?php foreach ($data['products'] as $product): ?>
             <div class="product">
-                <img src="<?php echo URLROOT;?>/images/<?php echo $product->image; ?>" alt="<?php echo $product->product_name; ?>">
+            <img src="<?php echo URLROOT;?>/uploads/<?php echo $product->image; ?>" alt="<?php echo $product->product_name; ?>">
                 <p class="category"><?php echo $product->category; ?></p>
                 <h3><?php echo $product->product_name; ?></h3>
                 <p class="price">LKR <?php echo $product->price; ?></p>

@@ -4,22 +4,7 @@ class SupplierController extends Controller {
     private $Product;
 
     public function __construct() {
-        if (!$this->isloggedin()) {
-            unset($_SESSION['user_id']);
-            unset($_SESSION['user_email']);
-            unset($_SESSION['user_name']);
-            session_destroy();
-            Redirect('LandingController/login');
-        }
-        $this->Product = $this->model('Supplier');
-    }
-
-    public function isloggedin() {
-        if (isset($_SESSION['user_id']) && ($_SESSION['user_role']=='supplier')){
-            return true;
-        } else {
-            return false;
-        }
+        $this->Product = $this->model('Product');
     }
 
     public function index() {
@@ -46,62 +31,40 @@ class SupplierController extends Controller {
     }
 
     public function save() {
-        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+        $image = $_FILES['image']['name'];
+        $target_dir = "uploads/";
+        $target_file = $target_dir . basename($image);
 
-        $data = [
-            'product_name' => trim($_POST['product_name']),
-            'category' => trim($_POST['category']),
-            'price' => trim($_POST['price']),
-            'stock' => trim($_POST['stock']),
-            'description' => trim($_POST['description']),
-            'image' => ''
-        ];
+        // Move the uploaded file to the target directory
+        if (move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
+            $data = [
+                'product_name' => $_POST['product_name'],
+                'category' => $_POST['category'],
+                'price' => $_POST['price'],
+                'stock' => $_POST['stock'],
+                'description' => $_POST['description'],
+                'image' => $image
+            ];
+            $this->Product->addProduct($data);
 
-        // Validate fields
-        if (empty($data['product_name'])) {
-            $data['product_name_err'] = 'Please enter a product name';
-        }
-
-        if (empty($data['price'])) {
-            $data['price_err'] = 'Please enter a price';
-        }
-
-        if (empty($data['stock'])) {
-            $data['stock_err'] = 'Please enter stock quantity';
-        }
-
-        // Validate and upload file
-        if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-            $targetDir = "uploads/Supplier/Products/";
-            $fileName = basename($_FILES['image']['name']);
-            $targetFilePath = $targetDir . $fileName;
-
-            $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
-            $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
-
-            if (in_array(strtolower($fileType), $allowedTypes)) {
-                if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFilePath)) {
-                    $data['image'] = $targetFilePath;
-                } else {
-                    $data['image_err'] = 'Failed to upload the file';
-                }
-            } else {
-                $data['image_err'] = 'Invalid file type';
+            // Redirect to the relevant category page
+            switch ($_POST['category']) {
+                case 'Fertilizer':
+                    header('Location: ' . URLROOT . '/SupplierController/fertilizer');
+                    break;
+                case 'Seeds':
+                    header('Location: ' . URLROOT . '/SupplierController/seeds');
+                    break;
+                case 'Pest Control':
+                    header('Location: ' . URLROOT . '/SupplierController/pestControl');
+                    break;
+                default:
+                    header('Location: ' . URLROOT . '/SupplierController/productManagement');
+                    break;
             }
         } else {
-            $data['image_err'] = 'Please upload an image file';
-        }
-
-        // Check for no errors
-        if (empty($data['product_name_err']) && empty($data['price_err']) && empty($data['stock_err']) && empty($data['image_err'])) {
-            if ($this->Product->addProduct($data)) {
-                Redirect('SupplierController/productManagement');
-            } else {
-                die('Something went wrong');
-            }
-        } else {
-            $data['show_popup'] = true; // Keep popup open on validation error
-            $this->view('Ingredient Supplier/Add Product', $data);
+            // Handle the error
+            echo "Sorry, there was an error uploading your file.";
         }
     }
 
@@ -115,86 +78,78 @@ class SupplierController extends Controller {
     }
 
     public function update() {
-        if ($_SESSION['user_role'] !== 'supplier') {
-            Redirect('LandingController/index'); // Redirect if not authorized
-        }
+        $image = $_FILES['image']['name'];
+        $target_dir = "uploads/";
+        $target_file = $target_dir . basename($image);
 
-        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+        if (!empty($image)) {
+            // Move the uploaded file to the target directory
+            move_uploaded_file($_FILES['image']['tmp_name'], $target_file);
+        } else {
+            $image = $_POST['existing_image'];
+        }
 
         $data = [
-            'id' => trim($_POST['id']),
-            'product_name' => trim($_POST['product_name']),
-            'category' => trim($_POST['category']),
-            'price' => trim($_POST['price']),
-            'stock' => trim($_POST['stock']),
-            'description' => trim($_POST['description']),
-            'image' => ''
+            'id' => $_POST['id'],
+            'product_name' => $_POST['product_name'],
+            'category' => $_POST['category'],
+            'price' => $_POST['price'],
+            'stock' => $_POST['stock'],
+            'description' => $_POST['description'],
+            'image' => $image
         ];
 
-        // Validate fields
-        if (empty($data['product_name'])) {
-            $data['product_name_err'] = 'Please enter a product name';
-        }
+        $this->Product->updateProduct($data);
 
-        if (empty($data['price'])) {
-            $data['price_err'] = 'Please enter a price';
-        }
-
-        if (empty($data['stock'])) {
-            $data['stock_err'] = 'Please enter stock quantity';
-        }
-
-        // Validate and upload file
-        if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-            $targetDir = "uploads/Supplier/Products/";
-            $fileName = basename($_FILES['image']['name']);
-            $targetFilePath = $targetDir . $fileName;
-
-            $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
-            $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
-
-            if (in_array(strtolower($fileType), $allowedTypes)) {
-                if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFilePath)) {
-                    $data['image'] = $targetFilePath;
-                } else {
-                    $data['image_err'] = 'Failed to upload the file';
-                }
-            } else {
-                $data['image_err'] = 'Invalid file type';
-            }
-        } else {
-            $data['image'] = $this->Product->getProduct($data['id'])->image; // Keep existing image if no new file is uploaded
-        }
-
-        // Check for no errors
-        if (empty($data['product_name_err']) && empty($data['price_err']) && empty($data['stock_err']) && empty($data['image_err'])) {
-            if ($this->Product->updateProduct($data)) {
-                Redirect('SupplierController/productManagement');
-            } else {
-                die('Something went wrong');
-            }
-        } else {
-            $data['show_popup'] = true; // Keep popup open on validation error
-            $this->view('Ingredient Supplier/Edit Product', $data);
+        // Redirect to the relevant category page
+        switch ($_POST['category']) {
+            case 'Fertilizer':
+                header('Location: ' . URLROOT . '/SupplierController/fertilizer');
+                break;
+            case 'Seeds':
+                header('Location: ' . URLROOT . '/SupplierController/seeds');
+                break;
+            case 'Pest Control':
+                header('Location: ' . URLROOT . '/SupplierController/pestControl');
+                break;
+            default:
+                header('Location: ' . URLROOT . '/SupplierController/productManagement');
+                break;
         }
     }
 
     public function delete($product_id = null) {
-        if ($_SESSION['user_role'] !== 'supplier') {
-            Redirect('LandingController/index'); // Redirect if not authorized
+        if ($product_id === null) {
+            header('Location: ' . URLROOT . '/SupplierController/productManagement');
+            exit();
         }
         $product = $this->Product->getProduct($product_id);
         $this->view('Ingredient Supplier/Delete Product', ['product' => $product]);
     }
 
     public function destroy() {
-        $this->Product->deleteProduct($_POST['product_id']);
-        header('Location: ' . URLROOT . '/SupplierController/productManagement');
-    }
-
-    public function getProductDetails($id) {
-        $product = $this->Product->getProduct($id);
-        echo json_encode($product);
+        // Get the product ID from the POST request
+        $product_id = $_POST['product_id'];
+    
+        // Fetch the product details from the database
+        $product = $this->Product->getProduct($product_id);
+    
+        // Check if the product exists
+        if ($product) {
+            // Delete the product image from the server
+            if (file_exists('uploads/' . $product->image)) {
+                unlink('uploads/' . $product->image);
+            }
+    
+            // Delete the product from the database
+            $this->Product->deleteProduct($product_id);
+    
+            // Redirect to the product management page
+            header('Location: ' . URLROOT . '/SupplierController/productManagement');
+        } else {
+            // Handle the case where the product does not exist
+            echo "Product not found.";
+        }
     }
 
     public function shop() {
@@ -271,6 +226,11 @@ class SupplierController extends Controller {
     public function checkoutConfirmation() {
         $data = [];
         $this->view('Ingredient Supplier/Checkout Confirmation', $data);
+    }
+
+    public function manageProfile() {
+        $data = [];
+        $this->view('Ingredient Supplier/ManageProfile', $data);
     }
 }
 ?>

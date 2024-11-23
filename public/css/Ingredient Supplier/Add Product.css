@@ -4,54 +4,68 @@ body {
     margin: 0;
     padding: 0;
 }
+
 .container {
-    width: 60%;
+    width: 50%;
     margin: 0 auto;
-    padding: 20px;
-    background: #ffffff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
+    padding: 10px;
+    background: #f4f4f4;    
     margin-top: 40px;
-    margin-left: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 520px;
+    border: 1px solid #c1cbc3;
+    border-radius: 10px; 
 }
 
 form {
-    background: #ffffff;
+    background: #f4f4f4;
     padding: 20px;
+    width: 100%;
+    max-width: 600px;
 }
 
 h1 {
     text-align: center; 
     font-size: 40px;   
     margin-top: 40px;
-    margin-left: 350px;
     color: #023802;
+    margin-left: 270px;
 }
 
 label {
     display: block;
     margin-bottom: 10px;
     font-weight: bold;
-    margin-left: 30px;
-    color:#044304;
+    color: #044304;
 }
 
 input[type="text"],
 input[type="number"],
 textarea,
 select {
-    width: 90%;
+    width: 100%;
     padding: 10px;
     margin-bottom: 20px;
     border: 1px solid #c1cbc3;
     border-radius: 5px;   
-    margin-left: 30px;
     background-color: #ebf4eb;
+    box-shadow: 0 0 2px #95ccc3;
 }
 
 input[type="file"] {
     margin-bottom: 20px;
-    margin-left: 30px;
+}
+
+input[type="file"]::file-selector-button {
+    background-color: #c3eac3;
+    color: #0c0c0c;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
 }
 
 textarea {
@@ -61,7 +75,7 @@ textarea {
 
 button {
     display: block;
-    width: 100%;
+    width: 640px;
     padding: 10px;
     background: #5cb85c;
     color: #fff;
@@ -74,7 +88,7 @@ button:hover {
     background: #3d903d;
 }
 
-.edit{    
+.edit {    
     background: #2b10db;    
 }
 
@@ -82,7 +96,7 @@ button:hover {
     background: #403ddb;
 }
 
-.delete{
+.delete {
     background: #ed0505;    
 }
 
@@ -93,7 +107,27 @@ button:hover {
 .cancel {    
     background: #616261;  
     margin-top: 10px;  
+    display: inline-block;
+    text-align: center;
+    width: 620px;
+    padding: 10px;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
 }
 .cancel:hover {
     background: #828282;
+}
+
+.product-details {
+    margin-bottom: 20px;
+}
+
+.product-details p {
+    margin: 5px 0;
+}
+
+.product-details img {
+    display: block;
+    margin: 10px 0;
 }

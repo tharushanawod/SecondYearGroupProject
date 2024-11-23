@@ -9,10 +9,11 @@
 <body>
 <?php require 'sidebar.php';?>
 
-<h1>Edit Product</h1>
+<h1>Update Product</h1>
 <div class="container">
 <form action="<?php echo URLROOT; ?>/SupplierController/update" method="post" enctype="multipart/form-data">
     <input type="hidden" name="id" value="<?= $data['product']->product_id ?>">
+    <input type="hidden" name="existing_image" value="<?= $data['product']->image ?>">
     
     <label for="productName">Product Name:</label>
     <input type="text" id="productName" name="product_name" value="<?= htmlspecialchars($data['product']->product_name) ?>" required>
@@ -35,7 +36,7 @@
 
     <label for="imageUpload">Product Image:</label>
     <input type="file" id="imageUpload" name="image" accept="image/*">
-    <img src="<?= URLROOT ?>/images/<?= $data['product']->image ?>" alt="Product Image">
+    <img src="<?= URLROOT ?>/uploads/<?= $data['product']->image ?>" alt="Product Image" style="max-width: 200px; max-height: 200px;">
 
     <button type="submit">Update</button>
 </form>

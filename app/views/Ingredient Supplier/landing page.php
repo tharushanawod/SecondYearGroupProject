@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Ingredient Supplier/landing page.css">
 </head>
 <body>
-    <?php require 'shop header.php';?>
+    <?php require 'navbar.php';?>
     <div class="content-wrapper">
         <img src="<?php echo URLROOT;?>/images/images/img29.png" alt="Product Image" class="large-image">
         <div class="container">
@@ -45,31 +45,31 @@
         <div class="product-list">
             <div class="product">
                 <img src="<?php echo URLROOT;?>/images/images/img47.jpeg" alt="Assorted Coffee">
-                <p class="category">Groceries</p>
-                <h3>Assorted Coffee</h3>
+                <p class="category">Fertilizer</p>
+                <h3>Nitrogen-rich Fertilizer</h3>
                 <p class="rating">★★★★★</p>
-                <p class="price">£35.00</p>
+                <p class="price">LKR 1500.00</p>
             </div>
             <div class="product">
                 <img src="<?php echo URLROOT;?>/images/images/img43.jpeg" alt="Hand Sanitizer">
-                <p class="category">Groceries</p>
-                <h3>Hand Sanitizer</h3>
+                <p class="category">Fertilizer</p>
+                <h3>Phosphate Fertilizer</h3>
                 <p class="rating">★★★★★</p>
-                <p class="price">£15.00</p>
+                <p class="price">LKR 1800.00</p>
             </div>
             <div class="product">
                 <img src="<?php echo URLROOT;?>/images/images/img45.jpeg" alt="Handpicked Red Chillies">
-                <p class="category">Groceries</p>
-                <h3>Handpicked Red Chillies</h3>
+                <p class="category">Seeds</p>
+                <h3>Organic Seeds</h3>
                 <p class="rating">★★★★★</p>
-                <p class="price">£19.00</p>
+                <p class="price">LKR 500.00</p>
             </div>
             <div class="product">
                 <img src="<?php echo URLROOT;?>/images/images/img54.jpeg" alt="Natural Extracted Edible Oil">
-                <p class="category">Groceries</p>
-                <h3>Natural Extracted Edible Oil</h3>
+                <p class="category">Pest Controls</p>
+                <h3>Organic Pesticides</h3>
                 <p class="rating">★★★★★</p>
-                <p class="price"><span class="old-price">£34.00</span> £25.00</p>
+                <p class="price"><span class="old-price">LKR 1500.00</span> LKR 850.00</p>
                 <span class="sale-badge">Sale!</span>
             </div>
         </div>

@@ -1,6 +1,7 @@
 <?php 
 
 class AdminController extends Controller {
+    private $pagesModel;
 
     public function __construct() {
 

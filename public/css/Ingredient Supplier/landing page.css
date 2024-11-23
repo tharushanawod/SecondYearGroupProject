@@ -1,6 +1,6 @@
 body {
     font-family: 'Helvetica Neue', Arial, sans-serif; 
-    background: linear-gradient(180deg, #ececd9, #e2e4d0);
+    background: #f6f7ee;
     margin: 0;
     padding: 0;
     background-size: cover;
@@ -116,13 +116,14 @@ header ul li a {
 }
 
 .container {
-    background-color: rgba(92, 189, 12, 0.5); 
+    background-color: rgba(216, 246, 191, 0.5); 
     padding: 40px;
     border-radius: 10px;
     text-align: center;
+    text-shadow: #318c54;
     max-width: 550px;
     width: 100%;
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 6px 10px #9cd3a6;     
 }
 
 .container h1 {
