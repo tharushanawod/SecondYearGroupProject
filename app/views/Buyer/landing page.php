@@ -30,7 +30,7 @@
                 <p>Specifications: Size, Color, Material</p>                
                 <p>Buyer: John Doe</p>
                 <div class="button-row">
-                <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn">Place Bid</a>
+                <a href="<?php echo URLROOT;?>/BuyerController/placeBid"  class="action-btn">Place Bid</a>
                 
                 </div>
             </div>
@@ -43,7 +43,7 @@
                 <p>Specifications: Size, Color, Material</p>                
                 <p>Buyer: John Doe</p>
                 <div class="button-row">
-                <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn">Place Bid</a>
+                <a href="<?php echo URLROOT;?>/BuyerController/placeBid"  class="action-btn">Place Bid</a>
                 
                 </div>
             </div>
@@ -56,7 +56,7 @@
                 <p>Specifications: Size, Color, Material</p>                
                 <p>Buyer: John Doe</p>
                 <div class="button-row">
-                <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn">Place Bid</a>
+                <a href="<?php echo URLROOT;?>/BuyerController/placeBid"  class="action-btn">Place Bid</a>
                 
                 </div>
             </div>
@@ -69,7 +69,7 @@
                 <p>Specifications: Size, Color, Material</p>                
                 <p>Buyer: John Doe</p>
                 <div class="button-row">
-                <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn">Place Bid</a>               
+                <a href="<?php echo URLROOT;?>/BuyerController/placeBid" class="action-btn">Place Bid</a>               
                 </div>
             </div>
         </div>

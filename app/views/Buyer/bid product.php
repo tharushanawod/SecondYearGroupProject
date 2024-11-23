@@ -11,37 +11,43 @@
 
     <div class="header-content">
         <h1>Bid On Products</h1>
-        <p class="header1-subtitle">Explore our active bids and secure your favorite items.</p>
-        <div class="search-container">
-            <input type="text" id="search" placeholder="Search products..." onkeyup="filterProducts()">
-            <button id="searchBtn">Search</button>
-        </div>
+        <p>Explore our active bids and secure your favorite items.</p>        
     </div>        
     
     <div class="main-content">
-        <div class="filter-bar">
-            <h3>Filter Products</h3>
-            <div class="filter-section">
-                <h4>Breed</h4>
-                <label><input type="checkbox" name="breed" value="yellow"> Yellow Corn</label>
-                <label><input type="checkbox" name="breed" value="white"> White Corn</label>
-                <label><input type="checkbox" name="breed" value="sweet"> Sweet Corn</label>
-            </div>
-            <div class="filter-section">
-                <h4>Category</h4>
-                <label><input type="checkbox" name="category" value="fresh"> Fresh</label>
-                <label><input type="checkbox" name="category" value="dry"> Dry</label>
-                <label><input type="checkbox" name="category" value="processed"> Processed</label>
-            </div>
-            <div class="filter-section">
-                <h4>Quantity</h4>
-                <label>Min: <input type="number" id="minQuantity" min="0" step="10"></label>
-                <label>Max: <input type="number" id="maxQuantity" min="0" step="10"></label>
-            </div>
-            <button id="applyFilters">Apply Filters</button>
-        </div>
-        <div class="active-bids">
-            <h2>Active Bids</h2>
+            <div class="filter-bar">
+                <div class="filter-section">
+                    <h4 id="breed-label">Breed</h4>
+                    <select name="breed" aria-labelledby="breed-label">
+                        <option value="yellow">Yellow Corn</option>
+                        <option value="white">White Corn</option>
+                        <option value="sweet">Sweet Corn</option>
+                    </select>
+                </div>
+                <div class="filter-section">
+                    <h4 id="category-label">Category</h4>
+                    <select name="category" aria-labelledby="category-label">
+                        <option value="fresh">Fresh</option>
+                        <option value="dry">Dry</option>
+                        <option value="processed">Processed</option>
+                    </select>
+                </div>
+                <div class="filter-section">
+                    <h4>Quantity</h4>
+                    <div style="display: flex; gap: 12px;">
+                        <label>
+                            Min: 
+                            <input type="number" id="minQuantity" min="0" step="10">
+                        </label>
+                        <label>
+                            Max: 
+                            <input type="number" id="maxQuantity" min="0" step="10">
+                        </label>
+                    </div>
+                </div>            
+                <button id="applyFilters">Apply Filters</button>
+           </div>
+        <div class="active-bids">            
             <div class="bids-grid" id="activeBids">
                 <div class="bid-card" data-category="fresh" data-quantity="200">
                 <img src="<?php echo URLROOT;?>/images/images/img22.jpg" alt="Fresh Corn">
@@ -52,8 +58,7 @@
                     <p>Specifications: Large, Yellow, Non-Organic</p>
                     <p>Quantity: 200 kg</p>
                     <div class="button-row">
-                        <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn"><b>Place Bid</b></a>
-                        
+                       <a href="<?php echo URLROOT;?>/BuyerController/placeBid" class="action-btn">Place Bid</a>                        
                     </div>
                 </div>
                 <div class="bid-card" data-category="fresh" data-quantity="100">
@@ -65,8 +70,7 @@
                     <p>Specifications: Large, Yellow, Organic</p>                    
                     <p>Quantity: 100 kg</p>
                     <div class="button-row">
-                        <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn"><b>Place Bid</b></a>
-                        
+                        <a href="<?php echo URLROOT;?>/BuyerController/placeBid"  class="action-btn"><b>Place Bid</b></a>                        
                     </div>
                 </div>
                 <div class="bid-card" data-category="dry" data-quantity="50">
@@ -78,7 +82,7 @@
                     <p>Specifications: Small, White, Non-Organic</p>                    
                     <p>Quantity: 50 kg</p>
                     <div class="button-row">
-                        <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn"><b>Place Bid</b></a>
+                        <a href="<?php echo URLROOT;?>/BuyerController/placeBid" class="action-btn"><b>Place Bid</b></a>
                        
                     </div>
                 </div>
@@ -91,8 +95,7 @@
                     <p>Specifications: Medium, Yellow, Organic</p>                    
                     <p>Quantity: 200 kg</p>
                     <div class="button-row">
-                        <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn"><b>Place Bid</b></a>
-                        
+                        <a href="<?php echo URLROOT;?>/BuyerController/placeBid"class="action-btn"><b>Place Bid</b></a>                        
                     </div>
                 </div>
                 <div class="bid-card" data-category="fresh" data-quantity="150">
@@ -104,7 +107,7 @@
                     <p>Specifications: Medium, White, Non-Organic</p>                    
                     <p>Quantity: 150 kg</p>
                     <div class="button-row">
-                        <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn"><b>Place Bid</b></a>
+                        <a href="<?php echo URLROOT;?>/BuyerController/placeBid" class="action-btn"><b>Place Bid</b></a>
                         
                     </div>
                 </div>
@@ -117,7 +120,7 @@
                     <p>Specifications: Large, Yellow, Non-Organic</p>                    
                     <p>Quantity: 100 kg</p>
                     <div class="button-row">
-                        <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn"><b>Place Bid</b></a>
+                        <a href="<?php echo URLROOT;?>/BuyerController/placeBid"  class="action-btn"><b>Place Bid</b></a>
                        
                     </div>
                 </div>
@@ -130,7 +133,7 @@
                     <p>Specifications: Small, Yellow, Organic</p>                    
                     <p>Quantity: 75 kg</p>
                     <div class="button-row">
-                        <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame" class="action-btn"><b>Place Bid</b></a>
+                        <a href="<?php echo URLROOT;?>/BuyerController/placeBid"  class="action-btn"><b>Place Bid</b></a>
                        
                     </div>
                 </div>             
