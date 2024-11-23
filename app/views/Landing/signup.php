@@ -53,13 +53,22 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="address">Address</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="address" name="address" placeholder="Enter your address" value="<?php echo $data['address'];?>">
+                    </div>
+                    <span class="form-invalid">
+                        <?php echo $data['address_err'];?>
+                    </span>
+                </div>
+
+                <div class="form-group">
                         <label for="title">Choose a Title :</label>
                         <select id="title" name="title">
                             <option value="farmer">Farmer</option>
                             <option value="buyer">Buyer</option>
                             <option value="supplier">Ingredient Supplier</option>
                             <option value="farmworker">Farm Worker</option>
-                            <option value="manufacturer">Manufacturer</option>
                         </select>
                         <span class="form-invalid">
                             <?php echo $data['title_err']; ?>

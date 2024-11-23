@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Farmer Dashboard</title>
-    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Farmer/Farmer Dashboard.css">
+    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Farmer/FarmerDashboard.css">
 </head>
 <body>
 
@@ -128,7 +128,7 @@
 
                 <div class="recentCustomers">
                     <div class="cardHeader">
-                        <h2>Worker Management</h2>
+                        <h2>Recent Hirings</h2>
                     </div>
 
                     <table>

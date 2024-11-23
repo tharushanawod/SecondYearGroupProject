@@ -37,6 +37,7 @@ class LandingController extends Controller{
                 'name' => trim($_POST['name']),
                 'email' => trim($_POST['email']),
                 'phone' => trim($_POST['phone']),
+                'address' => trim($_POST['address']),
                 'title' => trim($_POST['title']),
                 'password' => trim($_POST['password']),
                 'confirm_password' => trim($_POST['confirm_password']),
@@ -70,6 +71,11 @@ class LandingController extends Controller{
                 $data['phone_err'] = 'Please enter phone number';
             }
 
+            if(empty($data['address']))
+            {
+                $data['address_err'] = 'Please enter address';
+            }
+
             if(empty($data['title']))
             {
                 $data['title_err'] = 'Please select a title';
@@ -91,7 +97,7 @@ class LandingController extends Controller{
                 }
             }
 
-            if(empty($data['name_err']) && empty($data['email_err']) && empty($data['phone_err']) && empty($data['title_err']) && empty($data['password_err']) && empty($data['confirm_password_err']))
+            if(empty($data['name_err']) && empty($data['email_err']) && empty($data['phone_err']) && empty($data['address_err']) && empty($data['title_err']) && empty($data['password_err']) && empty($data['confirm_password_err']))
             { 
                 $data['password'] = password_hash($data['password'],PASSWORD_DEFAULT);
                //resgister user
@@ -116,12 +122,14 @@ class LandingController extends Controller{
                 'name' => '',
                 'email' => '',
                 'phone' => '',
+                'address' => '',
                 'title' => '',
                 'password' => '',
                 'confirm_password' => '',
                 'name_err' => '',
                 'email_err' => '',
                 'phone_err' => '',
+                'address_err' => '',
                 'title_err' => '',
                 'password_err' => '',
                 'confirm_password_err' => ''
@@ -199,26 +207,26 @@ class LandingController extends Controller{
         $_SESSION['user_name'] = $user->name;
         $_SESSION['user_role'] = $user->title;
          // Check if the user is an admin
-    if ($user->title == 'Admin') {
+    if ($user->title == 'admin') {
         // Redirect to the admin dashboard if the user is an admin
         Redirect('AdminController/index');
-    } else if ($user->title == 'Moderator') {
+    } else if ($user->title == 'moderator') {
         // Redirect to the user home page if the user is not an admin
         Redirect('ModeratorController/index');
     }
     else if($user->title == 'farmer'){
         Redirect('FarmerController/dashboard');
     }
-    else if($user->title == 'Buyer'){
+    else if($user->title == 'buyer'){
         Redirect('BuyerController/index');
     }
-    else if($user->title == 'Supplier'){
+    else if($user->title == 'supplier'){
         Redirect('SupplierController/index');
     }
-    else if($user->title == 'Farmworker'){
+    else if($user->title == 'farmworker'){
         Redirect('FarmworkerController/index');
     }
-    else if($user->title == 'Manufacturer'){
+    else if($user->title == 'manufacturer'){
         Redirect('ManufacturerController/index');
     }
     }

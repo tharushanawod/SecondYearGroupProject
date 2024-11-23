@@ -8,7 +8,6 @@
     
 </head>
 <body>
-<?php require 'header.php';?>
 
     <div class="container">
         <h1>Inventory Management</h1>

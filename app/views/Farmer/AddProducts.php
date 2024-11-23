@@ -11,10 +11,6 @@
     <div class="container">
         <div class="header">
             <h1>PRODUCTS</h1>
-            <?php
-            $expiryDate = new DateTime('now');
-            echo $expiryDate->format('Y-m-d H:i:s');
-            ?>
             <?php echo $data['userid'];?>
             <button class="create-btn" onclick="openPopup()">Create New Product</button>
         </div>

@@ -27,10 +27,11 @@ class Users {
     }
 
     public function register($data){
-        $this->db->query('INSERT INTO users (name,email,phone,title,password) VALUES (:name,:email,:phone,:title,:password)');
+        $this->db->query('INSERT INTO users (name,email,phone,address,title,password) VALUES (:name,:email,:phone,:address,:title,:password)');
         $this->db->bind(':name',$data['name']);
         $this->db->bind(':email',$data['email']);
         $this->db->bind(':phone',$data['phone']);
+        $this->db->bind(':address',$data['address']);
         $this->db->bind(':title',$data['title']);
         $this->db->bind(':password',$data['password']);
         if($this->db->execute()){

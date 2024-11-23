@@ -5,7 +5,22 @@ class FarmerController extends Controller {
     private $farmerModel;
 
     public function __construct() {
+        if (!$this->isloggedin()) {
+            unset($_SESSION['user_id']);
+            unset($_SESSION['user_email']);
+            unset($_SESSION['user_name']);
+            session_destroy();
+            Redirect('LandingController/login');
+        }
         $this->farmerModel = $this->model('Farmer');
+    }
+
+    public function isloggedin() {
+        if (isset($_SESSION['user_id']) && ($_SESSION['user_role']=='farmer')){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function dashboard() {
@@ -15,7 +30,7 @@ class FarmerController extends Controller {
 
     public function inventoryManagement() {
         $data = [];
-        $this->View('Farmer/Inventory Management', $data);
+        $this->View('Farmer/InventoryManagement', $data);
 
         if($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
@@ -170,9 +185,6 @@ class FarmerController extends Controller {
     
 
     public function AddProduct() {
-        if ($_SESSION['user_role'] !== 'farmer') {
-            Redirect('LandingController/index'); // Redirect if not authorized
-        }
     
         $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
         $products = $this->farmerModel->getProductsByFarmerId($_SESSION['user_id']);
@@ -266,9 +278,7 @@ class FarmerController extends Controller {
     
 
     public function DeleteProducts($id) {
-        if ($_SESSION['user_role'] !== 'farmer') {
-            Redirect('LandingController/index'); // Redirect to user home if not admin
-        }
+
         if ($this->farmerModel->deleteProduct($id)) {
             Redirect('FarmerController/AddProduct');
         } else {

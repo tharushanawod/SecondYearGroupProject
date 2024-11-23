@@ -3,15 +3,30 @@
 class AdminController extends Controller {
 
     public function __construct() {
+
+        if(!$this->isloggedin()){
+            unset($_SESSION['user_id']);
+            unset($_SESSION['user_email']);
+            unset($_SESSION['user_name']);
+            session_destroy();
+            Redirect('LandingController/login');
+        }
        
+   
         $this->pagesModel = $this->model('Users');
+    }
+
+    public function isloggedin() {
+        if (isset($_SESSION['user_id']) && ($_SESSION['user_role']=='admin')){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // Fetch and display users on the dashboard
     public function index() {
-        if ($_SESSION['user_role'] !== 'Admin') {
-            Redirect('LandingController/index'); // Redirect to user home if not admin
-        }
+       
         // Retrieve users from the model
         $users = $this->pagesModel->getUsers();
 
@@ -23,9 +38,7 @@ class AdminController extends Controller {
     }
 
     public function RemoveUsers(){
-        if ($_SESSION['user_role'] !== 'Admin') {
-            Redirect('LandingController/index'); // Redirect to user home if not admin
-        }
+     
         // Retrieve users from the model
         $users = $this->pagesModel->getUsers();
 
@@ -40,9 +53,7 @@ class AdminController extends Controller {
   
 
     public function deleteUser($id) {
-        if ($_SESSION['user_role'] !== 'Admin') {
-            Redirect('LandingController/index'); // Redirect to user home if not admin
-        }
+      
         // Sanitize the ID
         $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
 
@@ -62,20 +73,11 @@ class AdminController extends Controller {
     
 
     public function UpdateUsers(){
-        if ($_SESSION['user_role'] !== 'Admin') {
-            Redirect('LandingController/index'); // Redirect to user home if not admin
-        }
-
-     if($_SESSION['user_role'] !== 'Admin'){
-         Redirect('LandingController/index');
-     }
-
-     else{
         $users = $this->pagesModel->getUsers();
         $data = ['users' => $users];
 
         $this->View('Admin/UpdateUsers',$data);
-     }
+     
     }
 
 
@@ -85,9 +87,7 @@ class AdminController extends Controller {
     }
 
     public function edituser($id){
-        if ($_SESSION['user_role'] !== 'Admin') {
-            Redirect('LandingController/index'); // Redirect to user home if not admin
-        }
+       
 
         $user = $this->pagesModel->getUserById($id);
         $data = [
@@ -110,9 +110,7 @@ class AdminController extends Controller {
     }
 
     public function SubmitUpdateUser($id){
-        if ($_SESSION['user_role'] !== 'Admin') {
-            Redirect('LandingController/index'); // Redirect to user home if not admin
-        }
+        
 
       $user = $this->pagesModel->getUserById($id);
       
@@ -178,9 +176,7 @@ class AdminController extends Controller {
 }
 
     public function AddModerators(){
-        if ($_SESSION['user_role'] !== 'Admin') {
-            Redirect('LandingController/index'); // Redirect to user home if not admin
-        }
+       
 
         $users=$this->pagesModel->FindModerators();
 
@@ -190,9 +186,7 @@ class AdminController extends Controller {
     }
 
     public function SubmitModerator(){
-        if ($_SESSION['user_role'] !== 'Admin') {
-            Redirect('LandingController/index'); // Redirect to user home if not admin
-        }
+      
         
         $_POST = filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING);
 
@@ -286,9 +280,7 @@ class AdminController extends Controller {
     }
 
     public function Report() {
-        if ($_SESSION['user_role'] !== 'Admin') {
-            Redirect('LandingController/index'); // Redirect to user home if not admin
-        }
+      
     
         // Get all users from the model
         $users = $this->pagesModel->getUsers();
