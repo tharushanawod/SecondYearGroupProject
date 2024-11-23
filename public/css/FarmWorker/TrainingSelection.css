@@ -1,0 +1,49 @@
+/* FILE: public/css/training_selection.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.training-container {
+    width: 60%;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-left: 380px;
+    border-radius: 10px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.training {
+    border-bottom: 1px solid #ccc;
+    padding: 15px 0;
+}
+
+.training h3 {
+    margin: 0;
+}
+
+.training p {
+    margin: 5px 0;
+}
+
+button {
+    padding: 10px 15px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #5cb85c;
+    color: #fff;
+}
+
+button:hover {
+    opacity: 0.8;
+}
