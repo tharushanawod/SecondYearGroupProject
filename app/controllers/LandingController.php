@@ -37,6 +37,7 @@ class LandingController extends Controller{
                 'name' => trim($_POST['name']),
                 'email' => trim($_POST['email']),
                 'phone' => trim($_POST['phone']),
+                'address' => trim($_POST['address']),
                 'title' => trim($_POST['title']),
                 'password' => trim($_POST['password']),
                 'confirm_password' => trim($_POST['confirm_password']),
@@ -70,6 +71,11 @@ class LandingController extends Controller{
                 $data['phone_err'] = 'Please enter phone number';
             }
 
+            if(empty($data['address']))
+            {
+                $data['address_err'] = 'Please enter address';
+            }
+
             if(empty($data['title']))
             {
                 $data['title_err'] = 'Please select a title';
@@ -91,13 +97,13 @@ class LandingController extends Controller{
                 }
             }
 
-            if(empty($data['name_err']) && empty($data['email_err']) && empty($data['phone_err']) && empty($data['title_err']) && empty($data['password_err']) && empty($data['confirm_password_err']))
+            if(empty($data['name_err']) && empty($data['email_err']) && empty($data['phone_err']) && empty($data['address_err']) && empty($data['title_err']) && empty($data['password_err']) && empty($data['confirm_password_err']))
             { 
                 $data['password'] = password_hash($data['password'],PASSWORD_DEFAULT);
                //resgister user
                 if($this->userModel->register($data))
                 {
-                     header('location:'.URLROOT.'/Landing/login');
+                     Redirect('LandingController/Login');
                      exit;
                 }
                 else
@@ -116,12 +122,14 @@ class LandingController extends Controller{
                 'name' => '',
                 'email' => '',
                 'phone' => '',
+                'address' => '',
                 'title' => '',
                 'password' => '',
                 'confirm_password' => '',
                 'name_err' => '',
                 'email_err' => '',
                 'phone_err' => '',
+                'address_err' => '',
                 'title_err' => '',
                 'password_err' => '',
                 'confirm_password_err' => ''
@@ -130,6 +138,114 @@ class LandingController extends Controller{
         }
     }
 
+    public function Login(){
+        if($_SERVER['REQUEST_METHOD'] == 'POST')
+        {
+            $_POST = filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING);
+            $data = [
+                'email' => trim($_POST['email']),
+                'password' => trim($_POST['password']),
+                'email_err' => '',
+                'password_err' => ''
+            ];
+
+            if(empty($data['email']))
+            {
+                $data['email_err'] = 'Please enter email';
+            }
+            else{
+                if($this->userModel->finduserbyemail($data['email']))
+                {
+                    //user found
+                }
+                else
+                {
+                    $data['email_err'] = 'No user found';
+                }
+            }
+
+            if(empty($data['password']))
+            {
+                $data['password_err'] = 'Please enter password';
+            }
+          
+
+            if(empty($data['email_err']) && empty($data['password_err']))
+            {
+                $loggedInUser = $this->userModel->login($data['email'],$data['password']);
+                if($loggedInUser)
+                {  
+                        $this->CreateUserSession($loggedInUser);
+                    
+                }
+                else
+                {
+                    $data['password_err'] = 'Password incorrect';
+                    $this->View('Landing/Login',$data);
+                }
+            }
+            else
+            {
+                $this->View('Landing/Login',$data);
+            }
+        }
+        else
+        {
+            $data = [
+                'email' => '',
+                'password' => '',
+                'email_err' => '',
+                'password_err' => ''
+            ];
+            $this->View('Landing/Login',$data);
+        }
+    }
+
+    public function CreateUserSession($user){
+        $_SESSION['user_id'] = $user->id;
+        $_SESSION['user_email'] = $user->email;
+        $_SESSION['user_name'] = $user->name;
+        $_SESSION['user_role'] = $user->title;
+         // Check if the user is an admin
+    if ($user->title == 'admin') {
+        // Redirect to the admin dashboard if the user is an admin
+        Redirect('AdminController/index');
+    } else if ($user->title == 'moderator') {
+        // Redirect to the user home page if the user is not an admin
+        Redirect('ModeratorController/index');
+    }
+    else if($user->title == 'farmer'){
+        Redirect('FarmerController/dashboard');
+    }
+    else if($user->title == 'buyer'){
+        Redirect('BuyerController/index');
+    }
+    else if($user->title == 'supplier'){
+        Redirect('SupplierController/dashboard');
+    }
+    else if($user->title == 'farmworker'){
+        Redirect('FarmworkerController/index');
+    }
+    else if($user->title == 'manufacturer'){
+        Redirect('ManufacturerController/index');
+    }
+    }
+
+    public function logout(){
+        unset($_SESSION['user_id']);
+        unset($_SESSION['user_email']);
+        unset($_SESSION['user_name']);
+        session_destroy();
+        Redirect('LandingController/Login');
+    }   
+
+    public function isloggedin(){
+        if(isset($_SESSION['user_id'])){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
 }
 
