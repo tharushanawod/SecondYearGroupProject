@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up Form</title>
-    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Signup.css">
+    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/RegisterManufacturer.css">
 </head>
 <body>
     <div class="container">
@@ -18,16 +18,12 @@
          <div class="login-link">
             Already have an account? <a href="<?php echo URLROOT;?>/LandingController/Login"><button class="submit">Log in</button></a>
         </div>
-        <div class="login-link">
-        A Company
-        <a href="<?php echo URLROOT;?>/LandingController/RegisterManufacturer"><button class="submit">Register As A Manufacturer</button></a>
-        </div>
         </div>
         <div class="form-section">
             
-            <form action="<?php echo URLROOT;?>/LandingController/signup" method="POST">
+            <form action="<?php echo URLROOT;?>/LandingController/RegisterManufacturer" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label for="name">Name</label>
+                    <label for="name">Company Name</label>
                     <div class="input-wrapper">
                         <input type="text" id="name" name="name" placeholder="Enter name" value="<?php echo $data['name'];?>">
                     </div>
@@ -55,29 +51,14 @@
                         <?php echo $data['phone_err'];?>
                     </span>
                 </div>
-
+             
                 <div class="form-group">
-                    <label for="address">Address</label>
-                    <div class="input-wrapper">
-                        <input type="text" id="address" name="address" placeholder="Enter your address" value="<?php echo $data['address'];?>">
-                    </div>
+                    <label for="document">Upload  A Document For Verification</label>
+                    <input type="file" class="form-control" id="document" name="document" accept="image/*,application/pdf" >
                     <span class="form-invalid">
-                        <?php echo $data['address_err'];?>
+                        <?php echo $data['document_err'];?>
                     </span>
                 </div>
-
-                <div class="form-group">
-                        <label for="title">Choose a Title :</label>
-                        <select id="title" name="title">
-                            <option value="farmer">Farmer</option>
-                            <option value="buyer">Buyer</option>
-                            <option value="supplier">Ingredient Supplier</option>
-                            <option value="farmworker">Farm Worker</option>
-                        </select>
-                        <span class="form-invalid">
-                            <?php echo $data['title_err']; ?>
-                        </span>
-                    </div>
 
 
                 <div class="form-group">

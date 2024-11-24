@@ -77,22 +77,17 @@ body {
 }
 
 .details .recentOrders {
-  
- 
   background-color: #ddf6ed;
   padding: 20px;
   box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
   border-radius: 20px;
 }
 
-
-
 .details {
-
   width: 100%;
   padding: 20px;
   display: grid;
- 
+
   grid-gap: 30px;
 }
 
@@ -146,22 +141,28 @@ body {
 }
 
 .details .recentOrders table tr td:last-child {
-  text-align:center;
+  text-align: center;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
 }
 .details .recentOrders table tr td:nth-child(2) {
-  text-align:center;
+  text-align: center;
 }
 .details .recentOrders table tr td:nth-child(3) {
   text-align: center;
 }
 
-.action-button{
+.action-button {
   border: none;
   padding: 8px;
   background-color: #41cc94;
   border-radius: 8px;
+  
+}
+
+.action-button:hover {
+  background-color: #32b684;
+  cursor: pointer;
 }
 
 table tbody tr {

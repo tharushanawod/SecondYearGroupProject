@@ -33,7 +33,7 @@ body {
   justify-content: center;
   flex-direction: column;
   text-align: center;
-  font-size: 4rem; /* Adjust text size */
+  font-size: 3.5rem; /* Adjust text size */
   font-weight: bold;
   padding-top: 4rem;
 }
@@ -122,6 +122,7 @@ button:hover {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  width: 100%;
 }
 
 .login-link a {
@@ -136,6 +137,10 @@ button:hover {
 
 .form-invalid {
   color: red;
+}
+
+.submit{
+  width: 100%;
 }
 @media (min-width: 768px) {
 

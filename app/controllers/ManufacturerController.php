@@ -11,6 +11,8 @@ class ManufacturerController extends Controller
             session_destroy();
             Redirect('LandingController/login');
         }
+
+        $this->ManufacturerModel = $this->model('Manufacturer');
        
     }
 
@@ -24,7 +26,23 @@ class ManufacturerController extends Controller
 
     public function Dashboard()
     {
-        $this->view('Manufacturer/ManufacturerDashboard');
+        $prices = $this->ManufacturerModel->getPrices();
+        $data = [
+            'prices' => $prices
+        ];
+        $this->view('Manufacturer/ManufacturerDashboard',$data);
+    }
+
+    public function LastPrice()
+    {
+        $test = $this->ManufacturerModel->getLastPrice();
+        return $test;
+    }
+
+    public function getPreviousPrice()
+    {
+        $prices = $this->ManufacturerModel->getPreviousPrice();
+        return $prices;
     }
 
     public function ManageProfile()
@@ -42,9 +60,12 @@ class ManufacturerController extends Controller
         $this->view('Manufacturer/UpdatePrices');
     }
 
-    public function RemovePrices()
-    {
-        $this->view('Manufacturer/RemovePrices');
+    public function RemovePrices($id)
+    {   
+       $result = $this->ManufacturerModel->RemovePrice($id);
+       if($result){
+           Redirect('ManufacturerController/Dashboard');
+       }
     }
 
     public function RequestHelp()

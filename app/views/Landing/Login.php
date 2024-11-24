@@ -37,7 +37,9 @@
                     </div>
                 </div>
 
-
+                 <span class="form-invalid">
+                 <?php echo $data['verified_err'];?>
+                 </span>
 
                 <button type="submit">Log in</button>
             </form>

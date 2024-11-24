@@ -17,31 +17,31 @@
               <span>Farmers</span>
           <?php $farmerCount = $this->UserCount('farmer'); ?>
               <h3><?php echo $farmerCount; ?></h3>
-              <div class="user-icon">👤</div>
+              <div class="user-icon"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/farmer-male--v1.png" alt="farmer-male--v1"/></div>
           </div>
           <div class="stat-card">
             <span>Buyers</span>
             <?php $buyercount = $this->UserCount('buyer'); ?>
             <h3><?php echo $buyercount; ?></h3>
-            <div class="user-icon">👤</div>
+            <div class="user-icon"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/cash-in-hand.png" alt="cash-in-hand"/></div>
           </div>
           <div class="stat-card">
             <span>Farm Workers</span>
             <?php $farmworkerCount = $this->UserCount('farmerworkr'); ?>
             <h3><?php echo $farmworkerCount; ?></h3>
-            <div class="user-icon">👤</div>
+            <div class="user-icon"><img width="50" height="50" src="https://img.icons8.com/external-outline-design-circle/50/external-Labour-carpenter-outline-design-circle.png" alt="external-Labour-carpenter-outline-design-circle"/></div>
           </div>
           <div class="stat-card">
             <span>Ingredient Suppliers</span>
             <?php $supplierCount = $this->UserCount('supplier'); ?>
             <h3><?php echo $supplierCount; ?></h3>
-            <div class="user-icon">👤</div>
+            <div class="user-icon"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/warehouse.png" alt="warehouse"/></div>
           </div>
           <div class="stat-card">
             <span>Manufacturers</span>
             <?php $manufacturercount = $this->UserCount('manufacturer'); ?>
             <h3><?php echo $manufacturercount; ?></h3>
-            <div class="user-icon">👤</div>
+            <div class="user-icon"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/company.png" alt="company"/></div>
           </div>
         </div>
       </div>

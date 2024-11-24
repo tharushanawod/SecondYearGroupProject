@@ -14,10 +14,10 @@
     <div class="form-container">
       <h1>Add Your Pricing</h1>
      
-      <form method="POSt" action="">
+      <form method="POSt" action="<?php URLROOT; ?>/ManufacturerController/AddPrices">
         <div class="form-group">
           <label for="firstName">Company name</label>
-          <input type="text" id="firstName" name="firstName" placeholder="Input text" required>
+          <input type="text" id="firstName" name="firstName" placeholder="Enter company name" required>
         </div>
         <div class="form-group">
         <label for="type">Corn type</label>

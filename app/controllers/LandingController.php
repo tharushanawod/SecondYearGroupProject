@@ -146,6 +146,7 @@ class LandingController extends Controller{
                 'email' => trim($_POST['email']),
                 'password' => trim($_POST['password']),
                 'email_err' => '',
+                'verified_err' => '',
                 'password_err' => ''
             ];
 
@@ -170,23 +171,28 @@ class LandingController extends Controller{
             }
           
 
-            if(empty($data['email_err']) && empty($data['password_err']))
-            {
-                $loggedInUser = $this->userModel->login($data['email'],$data['password']);
-                if($loggedInUser)
-                {  
-                        $this->CreateUserSession($loggedInUser);
-                    
-                }
-                else
-                {
+            if (empty($data['email_err']) && empty($data['password_err'])) {
+                $loggedInUser = $this->userModel->login($data['email'], $data['password']);
+                
+                if ($loggedInUser) {
+                    // Check if the user is verified
+                    if ($loggedInUser->status == 'unverified') {
+                        // If user is unverified, set error message and prevent login
+                        $data['verified_err'] = 'Your account is not verified. Please wait Untill An Admin Verify You.';
+                        $this->View('Landing/Login', $data);  // Show the error in the login page
+                        return;  // Stop further execution
+                    }
+    
+                    // If the user is verified, create session
+                    $this->CreateUserSession($loggedInUser);
+    
+                } else {
                     $data['password_err'] = 'Password incorrect';
-                    $this->View('Landing/Login',$data);
+                    $this->View('Landing/Login', $data);  // Show password error
                 }
-            }
-            else
-            {
-                $this->View('Landing/Login',$data);
+            } else {
+                // If there are errors, re-render the login form
+                $this->View('Landing/Login', $data);
             }
         }
         else
@@ -227,7 +233,7 @@ class LandingController extends Controller{
         Redirect('FarmworkerController/index');
     }
     else if($user->title == 'manufacturer'){
-        Redirect('ManufacturerController/index');
+        Redirect('ManufacturerController/Dashboard');
     }
     }
 
@@ -244,6 +250,131 @@ class LandingController extends Controller{
             return true;
         }else{
             return false;
+        }
+    }
+
+    public function RegisterManufacturer()
+    {
+
+        //validate data
+        $_POST = filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING);
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST')
+        
+        {
+            $data = [
+                'name' => trim($_POST['name']),
+                'email' => trim($_POST['email']),
+                'phone' => trim($_POST['phone']),
+                'document' => '',
+                'password' => trim($_POST['password']),
+                'confirm_password' => trim($_POST['confirm_password']),
+                'name_err' => '',
+                'email_err' => '',
+                'phone_err' => '',
+                'document_err' => '',
+                'password_err' => '',
+                'confirm_password_err' => ''
+            ];
+
+            if(empty($data['name']))
+            {
+                $data['name_err'] = 'Please enter name';
+            }
+
+            if(empty($data['email']))
+            {
+                $data['email_err'] = 'Please enter email';
+            }
+            else
+            {
+                if($this->userModel->finduserbyemail($data['email']))
+                {
+                    $data['email_err'] = 'Email already taken';
+                }
+            }
+
+            if(empty($data['phone']))
+            {
+                $data['phone_err'] = 'Please enter phone number';
+            }
+
+            if (isset($_FILES['document']) && $_FILES['document']['error'] == 0) {
+                $targetDir = "uploads/Manufacturer/Documents/"; // Folder to store uploads
+                $fileName = basename($_FILES['document']['name']);
+                $targetFilePath = $targetDir . $fileName;
+    
+                $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+                $allowedTypes = ['jpg', 'jpeg', 'png', 'pdf'];
+
+    
+                if (in_array(strtolower($fileType), $allowedTypes)) {
+                    // Move file to server
+                    if (move_uploaded_file($_FILES['document']['tmp_name'], $targetFilePath)) {
+                        $data['document'] = $targetFilePath;
+                    } else {
+                        $data['document_err'] = 'Failed to upload the file';
+                    }
+                } else {
+                    $data['document_err'] = 'Invalid file type';
+                }
+            } else {
+                $data['document_err'] = 'File Not selected';
+            }
+          
+
+            if(empty($data['password']))
+            {
+                $data['password_err'] = 'Please enter password';
+            }
+
+            if(empty($data['confirm_password']))
+            {
+                $data['confirm_password_err'] = 'Please eneter confirm password';
+            }
+            else{
+                if($data['password'] != $data['confirm_password'])
+                {
+                    $data['confirm_password_err'] = 'Passwords do not match';
+                }
+            }
+
+            if(empty($data['name_err']) && empty($data['email_err']) && empty($data['phone_err']) && empty($data['document_err']) && empty($data['password_err']) && empty($data['confirm_password_err']))
+            { 
+                $data['password'] = password_hash($data['password'],PASSWORD_DEFAULT);
+               //resgister user
+                if($this->userModel->RegisterManufacturer($data))
+                {
+                     Redirect('LandingController/Login');
+                     exit;
+                }
+                else
+                {
+                     die('Something went wrong');
+                }
+            }
+            else
+            {
+                $this->View('Landing/RegisterManufacturer',$data);
+            }
+        }
+        else
+        {
+            $data = [
+                'name' => '',
+                'email' => '',
+                'phone' => '',
+                'document' => '',
+                'password' => '',
+                'confirm_password' => '',
+                'name_err' => '',
+                'email_err' => '',
+                'document_err' => '',
+                'phone_err' => '',
+                'password_err' => '',
+                'confirm_password_err' => ''
+            ];
+            $this->View('Landing/RegisterManufacturer',$data);
         }
     }
 

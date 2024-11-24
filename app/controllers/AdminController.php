@@ -49,6 +49,22 @@ class AdminController extends Controller {
         $this->View('Admin/RemoveUsers',$data);
     }
 
+    public function getManufacturers(){
+        $users = $this->pagesModel->getManufacturers();
+
+        $data = ['users' => $users];
+
+        $this->View('Admin/getManufacturers',$data);
+    }
+
+    public function verifyUser($id){
+        if($this->pagesModel->verifyUser($id)){
+            Redirect('AdminController/getManufacturers');
+        }else{  
+            die('Something went wrong');
+        }
+    }
+
  
   
 
