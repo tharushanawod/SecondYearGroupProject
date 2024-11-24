@@ -6,31 +6,53 @@ body {
 }
 
 .requests-container {
-    width: 60%;
-    margin: 50px auto;
+    width: 900px; 
+    margin: 50px auto; 
     padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #f7fbf6;
+    box-shadow: 0 0 10px rgba(211, 248, 217, 0.1);
     border-radius: 10px;
-    margin-left: 370px;
+    margin-left: 400px;
 }
 
-h2 {
+h1 {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    color: #065618;
+    font-size: 45px;
+    margin-left: 300px;
+    text-shadow:0 0 10px #b4eabd; 
 }
 
 .request {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #e3e2e2;
     padding: 15px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.request:last-child {
+    border-bottom: none; 
 }
 
 .request h3 {
     margin: 0;
+    font-size: 22px;
+    color: #07582d;
 }
 
 .request p {
     margin: 5px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.button-row{
+    display: flex;
+    gap: 10px;
 }
 
 button {
@@ -39,6 +61,14 @@ button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-weight: bold;
+}
+
+
+.accept-btn, .reject-btn {
+    width: 120px; 
+    height: 40px; 
+    text-align: center;
 }
 
 .accept-btn {
@@ -47,10 +77,11 @@ button {
 }
 
 .reject-btn {
-    background-color: #d9534f;
+    background-color: #e01109;
     color: #fff;
 }
 
 button:hover {
-    opacity: 0.8;
+    opacity: 0.9; 
+    transform: scale(1.02); 
 }

@@ -149,10 +149,10 @@ button {
     padding: 30px;
     width: 100%;
     border-radius: 10px;
-    box-shadow: 0 0 4px #035a1b;   
-    display: flex;
+    box-shadow: 0 0 4px #a0e9b5;   
+    /* display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 15px; */
 }
 
 .modal-content h2 {
