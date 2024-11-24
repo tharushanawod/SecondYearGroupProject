@@ -7,9 +7,13 @@
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Ingredient Supplier/shop.css">
 </head>
 <body>
-<?php require 'navbar.php';?>
-    <div class="container">
-        <aside class="sidebar">
+<?php require 'navbar.php';?>    
+    <div class="container"> 
+    <div class="inside">
+        <h1>Seeds</h1>
+        <p>Home / Seeds</p>
+    </div>               
+        <div class="filterbar">
             <div class="search-box">
                 <input type="text" placeholder="Search products...">
                 <button>Search</button>
@@ -30,12 +34,8 @@
                     <li><a href="<?php echo URLROOT;?>/SupplierController/pestControl">Pest Control (<?php echo count($data['pestControlProducts']); ?>)</a></li>
                 </ul>
             </div>
-        </aside>
-        <main class="product-list">
-            <div class="inside">
-                <h1>Seeds</h1>
-                <p>Home / Seeds</p>
-            </div>
+        </div>
+        <main class="product-list">           
             <?php foreach ($data['products'] as $product): ?>
             <div class="product">
                 <img src="<?php echo URLROOT;?>/uploads/<?php echo $product->image; ?>" alt="<?php echo $product->product_name; ?>">

@@ -9,7 +9,11 @@
 <body>
 <?php require 'navbar.php';?>
     <div class="container">
-        <aside class="sidebar">
+        <div class="inside">
+            <h1>All Products</h1>
+            <p>Home / All Products</p>
+        </div>
+        <aside class="filterbar">
             <div class="search-box">
                 <input type="text" placeholder="Search products...">
                 <button>Search</button>
@@ -31,11 +35,7 @@
                 </ul>
             </div>
         </aside>
-        <main class="product-list">
-            <div class="inside">
-                <h1>Shop</h1>
-                <p>Home / All Products</p>
-            </div>
+        <main class="product-list">            
             <?php foreach ($data['products'] as $product): ?>
             <div class="product">
             <img src="<?php echo URLROOT;?>/uploads/<?php echo $product->image; ?>" alt="<?php echo $product->product_name; ?>">
