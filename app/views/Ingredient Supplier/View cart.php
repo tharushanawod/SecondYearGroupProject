@@ -7,7 +7,7 @@
     <title>Cart</title>
 </head>
 <body>
-    <?php require 'shop header.php';?>
+    <?php require 'navbar.php';?>
     
     <div class="container">
         <h1>Cart</h1>

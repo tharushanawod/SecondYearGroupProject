@@ -18,13 +18,15 @@
 
             <div class="cardBox">
                 <div class="card">
+                    <div class="icon"><img width="50" height="50" src="https://img.icons8.com/ios/50/clock--v1.png" alt="clock--v1"/></div>
                     <div>
-                        <div class="numbers">1,504</div>
-                        <div class="cardName">Daily Views</div>
+                        <div class="numbers">15</div>
+                        <div class="cardName">Pending Orders</div>
                     </div>
                 </div>
 
                 <div class="card">
+                    <div class="icon"><img width="50" height="50" src="https://img.icons8.com/ios/50/bullish--v1.png" alt="bullish--v1"/></div>
                     <div>
                         <div class="numbers">80</div>
                         <div class="cardName">Sales</div>
@@ -32,13 +34,15 @@
                 </div>
 
                 <div class="card">
+                    <div class="icon"><img width="64" height="64" src="https://img.icons8.com/sf-black-filled/64/crowd.png" alt="crowd"/></div>                    
                     <div>
-                        <div class="numbers">284</div>
-                        <div class="cardName">Comments</div>
+                        <div class="numbers">50</div>
+                        <div class="cardName">Customers</div>
                     </div>
                 </div>
 
                 <div class="card">
+                    <div class="icon"><img width="50" height="50" src="https://img.icons8.com/ios/50/us-dollar-circled--v2.png" alt="us-dollar-circled--v2"/></div>
                     <div>
                         <div class="numbers">LKR 77,842</div>
                         <div class="cardName">Earning</div>

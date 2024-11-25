@@ -7,7 +7,7 @@
     <title>Checkout</title>
 </head>
 <body>
-    <?php require 'shop header.php';?>
+    <?php require 'navbar.php';?>
 
     <h1>Checkout</h1>
 

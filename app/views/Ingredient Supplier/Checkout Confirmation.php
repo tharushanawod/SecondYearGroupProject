@@ -7,7 +7,7 @@
     <title>Checkout Confirmation</title>
 </head>
 <body>
-    <?php require 'shop header.php';?>
+    <?php require 'navbar.php';?>
     
     <div class="container">
         <h1>Checkout</h1>
