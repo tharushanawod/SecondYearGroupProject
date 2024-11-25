@@ -1,0 +1,170 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f8f2;
+  background-size: cover;  
+  background-position: center;
+}
+
+/* .header1 {
+  border-left: 400px;
+  align-items: center;
+  background: linear-gradient(170deg, #e2e8e1, #abe4c0 );
+  color: #033c1f;
+  padding: 40px;  
+  border-radius: 10px;
+} */
+
+.header-content { 
+  padding: 20px;
+}
+
+.header-content h1 {
+  font-size: 70px;
+  margin: 0;
+  color:#034209;
+  text-align: center;
+  margin-top: 60px;
+  margin-left: 300px;
+}
+
+.search-container {    
+  margin-top: 20px;
+  margin-left: 200px;
+}
+
+input[type="text"] {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  width: 250px;
+  margin-left: 510px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.action-btn {
+    padding: 10px;
+    background-color: #299233;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    flex: 1;
+    margin: 5px;
+}
+
+.action-btn:hover {
+    background-color: #5b9162;
+}
+
+table {
+  width: 90%;
+  border-collapse: separate; 
+  border-spacing: 0 8px; 
+  margin-left:200px;
+  margin-bottom: 20px;
+  border-radius: 15px; 
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #e5faec;
+  padding: 5px;  
+}
+
+table th {
+  background-color: #b3e4b4; 
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+  padding: 15px;
+  text-align: center;
+  /* border-radius: 10px; 
+  overflow: hidden;     */
+}
+
+table tr {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  border-radius: 10px; 
+  /* overflow: hidden;  */
+  
+}
+
+tr:hover {
+  background-color: #d8e8e1; 
+  cursor: pointer;
+}
+
+tr:nth-child(even) {
+  background-color: #e7f8ec; 
+}
+
+tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+td {
+  padding: 15px;
+  text-align: center;
+  font-size: 14px;
+  color: #333;    
+}
+
+table td .action-btn {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+
+@media (max-width: 991px) {
+  .bids-grid {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .bid-card {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .header input[type="text"] {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  .header button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  .container {
+    padding: 10px;
+  }
+  .bids-grid {
+    padding-right: 0;
+  }
+}

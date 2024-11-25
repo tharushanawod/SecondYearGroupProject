@@ -16,7 +16,6 @@
 
 <body>
 <?php require APPROOT . '/views/inc/components/Header.php'; ?>
-
   <section class="home">
     <div class="home-content">
       <h1>Corn  Cradle</h1>

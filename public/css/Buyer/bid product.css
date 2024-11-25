@@ -1,0 +1,200 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color:#eef1ea;
+    background-size: cover;
+    background-position: center;
+}
+
+.header-content {
+    align-items: center;    
+    color: #034616;
+    padding: 10px 20px;
+}
+
+.header-content h1 {
+    margin-top: 30px;
+    margin-left: 700px;
+    font-size: 55px;
+    text-shadow: 2px 2px 4px #78bb80;
+}
+
+.header-content p {
+    margin-left: 680px;
+    font-size: 20px;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+}
+
+.filter-bar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 45px;
+    background-color: #ecf7f0;
+    padding: 16px 24px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 0 auto 20px;
+    width: 75%;
+    margin-left:300px;
+}
+
+.filter-section {    
+    margin-left: 30px;
+}
+
+.filter-section h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.filter-section select {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: white;
+    width: 200px;
+    font-size: 14px;
+}
+
+.filter-section label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;    
+}
+
+.filter-section input[type="number"] {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 120px;
+    font-size: 14px;
+}
+
+#applyFilters {
+    padding: 8px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    height: 36px;
+    margin-right: 15px;
+}
+
+#applyFilters:hover {
+    background-color: #45a049;
+}
+
+.active-bids {    
+    background-color: #eef1ea;
+    padding: 40px;    
+    width:76%;
+    margin-left:300px;
+
+}
+
+.active-bids h2 {
+    text-align: center;
+    font-size: 45px;
+    color: #225428;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px #78bb80;
+}
+
+.bids-grid {
+    display: grid;    
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.bid-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px #c6d0a5;
+    padding: 15px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s;
+}
+
+.bid-card h3 {    
+    text-align: center;
+}
+
+.bid-card:hover {
+    transform: translateY(-5px);
+}
+
+.bid-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.bid-card h3 {
+    font-size: 18px;
+    margin: 0 0 10px;
+}
+
+.bid-card p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.action-btn {
+    padding: 10px;
+    background-color: #299233;
+    color: white;    
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    flex: 1;
+    margin: 5px;    
+}
+
+.action-btn:hover {
+    background-color: #5b9162;
+}
+
+.button-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+@media (max-width: 768px) {
+    .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .bids-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .bids-grid {
+        grid-template-columns: 1fr;
+    }
+}

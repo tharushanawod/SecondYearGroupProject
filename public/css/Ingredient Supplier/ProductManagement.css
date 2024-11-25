@@ -1,0 +1,274 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #eef4f0;
+}
+
+.container {
+    max-width: 1000px;
+    margin-left: 380px;
+    margin-top: 20px;
+    background: #fbf9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-left: 400px;
+    font-size: 50px;
+    color: #063f14;
+}
+
+.add-product-btn {
+    background-color: #0a7d25;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    display: block;
+    margin-left: 900px;
+}
+
+.add-product-btn:hover {
+    background-color: #1b7d30;
+}
+
+table {
+    width: 75%;
+    border-collapse: separate; 
+    border-spacing: 0 8px; 
+    margin-left: 330px;
+    margin-bottom: 20px;
+    border-radius: 15px; 
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #e5faec;
+    padding: 5px;    
+}
+
+th {
+    background-color: #b3e4b4; 
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    padding: 15px;
+    text-align: center;   
+}
+
+tr {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    border-radius: 10px; 
+    overflow: hidden; 
+}
+
+tr:hover {
+    background-color: #d8e8e1; 
+    cursor: pointer;
+}
+
+tr:nth-child(even) {
+    background-color: #e7f8ec; 
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+td {
+    padding: 15px;
+    text-align: center;
+    font-size: 14px;
+    color: #333;    
+}
+
+button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    color: white;
+    cursor: pointer;
+}
+
+.edit-btn {
+    background-color: #007bff;
+    width: 80px;
+    height: 30px;
+    padding: 5px 10px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.edit-btn:hover {
+    background-color: #076395;
+    color: #f8f5f5;
+}
+
+.delete-btn {
+    background-color: #06553e;
+    width: 80px;
+    height: 30px;
+    padding: 5px 10px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background-color: #068c81;
+    color: #f8f5f5;
+}
+
+.hidden {
+    display: none;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 47%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;    
+    max-height: 90vh; 
+    background-color: transparent;
+    border-radius: 10px;
+    box-shadow: 0 0 4px #035a1b;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 0 auto;
+    padding: 30px;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 0 4px #a0e9b5;   
+    /* display: flex;
+    flex-direction: column;
+    gap: 15px; */
+}
+
+.modal-content h2 {
+    text-align: center;
+    font-size: 24px; 
+    margin-top: 0; 
+    color: #023802;
+}
+
+.modal-content label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #044304;
+}
+
+.modal-content input[type="text"],
+.modal-content input[type="number"],
+.modal-content select {
+    width: 100%;
+    padding: 8px; 
+    margin-bottom: 15px; 
+    border: 1px solid #c1cbc3;
+    border-radius: 5px;
+    background-color: #ebf4eb;
+    box-shadow: 0 0 2px #95ccc3;
+}
+
+.modal-content textarea {
+    width: 100%;
+    resize: none; 
+    height: 60px; 
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #c1cbc3;
+    border-radius: 5px;
+    background-color: #ebf4eb;
+    box-shadow: 0 0 2px #95ccc3;
+}
+
+.modal-content input[type="file"] {
+    margin-bottom: 20px;
+}
+
+.modal-content input[type="file"]::file-selector-button {
+    background-color: #c3eac3;
+    color: #0c0c0c;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.modal-content textarea {
+    resize: vertical;
+    height: 80px;
+}
+
+.modal-content button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: #5cb85c;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.modal-content button:hover {
+    background: #3d903d;
+}
+
+.modal-content .edit {    
+    background: #2b10db;    
+}
+
+.modal-content .edit:hover {
+    background: #403ddb;
+}
+
+.modal-content .delete {
+    background: #ed0505;    
+}
+
+.modal-content .delete:hover {
+    background: #e14242;
+}
+
+.modal-content .cancel {    
+    background: #616261;  
+    margin-top: 10px;  
+    display: inline-block;
+    text-align: center;
+    width: 96%;
+    padding: 10px;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.modal-content .cancel:hover {
+    background: #828282;
+}
+
+.modal-content .product-details {
+    margin-bottom: 20px;
+}
+
+.modal-content .product-details p {
+    margin: 5px 0;
+}
+
+.modal-content .product-details img {
+    display: block;
+    margin: 10px 0;
+}

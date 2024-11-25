@@ -1,0 +1,58 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.training-container {
+    width: 60%;
+    margin: 50px auto;
+    padding: 20px;  
+    margin-left: 380px;
+    border-radius: 10px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #065618;
+    font-size: 45px;
+    margin-left: 300px;
+    text-shadow:0 0 10px #b4eabd;
+}
+
+.training {
+    border: 1px solid #fcf9f9;
+    border-radius: 8px;
+    padding: 30px;
+    margin-bottom: 16px;
+    background-color: #f6fefc;
+    box-shadow: 0 4px 6px #c0f1cb;    
+}
+
+.training h3 {
+    margin: 0;
+    font-size: 22px;
+    color: #07582d;
+    margin-bottom:15px;
+    margin-top: 5px;    
+}
+
+.training p {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+.select-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.select-btn:hover {
+    background-color: #218838;
+}

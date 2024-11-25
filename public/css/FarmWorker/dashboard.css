@@ -1,0 +1,174 @@
+* {
+    font-family: "Ubuntu", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0fbf6;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .dashboard-container {
+    display: flex;
+    margin-top: 20px;
+  }
+  
+  .main-content {
+    margin-left: 270px;
+    padding: 20px;
+    flex-grow: 1;
+  }
+  
+  .main-content-header h1 {
+    font-size: 45px;
+    font-weight: bold;
+    color: #032b03;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .cardBox {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 30px;
+  }
+  
+  .cardBox .card {
+    position: relative;
+    background-color: #d9f8f0;
+    padding: 30px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  }
+  
+  .cardBox .card .numbers {
+    position: relative;
+    font-weight: 500;
+    font-size: 30px;
+    color: #000000;
+  }
+  
+  .cardBox .card .cardName {
+    color: #000000;
+    font-size: 20px;
+    margin-top: 5px;
+  }
+  
+  .cardBox .card:hover {
+    background-color: #e9f4ec;
+  }
+  
+  .cardBox .card:hover .numbers,
+  .cardBox .card:hover .cardName {
+   color: #032b03;
+  }
+  
+  .recentOrders {
+    position: relative;
+    display: grid;
+    min-height: 500px;
+    background-color: #d9f8f0;
+    padding: 20px;
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+  }  
+    
+   .recentOrders .cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  
+  .recentOrders .cardHeader h2 {
+    font-weight: 600;
+    color: #032b03;
+  }
+  
+  .recentOrders .cardHeader .btn {
+    position: relative;
+    padding: 5px 10px;
+    background-color: #cdcece;
+    text-decoration: none;
+    color: #032b03;
+    border-radius: 6px;
+  }
+  
+  .recentOrders .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .recentOrders .table td {
+    font-weight: 600;
+  }
+  .recentOrders table tr {
+    color: #032b03;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  .recentOrders table tr:last-child {
+    border-bottom: none;
+  }
+  .recentOrders table tbody tr:hover {
+    background-color: #d0d5d2;
+    color: #032b03;
+  }
+  .recentOrders table tr td {
+    padding: 10px;
+  }
+  .recentOrders table tr td:last-child {
+    text-align: end;
+  }
+  .recentOrders table tr td:nth-child(2) {
+    text-align: end;
+  }
+  .recentOrders table tr td:nth-child(3) {
+    text-align: center;
+  }
+  .status.delivered {
+    padding: 2px 4px;
+    background: #38c33a;
+    color: #032b03;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .status.pending {
+    padding: 2px 4px;
+    background: #d8e709;
+    color: #032b03;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .status.return {
+    padding: 2px 4px;
+    background: #e35d5d;
+    color: #032b03;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .status.inProgress {
+    padding: 2px 4px;
+    background: #6bb9dd;
+    color: #032b03;   
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  
