@@ -1,0 +1,180 @@
+@import url(sidebar.css);
+@import url(../components/Header.css);
+* {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
+  background-size: cover;
+  background-position: center;
+}
+
+.dashboard-container {
+  display: flex;
+  padding-top: 50px;
+}
+
+.main-content {
+  margin-left: 250px;
+  padding: 20px;
+  flex-grow: 1;
+}
+
+.main-content-header h1 {
+  font-size: 45px;
+  font-weight: bold;
+  color: #032b03;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.cardBox {
+  position: relative;
+  width: 100%;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 30px;
+}
+
+.cardBox .card {
+  position: relative;
+  background-color: #ddf6ed;
+  padding: 30px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+}
+
+.cardBox .card .numbers {
+  position: relative;
+  font-weight: 500;
+  font-size: 25px;
+  color: #032b03;
+}
+
+.cardBox .card .cardName {
+  color: #032b03;
+  font-size: 20px;
+  margin-top: 5px;
+}
+
+.cardBox .card:hover {
+  background-color: #d2e9d7;
+}
+
+.cardBox .card:hover .numbers,
+.cardBox .card:hover .cardName {
+  color: #032b03;
+}
+
+.details .recentOrders {
+  background-color: #ddf6ed;
+  padding: 20px;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+}
+
+.details {
+  width: 100%;
+  padding: 20px;
+  display: grid;
+
+  grid-gap: 30px;
+}
+
+.details .cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.cardHeader h2 {
+  font-weight: 600;
+  color: #032b03;
+}
+
+.cardHeader .btn {
+  position: relative;
+  padding: 5px 10px;
+  background-color: #74dbb2;
+  text-decoration: none;
+  color: #032b03;
+  border-radius: 6px;
+}
+
+.details table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.details table thead td {
+  font-weight: 600;
+}
+.details .recentOrders table tr {
+  color: #032b03;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+.details .recentOrders table tr:last-child {
+  border-bottom: none;
+}
+.details .recentOrders table tbody tr:hover {
+  background-color: #74dbb2;
+  color: #032b03;
+}
+.details .recentOrders table tr td {
+  padding: 10px;
+}
+.details .recentOrders table tr td:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.details .recentOrders table tr td:last-child {
+  text-align: center;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.details .recentOrders table tr td:nth-child(2) {
+  text-align: center;
+}
+.details .recentOrders table tr td:nth-child(3) {
+  text-align: center;
+}
+
+.action-button {
+  border: none;
+  padding: 8px;
+  background-color: #41cc94;
+  border-radius: 8px;
+}
+
+.action-button:hover {
+  background-color: #32b684;
+  cursor: pointer;
+}
+
+table tbody tr {
+  transition: all 0.3s ease; /* Smooth transition for better effect */
+}
+
+table tbody tr:hover {
+  border-radius: 10px; /* Add border radius */
+  background-color: #f0f0f0; /* Optional: Add a background color for better visibility */
+  transform: scale(
+    1.02
+  ); /* Optional: Slightly scale the row for a nice effect */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for more emphasis */
+}

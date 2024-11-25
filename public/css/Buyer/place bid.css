@@ -1,0 +1,159 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f8f2;
+    background-size: cover;
+    background-position: center;
+}
+
+/* .header1 {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(170deg, #e2e8e1, #abe4c0 );
+    color: #033c1f;
+    padding: 40px;
+    position: relative;
+    border-radius: 10px;
+} */
+
+.header-content {    
+    padding: 20px;
+}
+
+.header-content h1 {
+    font-size: 70px;
+    margin: 0;
+    color:#034209;
+    text-align: center;
+    margin-top: 60px;
+    margin-left: 300px;
+}
+
+.search-container {
+    margin-top: 20px;
+    margin-left: 200px;
+}
+
+input[type="text"] {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    width: 250px;
+    margin-left: 510px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.container1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 1000px;
+    background-color: #d7f7d7;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin-left:400px;
+}
+
+.product-card {
+    display: flex;
+    align-items: flex-start;
+    padding: 20px;
+    background-color: #edebeb;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.product-img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-right: 20px;
+}
+
+.product-details {
+    flex: 1;
+}
+
+.product-details h3 {
+    margin: 0 0 10px 0;
+    font-size: 24px;
+    color: #333;
+}
+
+.product-details p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #555;
+}
+
+.container2 {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #d7f7d7;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
+    margin-left:400px;
+}
+
+.increase-bid {
+    margin-top: 20px;
+    background-color: #eaf6e9;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.increase-bid h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.increase-bid p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.increase-bid input[type="number"] {
+    padding: 10px;
+    width: 300px;
+    border: 1px solid #f5f6e8;
+    border-radius: 5px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+}
+
+.increase-bid .submit-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #299233;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    width: 300px;
+}
+
+.increase-bid .submit-btn:hover {
+    background-color: #65a46b;
+}

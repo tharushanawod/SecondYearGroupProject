@@ -1,0 +1,148 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #065618;
+    font-size: 65px;
+    margin-left: 300px;
+    text-shadow:0 0 10px #b4eabd; 
+}
+
+.job-description {    
+    margin-top: 50px;
+    margin-left: 370px;
+    width: 60%;
+    padding: 30px;
+    background-color: #fff;
+    box-shadow: 0 0 6px #c8f3d4;
+    border-radius: 10px;
+    display: flex;
+    gap: 30px;
+}
+
+.job-image {
+    flex: 0 0 200px;
+}
+
+.job-details {
+    flex: 1;
+}
+
+.job-description h3 {
+    font-size: 20px;
+    color: #07582d;
+    font-weight: bold;
+    margin-top: 0;
+}
+
+.job-description p {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.job-description img {
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+button {
+    background-color: #07582d;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 40px;
+    margin-left: 1170px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 47%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;    
+    max-height: 90vh; 
+    background-color: transparent;
+    border-radius: 10px;    
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 0 auto;
+    padding: 30px;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 0 4px #f5fcf7; 
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+input[type="text"],
+textarea,
+input[type="file"] {
+    width: 100%;
+    padding: 10px 5px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: #f4fff7;
+    box-shadow: 0 0 2px #abdfc0;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.modal-content button{
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: #5cb85c;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    margin-left: 0px;
+}
+
+.modal-content button:hover {
+    background-color: #207a4c;
+}
+
