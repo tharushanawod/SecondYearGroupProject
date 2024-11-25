@@ -25,9 +25,10 @@ class ManufacturerController extends Controller
     }
 
     public function Dashboard()
-    {
-        $prices = $this->ManufacturerModel->getPrices();
+    {   $id=$_SESSION['user_id'];
+        $prices = $this->ManufacturerModel->getPrices($id);
         $data = [
+           
             'prices' => $prices
         ];
         $this->view('Manufacturer/ManufacturerDashboard',$data);
@@ -35,8 +36,8 @@ class ManufacturerController extends Controller
 
     public function LastPrice()
     {
-        $test = $this->ManufacturerModel->getLastPrice();
-        return $test;
+        $row = $this->ManufacturerModel->getLastPrice();
+        return $row;
     }
 
     public function getPreviousPrice()
@@ -51,14 +52,85 @@ class ManufacturerController extends Controller
     }
 
     public function AddPrices()
-    {
-        $this->view('Manufacturer/AddPrices');
+    {  
+       if($_SERVER['REQUEST_METHOD'] == 'POST'){
+           $_POST = filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING);
+           $data = [
+               'type' => trim($_POST['type']),
+               'price' => trim($_POST['price']),
+               'type_err' => '',
+               'price_err' => ''
+           ];
+         
+
+           if(empty($data['type'])){
+               $data['type_err'] = 'Please select a corn type';
+           }
+
+           if(empty($data['price'])){
+               $data['price_err'] = 'Please input a price';
+           }
+
+           if(empty($data['type_err']) && empty($data['price_err'])){
+               $result = $this->ManufacturerModel->AddPrices($data);
+               if($result){
+                   Redirect('ManufacturerController/Dashboard');
+               }
+           }else{
+               $this->view('Manufacturer/AddPrices',$data);
+           }
     }
 
-    public function UpdatePrices()
-    {
-        $this->view('Manufacturer/UpdatePrices');
+    else{
+        $data = [
+            'type' => '',
+            'price' => '',
+            'type_err' => '',
+            'price_err' => ''
+        ];
+        $this->view('Manufacturer/AddPrices',$data);
     }
+}
+
+public function getLastPrice()
+{
+    $row = $this->ManufacturerModel->getLastPrice();
+
+    $data = [
+        'date' => $row->date,
+        'type' => $row->type,
+        'price' => $row->price,
+        'priceid' => $row->priceid
+    ];
+    $this->view('Manufacturer/UpdateLastPrice',$data);
+}
+
+public function UpdateLastPrice($priceid)
+{  
+   if($_SERVER['REQUEST_METHOD'] == 'POST'){
+       $_POST = filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING);
+       $data = [
+           'priceid' => $priceid,
+           'price' => trim($_POST['price']),
+           'price_err' => ''
+       ];
+
+       if(empty($data['price'])){
+           $data['price_err'] = 'Please input a price';
+       }
+
+       if(empty($data['price_err'])){
+           $result = $this->ManufacturerModel->UpdateLastPrice($data);
+           if($result){
+               Redirect('ManufacturerController/Dashboard');
+           }
+       }else{
+           $this->view('Manufacturer/UpdateLastPrice',$data);
+       }
+}
+
+}
+
 
     public function RemovePrices($id)
     {   

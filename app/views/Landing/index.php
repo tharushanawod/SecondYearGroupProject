@@ -9,13 +9,14 @@
     integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/HomePagestyles.css?v=<?php echo time(); ?>" />
-  <!-- <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/components/Header.css" /> -->
+ 
 
 
 </head>
 
 <body>
 <?php require APPROOT . '/views/inc/components/Header.php'; ?>
+
   <section class="home">
     <div class="home-content">
       <h1>Corn  Cradle</h1>

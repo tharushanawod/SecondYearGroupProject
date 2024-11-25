@@ -8,8 +8,9 @@ class Manufacturer{
         $this->db = new Database();
     }
 
-    public function getPrices(){
-        $this->db->query('SELECT * FROM prices');
+    public function getPrices($id){
+        $this->db->query('SELECT * FROM prices WHERE manufacturerid = :id');
+        $this->db->bind(':id',$id);
         $results = $this->db->resultSet();
         return $results;
     }
@@ -35,6 +36,32 @@ class Manufacturer{
             return false;
         }
     }
+
+    public function AddPrices($data){
+        $this->db->query('INSERT INTO prices (name,type,price,manufacturerid) VALUES (:name,:type,:price,:manufacturerid)');
+        $this->db->bind(':name','Corn');
+        $this->db->bind(':type',$data['type']);
+        $this->db->bind(':price',$data['price']);
+        $this->db->bind(':manufacturerid',$_SESSION['user_id']);
+        if($this->db->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function UpdateLastPrice($data){
+        $this->db->query('UPDATE prices SET price = :price WHERE priceid = :priceid');
+        $this->db->bind(':price', $data['price']);
+        $this->db->bind(':priceid', $data['priceid']);
+        if($this->db->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
 
 
 

@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Personal Data</title>
-  <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Farmer/ManageProfile.css">
+  <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Manufacturer/ManageProfile.css">
 </head>
 <body>
     <?php require 'sidebar.php'; ?>

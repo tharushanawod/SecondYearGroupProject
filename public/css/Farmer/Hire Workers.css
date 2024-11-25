@@ -1,7 +1,11 @@
-body {
-    font-family: sans-serif;
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+  }
+
+body {
     background-color:#d2edda;
     background-size: cover;
     background-position: center;

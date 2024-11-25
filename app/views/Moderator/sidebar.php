@@ -6,7 +6,7 @@
       <ul class="nav-list">
         <li class="nav-item active">
         <span>📊</span>
-          <a href="<?php echo URLROOT; ?>/ModeratorController/index">Dashboard</a>
+          <a href="<?php echo URLROOT; ?>/ModeratorController/Dashboard">Dashboard</a>
         </li>
         <li class="nav-item">
         <span>👥</span>

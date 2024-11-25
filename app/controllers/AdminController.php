@@ -25,7 +25,7 @@ class AdminController extends Controller {
     }
 
     // Fetch and display users on the dashboard
-    public function index() {
+    public function Dashboard() {
        
         // Retrieve users from the model
         $users = $this->pagesModel->getUsers();

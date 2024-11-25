@@ -1,0 +1,18 @@
+d2079ee Added Verification Option For Manufacturer
+ 23 files changed, 850 insertions(+), 219 deletions(-)
+65e3d58 Created UI for Manufacturer
+ 52 files changed, 1642 insertions(+), 156 deletions(-)
+87c5498 Added two new crud operation for farmer
+ 17 files changed, 410 insertions(+), 190 deletions(-)
+e90e5f2 Completed Farmer UI & completed 2 crud operaions
+ 21 files changed, 1136 insertions(+), 137 deletions(-)
+0411587 Framework Completed
+ 215 files changed, 6003 insertions(+), 3026 deletions(-)
+d4333e7 Added new pages
+ 65 files changed, 4085 insertions(+), 414 deletions(-)
+f8f0c48 added two new pages to home page
+ 12 files changed, 329 insertions(+), 28 deletions(-)
+80e5835 Added new files
+ 5 files changed, 113 insertions(+)
+358ed28 Deleted all files
+ 5 files changed, 113 deletions(-)

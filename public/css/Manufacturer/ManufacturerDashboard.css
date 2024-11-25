@@ -1,4 +1,5 @@
 @import url(sidebar.css);
+@import url(../components/Header.css);
 * {
   font-family: sans-serif;
   margin: 0;
@@ -10,17 +11,18 @@ body {
   font-family: sans-serif;
   margin: 0;
   padding: 0;
-  background-color: white;
+  background-color: #ffffff;
   background-size: cover;
   background-position: center;
 }
 
 .dashboard-container {
   display: flex;
+  padding-top: 50px;
 }
 
 .main-content {
-  margin-left: 270px;
+  margin-left: 250px;
   padding: 20px;
   flex-grow: 1;
 }
@@ -157,7 +159,6 @@ body {
   padding: 8px;
   background-color: #41cc94;
   border-radius: 8px;
-  
 }
 
 .action-button:hover {

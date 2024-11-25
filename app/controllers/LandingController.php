@@ -215,7 +215,7 @@ class LandingController extends Controller{
          // Check if the user is an admin
     if ($user->title == 'admin') {
         // Redirect to the admin dashboard if the user is an admin
-        Redirect('AdminController/index');
+        Redirect('AdminController/Dashboard');
     } else if ($user->title == 'moderator') {
         // Redirect to the user home page if the user is not an admin
         Redirect('ModeratorController/index');

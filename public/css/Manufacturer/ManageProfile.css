@@ -1,23 +1,25 @@
 @import url(sidebar.css);
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: sans-serif;
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
 }
 
 body {
-
   background-image: url("../../images/images/1.svg");
   background-position: right bottom; /* Position it in the bottom-right corner */
   background-repeat: no-repeat; /* Prevent the image from repeating */
+  background-color: #f4f4f4;
+
 }
 
 .container {
-  margin-left: 400px;
+  padding-top: 60px;
+  margin-left: 250px;
+  padding-left: 100px;
   max-width: 600px;
-  padding: 20px;
   font-family: Arial, sans-serif;
   display: flex;
   flex-direction: column;
@@ -79,8 +81,3 @@ input:hover {
   background-color: #74dbb2;
 }
 
-@media (max-width: 1500px) {
-  body {
-    background-image: none;
-  }
-}

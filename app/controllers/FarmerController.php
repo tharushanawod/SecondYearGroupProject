@@ -23,7 +23,7 @@ class FarmerController extends Controller {
         }
     }
 
-    public function dashboard() {
+    public function Dashboard() {
         $data = [];
         $this->View('Farmer/FarmerDashboard', $data);
     }

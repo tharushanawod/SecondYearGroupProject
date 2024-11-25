@@ -8,25 +8,31 @@
 </head>
 <body>
 
-
-    <div class="dashboard-container">
         
     <?php require 'sidebar.php';?> 
 
         <div class="main-content">
             <div class="main-content-header">
-                <h1>Dashboard</h1>
+                <h1> Manufacturer Dashbboard</h1>
             </div>
 
             <div class="cardBox">
                 <div class="card">
                     <div>
-                        <div class="numbers">Dry Corn</div>
-                        <div class="cardName">Product Type</div>
+                    <?php $row = $this->LastPrice(); ?>
+                    <div class="numbers"><?php echo $row->type; ?></div>
+                        <div class="cardName">Current Product Type</div>
                     </div>
                     <img width="50" height="50" src="https://img.icons8.com/wired/50/checkmark.png" alt="checkmark"/>
                 </div>
-
+                <div class="card">
+                    <div>
+                        <?php $row = $this->LastPrice(); ?>
+                        <div class="numbers">LKR <?php echo $row->price; ?></div>
+                        <div class="cardName">Current Price</div>
+                    </div>
+                    <img width="50" height="50" src="https://img.icons8.com/ios-filled/50/money-bag-euro.png" alt="money-bag-euro"/>
+                </div>
                 <div class="card">
                     <div>
                         <?php $prices = $this->getPreviousPrice(); ?>
@@ -38,14 +44,7 @@
 
           
 
-                <div class="card">
-                    <div>
-                        <?php $row = $this->LastPrice(); ?>
-                        <div class="numbers">LKR <?php echo $row->price; ?></div>
-                        <div class="cardName">Current Price</div>
-                    </div>
-                    <img width="50" height="50" src="https://img.icons8.com/ios-filled/50/money-bag-euro.png" alt="money-bag-euro"/>
-                </div>
+              
             </div>
 
            
@@ -77,7 +76,6 @@
                                         <td><?php echo $price->type; ?></td>  <!-- User Email -->
                                         <td><?php echo $price->price; ?></td>  <!-- User Phone -->
                                         <td><div class="action">
-                                            <button class="action-button">Update</button>
                                             <a href="<?php echo URLROOT ;?>/ManufacturerController/RemovePrices/<?php echo $price->priceid ?>"><button class="action-button">Delete</button></a>
                                     </tr>
                                 <?php
