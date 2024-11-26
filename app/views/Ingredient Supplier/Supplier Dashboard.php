@@ -70,56 +70,56 @@
 
                         <tbody>
                             <tr>
-                                <td>Nitrogen Fertilizer</td>
+                                <td>Urea (Granular/Prilled)</td>
                                 <td>LKR 1200</td>
                                 <td>Paid</td>
                                 <td><span class="status delivered">Delivered</span></td>
                             </tr>
 
                             <tr>
-                                <td>Maize Seed</td>
+                                <td>TF 222 Hybrid Maize seeds</td>
                                 <td>LKR 2500</td>
                                 <td>Due</td>
                                 <td><span class="status pending">Pending</span></td>
                             </tr>
 
                             <tr>
-                                <td>Pesticide</td>
+                                <td>Chlorpyrifos</td>
                                 <td>LKR 1200</td>
                                 <td>Paid</td>
                                 <td><span class="status return">Return</span></td>
                             </tr>
 
                             <tr>
-                                <td>Insecticide</td>
+                                <td>Lambda-Cyhalothrin</td>
                                 <td>LKR 1700</td>
                                 <td>Due</td>
                                 <td><span class="status inProgress">In Progress</span></td>
                             </tr>
 
                             <tr>
-                                <td>Nitrogen Fertilizer</td>
+                                <td>SA 336 Hybrid Maize seeds</td>
                                 <td>LKR 1200</td>
                                 <td>Paid</td>
                                 <td><span class="status delivered">Delivered</span></td>
                             </tr>
 
                             <tr>
-                                <td>Pesticide</td>
+                                <td>Zinc Sulphate</td>
                                 <td>LKR 2000</td>
                                 <td>Due</td>
                                 <td><span class="status pending">Pending</span></td>
                             </tr>
 
                             <tr>
-                                <td>Hybrid Seed</td>
+                                <td>Emamectin Benzoate</td>
                                 <td>LKR 1500</td>
                                 <td>Paid</td>
                                 <td><span class="status return">Return</span></td>
                             </tr>
 
                             <tr>
-                                <td>Urea Fertilizer</td>
+                                <td>HP 4311 Hybrid Maize Seeds</td>
                                 <td>LKR 1000</td>
                                 <td>Due</td>
                                 <td><span class="status inProgress">In Progress</span></td>

@@ -7,17 +7,9 @@ body {
   background-position: center;
 }
 
-/* .header1 {
-  border-left: 400px;
-  align-items: center;
-  background: linear-gradient(170deg, #e2e8e1, #abe4c0 );
-  color: #033c1f;
-  padding: 40px;  
-  border-radius: 10px;
-} */
-
 .header-content { 
   padding: 20px;
+  display :flex;
 }
 
 .header-content h1 {
@@ -29,17 +21,10 @@ body {
   margin-left: 300px;
 }
 
-.search-container {    
+.header-content .icon{
+  display :flex;
+  margin-left: 300px;
   margin-top: 20px;
-  margin-left: 200px;
-}
-
-input[type="text"] {
-  padding: 10px;
-  border-radius: 5px;
-  border: none;
-  width: 250px;
-  margin-left: 510px;
 }
 
 button {

@@ -19,27 +19,31 @@
 
             <div class="cardBox">
                 <div class="card">
+                    <div class="icon"><img width="50" height="50" src="https://img.icons8.com/ios/50/approval--v1.png" alt="approval--v1"/></div>
                     <div>
-                        <div class="numbers">1,504</div>
-                        <div class="cardName">Daily Views</div>
+                        <div class="numbers">20</div>
+                        <div class="cardName">Accepted Bids</div>
                     </div>
                 </div>
 
                 <div class="card">
+                    <div class="icon"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/auction.png" alt="auction"/></div>
                     <div>
-                        <div class="numbers">80</div>
-                        <div class="cardName">Sales</div>
+                        <div class="numbers">12</div>
+                        <div class="cardName">Active Bids</div>
                     </div>
                 </div>
 
                 <div class="card">
+                    <div class="icon"><img width="50" height="50" src="https://img.icons8.com/external-basicons-line-edtgraphics/50/external-Purchases-delivery-basicons-line-edtgraphics.png" alt="external-Purchases-delivery-basicons-line-edtgraphics"/></div>
                     <div>
-                        <div class="numbers">284</div>
-                        <div class="cardName">Comments</div>
+                        <div class="numbers">12</div>
+                        <div class="cardName">Purchases</div>
                     </div>
                 </div>
 
                 <div class="card">
+                    <div class="icon"><img width="50" height="50" src="https://img.icons8.com/ios/50/us-dollar-circled--v2.png" alt="us-dollar-circled--v2"/></div>
                     <div>
                         <div class="numbers">LKR 77,842</div>
                         <div class="cardName">Earning</div>

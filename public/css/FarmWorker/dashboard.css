@@ -79,7 +79,7 @@
   .recentOrders {
     position: relative;
     display: grid;
-    min-height: 500px;
+    height: auto;
     background-color: #d9f8f0;
     padding: 20px;
     box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
@@ -89,86 +89,41 @@
    .recentOrders .cardHeader {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: left;
   }
   
   .recentOrders .cardHeader h2 {
     font-weight: 600;
     color: #032b03;
-  }
-  
-  .recentOrders .cardHeader .btn {
-    position: relative;
-    padding: 5px 10px;
-    background-color: #cdcece;
-    text-decoration: none;
-    color: #032b03;
-    border-radius: 6px;
+    margin-bottom: 20px;
   }
   
   .recentOrders .table {
-    width: 100%;
-    border-collapse: collapse;
+    width: 100%;    
     margin-top: 10px;
+    padding: 15px;   
   }
-  
+
+  .recentOrders .table th,
   .recentOrders .table td {
-    font-weight: 600;
-  }
+      text-align: left; 
+  } 
+
   .recentOrders table tr {
     color: #032b03;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    text-align: left;
   }
-  .recentOrders table tr:last-child {
-    border-bottom: none;
-  }
+    
   .recentOrders table tbody tr:hover {
-    background-color: #d0d5d2;
+    background-color: #83d2a3;
     color: #032b03;
+    border-radius: 10px;
   }
+
   .recentOrders table tr td {
     padding: 10px;
+    text-align: left;
   }
-  .recentOrders table tr td:last-child {
-    text-align: end;
-  }
-  .recentOrders table tr td:nth-child(2) {
-    text-align: end;
-  }
-  .recentOrders table tr td:nth-child(3) {
-    text-align: center;
-  }
-  .status.delivered {
-    padding: 2px 4px;
-    background: #38c33a;
-    color: #032b03;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 500;
-  }
-  .status.pending {
-    padding: 2px 4px;
-    background: #d8e709;
-    color: #032b03;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 500;
-  }
-  .status.return {
-    padding: 2px 4px;
-    background: #e35d5d;
-    color: #032b03;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 500;
-  }
-  .status.inProgress {
-    padding: 2px 4px;
-    background: #6bb9dd;
-    color: #032b03;   
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 500;
-  }
-  
-  
+
+ 

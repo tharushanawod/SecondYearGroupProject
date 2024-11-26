@@ -1,39 +1,44 @@
-// Function to filter products based on search input
-function filterProducts() {
-    const searchInput = document.getElementById('search').value.toLowerCase();
-    const bidCards = document.querySelectorAll('.bid-card');
 
-    bidCards.forEach(card => {
-        const productName = card.querySelector('h3').textContent.toLowerCase();
-        if (productName.includes(searchInput)) {
-            card.style.display = 'block';
-        } else {
-            card.style.display = 'none';
-        }
+    document.getElementById('applyFilters').addEventListener('click', function() {
+        const category = document.querySelector('select[name="category"]').value;
+        const minQuantity = document.getElementById('minQuantity').value;
+        const maxQuantity = document.getElementById('maxQuantity').value;
+
+        document.querySelectorAll('.bid-card').forEach(card => {
+            const cardCategory = card.getAttribute('data-category');
+            const cardQuantity = parseInt(card.getAttribute('data-quantity'));
+
+            if ((category === cardCategory || category === '') &&
+                (minQuantity === '' || cardQuantity >= minQuantity) &&
+                (maxQuantity === '' || cardQuantity <= maxQuantity)) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
     });
-}
 
-// Add event listener to search button
-document.getElementById('searchBtn').addEventListener('click', filterProducts);
-
-// Add event listener to search input for real-time filtering
-document.getElementById('search').addEventListener('keyup', filterProducts);
-
-// Sample filtering function for the search bar
-function filterProducts() {
-    const searchInput = document.getElementById('search').value.toLowerCase();
-    const bidCards = document.querySelectorAll('.bid-card');
-
-    bidCards.forEach(card => {
-        const productName = card.querySelector('h3').textContent.toLowerCase();
-        if (productName.includes(searchInput)) {
-            card.style.display = 'block';
-        } else {
-            card.style.display = 'none';
-        }
+    document.querySelectorAll('.action-btn').forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            const product = this.getAttribute('data-product');
+            const currentBid = this.getAttribute('data-current-bid');
+            document.getElementById('modalProduct').innerText = 'Product: ' + product;
+            document.getElementById('modalCurrentBid').innerText = 'Current Highest Bid: LKR ' + currentBid;
+            document.getElementById('bidModal').style.display = 'block';
+        });
     });
-}
 
-document.getElementById('filterBtn').addEventListener('click', () => {
-    window.location.href = 'filter products.html';
-});
+    function closeModal() {
+        document.getElementById('bidModal').style.display = 'none';
+    }
+
+    function placeBid() {
+        const newBid = document.getElementById('newBid').value;
+        if (newBid) {
+            alert('Your bid of ' + newBid + ' has been placed.');
+            closeModal();
+        } else {
+            alert('Please enter a valid bid.');
+        }
+    }

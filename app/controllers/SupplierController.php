@@ -14,12 +14,7 @@ class SupplierController extends Controller {
     public function dashboard() {
         $data = [];
         $this->view('Ingredient Supplier/Supplier Dashboard', $data);
-    }
-
-    public function landingPage() {
-        $data = [];
-        $this->view('Ingredient Supplier/landing page', $data);
-    }
+    }    
 
     public function productManagement() {
         $products = $this->Product->getProducts();
@@ -154,17 +149,17 @@ class SupplierController extends Controller {
 
     public function shop() {
         $products = $this->Product->getProducts();
-        $fertilizerProducts = $this->Product->getProductsByCategory('Fertilizer');
-        $seedsProducts = $this->Product->getProductsByCategory('Seeds');
-        $pestControlProducts = $this->Product->getProductsByCategory('Pest Control');
+        $fertilizerProducts = $this->Product->getProductsByCategory('Fertilizer') ?? [];
+        $seedsProducts = $this->Product->getProductsByCategory('Seeds') ?? [];
+        $pestControlProducts = $this->Product->getProductsByCategory('Pest Control') ?? [];
         $this->view('Ingredient Supplier/shop', [
             'products' => $products,
             'fertilizerProducts' => $fertilizerProducts,
             'seedsProducts' => $seedsProducts,
             'pestControlProducts' => $pestControlProducts
+      
         ]);
     }
-
     public function fertilizer() {
         $products = $this->Product->getProductsByCategory('Fertilizer');
         $seedsProducts = $this->Product->getProductsByCategory('Seeds');

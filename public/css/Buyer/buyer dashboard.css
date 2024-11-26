@@ -45,7 +45,7 @@ body {
 
 .cardBox .card {
   position: relative;
-  background-color: #90c9a6;
+  background-color: #d9f8f0;
   padding: 30px;
   border-radius: 20px;
   display: flex;
@@ -142,7 +142,7 @@ body {
   border-bottom: none;
 }
 .details .recentOrders table tbody tr:hover {
-  background-color: #a9aeaa;
+  background-color: #4e8e5b;
   color: #032b03;
 }
 .details .recentOrders table tr td {
