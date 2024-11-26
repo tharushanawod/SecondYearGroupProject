@@ -3,10 +3,10 @@
 define('APPROOT',dirname(dirname(__FILE__)));
 
 //urlroot
-define('URLROOT','http://localhost/Framework');
+define('URLROOT','http://localhost/GroupProject');
 
 //sitename
-define('SITENAME','Framework');
+define('SITENAME','GroupProject');
 
 //db params
 define('DB_HOST','localhost');

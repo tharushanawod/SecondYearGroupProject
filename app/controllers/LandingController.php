@@ -218,19 +218,19 @@ class LandingController extends Controller{
         Redirect('AdminController/Dashboard');
     } else if ($user->title == 'moderator') {
         // Redirect to the user home page if the user is not an admin
-        Redirect('ModeratorController/index');
+        Redirect('ModeratorController/Dashboard');
     }
     else if($user->title == 'farmer'){
-        Redirect('FarmerController/dashboard');
+        Redirect('FarmerController/Dashboard');
     }
     else if($user->title == 'buyer'){
-        Redirect('BuyerController/index');
+        Redirect('BuyerController/Dashboard');
     }
     else if($user->title == 'supplier'){
-        Redirect('SupplierController/index');
+        Redirect('SupplierController/Dashboard');
     }
     else if($user->title == 'farmworker'){
-        Redirect('FarmworkerController/index');
+        Redirect('FarmworkerController/Dashboard');
     }
     else if($user->title == 'manufacturer'){
         Redirect('ManufacturerController/Dashboard');
