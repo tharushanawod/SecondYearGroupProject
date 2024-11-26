@@ -10,14 +10,9 @@
     
 <?php require 'sidebar.php';?>
     
-    <div class="header-content">
-        <h1>Purchase History</h1>
-        <div class="search-container">
-            <input type="text" id="search" placeholder="Search products..." onkeyup="filterProducts()">
-            <button id="searchBtn">Search</button>
-        </div>
-    </div>        
-       
+    <div class="header-content">        
+        <h1>Purchase History</h1>        
+    </div>           
 
     <div class="container">
         <table id="purchaseHistory">

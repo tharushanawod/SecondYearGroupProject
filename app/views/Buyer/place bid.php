@@ -10,11 +10,7 @@
 <?php require 'sidebar.php';?>
     
     <div class="header-content">
-        <h1>Place Your Bid</h1>
-        <div class="search-container">
-            <input type="text" id="search" placeholder="Search products..." onkeyup="filterProducts()">
-            <button id="searchBtn">Search</button>
-        </div>
+        <h1>Place Your Bid</h1>        
     </div>       
     
     <div class="container1">
@@ -25,13 +21,10 @@
                     <p>Current Bid: LKR 1000</p>
                     <p>Number of Bids: 5</p>
                     <p>Status: Active</p>
-                    <p>Specifications: Large, Yellow, Organic</p>                    
+                    <p>Remaining time: 1 day</p>                    
                     <p>Quantity: 100 kg</p>
             </div>
         </div>
-    </div>
-
-    <div class="container2">
         <div class="increase-bid">
             <h2>Place Your Bid</h2>
             <p>You are about to bid on this product. Make sure to place a bid higher than the current bid to increase your chances of winning.</p>
@@ -39,5 +32,14 @@
             <button class="submit-btn">Place Bid</button>
         </div>
     </div>
+
+    <!-- <div class="container2">
+        <div class="increase-bid">
+            <h2>Place Your Bid</h2>
+            <p>You are about to bid on this product. Make sure to place a bid higher than the current bid to increase your chances of winning.</p>
+            <input type="number" id="newBid" placeholder="Enter your bid">
+            <button class="submit-btn">Place Bid</button>
+        </div>
+    </div> -->
 </body>
 </html>

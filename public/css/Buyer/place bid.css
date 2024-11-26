@@ -2,20 +2,10 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f9f8f2;
+    background-color: #ffffff;
     background-size: cover;
     background-position: center;
 }
-
-/* .header1 {
-    display: flex;
-    align-items: center;
-    background: linear-gradient(170deg, #e2e8e1, #abe4c0 );
-    color: #033c1f;
-    padding: 40px;
-    position: relative;
-    border-radius: 10px;
-} */
 
 .header-content {    
     padding: 20px;
@@ -28,45 +18,15 @@ body {
     text-align: center;
     margin-top: 60px;
     margin-left: 300px;
+    text-shadow: 2px 2px 4px #78bb80;
 }
 
-.search-container {
-    margin-top: 20px;
-    margin-left: 200px;
-}
-
-input[type="text"] {
-    padding: 10px;
-    border-radius: 5px;
-    border: none;
-    width: 250px;
-    margin-left: 510px;
-}
-
-button {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-left: 5px;
-}
-
-button:hover {
-    background-color: #45a049;
-}
-
-.container1 {
-    display: flex;
-    justify-content: center;
+.container1 {    
     align-items: center;
     padding: 20px;
     margin: 20px auto;
     max-width: 1000px;
-    background-color: #d7f7d7;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+    background-color:none;    
     margin-left:400px;
 }
 
@@ -106,20 +66,17 @@ button:hover {
 .container2 {
     max-width: 1000px;
     margin: 20px auto;
-    padding: 20px;
-    background-color: #d7f7d7;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+    padding: 20px;    
     text-align: center;
     margin-left:400px;
 }
 
 .increase-bid {
     margin-top: 20px;
-    background-color: #eaf6e9;
-    border-radius: 10px;
+    /* background-color: #eaf6e9;
+    border-radius: 10px; */
     padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
 }
 
 .increase-bid h2 {

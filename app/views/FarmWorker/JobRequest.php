@@ -13,7 +13,7 @@
     <div class="requests-container">        
         <div class="request">
             <h3>Job Title: Farm Worker</h3>
-            <p><strong>Employer:</strong> John Doe</p>
+            <p><strong>Employer:</strong> Samith Perera</p>
             <p><strong>Offer:</strong> LKR 2500/hour</p>
             <p><strong>Description:</strong> Looking for a farm worker to help with daily tasks.</p>
             <div class="button-row">
@@ -33,7 +33,7 @@
         </div>
         <div class="request">
             <h3>Job Title: Farm Worker</h3>
-            <p><strong>Employer:</strong> Bob Johnson</p>
+            <p><strong>Employer:</strong> Aruna Gamage</p>
             <p><strong>Offer:</strong> LKR 2000/hour</p>
             <p><strong>Description:</strong> Looking for a farm worker to help with apply pesticides.</p>
             <div class="button-row">

@@ -7,17 +7,13 @@
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Ingredient Supplier/shop.css">
 </head>
 <body>
-<?php require 'navbar.php';?>    
+<?php require 'sidebar.php';?>    
     <div class="container"> 
     <div class="inside">
         <h1>Seeds</h1>
         <p>Home / Seeds</p>
     </div>               
-        <div class="filterbar">
-            <div class="search-box">
-                <input type="text" placeholder="Search products...">
-                <button>Search</button>
-            </div>
+        <div class="filterbar">            
             <div class="filter">
                 <h2>Filter by price</h2>
                 <input type="range" min="100" max="5000" value="100" class="slider">
@@ -26,14 +22,15 @@
                     <span>LKR 5000</span>
                 </div>
             </div>
-            <div class="categories">
+            <div class="categories-dropdown">
                 <h2>Categories</h2>
-                <ul>
-                    <li><a href="<?php echo URLROOT;?>/SupplierController/seeds">Seeds (<?php echo count($data['products']); ?>)</a></li>
-                    <li><a href="<?php echo URLROOT;?>/SupplierController/fertilizer">Fertilizer (<?php echo count($data['fertilizerProducts']); ?>)</a></li>
-                    <li><a href="<?php echo URLROOT;?>/SupplierController/pestControl">Pest Control (<?php echo count($data['pestControlProducts']); ?>)</a></li>
-                </ul>
-            </div>
+                <select onchange="location = this.value;">
+                    <option value=""></option>
+                    <option value="<?php echo URLROOT;?>/SupplierController/fertilizer">Fertilizer (<?php echo isset($data['fertilizerProducts']) ? count($data['fertilizerProducts']) : 0; ?>)</option>
+                    <option value="<?php echo URLROOT;?>/SupplierController/seeds">Seeds (<?php echo isset($data['products']) ? count($data['products']) : 0; ?>)</option>
+                    <option value="<?php echo URLROOT;?>/SupplierController/pestControl">Pest Controls (<?php echo isset($data['pestControlProducts']) ? count($data['pestControlProducts']) : 0; ?>)</option>
+                </select>
+            </div>            
         </div>
         <main class="product-list">           
             <?php foreach ($data['products'] as $product): ?>

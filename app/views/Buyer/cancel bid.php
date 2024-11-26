@@ -11,30 +11,66 @@
 <?php require 'sidebar.php';?>
 
     <div class="header-content">
-        <h1>Cancel Bid</h1>
-        <div class="search-container">
-            <input type="text" id="search" placeholder="Search products..." onkeyup="filterProducts()">
-            <button id="searchBtn">Search</button>
-        </div>
-    </div>        
-    
+        <h1>Cancel Bid</h1>        
+    </div>    
 
     <div class="container">
+        <div class="product-card">
+            <img src="<?php echo URLROOT;?>/images/images/img26.jpg" alt="Product Image" class="product-img">
+            <div class="product-details">
+                <h3>Dry Corn</h3>
+                <p>Current Bid: LKR 1000</p>
+                <p>Current Highest Bid: LKR 1000</p>
+                <p>Number of Bids: 5</p>
+                <p>Status: Active</p>
+                <p>Remaining time: 2 days</p>                    
+                <p>Quantity: 100 kg</p>
+                <button class="cancel-btn" onclick="showCancelReason()">Cancel Bid</button>
+                <a href="<?php echo URLROOT;?>/BuyerController/placeBid">
+                <button class="adjust-btn">Adjust Bid</button>
+                </a>
+            </div>
+        </div> 
         <div class="product-card">
             <img src="<?php echo URLROOT;?>/images/images/img7.jpeg" alt="Product Image" class="product-img">
             <div class="product-details">
                 <h3>Fresh Corn</h3>
-                    <p>Current Bid: LKR 1000</p>
-                    <p>Number of Bids: 5</p>
-                    <p>Status: Active</p>
-                    <p>Specifications: Large, Yellow, Organic</p>                    
-                    <p>Quantity: 100 kg</p>
+                <p>Current Bid: LKR 1000</p>
+                <p>Current Highest Bid: LKR 1000</p>
+                <p>Number of Bids: 5</p>
+                <p>Status: Active</p>
+                <p>Remaining time: 2 days</p>                    
+                <p>Quantity: 100 kg</p>
+                <button class="cancel-btn" onclick="showCancelReason()">Cancel Bid</button>
+                <a href="<?php echo URLROOT;?>/BuyerController/placeBid">
+                <button class="adjust-btn">Adjust Bid</button>
+                </a>
+            </div>
+        </div> 
+        <div class="product-card">
+            <img src="<?php echo URLROOT;?>/images/images/img9.jpeg" alt="Product Image" class="product-img">
+            <div class="product-details">
+                <h3>Dry Corn</h3>
+                <p>Current Bid: LKR 1000</p>
+                <p>Current Highest Bid: LKR 1000</p>
+                <p>Number of Bids: 5</p>
+                <p>Status: Active</p>
+                <p>Remaining time: 1 day</p>                    
+                <p>Quantity: 100 kg</p>                
+                <button class="cancel-btn" onclick="showCancelReason()">Cancel Bid</button>
+                <a href="<?php echo URLROOT;?>/BuyerController/placeBid">
+                <button class="adjust-btn">Adjust Bid</button>
+                </a>
             </div>
         </div>            
     </div>
 
-    <div class="container">
-        <div class="cancel-reason">
+    
+    <div id="cancelModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Cancel Bid</h2>
+            <p>Are you sure you want to cancel this bid? This action cannot be undone.</p>
             <label for="reason">Reason For Cancellation</label>
             <select id="reason">
                 <option value="">Select a Reason</option>
@@ -42,20 +78,23 @@
                 <option value="reason2">Reason 2</option>
                 <option value="reason3">Reason 3</option>
             </select>
+            <button class="cancel-btn" onclick="confirmCancel()">Confirm Cancel</button>                        
         </div>
     </div>
 
-    <div class="container">
-        <div class="confirmation">
-            <p>Are you sure you want to cancel this bid? This action cannot be undone.</p>
-            <button class="cancel-btn">Cancel Bid</button>
-            <a href="<?php echo URLROOT;?>/BuyerController/placeBid" target="content-frame">
-                <button class="adjust-btn">Adjust Bid</button>
-            </a>
-        </div>
-    </div>
+    <script>
+    function showCancelReason() {
+        document.getElementById('cancelModal').style.display = 'block';
+    }
 
-    <script src="<?php echo URLROOT;?>/js/Buyer/cancel bid.js"></script>
-</body>
+    function closeModal() {
+        document.getElementById('cancelModal').style.display = 'none';
+    }
+
+    function confirmCancel() {        
+        alert('Bid has been cancelled.');
+        closeModal();
+    }
+    </script>    
 </body>
 </html>

@@ -13,12 +13,12 @@
 
         <div class="main-content">
             <div class="main-content-header">
-                <h1>Dashboard</h1>
+                <h1>Farm Worker Dashboard</h1>
             </div>
 
             <div class="cardBox">
                 <div class="card">
-                    <div class="image"><img width="50" height="50" src="https://img.icons8.com/external-neu-royyan-wijaya/50/external-accepted-neu-business-and-finance-neu-royyan-wijaya.png" alt="external-accepted-neu-business-and-finance-neu-royyan-wijaya"/></div>
+                    <div class="image"><img width="50" height="50" src="https://img.icons8.com/ios/50/approval--v1.png" alt="approval--v1"/></div>
                     <div>
                         <div class="numbers">50</div>
                         <div class="cardName">Accepted Requests</div>
@@ -37,76 +37,39 @@
             
             <div class="recentOrders">
                 <div class="cardHeader">
-                    <h2>Recent Orders</h2>
-                    <a href="Orders.html" class="btn">View All</a>
+                    <h2>Job Requests</h2>                    
                 </div>
-
                 <table>
                     <thead>
                         <tr>
-                            <td>Name</td>
-                            <td>Price</td>
-                            <td>Payment</td>
-                            <td>Status</td>
+                            <td><b>Job Title</b></td>
+                            <td><b>Employer</b></td>
+                            <td><b>Offer</b></td>
+                            <td><b>Description</b></td>
                         </tr>
                     </thead>
 
                     <tbody>
                         <tr>
-                            <td>Nitrogen Fertilizer</td>
-                            <td>LKR 1200</td>
-                            <td>Paid</td>
-                            <td><span class="status delivered">Delivered</span></td>
+                            <td>Farm Worker</td>
+                            <td>Samith Perera</td>
+                            <td>LKR 2500/hour</td>
+                            <td>Looking for a farm worker to help with daily tasks.</td>
                         </tr>
 
                         <tr>
-                            <td>Maize Seed</td>
-                            <td>LKR 2500</td>
-                            <td>Due</td>
-                            <td><span class="status pending">Pending</span></td>
+                            <td>Farm Worker</td>
+                            <td>Jane Smith</td>
+                            <td>LKR 1800/hour</td>
+                            <td>Seeking a farm worker to assist with planting and harvesting.</td>
                         </tr>
 
                         <tr>
-                            <td>Pesticide</td>
-                            <td>LKR 1200</td>
-                            <td>Paid</td>
-                            <td><span class="status return">Return</span></td>
-                        </tr>
-
-                        <tr>
-                            <td>Insecticide</td>
-                            <td>LKR 1700</td>
-                            <td>Due</td>
-                            <td><span class="status inProgress">In Progress</span></td>
-                        </tr>
-
-                        <tr>
-                            <td>Nitrogen Fertilizer</td>
-                            <td>LKR 1200</td>
-                            <td>Paid</td>
-                            <td><span class="status delivered">Delivered</span></td>
-                        </tr>
-
-                        <tr>
-                            <td>Pesticide</td>
-                            <td>LKR 2000</td>
-                            <td>Due</td>
-                            <td><span class="status pending">Pending</span></td>
-                        </tr>
-
-                        <tr>
-                            <td>Hybrid Seed</td>
-                            <td>LKR 1500</td>
-                            <td>Paid</td>
-                            <td><span class="status return">Return</span></td>
-                        </tr>
-
-                        <tr>
-                            <td>Urea Fertilizer</td>
-                            <td>LKR 1000</td>
-                            <td>Due</td>
-                            <td><span class="status inProgress">In Progress</span></td>
-                        </tr>
+                            <td>Farm Worker</td>
+                            <td>Aruna Gamage</td>
+                            <td>LKR 2000/hour</td>
+                            <td>Looking for a farm worker to help with apply pesticides.</td>
+                        </tr>                        
                     </tbody>
                 </table>
             </div>            
