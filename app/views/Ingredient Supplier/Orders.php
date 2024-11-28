@@ -8,7 +8,6 @@
 </head>
 <body>
 <?php require 'sidebar.php';?>
-
     
         <h1>Orders</h1>
         <div class="filter-options">

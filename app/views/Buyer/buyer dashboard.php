@@ -55,8 +55,7 @@
             <div class="details">
                 <div class="recentOrders">
                     <div class="cardHeader">
-                        <h2>Recent Bids</h2>
-                        <a href="<?php echo URLROOT;?>/BuyerController/bidProduct" class="btn">View All</a>
+                        <h2>Recent Bids</h2>                        
                     </div>
 
                     <table>
@@ -70,51 +69,51 @@
 
                         <tbody>
                             <tr>
-                                <td>Dry Maize</td>
+                                <td>Dry Corn</td>
                                 <td>LKR 1200</td>
-                                <td><span class="status delivered">Accepted</span></td>
+                                <td><span class="accepted">Accepted</span></td>
                             </tr>
 
                             <tr>
-                                <td>Fresh Maize</td>
+                                <td>Fresh Corn</td>
                                 <td>LKR 2500</td>
-                                <td><span class="status pending">Pending</span></td>
+                                <td><span class="pending">Pending</span></td>
                             </tr>
 
                             <tr>
-                                <td>Dry Maize</td>
+                                <td>Dry Corn</td>
                                 <td>LKR 1200</td>
-                                <td><span class="status return">Rejected</span></td>
+                                <td><span class="accepted">Accepted</span></td>
                             </tr>
 
                             <tr>
-                                <td>Fresh Maize</td>
+                                <td>Fresh Corn</td>
                                 <td>LKR 1700</td>
-                                <td><span class="status inProgress">Pending</span></td>
+                                <td><span class="accepted">Accepted</span></td>
                             </tr>
 
                             <tr>
-                                <td>Dry Maize</td>
+                                <td>Dry Corn</td>
                                 <td>LKR 1200</td>
-                                <td><span class="status delivered">Accepted</span></td>
+                                <td><span class="accepted">Accepted</span></td>
                             </tr>
 
                             <tr>
-                                <td>Fresh Maize</td>
+                                <td>Fresh Corn</td>
                                 <td>LKR 2000</td>
-                                <td><span class="status pending">Pending</span></td>
+                                <td><span class="pending">Pending</span></td>
                             </tr>
 
                             <tr>
-                                <td>Dry Maize</td>
+                                <td>Dry Corn</td>
                                 <td>LKR 1500</td>
-                                <td><span class="status return">Rejected</span></td>
+                                <td><span class="accepted">Accepted</span></td>
                             </tr>
 
                             <tr>
-                                <td>Fresh Maize</td>
+                                <td>Fresh Corn</td>
                                 <td>LKR 1000</td>
-                                <td><span class="status inProgress">Pending</span></td>
+                                <td><span class="pending">Pending</span></td>
                             </tr>
                         </tbody>
                     </table>

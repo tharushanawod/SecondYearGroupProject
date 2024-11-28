@@ -10,11 +10,9 @@
     
 <?php require 'sidebar.php';?>
     
-    <div class="header-content">        
-        <h1>Purchase History</h1>        
-    </div>           
-
-    <div class="container">
+<div class="container">      
+    <h2 class="header-content">Purchase History</h2>        
+            
         <table id="purchaseHistory">
             <thead>
                 <tr>
@@ -23,8 +21,7 @@
                     <th>Purchase Date</th>
                     <th>Quantity</th>
                     <th>Price</th>
-                    <th>Status</th>
-                    <th>Actions</th>
+                    <th>Status</th>                    
                 </tr>
             </thead>
             <tbody>
@@ -34,8 +31,7 @@
                     <td>2024-04-25</td>
                     <td>10 kg</td>
                     <td>LKR 1200</td>
-                    <td>Delivered</td>
-                    <td><button class="action-btn">View Product</button> </td>
+                    <td>Delivered</td>                    
                 </tr>
                 <tr>
                     <td>Product 2</td>
@@ -43,8 +39,7 @@
                     <td>2024-05-11</td>
                     <td>5 kg</td>
                     <td>LKR 1400</td>
-                    <td>In Transit</td>
-                    <td><button class="action-btn">View Product</button> </td>
+                    <td>In Transit</td>                    
                 </tr>
                 <tr>
                     <td>Product 3</td>
@@ -53,7 +48,6 @@
                     <td>5 kg</td>
                     <td>LKR 1400</td>
                     <td>In Transit</td>
-                    <td><button class="action-btn">View Product</button> </td>
                 </tr>
                 <tr>
                     <td>Product 4</td>
@@ -61,11 +55,10 @@
                     <td>2024-08-22</td>
                     <td>5 kg</td>
                     <td>LKR 1400</td>
-                    <td>In Transit</td>
-                    <td><button class="action-btn">View Product</button></td>
+                    <td>In Transit</td>                    
                 </tr>
             </tbody>
         </table>
-    </div>
+</div>
 </body>
 </html>

@@ -13,7 +13,7 @@
 
         <div class="main-content">
             <div class="main-content-header">
-                <h1>Supplier Dashboard</h1>
+                <h1 >Supplier Dashboard</h1>
             </div>
 
             <div class="cardBox">
@@ -55,9 +55,7 @@
                 <div class="recentOrders">
                     <div class="cardHeader">
                         <h2>Recent Orders</h2>
-                        <a href="Orders.html" class="btn">View All</a>
                     </div>
-
                     <table>
                         <thead>
                             <tr>
@@ -73,56 +71,56 @@
                                 <td>Urea (Granular/Prilled)</td>
                                 <td>LKR 1200</td>
                                 <td>Paid</td>
-                                <td><span class="status delivered">Delivered</span></td>
+                                <td><span class="delivered">Delivered</span></td>
                             </tr>
 
                             <tr>
                                 <td>TF 222 Hybrid Maize seeds</td>
                                 <td>LKR 2500</td>
                                 <td>Due</td>
-                                <td><span class="status pending">Pending</span></td>
+                                <td><span class="pending">Pending</span></td>
                             </tr>
 
                             <tr>
                                 <td>Chlorpyrifos</td>
                                 <td>LKR 1200</td>
                                 <td>Paid</td>
-                                <td><span class="status return">Return</span></td>
+                                <td><span class="return">Return</span></td>
                             </tr>
 
                             <tr>
                                 <td>Lambda-Cyhalothrin</td>
                                 <td>LKR 1700</td>
                                 <td>Due</td>
-                                <td><span class="status inProgress">In Progress</span></td>
+                                <td><span class="inProgress">In Progress</span></td>
                             </tr>
 
                             <tr>
                                 <td>SA 336 Hybrid Maize seeds</td>
                                 <td>LKR 1200</td>
                                 <td>Paid</td>
-                                <td><span class="status delivered">Delivered</span></td>
+                                <td><span class="delivered">Delivered</span></td>
                             </tr>
 
                             <tr>
                                 <td>Zinc Sulphate</td>
                                 <td>LKR 2000</td>
                                 <td>Due</td>
-                                <td><span class="status pending">Pending</span></td>
+                                <td><span class="pending">Pending</span></td>
                             </tr>
 
                             <tr>
                                 <td>Emamectin Benzoate</td>
                                 <td>LKR 1500</td>
                                 <td>Paid</td>
-                                <td><span class="status return">Return</span></td>
+                                <td><span class="return">Return</span></td>
                             </tr>
 
                             <tr>
                                 <td>HP 4311 Hybrid Maize Seeds</td>
                                 <td>LKR 1000</td>
                                 <td>Due</td>
-                                <td><span class="status inProgress">In Progress</span></td>
+                                <td><span class="inProgress">In Progress</span></td>
                             </tr>
                         </tbody>
                     </table>

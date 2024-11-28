@@ -3,7 +3,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Need support?</title>
-  <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Ingredient Supplier/Contact us.css">
+  <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Ingredient Supplier/ContactUs.css">
 </head>
 <body>
   <?php require 'sidebar.php'; ?>

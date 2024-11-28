@@ -6,9 +6,6 @@
 }
 
 body {
-  font-family: sans-serif;
-  margin: 0;
-  padding: 0;
   background-color: white;
   background-size: cover;
   background-position: center;
@@ -104,30 +101,15 @@ body {
   grid-gap: 30px;
 }
 
-.details .cardHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.cardHeader h2 {
+.details .cardHeader h2{
+  margin-top:20px;
   font-weight: 600;
   color: #032b03;
 }
 
-.cardHeader .btn {
-  position: relative;
-  padding: 5px 10px;
-  background-color: #74dbb2;
-  text-decoration: none;
-  color: #032b03;
-  border-radius: 6px;
-}
-
 .details table {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
+  border-collapse: collapse;  
 }
 
 .details table thead td {
@@ -159,42 +141,42 @@ body {
   border-bottom-right-radius: 10px;
 }
 .details .recentOrders table tr td:nth-child(2) {
-  text-align: end;
+  text-align: start;
 }
 .details .recentOrders table tr td:nth-child(3) {
   text-align: center;
 }
-.status.delivered {
-  padding: 2px 4px;
-  background: #38c33a;
-  color: #032b03;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 500;
+.details .recentOrders table tr td:nth-child(4) {
+  text-align: start;
 }
-.status.pending {
-  padding: 2px 4px;
-  background: #d8e709;
-  color: #032b03;
-  border-radius: 4px;
+
+.delivered, .pending , .return, .inProgress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #141414;
+  border-radius: 8px;
   font-size: 14px;
-  font-weight: 500;
+  width: 100px;
+  height: 30px;
+  padding: 0; 
+  text-align: center;
 }
-.status.return {
-  padding: 2px 4px;
-  background: #e35d5d;
-  color: #032b03;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 500;
+
+.delivered{
+  background-color: #38c33a;
 }
-.status.inProgress {
-  padding: 2px 4px;
-  background: #6bb9dd;
-  color: #032b03;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 500;
+
+.pending {  
+  background-color: #d8e709;  
+}
+
+.return {  
+  background-color: #e35d5d;  
+}
+
+.inProgress {  
+  background-color: #6bb9dd;  
 }
 
 .recentCustomers .imgBx {
@@ -204,6 +186,7 @@ body {
   border-radius: 50px;
   overflow: hidden;
 }
+
 .recentCustomers .imgBx img {
   position: absolute;
   top: 0;
@@ -232,17 +215,3 @@ body {
   color: #032b03;
 }
 
-
-
-table tbody tr {
-  transition: all 0.3s ease; /* Smooth transition for better effect */
-}
-
-table tbody tr:hover {
-  border-radius: 10px; /* Add border radius */
-  background-color: #f0f0f0; /* Optional: Add a background color for better visibility */
-  transform: scale(
-    1.02
-  ); /* Optional: Slightly scale the row for a nice effect */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for more emphasis */
-}

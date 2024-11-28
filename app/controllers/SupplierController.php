@@ -4,7 +4,22 @@ class SupplierController extends Controller {
     private $Product;
 
     public function __construct() {
+        if (!$this->isloggedin()) {
+            unset($_SESSION['user_id']);
+            unset($_SESSION['user_email']);
+            unset($_SESSION['user_name']);
+            session_destroy();
+            Redirect('LandingController/login');
+        }
         $this->Product = $this->model('Product');
+    }
+
+    public function isloggedin() {
+        if (isset($_SESSION['user_id']) && ($_SESSION['user_role']=='supplier')){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function index() {
@@ -22,6 +37,10 @@ class SupplierController extends Controller {
     }
 
     public function add() {
+        if ($_SESSION['user_role'] !== 'supplier') {
+            header('Location: ' . URLROOT . '/SupplierController/productManagement');
+            exit();
+        }
         $this->view('Ingredient Supplier/Add Product');
     }
 
@@ -171,7 +190,7 @@ class SupplierController extends Controller {
         ]);
     }
 
-    public function seeds() {
+    public function seeds() {        
         $products = $this->Product->getProductsByCategory('Seeds');
         $fertilizerProducts = $this->Product->getProductsByCategory('Fertilizer');
         $pestControlProducts = $this->Product->getProductsByCategory('Pest Control');
@@ -200,7 +219,7 @@ class SupplierController extends Controller {
 
     public function requestHelp() {
         $data = [];
-        $this->view('Ingredient Supplier/Contact us', $data);
+        $this->view('Ingredient Supplier/ContactUs', $data);
     }
 
     public function payment() {

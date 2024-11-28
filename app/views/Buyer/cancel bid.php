@@ -11,7 +11,7 @@
 <?php require 'sidebar.php';?>
 
     <div class="header-content">
-        <h1>Cancel Bid</h1>        
+        <h1>Manage Bids</h1>        
     </div>    
 
     <div class="container">

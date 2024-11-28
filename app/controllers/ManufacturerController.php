@@ -2,6 +2,8 @@
 
 class ManufacturerController extends Controller
 {
+    private $ManufacturerModel;
+
     public function __construct()
     {
         if(!$this->isloggedin()){
