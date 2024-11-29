@@ -1,10 +1,7 @@
 .sidebar {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: sans-serif;
   width: 250px;
-  background-color: transparent;
+  background: rgb(214,237,205);
+  background: linear-gradient(360deg, rgba(214,237,205,0.6867997198879552) 0%, rgba(97,227,78,0.7960434173669468) 45%, rgba(11,218,87,0.44870448179271705) 100%);
   padding: 20px;    
   height: 100%;
   position: fixed;
@@ -45,12 +42,13 @@
 
 .sidebar ul li a {
   text-decoration: none;
-  color: #111010;
+  color: #0a0a0a;
   display: block;
   padding: 10px;  
   border-radius: 25px;
   text-align: left;
-  font-size: 16px;      
+  font-size: 16px; 
+  transition: all 0.3s ease;        
 }
 
 .sidebar ul li a:hover {
@@ -66,5 +64,17 @@
 svg {
   height: 15px;
   width: 15px;
+}
+
+.sidebar {
+  animation: slideIn 0.5s ease;
+}
+@keyframes slideIn {
+  from {
+      transform: translateX(-100%);
+  }
+  to {
+      transform: translateX(0);
+  }
 }
 

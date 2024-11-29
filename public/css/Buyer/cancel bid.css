@@ -2,9 +2,10 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #ffffff;
+    
     background-size: cover;
-    background-position: center;
+    background: rgb(34,123,4);
+    background: linear-gradient(360deg, rgba(34,123,4,0.29184173669467783) 0%, rgba(77,198,145,1) 42%, rgba(164,191,152,0.4318977591036415) 100%);und-position: center;
 }
 
 .header-content {
@@ -25,22 +26,23 @@ body {
     display:flex;
     gap: 30px;
     width: 65%;
-    margin: 20px auto;
+    margin: 10px auto;
     padding: 20px;
     background-color: none;    
     margin-left:380px;
 }
 
 .product-card {    
+    margin: 20px; /* Add uniform margin */
     padding: 20px;
     background-color: #ffffff;
     border-radius: 10px;
     text-align: left;
-    width: calc(100%/3 - 40px);
+    width: calc(100% / 3 - 40px); /* Account for margin */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.product-card h3{
+.product-card h3 {
     text-align: center;
 }
 
@@ -49,7 +51,7 @@ body {
     height: 250px;
     object-fit: cover;
     border-radius: 10px;
-    margin-right: 20px;
+    margin: 0 auto 20px; /* Center and add spacing below */
 }
 
 .product-details {
@@ -57,7 +59,7 @@ body {
 }
 
 .product-details h3 {
-    margin: 0 0 10px 0;
+    margin: 0 0 10px;
     font-size: 24px;
     color: #333;
 }
@@ -145,7 +147,7 @@ body {
     color: white;
     cursor: pointer;
     font-size: 16px;
-    width: 100%;
+    width: 95%;
     margin-bottom: 10px;
 }
 

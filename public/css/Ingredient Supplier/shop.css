@@ -1,5 +1,5 @@
 body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-family: sans-serif;
     background-color: #ffffff;
     margin: 0;
     padding: 0;
@@ -102,7 +102,7 @@ body {
 
 .product {
     background-color: #fff;
-    border: 1px solid #ddd;
+    border: 1px solid #10a82e;
     border-radius: 10px;
     padding: 20px;
     text-align: center;
