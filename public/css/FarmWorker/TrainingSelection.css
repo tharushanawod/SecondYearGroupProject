@@ -1,69 +1,73 @@
 @import url(../components/sidebar.css);
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
+  background-color: #f4f4f4;
 }
 
 .training-container {
-    width: 68%;
-    margin: 50px auto;
-    padding: 20px;  
-    margin-left: 340px;
-    border-radius: 10px;
+  width: 68%;
+  margin: 50px auto;
+  padding: 20px;
+  margin-left: 340px;
+  border-radius: 10px;
 }
 
 h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #065618;
-    font-size: 45px;
-    margin-left: 300px;
-    text-shadow:0 0 10px #b4eabd;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #065618;
+  font-size: 45px;
+  margin-left: 300px;
+  text-shadow: 0 0 10px #b4eabd;
 }
 
 .training {
-    width: 100%;
-    border: 1px solid #fcf9f9;
-    border-radius: 8px;
-    padding: 30px;
-    margin-bottom: 16px;
-    background-color: #f6fefc;
-    box-shadow: 0 4px 6px #c0f1cb;    
+  width: 100%;
+  border: 1px solid #fcf9f9;
+  border-radius: 8px;
+  padding: 30px;
+  margin-bottom: 16px;
+  background-color: #f6fefc;
+  box-shadow: 0 4px 6px #c0f1cb;
 }
 
 .training h3 {
-    margin: 0;
-    font-size: 22px;
-    color: #07582d;
-    margin-bottom:15px;
-    margin-top: 5px;    
+  margin: 0;
+  font-size: 22px;
+  color: #07582d;
+  margin-bottom: 15px;
+  margin-top: 5px;
 }
 
 .training p {
-    margin: 5px 0;
-    font-size: 16px;
+  margin: 5px 0;
+  font-size: 16px;
 }
 
 .training img {
-    width: 100%;
-    height: 400px;
-    border-radius: 5px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+  width: 100%;
+  height: 400px;
+  border-radius: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .select-btn {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    margin-top: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 .select-btn:hover {
-    background-color: #218838;
+  background-color: #218838;
 }

@@ -27,7 +27,7 @@
           </div>
           <div class="stat-card">
             <span>Farm Workers</span>
-            <?php $farmworkerCount = $this->UserCount('farmerworkr'); ?>
+            <?php $farmworkerCount = $this->UserCount('farmworker'); ?>
             <h3><?php echo $farmworkerCount; ?></h3>
             <div class="user-icon"><img width="50" height="50" src="https://img.icons8.com/external-outline-design-circle/50/external-Labour-carpenter-outline-design-circle.png" alt="external-Labour-carpenter-outline-design-circle"/></div>
           </div>

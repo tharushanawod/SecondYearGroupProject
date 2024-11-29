@@ -305,6 +305,20 @@ class FarmerController extends Controller {
         $this->View('Farmer/ManageProfile', $data);
     }
 
+    public function ViewCart() {
+        $data = [];
+        $this->View('Farmer/ViewCart', $data);
+    }
+    public function Checkout() {
+        $data = [];
+        $this->View('Farmer/Checkout', $data);
+    }
+
+    public function CheckoutConfirmation() {
+        $data = [];
+        $this->View('Farmer/CheckoutConfirmation', $data);
+    }
+
 }
 ?>
 

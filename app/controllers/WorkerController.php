@@ -15,7 +15,7 @@ class WorkerController extends Controller {
     }
 
     public function isloggedin() {
-        if (isset($_SESSION['user_id']) && ($_SESSION['user_role']=='worker')){
+        if (isset($_SESSION['user_id']) && ($_SESSION['user_role']=='farmworker')){
             return true;
         } else {
             return false;
@@ -66,9 +66,9 @@ class WorkerController extends Controller {
         $this->view('FarmWorker/Worker Management');
     }  
 
-    public function requestHelp() {
+    public function RequestHelp() {
         $data = [];
-        $this->view('FarmWorker/Contact us', $data);
+        $this->view('FarmWorker/RequestHelp', $data);
     }
 
     public function jobDescription() {
@@ -86,6 +86,7 @@ class WorkerController extends Controller {
     public function manageProfile() {
         $this->view('FarmWorker/ManageProfile');
     }
+ 
 
 
 

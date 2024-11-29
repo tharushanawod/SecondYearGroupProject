@@ -20,6 +20,7 @@
 
             <div class="cardBox">
                 <div class="card">
+                    <div><img width="50" height="50" src="https://img.icons8.com/ios/50/shopping-cart--v1.png" alt="shopping-cart--v1"/></div>
                     <div>
                         <div class="numbers">1,504</div>
                         <div class="cardName">Products</div>

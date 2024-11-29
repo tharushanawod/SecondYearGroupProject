@@ -217,31 +217,12 @@ class SupplierController extends Controller {
         $this->view('Ingredient Supplier/Orders', $data);
     }
 
-    public function requestHelp() {
+    public function RequestHelp() {
         $data = [];
-        $this->view('Ingredient Supplier/ContactUs', $data);
+        $this->view('Ingredient Supplier/RequestHelp', $data);
     }
 
-    public function payment() {
-        $data = [];
-        $this->view('Ingredient Supplier/Payment', $data);
-    }
-
-    public function viewCart() {
-        $data = [];
-        $this->view('Ingredient Supplier/View cart', $data);
-    }
-
-    public function checkout() {
-        $data = [];
-        $this->view('Ingredient Supplier/Checkout', $data);
-    }
-
-    public function checkoutConfirmation() {
-        $data = [];
-        $this->view('Ingredient Supplier/Checkout Confirmation', $data);
-    }
-
+  
     public function manageProfile() {
         $data = [];
         $this->view('Ingredient Supplier/ManageProfile', $data);

@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Buyer/pendingPayments.css">
 </head>
 <body>
-<?php require 'sidebar.php'; ?>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
 <div class="payments">
    
     <h2 class="payments-header">Payments</h2>            

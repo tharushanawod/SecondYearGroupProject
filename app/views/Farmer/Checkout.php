@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Ingredient Supplier/Checkout.css">
+    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Farmer/Checkout.css">
     <title>Checkout</title>
 </head>
 <body>
@@ -14,7 +14,7 @@
     <div class="container">
        <div class="container-inside ">
         <form class="billing-details">
-            <h2>Billing details</h2>
+            <h2>Payment details</h2>
             <label for="first-name">First name *</label>
             <input type="text" id="first-name" required>
 
@@ -85,7 +85,7 @@
                 </label>
             </div>
 
-            <a href="<?php echo URLROOT;?>/SupplierController/checkoutConfirmation"><button class="place-order">PLACE ORDER</button></a>
+            <a href="<?php echo URLROOT;?>/FarmerController/CheckoutConfirmation"><button class="place-order">PLACE ORDER</button></a>
         </div> 
     </div>   
 </body>

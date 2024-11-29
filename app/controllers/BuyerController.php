@@ -57,9 +57,9 @@ class BuyerController extends Controller {
         $this->View('Buyer/purchase history', $data);
     }
 
-    public function requestHelp() {
+    public function RequestHelp() {
         $data = [];
-        $this->View('Buyer/Contact us', $data);
+        $this->View('Buyer/RequestHelp', $data);
     }
 
     public function ManageProfile()

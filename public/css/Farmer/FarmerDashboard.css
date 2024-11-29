@@ -166,6 +166,10 @@ body {
   text-align: center;
 }
 .status.delivered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   padding: 2px 4px;
   background: #38c33a;
   color: #032b03;
@@ -174,6 +178,10 @@ body {
   font-weight: 500;
 }
 .status.pending {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   padding: 2px 4px;
   background: #d8e709;
   color: #032b03;
@@ -182,6 +190,10 @@ body {
   font-weight: 500;
 }
 .status.return {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   padding: 2px 4px;
   background: #e35d5d;
   color: #032b03;
@@ -190,6 +202,10 @@ body {
   font-weight: 500;
 }
 .status.inProgress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   padding: 2px 4px;
   background: #6bb9dd;
   color: #032b03;
@@ -232,8 +248,6 @@ body {
 .recentCustomers table tr:hover td h4 span {
   color: #032b03;
 }
-
-
 
 table tbody tr {
   transition: all 0.3s ease; /* Smooth transition for better effect */

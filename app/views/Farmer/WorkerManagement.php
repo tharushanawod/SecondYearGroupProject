@@ -8,7 +8,7 @@
 </head>
 <body>
  
-<?php require 'sidebar.php';?>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
 
 <div class="maincontainer">
 <h1> Farm Workers</h1>

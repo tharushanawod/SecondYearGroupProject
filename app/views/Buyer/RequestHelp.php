@@ -3,10 +3,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Need support?</title>
-  <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Buyer/ContactUS.css">
+  <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Buyer/RequestHelp.css">
 </head>
 <body>
-  <?php require 'sidebar.php'; ?>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
   <div class="container">
     <!-- <div class="image-container">
         <img src="<?php echo URLROOT;?>/images/helper.png" alt="Support">

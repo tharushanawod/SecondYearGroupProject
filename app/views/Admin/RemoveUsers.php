@@ -23,7 +23,7 @@
       <table>
       <thead>
             <tr>
-              <th>CUSTOMER ID</th>
+              <th>User ID</th>
               <th>Name</th>
               <th>CONTACT NUMBER</th>
               <th>CREATED DATE</th>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Ingredient Supplier/Checkout Confirmation.css">
+    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Farmer/CheckoutConfirmation.css">
     <title>Checkout Confirmation</title>
 </head>
 <body>

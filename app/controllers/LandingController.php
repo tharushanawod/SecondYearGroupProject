@@ -230,7 +230,7 @@ class LandingController extends Controller{
         Redirect('SupplierController/Dashboard');
     }
     else if($user->title == 'farmworker'){
-        Redirect('FarmworkerController/Dashboard');
+        Redirect('WorkerController/Dashboard');
     }
     else if($user->title == 'manufacturer'){
         Redirect('ManufacturerController/Dashboard');

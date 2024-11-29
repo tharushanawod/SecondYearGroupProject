@@ -32,7 +32,7 @@
                 $dashboardController = 'SupplierController';
                 break;
             case 'farmworker':
-                $dashboardController = 'FarmWorkerController';
+                $dashboardController = 'WorkerController';
                 break;
             case 'moderator':
                 $dashboardController = 'ModeratorController';

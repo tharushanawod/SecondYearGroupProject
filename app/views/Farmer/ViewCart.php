@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Ingredient Supplier/View cart.css">
+    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Farmer/ViewCart.css">
     <title>Cart</title>
 </head>
 <body>
@@ -55,7 +55,7 @@
                 <span>LKR 1500.00</span>
             </div>
             <hr>
-            <a href="<?php echo URLROOT;?>/SupplierController/checkout"><button class="checkout-button">PROCEED TO CHECKOUT</button></a>
+            <a href="<?php echo URLROOT;?>/FarmerController/Checkout"><button class="checkout-button">PROCEED TO CHECKOUT</button></a>
         </div>
     </div>
 </body>
