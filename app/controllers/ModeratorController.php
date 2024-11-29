@@ -28,22 +28,14 @@ class ModeratorController extends Controller {
         $this->View('Moderator/Landing', $data);
     }
 
+    public function Help() {
+        $data = [];
+        $this->View('Moderator/Help', $data);
+    }
+  
 
-    // public function index() {
 
-    //     $data = [];
-    //     $this->View('Moderator/Landing', $data);
-    // }
-
-    // public function Help() {
-    //     $data = [];
-    //     $this->View('Moderator/Help', $data);
-    // }
-
-    // public function LabourRequests() {
-    //     $data = [];
-    //     $this->View('Moderator/Labourrequests', $data);
-    // }
+   
 
 
 }

@@ -1,6 +1,5 @@
-
-@import url(../components/sidebar.css);
-*{
+@import url(sidebar.css);
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -13,15 +12,18 @@
   padding-left: 250px;
 }
 .header {
-  background: rgb(221,246,237);
-  background: linear-gradient(90deg, rgba(221,246,237,1) 54%, rgba(50,182,132,1) 100%);
+  background: rgb(221, 246, 237);
+  background: linear-gradient(
+    90deg,
+    rgba(221, 246, 237, 1) 54%,
+    rgba(50, 182, 132, 1) 100%
+  );
   padding: 20px;
   text-align: center;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
- 
 }
 .header h2 {
   margin: 0;

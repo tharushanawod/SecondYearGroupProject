@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Buyer/landing page.css">
 </head>
 <body>
-    <?php require 'sidebar.php';?>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
 
     <div class="content-wrapper">        
         <div class="container-card">

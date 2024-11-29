@@ -7,7 +7,7 @@
     <title>Checkout</title>
 </head>
 <body>
-    <?php require 'navbar.php';?>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
 
     <h1>Checkout</h1>
 

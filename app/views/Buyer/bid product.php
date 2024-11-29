@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<?php require 'sidebar.php';?>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
 
     <div class="header-content">
         <h1>Bid On Products</h1>

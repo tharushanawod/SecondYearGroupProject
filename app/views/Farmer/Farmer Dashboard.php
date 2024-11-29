@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Farmer/Farmer Dashboard.css">
 </head>
 <body>
-    <?php require 'header.php';?>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
 
     <div class="dashboard-container">
         

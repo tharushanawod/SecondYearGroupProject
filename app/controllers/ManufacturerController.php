@@ -142,7 +142,7 @@ public function UpdateLastPrice($priceid)
 
     public function RequestHelp()
     {
-        $this->view('Manufacturer/RequestHelp');
+        $this->view('inc/RequestHelp');
     }
     public function StockHolders()
     {

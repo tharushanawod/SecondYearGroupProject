@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Buyer/place bid.css">
 </head>
 <body>
-<?php require 'sidebar.php';?>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
     
     <div class="header-content">
         <h1>Place Your Bid</h1>        

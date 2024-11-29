@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Ingredient Supplier/landing page.css">
 </head>
 <body>
-    <?php require 'navbar.php';?>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
     <div class="content-wrapper">
         <img src="<?php echo URLROOT;?>/images/images/img29.png" alt="Product Image" class="large-image">
         <div class="container">

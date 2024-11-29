@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Manufacturer/AddPrices.css">
 </head>
 <body>
-  <?php require 'sidebar.php'; ?>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
   <div class="container">
     <div class="form-container">
       <h1>Add Your Pricing</h1>

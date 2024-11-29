@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/FarmWorker/JobDescription.css">
 </head>
 <body>
-    <?php require 'sidebar.php'; ?>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
     <h1>Job Description</h1>
     <button id="changeDescriptionBtn">Change Description</button>
     <div class="job-description">

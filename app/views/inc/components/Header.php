@@ -28,6 +28,15 @@
             case 'manufacturer':
                 $dashboardController = 'ManufacturerController';
                 break;
+            case 'supplier':
+                $dashboardController = 'SupplierController';
+                break;
+            case 'farmworker':
+                $dashboardController = 'FarmWorkerController';
+                break;
+            case 'moderator':
+                $dashboardController = 'ModeratorController';
+                break;
             default:
                 $dashboardController = 'LandingController';
         }

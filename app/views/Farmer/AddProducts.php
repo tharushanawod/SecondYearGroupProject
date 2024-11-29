@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Farmer/AddProducts.css">
 </head>
 <body>
-<?php require 'sidebar.php';?>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
     <div class="container">
         <div class="header">
             <h1>PRODUCTS</h1>

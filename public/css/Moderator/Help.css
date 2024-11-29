@@ -1,10 +1,14 @@
+@import url(sidebar.css);
 
-@import url(../components/sidebar.css);
-*{
+* {
+  font-family: sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: sans-serif;
+}
+
+body {
+  background-color: #f5f5f5;
 }
 .container {
   display: flex;
@@ -13,8 +17,8 @@
   padding-left: 250px;
 }
 .header {
-  background: rgb(221,246,237);
-  background: linear-gradient(90deg, rgba(221,246,237,1) 54%, rgba(50,182,132,1) 100%);
+    background: rgb(224,231,255);
+    background: linear-gradient(90deg, rgba(224,231,255,1) 0%, rgba(224,231,255,1) 28%, rgba(135,158,241,1) 100%);
   padding: 20px;
   text-align: center;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -32,10 +36,64 @@
   flex-grow: 1;
   overflow: hidden;
 }
-
+.chatsidebar {
+  width: 250px; /* Fixed width */
+ background-color: white;
+  padding: 20px;
+  
+  flex-shrink: 0; /* Prevents it from shrinking */
+ 
+}
+.chatsidebar h2 {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+.chat-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.chat-list li {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.chat-list li.active {
+  background-color: #e0e7ff;
+}
+.chat-list li .icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #d1d5db;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+.chat-list li .icon img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+.chat-list li .details {
+  flex-grow: 1;
+}
+.chat-list li .details .name {
+  font-size: 14px;
+  font-weight: bold;
+}
+.chat-list li .details .role {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-top: 2px;
+}
 .chat-window {
   flex-grow: 1;
-  background-color: #ddf6ed;
+  background-color: #e0e7ff;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -76,7 +134,7 @@
   max-width: 70%;
 }
 .message.user .text {
-  background-color: #74dbb2;
+  background-color: #b3b8cc;
 }
 .message .text p {
   margin: 0;
@@ -107,7 +165,7 @@
   outline: none;
 }
 .input-area button {
-  background-color: #32b684;
+  background-color: #4f46e5;
   color: #ffffff;
   border: none;
   padding: 10px 15px;

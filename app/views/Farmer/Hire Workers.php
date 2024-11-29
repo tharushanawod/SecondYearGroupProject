@@ -8,7 +8,7 @@
       
 </head>
 <body>
-<?php require 'header.php';?>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
 
     <section class="sub-header">
         <h2>Find the Best Farm Workers for Your Needs</h2>

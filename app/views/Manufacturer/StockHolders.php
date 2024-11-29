@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Manufacturer/StockHolders.css">
 </head>
 <body>
-<?php require 'sidebar.php';?>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
 
 <div class="maincontainer">
 <h1> Stock Holders (>1000 Kg)</h1>

@@ -9,7 +9,7 @@
     
 </head>
 <body>
-<?php require 'sidebar.php';?>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
 
     <div class="container">
     <h1>Orders</h1>

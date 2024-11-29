@@ -1,74 +1,115 @@
+
 .sidebar {
-    width: 250px;
-    background-color: rgb(255, 255, 255);
-    padding: 20px;
-    border-right: 1px solid #ddd;
-    height: 100%;
-    position: fixed;
-    border: none;
-    overflow: hidden;
+  width: 250px;
+  background-color: rgb(191, 36, 36);
+  padding: 20px;
+  border-right: 1px solid #ddd;
+  height: 100%;
+  position: fixed;
+  border: none;
+  overflow: hidden;
+  transition: width 0.3s ease;
+}
+
+.sidebar .profile {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.sidebar .profile img {
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+}
+
+.sidebar .profile p {
+  margin: 5px 0;
+  font-size: 16px;
+  color: black;
+}
+
+.sidebar .profile a {
+  text-decoration: none;
+  color: #f8f8f8;
+  font-size: 14px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: #111010;
+  display: block;
+  padding: 10px;
+  border-radius: 25px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.sidebar ul li a:hover {
+  background-color: #ddd;
+  border-radius: 10px;
+  transform: scale(1.04);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+svg {
+  height: 20px;
+  width: 20px;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.links img{
+  width: 20px;
+  height: 20px;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+      width: 100px;
+      padding: 10px;
   }
-  
-  .sidebar .profile {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
+
   .sidebar .profile img {
     border-radius: 50%;
-    width: 80px;
-    height: 80px;
+    width: 40px;
+    height: 40px;
   }
-  
+ 
   .sidebar .profile p {
-    margin: 5px 0;
-    font-size: 16px;
-    color: black;
+    display: none;
   }
-  
-  .sidebar .profile a {
-    text-decoration: none;
-    color: #f8f8f8;
-    font-size: 14px;
-  }
-  
-  .sidebar ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .sidebar ul li {
-    margin-bottom: 10px;
-  }
-  
   .sidebar ul li a {
-    text-decoration: none;
-    color: #111010;
-    display: block;
-    padding: 10px;
-  
-    border-radius: 25px;
-    font-size: 16px;
+      padding: 10px;
+      text-align: center;
   }
-  
-  .sidebar ul li a {
-    transition: all 0.3s ease; /* Smooth transition for better effect */
-  }
-  
-  .sidebar ul li a:hover {
-    background-color: #ddd;
-    border-radius: 10px; /* Add border radius */
-    transform: scale(
-      1.04
-    ); /* Optional: Slightly scale the row for a nice effect */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for more emphasis */
-  }
-  svg {
-    height: 15px;
-    width: 15px;
-  }
+
   .links {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+      justify-content: center;
   }
+
+  svg {
+    height: 25px;
+    width: 25px;
+  }
+  .links p {
+      display: none;
+  }
+  .links img{
+    width: 25px;
+    height: 25px;
+  }
+
+}

@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/FarmWorker/TrainingSelection.css">
 </head>
 <body>
-<?php require 'sidebar.php'; ?>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
     <h2>Available Training Programs</h2>
     <div class="training-container">        
         <div class="training">

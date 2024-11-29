@@ -9,7 +9,7 @@
 <body>
 
         
-    <?php require 'sidebar.php';?> 
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
 
         <div class="main-content">
             <div class="main-content-header">

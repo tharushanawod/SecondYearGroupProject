@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Ingredient Supplier/Add Product.css">
 </head>
 <body>
-<?php require 'sidebar.php';?>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
 
 <h1>Delete Product</h1>
 <div class="container">

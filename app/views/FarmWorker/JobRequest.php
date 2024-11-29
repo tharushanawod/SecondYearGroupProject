@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/FarmWorker/JobRequest.css">
 </head>
 <body>
-<?php require 'sidebar.php'; ?>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
     <h1>Job Requests</h1>
     <div class="requests-container">        
         <div class="request">

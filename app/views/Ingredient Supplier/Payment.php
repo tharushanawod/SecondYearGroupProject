@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/Ingredient Supplier/payment.css">
 </head>
 <body>
-    <?php require 'navbar.php'; ?>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
     
     <div class="product-page">
         <div class="image-card">

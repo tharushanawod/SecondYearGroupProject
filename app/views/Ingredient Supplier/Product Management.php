@@ -8,7 +8,7 @@
     <script src="<?php echo URLROOT;?>/js/Ingredient Supplier/ProductManagement.js" defer></script>
 </head>
 <body>
-<?php require 'sidebar.php';?>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
 
 <h1>Product Management</h1>
 <button class="add-product-btn" onclick="showModal('addProductModal')">Add Product</button>

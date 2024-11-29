@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Ingredient Supplier/Contact us.css">
 </head>
 <body>
-  <?php require 'sidebar.php'; ?>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
   <div class="container">
     <!-- <div class="image-container">
         <img src="<?php echo URLROOT;?>/images/helper.png" alt="Support">

@@ -8,7 +8,7 @@
     
 </head>
 <body>
-<?php require 'header.php';?>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
 
     <div class="container">
         <h1>Inventory Management</h1>

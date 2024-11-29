@@ -7,7 +7,7 @@
     <title>Cart</title>
 </head>
 <body>
-    <?php require 'navbar.php';?>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
     
     <div class="container">
         <h1>Cart</h1>

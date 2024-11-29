@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="<?php echo URLROOT;?>/public/css/ingredient supplier/Orders.css">
 </head>
 <body>
-<?php require 'sidebar.php';?>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
 
     
         <h1>Orders</h1>
