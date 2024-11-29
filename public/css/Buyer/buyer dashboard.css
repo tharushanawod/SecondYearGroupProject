@@ -10,7 +10,7 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f0fbf6;
+  background-color: #ffffff;
   background-size: cover;
   background-position: center;
 }
@@ -103,7 +103,7 @@ body {
   padding: 20px;
   display: grid;
   grid-template-columns: 2fr 1fr;
-  grid-gap: 30px;
+  grid-gap: 30px;  
 }
 
 .details .cardHeader {
@@ -117,78 +117,64 @@ body {
   color: #032b03;
 }
 
-.cardHeader .btn {
-  position: relative;
-  padding: 5px 10px;
-  background-color: #cdcece;
-  text-decoration: none;
-  color: #032b03;
-  border-radius: 6px;
-}
-
 .details table {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
+  border-collapse: collapse;    
 }
 
 .details table thead td {
   font-weight: 600;
 }
+
 .details .recentOrders table tr {
   color: #032b03;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);  
 }
+
 .details .recentOrders table tr:last-child {
-  border-bottom: none;
+  border-bottom: none; 
 }
+
 .details .recentOrders table tbody tr:hover {
-  background-color: #4e8e5b;
-  color: #032b03;
+  background-color: #8ce89f;
+  color: #032b03;  
 }
+
 .details .recentOrders table tr td {
-  padding: 10px;
+  padding: 10px;    
 }
+
 .details .recentOrders table tr td:last-child {
   text-align: end;
 }
+
 .details .recentOrders table tr td:nth-child(2) {
   text-align: end;
 }
+
 .details .recentOrders table tr td:nth-child(3) {
   text-align: center;
 }
-.status.delivered {
-  padding: 2px 4px;
-  background: #38c33a;
-  color: #032b03;
-  border-radius: 4px;
+
+.accepted, .pending{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #141414;
+  border-radius: 8px;
   font-size: 14px;
-  font-weight: 500;
+  width: 100px;
+  height: 30px;
+  padding: 0; 
+  text-align: center;
 }
-.status.pending {
-  padding: 2px 4px;
-  background: #d8e709;
-  color: #032b03;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 500;
+
+.accepted {  
+  background: #8fd1b7; 
 }
-.status.return {
-  padding: 2px 4px;
-  background: #e35d5d;
-  color: #032b03;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 500;
-}
-.status.inProgress {
-  padding: 2px 4px;
-  background: #6bb9dd;
-  color: #032b03;   
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 500;
+
+.pending {  
+  background: #0cbd26; 
 }
 
 .recentCustomers .imgBx {
@@ -207,21 +193,22 @@ body {
   object-fit: cover;
 }
 .recentCustomers table tr td {
-  padding: 12px 10px;
+  padding: 12px 10px;  
 }
 .recentCustomers table tr td h4 {
   font-size: 16px;
   font-weight: 500;
-  line-height: 1.2rem;
+  line-height: 1.2rem;  
 }
 .recentCustomers table tr td h4 span {
   font-size: 14px;
-  color: #032b03;
+  color: #032b03;  
 }
 .recentCustomers table tr:hover {
-background-color: #baf3c7;
-  color: #032b03;
+  background-color: #baf3c7;
+  color: #032b03;  
 }
 .recentCustomers table tr:hover td h4 span {
   color: #032b03;
 }
+

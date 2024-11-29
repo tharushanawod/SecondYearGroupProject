@@ -1,6 +1,6 @@
 .sidebar {
     width: 250px;
-    background-color: #ddefdf;
+    background-color:transparent;
     padding: 20px;    
     height: 100%;
     position: fixed;
@@ -44,7 +44,7 @@
     color: #111010;
     display: block;
     padding: 10px;
-    background-color: #ddefdf;
+    background-color: transparent;
     border-radius: 25px;
     text-align: left;
     font-size: 16px;      

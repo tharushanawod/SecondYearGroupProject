@@ -3,43 +3,16 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f9f8f2;
-  background-size: cover;  
-  background-position: center;
+  box-sizing: border-box;
+  font-family: sans-serif;
 }
 
-.header-content { 
-  padding: 20px;
-  display :flex;
-}
-
-.header-content h1 {
-  font-size: 70px;
-  margin: 0;
-  color:#034209;
-  text-align: center;
-  margin-top: 60px;
-  margin-left: 300px;
-}
-
-.header-content .icon{
-  display :flex;
-  margin-left: 300px;
-  margin-top: 20px;
-}
-
-button {
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-left: 5px;
-}
-
-button:hover {
-  background-color: #45a049;
+.header-content {
+  margin-left:200px;
+  font-size: 50px;
+  color: #032b03;
+  margin-top: 40px;
+  margin-bottom: 20px;
 }
 
 .container {
@@ -48,26 +21,8 @@ button:hover {
     margin: 0 auto;
 }
 
-.action-btn {
-    padding: 10px;
-    background-color: #299233;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    font-size: 14px;
-    flex: 1;
-    margin: 5px;
-}
-
-.action-btn:hover {
-    background-color: #5b9162;
-}
-
 table {
-  width: 90%;
+  width: 85%;
   border-collapse: separate; 
   border-spacing: 0 8px; 
   margin-left:200px;
@@ -76,7 +31,7 @@ table {
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-color: #e5faec;
-  padding: 5px;  
+  padding: 20px;  
 }
 
 table th {
@@ -85,28 +40,17 @@ table th {
   font-weight: bold;
   padding: 15px;
   text-align: center;
-  /* border-radius: 10px; 
-  overflow: hidden;     */
+ 
 }
 
 table tr {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-  border-radius: 10px; 
-  /* overflow: hidden;  */
-  
+  border-radius: 10px;  
 }
 
 tr:hover {
   background-color: #d8e8e1; 
   cursor: pointer;
-}
-
-tr:nth-child(even) {
-  background-color: #e7f8ec; 
-}
-
-tr:nth-child(odd) {
-  background-color: #ffffff;
 }
 
 td {
@@ -115,12 +59,6 @@ td {
   font-size: 14px;
   color: #333;    
 }
-
-table td .action-btn {
-    display: inline-block;
-    margin-right: 5px;
-}
-
 
 @media (max-width: 991px) {
   .bids-grid {
