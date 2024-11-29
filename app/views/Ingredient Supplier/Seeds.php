@@ -39,9 +39,9 @@
                 <p class="category"><?php echo $product->category; ?></p>
                 <h3><?php echo $product->product_name; ?></h3>
                 <p class="price">LKR <?php echo $product->price; ?></p>
-                <form action="<?php echo URLROOT; ?>/SupplierController/viewCart/<?php echo $product->product_id; ?>" method="get">
+                <!-- <form action="<?php echo URLROOT; ?>/SupplierController/viewCart/<?php echo $product->product_id; ?>" method="get">
                     <button type="submit" class="add-to-cart-button">Add to Cart</button>
-                </form>                 
+                </form>                  -->
             </div>
             <?php endforeach; ?>
         </main>

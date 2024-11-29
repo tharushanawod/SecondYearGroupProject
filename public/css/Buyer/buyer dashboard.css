@@ -46,7 +46,7 @@ body {
 
 .cardBox .card {
   position: relative;
-  background-color: #d9f8f0;
+  background: rgb(157, 230, 196);
   padding: 30px;
   border-radius: 20px;
   display: flex;
@@ -81,7 +81,7 @@ body {
   position: relative;
   display: grid;
   min-height: 500px;
-  background-color: #d9f8f0;
+  background:rgb(157, 230, 196); 
   padding: 20px;
   box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
   border-radius: 20px;
@@ -92,7 +92,7 @@ body {
   display: grid;
   min-height: 500px;
   padding: 20px;
-  background-color: #d9f8f0;
+  background: rgb(157, 230, 196);
   box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
   border-radius: 20px;
 }
@@ -149,11 +149,11 @@ body {
 }
 
 .details .recentOrders table tr td:nth-child(2) {
-  text-align: end;
+  text-align: start;
 }
 
 .details .recentOrders table tr td:nth-child(3) {
-  text-align: center;
+  text-align: start;  
 }
 
 .accepted, .pending{
