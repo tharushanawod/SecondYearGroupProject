@@ -1,5 +1,6 @@
 <?php 
 class LandingController extends Controller{
+    private $userModel;
 
     public function __construct()
     {

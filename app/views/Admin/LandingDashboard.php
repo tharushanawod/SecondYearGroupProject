@@ -51,7 +51,7 @@
         <table>
           <thead>
             <tr>
-              <th>CUSTOMER NAME</th>
+              <th>NAME</th>
               <th>Title</th>
               <th>CONTACT NUMBER</th>
               <th>CREATED DATE</th>
