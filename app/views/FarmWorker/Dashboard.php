@@ -37,37 +37,36 @@
             
             <div class="recentOrders">
                 <div class="cardHeader">
-                    <h2>Job Requests</h2>                    
+                    <h2>Recent Requests</h2>                    
                 </div>
                 <table>
                     <thead>
                         <tr>
-                            <td><b>Job Title</b></td>
-                            <td><b>Employer</b></td>
-                            <td><b>Offer</b></td>
+                            <td><b>Farmer</b></td>
+                            <td><b>Duration</b></td>
                             <td><b>Description</b></td>
                         </tr>
                     </thead>
 
                     <tbody>
                         <tr>
-                            <td>Farm Worker</td>
+                        
                             <td>Samith Perera</td>
-                            <td>LKR 2500/hour</td>
+                            <td>3 Days</td>
                             <td>Looking for a farm worker to help with daily tasks.</td>
                         </tr>
 
                         <tr>
-                            <td>Farm Worker</td>
-                            <td>Jane Smith</td>
-                            <td>LKR 1800/hour</td>
+                         
+                            <td>F.G Gamage</td>
+                            <td>6 Days</td>
                             <td>Seeking a farm worker to assist with planting and harvesting.</td>
                         </tr>
 
                         <tr>
-                            <td>Farm Worker</td>
+                   
                             <td>Aruna Gamage</td>
-                            <td>LKR 2000/hour</td>
+                            <td>2 Days</td>
                             <td>Looking for a farm worker to help with apply pesticides.</td>
                         </tr>                        
                     </tbody>

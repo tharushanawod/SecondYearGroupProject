@@ -7,37 +7,68 @@
 </head>
 <body>
 <?php require APPROOT . '/views/inc/sidebar.php'; ?>
-  <div class="container">
-    <!-- <div class="image-container">
-        <img src="<?php echo URLROOT;?>/images/helper.png" alt="Support">
-    </div> -->
-    <div class="form-container">
-      <h1>Need support?</h1>
-      <p>Fill in the form to get in touch.</p>
-      <form>
-        <div class="form-group">
-          <label for="firstName">First name</label>
-          <input type="text" id="firstName" name="firstName" placeholder="Input text" required>
+<div class="container">
+        
+        <div class="header">
+         <h2>
+          Inbox
+         </h2>
+         <img width="30" height="30" src="https://img.icons8.com/ios/50/messages-mac.png" alt="messages-mac"/>
         </div>
-        <div class="form-group">
-          <label for="lastName">Last name</label>
-          <input type="text" id="lastName" name="lastName" placeholder="Input text" required>
+        <div class="main">
+     
+         <div class="chat-window">
+          <div class="messages">
+           <div class="message">
+            <div class="avatar">
+             <img alt="User avatar" height="40" src="https://storage.googleapis.com/a1aa/image/hHhUGwKIh7KNANKpF3kEIUnoRYVtNEBRbePXih9JYMiiAv6JA.jpg" width="40"/>
+            </div>
+            <div class="text">
+             <p>
+              Hello! I've been thinking about developing some new skills. Any suggestions on where to start?
+             </p>
+            </div>
+           </div>
+           <div class="message user">
+            <div class="text">
+             <p>
+              Hi there! That's great to hear. The first step is to identify your interests. What areas are you passionate about or curious to explore?
+             </p>
+            </div>
+            <div class="avatar">
+             <img alt="Responder avatar" height="40" src="https://storage.googleapis.com/a1aa/image/xXxlrw3VyKaGGRzyfcf5bzfUabDry8mCV2G5euJwUeYbIwreE.jpg" width="40"/>
+            </div>
+           </div>
+           <div class="message">
+            <div class="avatar">
+             <img alt="User avatar" height="40" src="https://storage.googleapis.com/a1aa/image/hHhUGwKIh7KNANKpF3kEIUnoRYVtNEBRbePXih9JYMiiAv6JA.jpg" width="40"/>
+            </div>
+            <div class="text">
+             <p>
+              I've always been interested in graphic design, but I'm not sure where to begin.
+             </p>
+            </div>
+           </div>
+           <div class="message user">
+            <div class="text">
+             <p>
+              Graphic design is a fantastic choice! To start, you might want to learn the basics of design principles and software tools. There are many online platforms offering courses like Adobe Creative Cloud tutorials or design fundamentals. What specific aspects of graphic design are you interested in?
+             </p>
+            </div>
+            <div class="avatar">
+             <img alt="Responder avatar" height="40" src="https://storage.googleapis.com/a1aa/image/xXxlrw3VyKaGGRzyfcf5bzfUabDry8mCV2G5euJwUeYbIwreE.jpg" width="40"/>
+            </div>
+           </div>
+          </div>
+          <div class="input-area">
+           <input placeholder="Message" type="text"/>
+           <button>
+            <i class="fas fa-paper-plane">
+            </i>
+           </button>
+          </div>
+         </div>
         </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" placeholder="Input text" required>
-        </div>
-        <div class="form-group">
-          <label for="topic">Which topic best fit your needs?</label>
-          <input type="text" id="topic" name="topic" placeholder="Input text" required>
-        </div>
-        <div class="form-group">
-          <label for="message">How can we help?</label>
-          <textarea id="message" name="message" placeholder="Please share what you want us to help" required></textarea>
-        </div>
-        <button type="submit">Send</button>
-      </form>
-    </div>
-  </div>
+       </div>
 </body>
 </html>

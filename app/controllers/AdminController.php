@@ -342,6 +342,10 @@ class AdminController extends Controller {
         fclose($output);
         exit; // Stop further script execution after sending the file
     }
+
+    public function Manageprofile(){
+        $this->View('Admin/ManageProfile');
+    }
     
 
 }

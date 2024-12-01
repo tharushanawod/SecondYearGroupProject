@@ -4,6 +4,10 @@
   padding: 0;
   box-sizing: border-box;
   font-family: sans-serif;
+
+}
+body{
+  background-color: #f4f4f4;
 }
 
 .payments-header {
@@ -18,8 +22,14 @@
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
+
 }
 
+.marquee{
+  width : 900px;
+  margin-left: 280px;
+  color: red;
+}
 table {
   width: 85%;
   border-collapse: separate;
@@ -68,6 +78,7 @@ td {
   width: 100px;
   height: 30px;
   margin-right: 10px;
+  border: none;
 }
 
 .paynow {

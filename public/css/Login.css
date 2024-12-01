@@ -20,6 +20,10 @@ body {
 
 }
 
+.new{
+  display: flex;
+  justify-content: space-between;
+}
 .image-section {
   flex: 1;
   background-image: url("../images/signup.jpeg");

@@ -1,12 +1,14 @@
 @import url(../components/sidebar.css);
-body {
-    font-family: Arial, sans-serif;
+*{
     margin: 0;
     padding: 0;
-    
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+body {
+
     background-size: cover;
-    background: rgb(34,123,4);
-    background: linear-gradient(360deg, rgba(34,123,4,0.29184173669467783) 0%, rgba(77,198,145,1) 42%, rgba(164,191,152,0.4318977591036415) 100%);und-position: center;
+   background-color: #f4f4f4;
 }
 
 .header-content {
@@ -14,12 +16,12 @@ body {
 }
 
 .header-content h1 {
-    font-size: 70px;
+    font-size: 50px;
     margin: 0;
-    color:#034209;
+    color:black;
     text-align: center;
-    margin-top: 60px;
-    margin-left: 300px;
+    margin-top: 30px;
+    margin-left: 250px;
     text-shadow: 2px 2px 4px #78bb80;
 }
 
@@ -27,7 +29,6 @@ body {
     display:flex;
     gap: 30px;
     width: 65%;
-    margin: 10px auto;
     padding: 20px;
     background-color: none;    
     margin-left:380px;
@@ -39,7 +40,6 @@ body {
     background-color: #ffffff;
     border-radius: 10px;
     text-align: left;
-    width: calc(100% / 3 - 40px); /* Account for margin */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 

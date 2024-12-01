@@ -318,6 +318,15 @@ class FarmerController extends Controller {
         $data = [];
         $this->View('Farmer/CheckoutConfirmation', $data);
     }
+    public function pay(){
+        $data = [];
+        $this->View('Farmer/pay', $data);
+    }
+
+    public function inventory() {
+        $data = [];
+        $this->View('Farmer/inventory', $data);
+    }
 
 }
 ?>

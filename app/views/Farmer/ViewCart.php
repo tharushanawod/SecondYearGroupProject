@@ -39,11 +39,7 @@
             </tbody>
         </table>
     </div>
-        <div class="coupon-section">
-            <input type="text" placeholder="Coupon code" class="coupon-input">
-            <button class="apply-coupon">APPLY COUPON</button>
-            <button class="update-cart">UPDATE CART</button>
-        </div>
+      
         <div class="cart-totals">
             <h2>Cart totals</h2><hr>
             <div class="totals-row">

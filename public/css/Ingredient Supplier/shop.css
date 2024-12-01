@@ -1,16 +1,19 @@
 @import url(../components/sidebar.css);
-body {
-    font-family: sans-serif;
-    background-color: #ffffff;
+*{
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+body {
     background-size: cover;
     background-position: center;
+    background-color: #f4f4f4;
 }
 
 .container {
     width: 90%;
-    margin: 0 auto;
+  padding-top: 60px;
 }
 
 .inside {

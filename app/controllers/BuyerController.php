@@ -66,6 +66,10 @@ class BuyerController extends Controller {
     {
         $this->view('Buyer/ManageProfile');
     }
+    public function pay() {
+        $data = [];
+        $this->View('Buyer/pay', $data);
+    }
 }
 ?>
     

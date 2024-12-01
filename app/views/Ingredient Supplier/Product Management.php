@@ -9,8 +9,8 @@
 </head>
 <body>
 <?php require APPROOT . '/views/inc/sidebar.php'; ?>
-
-<h1>Product Management</h1>
+<div class="maincontainer">
+<h1>Products Inventory</h1>
 <button class="add-product-btn" onclick="showModal('addProductModal')">Add Product</button>
 
 <table id="productTable">
@@ -148,6 +148,9 @@
         </form>
     </div>
 </div>
+
+</div>
+
 
 </body>
 </html>

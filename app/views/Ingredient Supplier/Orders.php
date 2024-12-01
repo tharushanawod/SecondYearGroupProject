@@ -8,16 +8,15 @@
 </head>
 <body>
 <?php require APPROOT . '/views/inc/sidebar.php'; ?>
-
-    
-        <h1>Orders</h1>
+<div class="container">
+<h1>Orders</h1>
         <div class="filter-options">
             <label for="statusFilter">Filter by Status:</label>
             <select id="statusFilter">
                 <option value="all">All</option>
                 <option value="pending">Pending</option>
                 <option value="accepted">Accepted</option>
-                <option value="delivered">Delivered</option>
+         
             </select>
         </div>
 
@@ -52,11 +51,13 @@
 
                 <div class="modal-actions">
                     <button id="acceptOrderBtn">Accept Order</button>
-                    <button id="sendCodeBtn">Send Delivery Code</button>
                     <button id="closeBtn">Close</button>
                 </div>
             </div>
         </div>
+</div>
+    
+   
     
     <script src="<?php echo URLROOT;?>/js/Ingredient Supplier/Orders.js"></script>    
 </body>

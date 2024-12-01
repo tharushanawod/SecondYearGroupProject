@@ -112,11 +112,12 @@
         <option value="7">7 Days</option>
     </select>
     </div>
-                <div class="form-group">
-                    <label for="media">Media (images, video or 3D models)</label>
-                    <input type="file" class="form-control" id="media" name="media" accept="image/*,video/*,model/*" required>
+    <div class="form-group">
+    <label for="media">Media (images, video, or 3D models)</label>
+    <input type="file" class="form-control" id="media" name="media" accept="image/*,video/*,model/*">
+    <img id="media-preview" src="#" alt="Current Media" style="display:none; max-width: 200px; margin-top: 10px;">
+</div>
 
-                </div>
                 <div class="btn-group">
                     <button type="button" class="btn btn-secondary" onclick="closePopup()">Cancel</button>
                     <button type="submit" class="btn btn-primary">Save</button>
@@ -159,15 +160,23 @@ function fetchProductData(productId) {
     fetch(`<?php echo URLROOT; ?>/FarmerController/getProductDetails/${productId}`)
         .then(response => response.json())
         .then(data => {
-            // Assuming you return product details from the controller
             document.getElementById('product-type').value = data.type;
             document.getElementById('price').value = data.price;
             document.getElementById('quantity').value = data.quantity;
             document.getElementById('expiry-period').value = data.expiry_period;
-            // Populate other fields as necessary
+
+            // Update image preview
+            const mediaPreview = document.getElementById('media-preview');
+            if (data.media) {
+                mediaPreview.src = `<?php echo URLROOT; ?>/${data.media}`;
+                mediaPreview.style.display = 'block';
+            } else {
+                mediaPreview.style.display = 'none';
+            }
         })
         .catch(error => console.log('Error fetching product data:', error));
 }
+
 
 
 function closePopup() {

@@ -32,6 +32,11 @@ class ModeratorController extends Controller {
         $data = [];
         $this->View('Moderator/Help', $data);
     }
+
+    public function Manageprofile() {
+        $data = [];
+        $this->View('Moderator/ManageProfile', $data);
+    }
   
 
 

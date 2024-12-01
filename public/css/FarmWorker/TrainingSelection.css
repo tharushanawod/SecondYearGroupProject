@@ -11,11 +11,11 @@ body {
 }
 
 .training-container {
-  width: 68%;
-  margin: 50px auto;
+  display: flex;
   padding: 20px;
-  margin-left: 340px;
+  margin-left: 250px;
   border-radius: 10px;
+  gap: 10px;
 }
 
 h2 {
@@ -52,10 +52,11 @@ h2 {
 
 .training img {
   width: 100%;
-  height: 400px;
+  height: 330px;
   border-radius: 5px;
   margin-top: 10px;
   margin-bottom: 10px;
+  object-fit: cover;
 }
 
 .select-btn {
@@ -70,4 +71,8 @@ h2 {
 }
 .select-btn:hover {
   background-color: #218838;
+}
+
+.container{
+  padding-top: 40px;
 }

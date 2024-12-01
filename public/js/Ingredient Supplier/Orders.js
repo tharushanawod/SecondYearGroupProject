@@ -8,9 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusFilter = document.getElementById('statusFilter');
 
     const sampleOrders = [
-        { id: 1, product: 'Fertilizer', customer: 'John Doe', price: 1000, payment: 'Cash', quantity: 2, status: 'Pending', address: '123 Main St', instructions: 'Leave at the front door' },
-        { id: 2, product: 'Pesticide', customer: 'Jane Smith', price: 1500, payment: 'Credit Card', quantity: 1, status: 'Accepted', address: '456 Oak St', instructions: 'Ring the bell' },
-        { id: 3, product: 'Seed', customer: 'Bob Johnson', price: 2000, payment: 'Cash', quantity: 5, status: 'Delivered', address: '789 Pine St', instructions: 'Call upon arrival' },
+        { id: 1, product: 'Fertilizer', customer: 'E.K.D Ekanayake', price: 1000, payment: 'Credit Card', quantity: 2, status: 'Pending', address: '123 Main St', instructions: 'Leave at the front door' },
+        { id: 2, product: 'Pesticide', customer: 'R.M.H Sampath', price: 1500, payment: 'Credit Card', quantity: 1, status: 'Accepted', address: '456 Oak St', instructions: 'Ring the bell' },
+        { id: 3, product: 'Seed', customer: 'D.M.M Rajapaksha', price: 2000, payment: 'Credit Card', quantity: 5, status: 'Pending', address: '789 Pine St', instructions: 'Call upon arrival' },
     ];
 
     function loadOrders(orders) {
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${order.status}</td>
                 <td class="actions">
                     <button class="accept">Accept</button>
-                    <button class="send-code">Send Code</button>
+                    <button class="send-code">Cancel</button>
                 </td>
             `;
 

@@ -1,9 +1,12 @@
 @import url(../components/sidebar.css);
-body {
-    font-family: Arial, sans-serif;
+*{
     margin: 0;
     padding: 0;
-    background-color: #ffffff;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+body {
+    background-color: #f4f4f4;
     background-size: cover;
     background-position: center;
 }
@@ -13,9 +16,8 @@ body {
 }
 
 .header-content h1 {
-    font-size: 70px;
+    font-size: 50px;
     margin: 0;
-    color:#034209;
     text-align: center;
     margin-top: 60px;
     margin-left: 300px;

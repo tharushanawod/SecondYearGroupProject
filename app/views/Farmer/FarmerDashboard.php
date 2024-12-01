@@ -20,7 +20,7 @@
 
             <div class="cardBox">
                 <div class="card">
-                    <div><img width="50" height="50" src="https://img.icons8.com/ios/50/shopping-cart--v1.png" alt="shopping-cart--v1"/></div>
+                    <div><img width="50" height="50" src="https://img.icons8.com/ios/50/product--v1.png" alt="product--v1"/></div>
                     <div>
                         <div class="numbers">1,504</div>
                         <div class="cardName">Products</div>
@@ -28,6 +28,7 @@
                 </div>
 
                 <div class="card">
+                <div><img width="50" height="50" src="https://img.icons8.com/ios/50/farmer-male.png" alt="farmer-male"/></div>
                     <div>
                         <div class="numbers">80</div>
                         <div class="cardName">Workers</div>
@@ -35,6 +36,7 @@
                 </div>
 
                 <div class="card">
+                <div><img width="50" height="50" src="https://img.icons8.com/ios/50/shopping-cart--v1.png" alt="shopping-cart--v1"/></div>
                     <div>
                         <div class="numbers">284</div>
                         <div class="cardName">Purchases</div>
@@ -42,6 +44,7 @@
                 </div>
 
                 <div class="card">
+                <div><img width="50" height="50" src="https://img.icons8.com/ios/50/money--v1.png" alt="money--v1"/></div>
                     <div>
                         <div class="numbers">LKR 77,842</div>
                         <div class="cardName">Earning</div>
@@ -61,67 +64,67 @@
                         <thead>
                             <tr>
                                 <td>Name</td>
-                                <td>Price</td>
-                                <td>Payment</td>
+                                <td>Unit Price</td>
+                                <td>Quantity</td>
                                 <td>Status</td>
                             </tr>
                         </thead>
 
                         <tbody>
                             <tr>
-                                <td>Nitrogen Fertilizer</td>
-                                <td>LKR 1200</td>
-                                <td>Paid</td>
-                                <td><span class="status delivered">Delivered</span></td>
+                                <td>Dry Corn</td>
+                                <td>LKR 98</td>
+                                <td>100Kg</td>
+                                <td><span class="status inProgress">Pending</span></td>
                             </tr>
 
                             <tr>
-                                <td>Maize Seed</td>
-                                <td>LKR 2500</td>
-                                <td>Due</td>
-                                <td><span class="status pending">Pending</span></td>
+                            <td>Sweet Corn</td>
+                                <td>LKR 108</td>
+                                <td>360Kg</td>
+                                <td><span class="status delivered">Paid</span></td>
                             </tr>
 
                             <tr>
-                                <td>Pesticide</td>
-                                <td>LKR 1200</td>
-                                <td>Paid</td>
-                                <td><span class="status return">Return</span></td>
+                            <td>Dry Corn</td>
+                                <td>LKR 78</td>
+                                <td>340Kg</td>
+                                <td><span class="status inProgress">Pending</span></td>
                             </tr>
 
                             <tr>
-                                <td>Insecticide</td>
-                                <td>LKR 1700</td>
-                                <td>Due</td>
-                                <td><span class="status inProgress">In Progress</span></td>
+                            <td>Dry Corn</td>
+                                <td>LKR 99</td>
+                                <td>560Kg</td>
+                                <td><span class="status delivered">Paid</span></td>
                             </tr>
 
                             <tr>
-                                <td>Nitrogen Fertilizer</td>
-                                <td>LKR 1200</td>
-                                <td>Paid</td>
-                                <td><span class="status delivered">Delivered</span></td>
+                            <td>Sweet Corn</td>
+                                <td>LKR 106</td>
+                                <td>310Kg</td>
+                                <td><span class="status delivered">Paid</span></td>
                             </tr>
 
                             <tr>
-                                <td>Pesticide</td>
-                                <td>LKR 2000</td>
-                                <td>Due</td>
-                                <td><span class="status pending">Pending</span></td>
+                            <td>Dry Corn</td>
+                                <td>LKR 98</td>
+                                <td>450Kg</td>
+                                <td><span class="status delivered">Paid</span></td>
                             </tr>
 
                             <tr>
-                                <td>Hybrid Seed</td>
-                                <td>LKR 1500</td>
-                                <td>Paid</td>
-                                <td><span class="status return">Return</span></td>
+                            <td>Sweet Corn</td>
+                                <td>LKR 98</td>
+                                <td>390Kg</td>
+                                <td><span class="status inProgress">Pending</span></td>
                             </tr>
 
                             <tr>
-                                <td>Urea Fertilizer</td>
-                                <td>LKR 1000</td>
-                                <td>Due</td>
-                                <td><span class="status inProgress">In Progress</span></td>
+                            <td>Dry Corn</td>
+                                <td>LKR 98</td>
+                                <td>200Kg</td>
+                                <td><span class="status delivered">Paid</span></td>
                             </tr>
                         </tbody>
                     </table>

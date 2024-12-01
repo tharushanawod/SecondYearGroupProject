@@ -10,7 +10,7 @@ body {
     font-family: sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #ffffff;
+    background-color: #f4f4f4;
     
   }
 
@@ -25,7 +25,7 @@ h1 {
     text-align: center;
     font-size: 42px;
     margin-bottom: 20px;
-    color:#ffffff;
+    color: black;;
 }
 
 .worker-container {
@@ -34,7 +34,7 @@ h1 {
     justify-content: center;
     flex-wrap: wrap;
     gap: 30px;
-    background-color: #ffffff;
+    background-color: #f4f4f4;
   
 }
 

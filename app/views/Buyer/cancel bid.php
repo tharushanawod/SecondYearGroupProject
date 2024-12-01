@@ -11,7 +11,7 @@
 <?php require APPROOT . '/views/inc/sidebar.php'; ?>
 
     <div class="header-content">
-        <h1>Manage Bids</h1>        
+        <h1>Bid Control</h1>        
     </div>    
 
     <div class="container">
@@ -74,9 +74,9 @@
             <label for="reason">Reason For Cancellation</label>
             <select id="reason">
                 <option value="">Select a Reason</option>
-                <option value="reason1">Reason 1</option>
-                <option value="reason2">Reason 2</option>
-                <option value="reason3">Reason 3</option>
+                <option value="reason1">Entered Incorrect Bid Amount</option>
+                <option value="reason2">No Longer Interested in the Product</option>
+                <option value="reason3">Accidental Bid Placement</option>
             </select>
             <button class="cancel-btn" onclick="confirmCancel()">Confirm Cancel</button>                        
         </div>

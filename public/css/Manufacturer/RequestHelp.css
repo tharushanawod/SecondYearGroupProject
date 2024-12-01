@@ -14,8 +14,7 @@
   padding-left: 250px;
 }
 .header {
-  background: rgb(221,246,237);
-  background: linear-gradient(90deg, rgba(221,246,237,1) 54%, rgba(50,182,132,1) 100%);
+background-color: #f4f4f4;
   padding: 20px;
   text-align: center;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);

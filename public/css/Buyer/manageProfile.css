@@ -7,16 +7,16 @@
 }
 
 body {
-
+background-color: #f4f4f4;
   background-image: url("../../images/images/1.svg");
   background-position: right bottom; /* Position it in the bottom-right corner */
   background-repeat: no-repeat; /* Prevent the image from repeating */
 }
 
 .container {
-  margin-left: 400px;
+  margin-left: 250px;
   max-width: 600px;
-  padding: 20px;
+  padding: 60px;
   font-family: Arial, sans-serif;
   display: flex;
   flex-direction: column;

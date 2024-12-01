@@ -46,15 +46,19 @@
                     </span>
                 </div>
 
-                <div class="form-group">
-                    <label for="phone">Contact Number</label>
-                    <div class="input-wrapper">
-                        <input type="tel" id="phone" name="phone" placeholder="Enter phone number" value="<?php echo $data['phone'];?>">
+                        <div class="form-group">
+                        <label for="phone">Contact Number</label>
+                        <div class="input-wrapper">
+                            <input type="tel" id="phone" name="phone" placeholder="Enter phone number" 
+                                value="<?php echo $data['phone'];?>" 
+                                pattern="0\d{9}" 
+                                title="Phone number must start with 0 and be exactly 10 digits.">
+                        </div>
+                        <span class="form-invalid">
+                            <?php echo $data['phone_err']; ?>
+                        </span>
                     </div>
-                    <span class="form-invalid">
-                        <?php echo $data['phone_err'];?>
-                    </span>
-                </div>
+
 
                 <div class="form-group">
                     <label for="address">Address</label>

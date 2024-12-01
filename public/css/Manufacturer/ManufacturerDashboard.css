@@ -11,7 +11,7 @@ body {
   font-family: sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #ffffff;
+  background-color: #f4f4f4;
   background-size: cover;
   background-position: center;
 }
@@ -30,7 +30,7 @@ body {
 .main-content-header h1 {
   font-size: 45px;
   font-weight: bold;
-  color: #032b03;
+  color: #1a523b;
   text-align: center;
   margin-top: 20px;
   margin-bottom: 20px;
@@ -42,14 +42,14 @@ body {
   padding: 20px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-gap: 30px;
+  grid-gap: 10px;
 }
 
 .cardBox .card {
   position: relative;
   background-color: #ddf6ed;
   padding: 30px;
-  border-radius: 20px;
+  border-radius: 10px;
   display: flex;
   justify-content: space-between;
   cursor: pointer;
@@ -177,4 +177,11 @@ table tbody tr:hover {
     1.02
   ); /* Optional: Slightly scale the row for a nice effect */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for more emphasis */
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 100px;
+  }
+  
 }

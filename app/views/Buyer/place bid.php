@@ -10,7 +10,7 @@
 <?php require APPROOT . '/views/inc/sidebar.php'; ?>
     
     <div class="header-content">
-        <h1>Place Your Bid</h1>        
+        <h1>Adjust Your Bid</h1>        
     </div>       
     
     <div class="container1">
@@ -26,10 +26,10 @@
             </div>
         </div>
         <div class="increase-bid">
-            <h2>Place Your Bid</h2>
+            <h2>Place Your New Bid</h2>
             <p>You are about to bid on this product. Make sure to place a bid higher than the current bid to increase your chances of winning.</p>
             <input type="number" id="newBid" placeholder="Enter your bid">
-            <button class="submit-btn">Place Bid</button>
+            <button class="submit-btn">Adjust Bid</button>
         </div>
     </div>
 

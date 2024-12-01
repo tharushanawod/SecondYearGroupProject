@@ -9,6 +9,10 @@
           <a href="<?php echo URLROOT; ?>/ModeratorController/Dashboard"><div class="links"><img width="20" height="20" src="https://img.icons8.com/ios/50/dashboard.png" alt="dashboard"/><p>Dashboard</p></div></a>
         </li>
         <li class="nav-item">
+          
+          <a href="<?php echo URLROOT;?>/ModeratorController/Manageprofile"><div class="links"><img width="20" height="20" src="https://img.icons8.com/ios/50/user--v1.png" alt="user--v1"/><p>Profile</p></div></a>
+        </li>
+        <li class="nav-item">
     
           <a href="<?php echo URLROOT; ?>/ModeratorController/Help"><div class="links"><img width="20" height="20" src="https://img.icons8.com/ios/50/user--v1.png" alt="user--v1"/><p>Help</p></div></a>
         </li>

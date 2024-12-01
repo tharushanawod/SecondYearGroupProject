@@ -1,12 +1,15 @@
 .sidebar {
   width: 250px;
-  background-color: white;
+  background: rgb(5,4,48);
+  background: linear-gradient(90deg, rgba(5,4,48,1) 0%, rgba(12,10,124,1) 84%);
   height: 100vh;
   padding: 20px;
   position: fixed;
   display: flex;
   flex-direction: column;
   align-items: center;
+  border-top-right-radius: 5%;
+  border-bottom-right-radius: 5%;
 }
 
 .profile {
@@ -20,14 +23,13 @@
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  border: 3px solid #6c5ce7;
   margin-bottom: 10px;
 }
 
 .username {
   font-size: 18px;
   font-weight: bold;
-  color: #333;
+  color: white;
 }
 
 .sidebar ul {
@@ -41,26 +43,16 @@
 
 .sidebar ul li a {
   text-decoration: none;
-  color: #111010;
+  color: white;
   display: block;
   padding: 10px;
-
-  border-radius: 25px;
-  font-size: 16px;
-}
-
-.sidebar ul li a {
   transition: all 0.3s ease; /* Smooth transition for better effect */
+  font-size: 16px;
+  border-bottom: 1px solid white;
+  width: 150px;
 }
 
-.sidebar ul li a:hover {
-  background-color: #ddd;
-  border-radius: 10px; /* Add border radius */
-  transform: scale(
-    1.04
-  ); /* Optional: Slightly scale the row for a nice effect */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for more emphasis */
-}
+
 svg {
   height: 15px;
   width: 15px;
@@ -71,6 +63,10 @@ svg {
   gap: 10px;
 }
 
+.links img {
+  filter: brightness(0) invert(1);
+}
+
 .nav-item a {
   display: flex;
 }
@@ -79,7 +75,7 @@ svg {
 }
 
 .sidebar ul li a:hover {
-  background-color: #ddd;
+  background-color: #211cb4;
   border-radius: 10px; /* Add border radius */
   transform: scale(
     1.04

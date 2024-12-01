@@ -40,14 +40,14 @@
     padding: 20px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-gap: 30px;
+    grid-gap: 20px;
   }
   
   .cardBox .card {
     position: relative;
-    background-color: #d9f8f0;
+    background-color: #ddf6ed;
     padding: 30px;
-    border-radius: 20px;
+    border-radius: 10px;
     display: flex;
     justify-content: space-between;
     cursor: pointer;
@@ -68,7 +68,7 @@
   }
   
   .cardBox .card:hover {
-    background-color: #e9f4ec;
+    background-color: #74dbb2;
   }
   
   .cardBox .card:hover .numbers,
@@ -80,7 +80,7 @@
     position: relative;
     display: grid;
     height: auto;
-    background-color: #d9f8f0;
+    background-color: #ddf6ed;
     padding: 20px;
     box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
     border-radius: 20px;
@@ -116,7 +116,7 @@
   }
     
   .recentOrders table tbody tr:hover {
-    background-color: #83d2a3;
+    background-color: #74dbb2;
     color: #032b03;
     border-radius: 10px;
   }

@@ -24,11 +24,36 @@
             <label for="company">Company name (optional)</label>
             <input type="text" id="company">
 
-            <label for="country">Country / Region *</label>
-            <select id="country" required>
-                <option value="Sri Lanka">Sri Lanka</option>
-                <!-- Add more countries as needed -->
-            </select>
+            <label for="district">District *</label>
+<select id="district" name="district" required>
+    <option value="" disabled selected>Select your district</option>
+    <option value="Ampara">Ampara</option>
+    <option value="Anuradhapura">Anuradhapura</option>
+    <option value="Badulla">Badulla</option>
+    <option value="Batticaloa">Batticaloa</option>
+    <option value="Colombo">Colombo</option>
+    <option value="Galle">Galle</option>
+    <option value="Gampaha">Gampaha</option>
+    <option value="Hambantota">Hambantota</option>
+    <option value="Jaffna">Jaffna</option>
+    <option value="Kalutara">Kalutara</option>
+    <option value="Kandy">Kandy</option>
+    <option value="Kegalle">Kegalle</option>
+    <option value="Kilinochchi">Kilinochchi</option>
+    <option value="Kurunegala">Kurunegala</option>
+    <option value="Mannar">Mannar</option>
+    <option value="Matale">Matale</option>
+    <option value="Matara">Matara</option>
+    <option value="Monaragala">Monaragala</option>
+    <option value="Mullaitivu">Mullaitivu</option>
+    <option value="Nuwara Eliya">Nuwara Eliya</option>
+    <option value="Polonnaruwa">Polonnaruwa</option>
+    <option value="Puttalam">Puttalam</option>
+    <option value="Ratnapura">Ratnapura</option>
+    <option value="Trincomalee">Trincomalee</option>
+    <option value="Vavuniya">Vavuniya</option>
+</select>
+
 
             <label for="address">Street address *</label>
             <input type="text" id="address" required>
@@ -80,12 +105,10 @@
                 <label>
                     <input type="radio" name="payment" value="check"> Card Payments
                 </label>                 
-                <label>
-                    <input type="radio" name="payment" value="cash"> Cash on Delivery
-                </label>
+               
             </div>
 
-            <a href="<?php echo URLROOT;?>/FarmerController/CheckoutConfirmation"><button class="place-order">PLACE ORDER</button></a>
+            <a href="<?php echo URLROOT;?>/FarmerController/pay"><button class="place-order">PLACE ORDER</button></a>
         </div> 
     </div>   
 </body>

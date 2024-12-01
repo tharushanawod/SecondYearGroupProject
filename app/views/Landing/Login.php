@@ -12,10 +12,14 @@
     <div class="container">
         <div class="form-section">
           
-            <div class="heading">
+        <div class="new">
+        <div class="heading">
                 <h2>Welcome Back 👋</h2>
                 <p>Login to your account</p>
             </div>
+            <a href="<?php echo URLROOT;?>/LandingController/index"><img width="40" height="40" src="https://img.icons8.com/ios-filled/50/home.png" alt="home"/></a>
+        </div>
+           
 
             <form action="<?php echo URLROOT;?>/LandingController/Login" method="POST">
 
@@ -42,6 +46,7 @@
                  </span>
 
                 <button type="submit">Log in</button>
+             
             </form>
         </div>
 
