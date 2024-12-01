@@ -25,7 +25,7 @@ class ModeratorController extends Controller {
 
     public function Dashboard() {
         $data = [];
-        $this->View('Moderator/Landing', $data);
+        $this->View('Moderator/Help', $data);
     }
 
     public function Help() {
