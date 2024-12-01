@@ -10,7 +10,7 @@
 <?php require APPROOT . '/views/inc/sidebar.php'; ?>
 
     <div class="container">
-        <h1>Orders</h1>
+        <h1>Orders From Buyers</h1>
 
         <div class="main-container">
             <div class="filter-options">
@@ -31,7 +31,7 @@
                         <th> Unit Price(Rs)</th>
                         <th>Quantity (kg)</th>
                         <th>Status</th>
-                        <th>Actions</th>
+                      
                     </tr>
                 </thead>
                 <tbody>
@@ -42,10 +42,7 @@
                         <td>100</td>
                         <td>200 kg</td>
                         <td>Pending</td>
-                        <td class="actions">
-                            <button class="accept">Accept Order</button>
-                    
-                        </td>
+                      
                     </tr>
                     <tr>
                         <td>2</td>
@@ -54,10 +51,7 @@
                         <td>120</td>
                         <td>50 kg</td>
                         <td>Accepted</td>
-                        <td class="actions">
-                      
-                        <button class="send-code">Confirm Payment</button>
-                        </td>
+                       
                     </tr>
                     <tr>
                         <td>3</td>
@@ -66,10 +60,7 @@
                         <td>89</td>
                         <td>250 kg</td>
                         <td>Accepted</td>
-                        <td class="actions">
-                  
-                        <button class="send-code">Confirm Payment</button>
-                        </td>
+                      
                     </tr>
                     <tr>
                         <td>4</td>
@@ -78,10 +69,7 @@
                         <td>99</td>
                         <td>300 kg</td>
                         <td>Pending</td>
-                        <td class="actions">
-                        <button class="accept">Accept Order</button>
-              
-                        </td>
+                       
                     </tr>
                     <!-- Add remaining orders similarly -->
                 </tbody>

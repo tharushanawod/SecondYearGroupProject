@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Need Support?</title>
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Manufacturer/RequestHelp.css">
 </head>
 <body>
@@ -26,14 +26,14 @@
        </div>
        <div class="text">
         <p>
-         Hello! I've been thinking about developing some new skills. Any suggestions on where to start?
+         Hello! I'm having trouble logging my work hours into the system. Can you help?
         </p>
        </div>
       </div>
       <div class="message user">
        <div class="text">
         <p>
-         Hi there! That's great to hear. The first step is to identify your interests. What areas are you passionate about or curious to explore?
+         Hi there! Sure, I can assist. Are you encountering an error, or is the system not saving your entries?
         </p>
        </div>
        <div class="avatar">
@@ -46,14 +46,14 @@
        </div>
        <div class="text">
         <p>
-         I've always been interested in graphic design, but I'm not sure where to begin.
+         The system shows an error saying "Invalid input" when I try to enter hours for specific tasks.
         </p>
        </div>
       </div>
       <div class="message user">
        <div class="text">
         <p>
-         Graphic design is a fantastic choice! To start, you might want to learn the basics of design principles and software tools. There are many online platforms offering courses like Adobe Creative Cloud tutorials or design fundamentals. What specific aspects of graphic design are you interested in?
+         Understood. Double-check that the task code and hours are entered correctly. If the issue persists, it might be a permissions problem. Would you like a guide to resolve this issue?
         </p>
        </div>
        <div class="avatar">

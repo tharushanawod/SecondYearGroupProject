@@ -36,7 +36,7 @@
     <div class="mission-item"><img src="<?php echo URLROOT;?>/images/plants.jpeg" alt=""></div>
     <div class="mission-item"><img src="<?php echo URLROOT;?>/images/ocean.jpeg" alt=""></div>
     <div class="mission-item">
-    <h2>Our Vission</h2>
+    <h2>Our Vision</h2>
       <p>To provide Sri Lankan corn farmers with a user-friendly digital platform that connects them directly with buyers, allowing for fair pricing through a bidding system, access to resources and labor, and an opportunity to thrive in a competitive market.</p>
     </div>
     </div>

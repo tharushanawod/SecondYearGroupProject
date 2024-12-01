@@ -1,85 +1,74 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Need support?</title>
   <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Buyer/pendingPayments.css">
   <style>
-/* Modal and Overlay Styles */
-.modal-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 999;
-}
+    /* Modal and Overlay Styles */
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
 
-.modal {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #f0fdf4; /* Light green background */
-    border: 2px solid #10b981; /* Emerald green border */
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    padding: 20px;
-    width: 350px;
-    text-align: center;
-    color: #065f46; /* Dark green text */
-}
+    .modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #f0fdf4;
+        border: 2px solid #10b981;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        padding: 20px;
+        width: 350px;
+        text-align: center;
+        color: #065f46;
+    }
 
-.modal h3 {
-    margin-bottom: 10px;
-    color: #065f46; /* Dark green for the title */
-}
+    .modal h3 {
+        margin-bottom: 10px;
+        color: #065f46;
+    }
 
-.modal p {
-    margin-bottom: 15px;
-    font-size: 14px;
-    color: #065f46;
-}
+    .modal p {
+        margin-bottom: 15px;
+        font-size: 14px;
+        color: #065f46;
+    }
 
-.modal select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #10b981;
-    border-radius: 4px;
-    background: #f0fdf4;
-    color: #065f46;
-    font-size: 14px;
-}
+    .modal button {
+        padding: 8px 16px;
+        margin: 5px;
+        font-size: 14px;
+        color: #ffffff;
+        background: #10b981;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
 
-.modal button {
-    padding: 8px 16px;
-    margin: 5px;
-    font-size: 14px;
-    color: #ffffff;
-    background: #10b981; /* Emerald green button */
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
+    .modal button:hover {
+        background: #047857;
+    }
 
-.modal button:hover {
-    background: #047857; /* Darker emerald green on hover */
-}
+    .modal button:nth-child(2) {
+        background: #f87171;
+    }
 
-.modal button:nth-child(2) {
-    background: #f87171; /* Red for close button */
-}
-
-.modal button:nth-child(2):hover {
-    background: #dc2626; /* Darker red on hover */
-}
-
+    .modal button:nth-child(2):hover {
+        background: #dc2626;
+    }
   </style>
 </head>
 <body>
@@ -128,9 +117,7 @@
                     <td>LKR {$total}</td>
                     <td>LKR " . number_format($advance, 2) . "</td>
                     <td>
-                        <a href=\"" . URLROOT . "/BuyerController/pay\">
-                            <button class=\"paynow\">Pay Now</button>
-                        </a>
+                        <button class=\"paynow\" onclick=\"openPayNowModal({$bid['id']}, {$advance})\">Pay Now</button>
                         <button class=\"status\" onclick=\"openCancelModal({$bid['id']})\">Cancel</button>
                     </td>
                 </tr>";
@@ -156,9 +143,20 @@
     <button onclick="closeCancelModal()">Close</button>
 </div>
 
+<!-- Modal for Pay Now -->
+<div class="modal" id="pay-modal">
+    <h3>Payment Details</h3>
+    <p id="pay-advance"></p>
+    <p id="pay-website-charge"></p>
+    <p id="pay-total"></p>
+    <p><small> 2% additional charge is applicable for Service.</small></p>
+    <button onclick="closePayNowModal()">Confirm</button>
+</div>
+
 <script>
     let selectedBidId = null;
 
+    // Cancel Modal Functions
     function openCancelModal(bidId) {
         selectedBidId = bidId;
         document.getElementById("modal-overlay").style.display = "block";
@@ -174,6 +172,22 @@
         const reason = document.getElementById("cancel-reason").value;
         alert(`Bid ID ${selectedBidId} cancelled for reason: ${reason}`);
         closeCancelModal();
+    }
+
+    // Pay Now Modal Functions
+    function openPayNowModal(bidId, advance) {
+        const websiteCharge = (advance * 0.02).toFixed(2); // 2% website fee
+        const totalPayment = (advance * 1.02).toFixed(2); // Total payment with website fee
+        document.getElementById("pay-advance").textContent = `Advance: LKR ${advance.toFixed(2)}`;
+        document.getElementById("pay-website-charge").textContent = `Service charge (2%): LKR ${websiteCharge}`;
+        document.getElementById("pay-total").textContent = `Total Payment: LKR ${totalPayment}`;
+        document.getElementById("modal-overlay").style.display = "block";
+        document.getElementById("pay-modal").style.display = "block";
+    }
+
+    function closePayNowModal() {
+        document.getElementById("modal-overlay").style.display = "none";
+        document.getElementById("pay-modal").style.display = "none";
     }
 </script>
 </body>

@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
@@ -25,14 +26,14 @@
             </div>
             <div class="text">
              <p>
-              Hello! I've been thinking about developing some new skills. Any suggestions on where to start?
+              Hello! I'm having issues with placing an order. Can you help?
              </p>
             </div>
            </div>
            <div class="message user">
             <div class="text">
              <p>
-              Hi there! That's great to hear. The first step is to identify your interests. What areas are you passionate about or curious to explore?
+              Hi there! Of course. Could you describe the problem you're facing?
              </p>
             </div>
             <div class="avatar">
@@ -45,14 +46,14 @@
             </div>
             <div class="text">
              <p>
-              I've always been interested in graphic design, but I'm not sure where to begin.
+              The system isn't accepting my payment, and I can't update my delivery address.
              </p>
             </div>
            </div>
            <div class="message user">
             <div class="text">
              <p>
-              Graphic design is a fantastic choice! To start, you might want to learn the basics of design principles and software tools. There are many online platforms offering courses like Adobe Creative Cloud tutorials or design fundamentals. What specific aspects of graphic design are you interested in?
+              Thanks for sharing. For payment issues, ensure your details are correct and the payment method is supported. For the address, check if it's within the serviceable area. Let me guide you through fixing these. Do you need step-by-step instructions?
              </p>
             </div>
             <div class="avatar">

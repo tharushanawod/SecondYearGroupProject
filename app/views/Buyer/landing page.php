@@ -13,7 +13,7 @@
             <img src="<?php echo URLROOT;?>/images/images/img39.png" alt="Product Image" class="large-image">
             <div class="text">
             <h1>Bid on Premium Corn Products!</h1>
-            <p>Fresh from the farm, no hidden fees.</p>
+            <p>Fresh from the farm</p>
             <a href="<?php echo URLROOT;?>/BuyerController/bidProduct" class="button-link">
                 <button class="cta-button">START BIDDING →</button>
             </a>

@@ -25,14 +25,14 @@
        </div>
        <div class="text">
         <p>
-         Hello! I've been thinking about developing some new skills. Any suggestions on where to start?
+         Hello! I'm having trouble current rates. Can you help me?
         </p>
        </div>
       </div>
       <div class="message user">
        <div class="text">
         <p>
-         Hi there! That's great to hear. The first step is to identify your interests. What areas are you passionate about or curious to explore?
+         Hi there! Let's resolve this. Are you facing issues with the rates for specific products or all products?
         </p>
        </div>
        <div class="avatar">
@@ -45,14 +45,14 @@
        </div>
        <div class="text">
         <p>
-         I've always been interested in graphic design, but I'm not sure where to begin.
+         I'm unable to update the current rates for all products.
         </p>
        </div>
       </div>
       <div class="message user">
        <div class="text">
         <p>
-         Graphic design is a fantastic choice! To start, you might want to learn the basics of design principles and software tools. There are many online platforms offering courses like Adobe Creative Cloud tutorials or design fundamentals. What specific aspects of graphic design are you interested in?
+          I understand. Let's check the issue. Ensure you have the necessary permissions to update rates. If you do, check the system requirements for updating rates. I can guide you through the process. Would you like that?
         </p>
        </div>
        <div class="avatar">
@@ -70,6 +70,5 @@
     </div>
    </div>
   </div>
-   
 </body>
 </html>

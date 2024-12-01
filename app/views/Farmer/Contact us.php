@@ -25,14 +25,14 @@
             </div>
             <div class="text">
              <p>
-              Hello! I've been thinking about developing some new skills. Any suggestions on where to start?
+              Hello! I'm facing some challenges using the system. Can you help me?
              </p>
             </div>
            </div>
            <div class="message user">
             <div class="text">
              <p>
-              Hi there! That's great to hear. The first step is to identify your interests. What areas are you passionate about or curious to explore?
+              Hi there! Of course. Could you describe the issue you're experiencing?
              </p>
             </div>
             <div class="avatar">
@@ -45,14 +45,14 @@
             </div>
             <div class="text">
              <p>
-              I've always been interested in graphic design, but I'm not sure where to begin.
+              I'm having trouble uploading details about my crops.
              </p>
             </div>
            </div>
            <div class="message user">
             <div class="text">
              <p>
-              Graphic design is a fantastic choice! To start, you might want to learn the basics of design principles and software tools. There are many online platforms offering courses like Adobe Creative Cloud tutorials or design fundamentals. What specific aspects of graphic design are you interested in?
+              Thanks for sharing. For the crop details issue, make sure your data format matches the system's requirements. Let me guide you through fixing the problem. Do you need step-by-step assistance?
              </p>
             </div>
             <div class="avatar">

@@ -16,115 +16,72 @@
 <!-- Worker Profile Cards -->
 <div class="worker-container">
     <div class="worker-card">
-        <h3>John Doe</h3>
+        <h3>Kasun Perera</h3>
         <div class="worker-img">
-            <img src="<?php echo URLROOT;?>/images/images/img25.jpg" alt="John Doe">                
+            <img src="<?php echo URLROOT;?>/images/images/img25.jpg" alt="Kasun Perera">                
         </div>
         <p><b>Skills:</b> Harvesting, Irrigation</p>
         <p><b>Availability:</b> Available</p>
-        <p><b>Email:</b> johndoe@example.com</p>
+        <p><b>Email:</b> kasun.perera@example.com</p>
+        <p><b>Address:</b>Anuradhapura</p>
         <p><b>Phone Number:</b> 071 7456732</p>
         <div class="button-group">
-            <button class="hire-btn" onclick="openHireModal('John Doe')"><b>Hire</b></button>
-            <button class="rate-btn" onclick="openRatingModal('John Doe')"><b>Rate & Feedback</b></button>
+            <button class="hire-btn" onclick="openHireModal('Kasun Perera')"><b>Hire</b></button>
+            <button class="rate-btn" onclick="openRatingModal('Kasun Perera')"><b>Rate & Feedback</b></button>
         </div>
     </div>
 
     <div class="worker-card">
-        <h3>Jane Smith</h3>
+        <h3>Nimal Fernando</h3>
         <div class="worker-img">
-            <img src="<?php echo URLROOT;?>/images/images/img25.jpg" alt="Jane Smith">                
+            <img src="<?php echo URLROOT;?>/images/images/img25.jpg" alt="Nimal Fernando">                
         </div>
         <p><b>Skills:</b> Fertilizing, Plowing</p>
         <p><b>Availability:</b> Busy</p>
-        <p><b>Email:</b> johndoe@example.com</p>
-        <p><b>Phone Number:</b> 071 7456732</p>
+        <p><b>Email:</b> nimal.fernando@example.com</p>
+        <p><b>Address:</b>Anuradhapura</p>
+        <p><b>Phone Number:</b> 077 8425613</p>
         <div class="button-group">
-            <button class="hire-btn" onclick="openHireModal('Jane Smith')"><b>Hire</b></button>
-            <button class="rate-btn" onclick="openRatingModal('Jane Smith')"><b>Rate & Feedback</b></button>
+            <button class="hire-btn" onclick="openHireModal('Nimal Fernando')"><b>Hire</b></button>
+            <button class="rate-btn" onclick="openRatingModal('Nimal Fernando')"><b>Rate & Feedback</b></button>
         </div>
     </div>
 
     <div class="worker-card">
-        <h3>Mike Johnson</h3>
+        <h3>Sarath Wijesinghe</h3>
         <div class="worker-img">
-        <img src="<?php echo URLROOT;?>/images/images/img25.jpg" alt="Jane Smith">
+        <img src="<?php echo URLROOT;?>/images/images/img25.jpg" alt="Sarath Wijesinghe">
         </div>
         <p><b>Skills:</b> Planting, Weeding</p>
         <p><b>Availability:</b> Available</p>
-        <p><b>Email:</b> johndoe@example.com</p>
-        <p><b>Phone Number:</b> 071 7456732</p>
+        <p><b>Email:</b> wijesinghe@example.com</p>
+        <p><b>Address:</b>Anuradhapura</p>
+        <p><b>Phone Number:</b> 070 9453821</p>
         <div class="button-group">
-            <button class="hire-btn" onclick="openHireModal('Mike Johnson')"><b>Hire</b></button>
-            <button class="rate-btn" onclick="openRatingModal('Mike Johnson')"><b>Rate & Feedback</b></button>
+            <button class="hire-btn" onclick="openHireModal('Sarath Wijesinghe')"><b>Hire</b></button>
+            <button class="rate-btn" onclick="openRatingModal('Sarath Wijesinghe')"><b>Rate & Feedback</b></button>
         </div>
     </div>
 
     <div class="worker-card">
-        <h3>Emily Davis</h3>
+        <h3>Silva</h3>
         <div class="worker-img">
-        <img src="<?php echo URLROOT;?>/images/images/img25.jpg" alt="Emily Davis">                
+        <img src="<?php echo URLROOT;?>/images/images/img25.jpg" alt="Chamari Silva">                
         </div>
         <p><b>Skills:</b> Pruning, Harvesting</p>
         <p><b>Availability:</b> Available</p>
-        <p><b>Email:</b> johndoe@example.com</p>
-        <p><b>Phone Number:</b> 071 7456732</p>
+        <p><b>Email:</b> silva@example.com</p>
+        <p><b>Address:</b>Anuradhapura</p>
+        <p><b>Phone Number:</b> 078 3546729</p>
         <div class="button-group">
-            <button class="hire-btn" onclick="openHireModal('Emily Davis')"><b>Hire</b></button>
-            <button class="rate-btn" onclick="openRatingModal('Emily Davis')"><b>Rate & Feedback</b></button>
-        </div>
-    </div>
-    
-    <div class="worker-card">
-        <h3>Mike Johnson</h3>
-        <div class="worker-img">
-        <img src="<?php echo URLROOT;?>/images/images/img25.jpg" alt="Mike Johnson">
-        </div>
-        <p><b>Skills:</b> Planting, Weeding</p>
-        <p><b>Availability:</b> Available</p>
-        <p><b>Email:</b> johndoe@example.com</p>
-        <p><b>Phone Number:</b> 071 7456732</p>
-        <div class="button-group">
-            <button class="hire-btn" onclick="openHireModal('Mike Johnson')"><b>Hire</b></button>
-            <button class="rate-btn" onclick="openRatingModal('Mike Johnson')"><b>Rate & Feedback</b></button>
-        </div>
-    </div>
-
-    <div class="worker-card">
-        <h3>Mike Johnson</h3>
-        <div class="worker-img">
-        <img src="<?php echo URLROOT;?>/images/images/img25.jpg" alt="Mike Johnson">
-        </div>
-        <p><b>Skills:</b> Planting, Weeding</p>
-        <p><b>Availability:</b> Available</p>
-        <p><b>Email:</b> johndoe@example.com</p>
-        <p><b>Phone Number:</b> 071 7456732</p>
-        <div class="button-group">
-            <button class="hire-btn" onclick="openHireModal('Mike Johnson')"><b>Hire</b></button>
-            <button class="rate-btn" onclick="openRatingModal('Mike Johnson')"><b>Rate & Feedback</b></button>
-        </div>
-    </div>
-
-    <div class="worker-card">
-        <h3>Jane Smith</h3>
-        <div class="worker-img">
-        <img src="<?php echo URLROOT;?>/images/images/img25.jpg" alt="Jane Smith">
-        </div>
-        <p><b>Skills:</b> Fertilizing, Plowing</p>
-        <p><b>Availability:</b> Busy</p>
-        <p><b>Email:</b> johndoe@example.com</p>
-        <p><b>Phone Number:</b> 071 7456732</p>
-        <div class="button-group">
-            <button class="hire-btn" onclick="openHireModal('Jane Smith')"><b>Hire</b></button>
-            <button class="rate-btn" onclick="openRatingModal('Jane Smith')"><b>Rate & Feedback</b></button>
+            <button class="hire-btn" onclick="openHireModal('Chamari Silva')"><b>Hire</b></button>
+            <button class="rate-btn" onclick="openRatingModal('Chamari Silva')"><b>Rate & Feedback</b></button>
         </div>
     </div>
 </div>
 
 </div>
-
    
-
     <!-- Hire Modal -->
     <div id="hireModal" class="modal">
         <div class="modal-content">

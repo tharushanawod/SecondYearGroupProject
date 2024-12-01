@@ -61,11 +61,16 @@
         .modal button:hover {
             background: #047857; /* Darker emerald green on hover */
         }
-        .contact-btn{
+        .contact-btn, .confirm-btn {
             border: none;
             padding: 5px 10px;
             background-color: #3ab583;
             border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .contact-btn:hover, .confirm-btn:hover {
+            background-color: #2e8c6a;
         }
     </style>
 </head>
@@ -73,7 +78,7 @@
 <?php require APPROOT . '/views/inc/sidebar.php'; ?>
 
 <div class="container">      
-    <h2 class="header-content">Purchase History</h2>        
+    <h2 class="header-content">Orders</h2>        
     <table id="purchaseHistory">
         <thead>
             <tr>
@@ -91,18 +96,15 @@
             // Sample data with farmer details
             $data = 
                 [
-                    ['product' => 'Dry Corn', 'farmer' => 'Sunil', 'date' => '2024-04-25', 'quantity' => '100 kg', 'price' => 'LKR 123', 'status' => 'Paid', 'details' => 'Address: Village A, Contact: 0712345678'],
-                    ['product' => 'Sweet Corn', 'farmer' => 'Kamal', 'date' => '2024-05-11', 'quantity' => '568 kg', 'price' => 'LKR 99', 'status' => 'Paid', 'details' => 'Address: Village B, Contact: 0718765432'],
-                    ['product' => 'Dry Corn', 'farmer' => 'Silva', 'date' => '2024-07-20', 'quantity' => '555 kg', 'price' => 'LKR 98', 'status' => 'Paid', 'details' => 'Address: Village C, Contact: 0771234567'],
-                    ['product' => 'Sweet Corn', 'farmer' => 'Nimal', 'date' => '2024-08-15', 'quantity' => '420 kg', 'price' => 'LKR 105', 'status' => 'Paid', 'details' => 'Address: Village D, Contact: 0719876543'],
-                    ['product' => 'Dry Corn', 'farmer' => 'Ranjith', 'date' => '2024-09-10', 'quantity' => '230 kg', 'price' => 'LKR 112', 'status' => 'Paid', 'details' => 'Address: Village E, Contact: 0777654321'],
-                    ['product' => 'Sweet Corn', 'farmer' => 'Bandara', 'date' => '2024-10-05', 'quantity' => '315 kg', 'price' => 'LKR 102', 'status' => 'Paid', 'details' => 'Address: Village F, Contact: 0701234567'],
-                    ['product' => 'Dry Corn', 'farmer' => 'Mendis', 'date' => '2024-11-22', 'quantity' => '600 kg', 'price' => 'LKR 99', 'status' => 'Paid', 'details' => 'Address: Village G, Contact: 0714567890'],
-                    ['product' => 'Sweet Corn', 'farmer' => 'Chathura', 'date' => '2024-12-01', 'quantity' => '500 kg', 'price' => 'LKR 107', 'status' => 'Paid', 'details' => 'Address: Village H, Contact: 0765432109']
-               
-                
-                // Add similar entries as needed...
-            ];
+                    ['product' => 'Dry Corn', 'farmer' => 'Sunil', 'date' => '2024-04-25', 'quantity' => '100 kg', 'price' => 'LKR 123', 'details' => 'Address: Village A, Contact: 0712345678'],
+                    ['product' => 'Sweet Corn', 'farmer' => 'Kamal', 'date' => '2024-05-11', 'quantity' => '568 kg', 'price' => 'LKR 99', 'details' => 'Address: Village B, Contact: 0718765432'],
+                    ['product' => 'Dry Corn', 'farmer' => 'Silva', 'date' => '2024-07-20', 'quantity' => '555 kg', 'price' => 'LKR 98', 'details' => 'Address: Village C, Contact: 0771234567'],
+                    ['product' => 'Sweet Corn', 'farmer' => 'Nimal', 'date' => '2024-08-15', 'quantity' => '420 kg', 'price' => 'LKR 105', 'details' => 'Address: Village D, Contact: 0719876543'],
+                    ['product' => 'Dry Corn', 'farmer' => 'Ranjith', 'date' => '2024-09-10', 'quantity' => '230 kg', 'price' => 'LKR 112', 'details' => 'Address: Village E, Contact: 0777654321'],
+                    ['product' => 'Sweet Corn', 'farmer' => 'Bandara', 'date' => '2024-10-05', 'quantity' => '315 kg', 'price' => 'LKR 102', 'details' => 'Address: Village F, Contact: 0701234567'],
+                    ['product' => 'Dry Corn', 'farmer' => 'Mendis', 'date' => '2024-11-22', 'quantity' => '600 kg', 'price' => 'LKR 99', 'details' => 'Address: Village G, Contact: 0714567890'],
+                    ['product' => 'Sweet Corn', 'farmer' => 'Chathura', 'date' => '2024-12-01', 'quantity' => '500 kg', 'price' => 'LKR 107', 'details' => 'Address: Village H, Contact: 0765432109']
+                ];
 
             foreach ($data as $row) {
                 echo "<tr>
@@ -111,7 +113,7 @@
                         <td>{$row['date']}</td>
                         <td>{$row['quantity']}</td>
                         <td>{$row['price']}</td>
-                        <td>{$row['status']}</td>
+                        <td><button class='confirm-btn' onclick=\"confirmOrder('{$row['farmer']}')\">Order Confirm</button></td>
                         <td><button class='contact-btn' onclick=\"openContactModal('{$row['farmer']}', '{$row['details']}')\">Contact</button></td>
                     </tr>";
             }
@@ -139,6 +141,10 @@
     function closeContactModal() {
         document.getElementById("modal-overlay").style.display = "none";
         document.getElementById("contact-modal").style.display = "none";
+    }
+
+    function confirmOrder(farmerName) {
+        alert(`Order confirmed for farmer: ${farmerName}`);
     }
 </script>
 

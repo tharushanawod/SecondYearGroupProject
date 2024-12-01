@@ -9,7 +9,7 @@
 <body>
 <?php require APPROOT . '/views/inc/sidebar.php'; ?>
 <div class="container">
-        <h1>Orders</h1>
+        <h1>Ingredients Orders</h1>
 
         <div class="main-container">
             <div class="filter-options">
