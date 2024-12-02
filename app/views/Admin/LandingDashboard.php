@@ -54,8 +54,9 @@
               <th>NAME</th>
               <th>Title</th>
               <th>CONTACT NUMBER</th>
-              <th>CREATED DATE</th>
+              <th>Status</th>
               <th>EMAIL</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -68,8 +69,35 @@
                 <td><?php echo $user->name; ?></td>  <!-- User ID -->
                 <td><?php echo $user->title; ?></td>  <!-- User Name -->
                 <td><?php echo $user->phone; ?></td>  <!-- User Email -->
-                <td><?php echo $user->created_at; ?></td>  <!-- User Phone -->
+                <td style="
+    <?php
+        if ($user->status == 'verified') {
+            echo ' color: green; border-radius: 25px;width: 20px;';
+        } elseif ($user->status == 'unverified') {
+            echo 'color: tomato; border-radius: 25px;width: 20px;';
+        } elseif ($user->status == 'restricted') {
+            echo 'color: red; border-radius: 25px;width: 20px;';
+        }
+    ?>
+">
+    <?php echo $user->status; ?>
+</td>
+
                 <td><?php echo $user->email; ?></td>  <!-- User Title -->
+                <td>
+    <?php 
+        if ($user->status == 'restricted') {
+            echo '<a href="' . URLROOT . '/AdminController/AllowUser/' . $user->id . '">
+            <button style="background-color: #0c0a7c; color: white; border: none; padding: 10px 20px; cursor: pointer;">Allow</button></a>';
+        }
+
+        else{
+          echo '-';
+        }
+    ?>
+</td>
+
+
             </tr>
         <?php
             endforeach;

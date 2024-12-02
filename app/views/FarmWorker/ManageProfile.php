@@ -13,8 +13,7 @@
    <div class="profilesidebar">
     <img alt="Profile picture of Jay Rutherford" height="100" src="<?php echo URLROOT;?>/images/man.jpg" width="100"/>
     <div class="edit-icon">
-     <i class="fas fa-pencil-alt">
-     </i>
+     <i class="fas fa-pencil-alt"></i>
     </div>
     <h2>
    <?php echo $_SESSION['user_name']; ?>
@@ -30,9 +29,6 @@
     <div class="tabs">
      <a class="active" href="#">
       General
-     </a>
-     <a href="#">
-      Billings
      </a>
     </div>
     <h2>
@@ -58,6 +54,26 @@
      </label>
      <input id="address" placeholder="Your address" type="text"/>
     </div>
+    
+    <!-- New Fields for Hourly Rate and Availability -->
+    <div class="form-group">
+      <div>
+        <label for="hourly-rate">
+          Hourly Rate (LKR)
+        </label>
+        <input id="hourly-rate" placeholder="Enter hourly rate" type="text"/>
+      </div>
+      <div>
+        <label for="availability">
+          Availability
+        </label>
+        <select id="availability">
+          <option value="available">Available</option>
+          <option value="unavailable">Unavailable</option>
+        </select>
+      </div>
+    </div>
+
     <hr/>
     <h2>
      Account
@@ -79,14 +95,16 @@
     <button class="save-btn">
      Save information
     </button>
+    
    </div>
   </div>
+
   <script>
     document.addEventListener("DOMContentLoaded", function () {
     const billingsTab = document.querySelector('a[href="#"]:nth-child(2)'); // Second <a> element
     const contentDiv = document.querySelector(".content");
 
-    const billingHTML = `
+    const billingHTML = ` 
         <div class="tcontainer">
            <div class="alert">
               <i class="fas fa-exclamation-circle"></i>
@@ -151,8 +169,8 @@
                     <input id="card-number" placeholder="Enter card number" type="text"/>
                  </div>
                  <div class="form-control">
-                 <label for="month-year">Select Month and Year:</label>
-<input type="month" id="month-year" name="month-year">
+                    <label for="month-year">Select Month and Year:</label>
+                    <input type="month" id="month-year" name="month-year">
                  </div>
                  <div class="form-control">
                     <label for="cvv">CVV</label>

@@ -58,8 +58,8 @@ class Users {
     }
 
     public function getUsers() {
-        // Prepare a query to fetch all users
-        $this->db->query('SELECT * FROM users');
+        // Prepare a query to fetch all users except those with the title 'admin'
+        $this->db->query("SELECT * FROM users WHERE title != 'admin'");
         
         // Execute the query
         $this->db->execute();
@@ -67,6 +67,7 @@ class Users {
         // Fetch all users as an array of objects
         return $this->db->resultSet();
     }
+    
 
     public function FindModerators(){
 
@@ -171,6 +172,40 @@ class Users {
         $this->db->execute();
         return $this->db->resultSet();
     }
+
+    public function getUnrestrictedtUsers() {
+        // Prepare a query to fetch all users except those with the title 'admin'
+        $this->db->query("SELECT * FROM users WHERE status != 'restricted' AND title != 'admin'");
+        
+        // Execute the query
+        $this->db->execute();
+    
+        // Fetch all users as an array of objects
+        return $this->db->resultSet();
+    }
+
+    public function RestrictUser($id){
+        $this->db->query('UPDATE users SET status = :status WHERE id = :id');
+        $this->db->bind(':status','restricted');
+        $this->db->bind(':id',$id);
+        if($this->db->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function AllowUser($id){
+        $this->db->query('UPDATE users SET status = :status WHERE id = :id');
+        $this->db->bind(':status','verified');
+        $this->db->bind(':id',$id);
+        if($this->db->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
     
 
 }

@@ -6,12 +6,93 @@
     <title>Products</title>
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Farmer/AddProducts.css">
 </head>
+<style>
+   .prices-btn {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .prices-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Popup message box */
+        .prices-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: white;
+            border: 2px solid #4CAF50;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            max-width: 500px;
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .prices-popup h2 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .prices-popup table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .prices-popup table, .prices-popup th, .prices-popup td {
+            border: 1px solid #ddd;
+        }
+
+        .prices-popup th, .prices-popup td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        .prices-popup th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .prices-popup td {
+            background-color: #f9f9f9;
+        }
+
+        .prices-popup .prices-close-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .prices-popup .prices-close-btn:hover {
+            background-color: #e53935;
+        }
+
+        /* Styling for the background blur effect */
+        .blurred-background {
+          
+           
+        }
+</style>
 <body>
 <?php require APPROOT . '/views/inc/sidebar.php'; ?>
     <div class="container">
         <div class="header">
             <h1>PRODUCTS</h1>
             <?php echo $data['userid'];?>
+            <button class="create-btn" onclick="openPricesPopup()">Show Company Purchase Rate</button>
             <button class="create-btn" onclick="openPopup()">Create New Product</button>
         </div>
         <div class="filters">
@@ -125,9 +206,54 @@
             </form>
         </div>
     </div>
-    <script>
-       
+    <div class="prices-popup" id="pricesPopupMessage">
+        <h2>Company Purchase Rates</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Company Name</th>
+                    <th>Unit Price (LKR)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Prima</td>
+                    <td>150</td>
+                </tr>
+                <tr>
+                    <td>XYZ Manufacturing</td>
+                    <td>145</td>
+                </tr>
+                <tr>
+                    <td>Sri Lanka Foods</td>
+                    <td>160</td>
+                </tr>
+                <tr>
+                    <td>Ceylon Agro Industries</td>
+                    <td>155</td>
+                </tr>
+                <tr>
+                    <td>Premier Products</td>
+                    <td>150</td>
+                </tr>
+            </tbody>
+        </table>
+        <button class="prices-close-btn" id="pricesPopupMessage" onclick="closePricesPopup()">Close</button>
+    </div>
 
+
+   
+    <script>
+            function openPricesPopup() {
+            document.getElementById("pricesPopupMessage").style.display = "block";
+            document.body.classList.add("blurred-background"); // Add the blur effect to the body
+        }
+
+        // Function to close the popup
+        function closePricesPopup() {
+            document.getElementById("pricesPopupMessage").style.display = "none";
+            document.body.classList.remove("blurred-background"); // Remove the blur effect from the body
+        }
          document.addEventListener('DOMContentLoaded', function () {
         <?php if (!empty($data['show_popup']) && $data['show_popup'] === true): ?>
             openPopup(); // Call your JavaScript function to show the popup

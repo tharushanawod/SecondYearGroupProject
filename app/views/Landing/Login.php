@@ -12,7 +12,7 @@
     <div class="container">
         <div class="form-section">
           
-        <div class="new">
+        <div class="Home">
         <div class="heading">
                 <h2>Welcome Back 👋</h2>
                 <p>Login to your account</p>

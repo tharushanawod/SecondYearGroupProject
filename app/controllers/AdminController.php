@@ -41,7 +41,7 @@ class AdminController extends Controller {
     public function RemoveUsers(){
      
         // Retrieve users from the model
-        $users = $this->pagesModel->getUsers();
+        $users = $this->pagesModel->getUnrestrictedtUsers();
 
         // Pass the user data to the view
         $data = ['users' => $users];
@@ -69,7 +69,7 @@ class AdminController extends Controller {
  
   
 
-    public function deleteUser($id) {
+    public function RestrictUser($id) {
       
         // Sanitize the ID
         $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
@@ -79,7 +79,7 @@ class AdminController extends Controller {
         }
     
         // Call the model function to delete the user
-        if ($this->pagesModel->deleteUser($id)) {
+        if ($this->pagesModel->RestrictUser($id)) {
             // Redirect after successful deletion
             header('Location: ' . URLROOT . '/AdminController/RemoveUsers');
         } else {
@@ -347,6 +347,13 @@ class AdminController extends Controller {
         $this->View('Admin/ManageProfile');
     }
     
+    public function AllowUser($id){
+        if($this->pagesModel->AllowUser($id)){
+            Redirect('AdminController/Dashboard');
+        }else{
+            die('Something went wrong');
+        }
+    }
 
 }
 

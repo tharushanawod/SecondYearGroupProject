@@ -183,6 +183,12 @@ class LandingController extends Controller{
                         $this->View('Landing/Login', $data);  // Show the error in the login page
                         return;  // Stop further execution
                     }
+
+                    if($loggedInUser->status == 'restricted'){
+                        $data['verified_err'] = 'Your account is restricted. Please contact the admin. ⬇️  CornCradleadmin@mail.com';
+                        $this->View('Landing/Login', $data);  // Show the error in the login page
+                        return;  // Stop further execution
+                    }
     
                     // If the user is verified, create session
                     $this->CreateUserSession($loggedInUser);
@@ -369,7 +375,7 @@ class LandingController extends Controller{
                 'password' => '',
                 'confirm_password' => '',
                 'name_err' => '',
-                'email_err' => '',
+                'email_err' => '', 
                 'document_err' => '',
                 'phone_err' => '',
                 'password_err' => '',

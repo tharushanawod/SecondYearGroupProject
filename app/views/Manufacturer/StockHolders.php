@@ -10,7 +10,7 @@
 <?php require APPROOT . '/views/inc/sidebar.php'; ?>
 
 <div class="maincontainer">
-<h1> Stock Holders (>1000 Kg)</h1>
+<h1> Last Purchases (More Than 1000Kg)</h1>
 
 <!-- Worker Profile Cards -->
 <div class="worker-container">

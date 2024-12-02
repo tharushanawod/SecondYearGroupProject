@@ -18,13 +18,13 @@
     <div class="worker-card">
         <h3>Kasun Perera</h3>
         <div class="worker-img">
-            <img src="<?php echo URLROOT;?>/images/images/img25.jpg" alt="Kasun Perera">                
+            <img src="<?php echo URLROOT;?>/images/1.jpg" alt="Kasun Perera">                
         </div>
         <p><b>Skills:</b> Harvesting, Irrigation</p>
         <p><b>Availability:</b> Available</p>
-        <p><b>Email:</b> kasun.perera@example.com</p>
-        <p><b>Address:</b>Anuradhapura</p>
-        <p><b>Phone Number:</b> 071 7456732</p>
+        <p><b>Email:</b> kasunperera@example.com</p>
+        <p><b>Phone Number:</b> 077 7456732</p>
+        <p><b>Charging Rate(Day):</b> Rs.2500 </p>
         <div class="button-group">
             <button class="hire-btn" onclick="openHireModal('Kasun Perera')"><b>Hire</b></button>
             <button class="rate-btn" onclick="openRatingModal('Kasun Perera')"><b>Rate & Feedback</b></button>
@@ -32,56 +32,120 @@
     </div>
 
     <div class="worker-card">
-        <h3>Nimal Fernando</h3>
+        <h3>Shanika Silva</h3>
         <div class="worker-img">
-            <img src="<?php echo URLROOT;?>/images/images/img25.jpg" alt="Nimal Fernando">                
+            <img src="<?php echo URLROOT;?>/images/2.jpg" alt="Shanika Silva">                
         </div>
         <p><b>Skills:</b> Fertilizing, Plowing</p>
         <p><b>Availability:</b> Busy</p>
-        <p><b>Email:</b> nimal.fernando@example.com</p>
-        <p><b>Address:</b>Anuradhapura</p>
-        <p><b>Phone Number:</b> 077 8425613</p>
+        <p><b>Email:</b> shanikasilva@example.com</p>
+        <p><b>Phone Number:</b> 071 8123456</p>
+        <p><b>Charging Rate(Day):</b> Rs.2500 </p>
         <div class="button-group">
-            <button class="hire-btn" onclick="openHireModal('Nimal Fernando')"><b>Hire</b></button>
-            <button class="rate-btn" onclick="openRatingModal('Nimal Fernando')"><b>Rate & Feedback</b></button>
+            <button class="hire-btn" onclick="openHireModal('Shanika Silva')"><b>Hire</b></button>
+            <button class="rate-btn" onclick="openRatingModal('Shanika Silva')"><b>Rate & Feedback</b></button>
         </div>
     </div>
 
     <div class="worker-card">
-        <h3>Sarath Wijesinghe</h3>
+        <h3>Ruwan Fernando</h3>
         <div class="worker-img">
-        <img src="<?php echo URLROOT;?>/images/images/img25.jpg" alt="Sarath Wijesinghe">
+        <img src="<?php echo URLROOT;?>/images/3.jpg" alt="Ruwan Fernando">
         </div>
         <p><b>Skills:</b> Planting, Weeding</p>
         <p><b>Availability:</b> Available</p>
-        <p><b>Email:</b> wijesinghe@example.com</p>
-        <p><b>Address:</b>Anuradhapura</p>
-        <p><b>Phone Number:</b> 070 9453821</p>
+        <p><b>Email:</b> ruwanfernando@example.com</p>
+        <p><b>Phone Number:</b> 076 9876543</p>
+        <p><b>Charging Rate(Day):</b> Rs.2500 </p>
         <div class="button-group">
-            <button class="hire-btn" onclick="openHireModal('Sarath Wijesinghe')"><b>Hire</b></button>
-            <button class="rate-btn" onclick="openRatingModal('Sarath Wijesinghe')"><b>Rate & Feedback</b></button>
+            <button class="hire-btn" onclick="openHireModal('Ruwan Fernando')"><b>Hire</b></button>
+            <button class="rate-btn" onclick="openRatingModal('Ruwan Fernando')"><b>Rate & Feedback</b></button>
         </div>
     </div>
 
     <div class="worker-card">
-        <h3>Silva</h3>
+        <h3>Chandima Wijesinghe</h3>
         <div class="worker-img">
-        <img src="<?php echo URLROOT;?>/images/images/img25.jpg" alt="Chamari Silva">                
+        <img src="<?php echo URLROOT;?>/images/4.jpg" alt="Chandima Wijesinghe">                
         </div>
         <p><b>Skills:</b> Pruning, Harvesting</p>
         <p><b>Availability:</b> Available</p>
-        <p><b>Email:</b> silva@example.com</p>
-        <p><b>Address:</b>Anuradhapura</p>
-        <p><b>Phone Number:</b> 078 3546729</p>
+        <p><b>Email:</b> chandimawijesinghe@example.com</p>
+        <p><b>Phone Number:</b> 078 1234567</p>
+        <p><b>Charging Rate(Day):</b> Rs.2500 </p>
         <div class="button-group">
-            <button class="hire-btn" onclick="openHireModal('Chamari Silva')"><b>Hire</b></button>
-            <button class="rate-btn" onclick="openRatingModal('Chamari Silva')"><b>Rate & Feedback</b></button>
+            <button class="hire-btn" onclick="openHireModal('Chandima Wijesinghe')"><b>Hire</b></button>
+            <button class="rate-btn" onclick="openRatingModal('Chandima Wijesinghe')"><b>Rate & Feedback</b></button>
+        </div>
+    </div>
+    
+    <div class="worker-card">
+        <h3>Sunil Perera</h3>
+        <div class="worker-img">
+        <img src="<?php echo URLROOT;?>/images/images/img69.jpg" alt="Sunil Perera">
+        </div>
+        <p><b>Skills:</b> Planting, Weeding</p>
+        <p><b>Availability:</b> Available</p>
+        <p><b>Email:</b> sunilperera@example.com</p>
+        <p><b>Phone Number:</b> 072 1239876</p>
+        <p><b>Charging Rate(Day):</b> Rs.2500 </p>
+        <div class="button-group">
+            <button class="hire-btn" onclick="openHireModal('Sunil Perera')"><b>Hire</b></button>
+            <button class="rate-btn" onclick="openRatingModal('Sunil Perera')"><b>Rate & Feedback</b></button>
+        </div>
+    </div>
+
+    <div class="worker-card">
+        <h3>Vimukthi Senanayake</h3>
+        <div class="worker-img">
+        <img src="<?php echo URLROOT;?>/images/images/img68.jpg" alt="Vimukthi Senanayake">
+        </div>
+        <p><b>Skills:</b> Fertilizing, Plowing</p>
+        <p><b>Availability:</b> Busy</p>
+        <p><b>Email:</b> vimukthisenanayake@example.com</p>
+        <p><b>Phone Number:</b> 074 3456789</p>
+        <p><b>Charging Rate(Day):</b> Rs.2500 </p>
+        <div class="button-group">
+            <button class="hire-btn" onclick="openHireModal('Vimukthi Senanayake')"><b>Hire</b></button>
+            <button class="rate-btn" onclick="openRatingModal('Vimukthi Senanayake')"><b>Rate & Feedback</b></button>
+        </div>
+    </div>
+
+    <div class="worker-card">
+        <h3>Indika Karunaratne</h3>
+        <div class="worker-img">
+        <img src="<?php echo URLROOT;?>/images/images/img25.jpg" alt="Indika Karunaratne">
+        </div>
+        <p><b>Skills:</b> Harvesting, Irrigation</p>
+        <p><b>Availability:</b> Available</p>
+        <p><b>Email:</b> indikakarunaratne@example.com</p>
+        <p><b>Phone Number:</b> 075 7654321</p>
+        <p><b>Charging Rate(Day):</b> Rs.2500 </p>
+        <div class="button-group">
+            <button class="hire-btn" onclick="openHireModal('Indika Karunaratne')"><b>Hire</b></button>
+            <button class="rate-btn" onclick="openRatingModal('Indika Karunaratne')"><b>Rate & Feedback</b></button>
+        </div>
+    </div>
+
+    <div class="worker-card">
+        <h3>Haritha Nayanajith</h3>
+        <div class="worker-img">
+        <img src="<?php echo URLROOT;?>/images/images/img25.jpg" alt="Haritha Nayanajith">
+        </div>
+        <p><b>Skills:</b> Pruning, Weeding</p>
+        <p><b>Availability:</b> Available</p>
+        <p><b>Email:</b> harithanayanajith@example.com</p>
+        <p><b>Phone Number:</b> 079 8765432</p>
+        <p><b>Charging Rate(Day):</b> Rs.2500 </p>
+        <div class="button-group">
+            <button class="hire-btn" onclick="openHireModal('Haritha Nayanajith')"><b>Hire</b></button>
+            <button class="rate-btn" onclick="openRatingModal('Haritha Nayanajith')"><b>Rate & Feedback</b></button>
         </div>
     </div>
 </div>
 
 </div>
-   
+
     <!-- Hire Modal -->
     <div id="hireModal" class="modal">
         <div class="modal-content">
@@ -90,8 +154,13 @@
             <p id="workerName"></p>
             <label for="task">Task:</label>
             <input type="text" id="task" placeholder="Task Details">
-            <label for="duration">Duration:</label>
-            <input type="text" id="duration" placeholder="e.g: 2 days">
+          <div class="test" style="margin-bottom:10px;">
+          <label for="start_date">Start Date:</label>
+            <input type="date" id="start_date" name="start_date">
+            <label for="end_date">End Date:</label>
+            <input type="date" id="end_date" name="end_date">
+          </div>
+
             <button onclick="submitHire()"><b>Submit</b></button>
             <button onclick="cancelHire()"><b>Cancel</b></button>
         </div>

@@ -15,7 +15,7 @@
 
         <div class="main-content">
             <div class="main-content-header">
-                <h1>Dashboard</h1>
+                <h1> Farmer Dashboard</h1>
             </div>
 
             <div class="cardBox">
@@ -57,7 +57,7 @@
                 <div class="recentOrders">
                     <div class="cardHeader">
                         <h2>Recent Orders</h2>
-                        <a href="Orders Management.html" class="btn">View All</a>
+                     
                     </div>
 
                     <table>

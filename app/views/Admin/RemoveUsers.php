@@ -44,9 +44,9 @@ if (!empty($data['users'])):
         <td><?php echo htmlspecialchars($user->created_at); ?></td>  <!-- Created At -->
         <td><?php echo htmlspecialchars($user->email); ?></td>  <!-- User Email -->
         <td>
-        <form method="POST" action="<?php echo URLROOT; ?>/AdminController/deleteUser/<?php echo $user->id; ?>" 
+        <form method="POST" action="<?php echo URLROOT; ?>/AdminController/RestrictUser/<?php echo $user->id; ?>" 
       onsubmit="return confirmDelete();">
-    <button type="submit" class="delete-btn">Delete</button>
+    <button type="submit" class="delete-btn">Restrict</button>
 </form>
 <script>
     function confirmDelete() {
