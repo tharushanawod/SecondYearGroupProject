@@ -26,7 +26,105 @@ class Users {
         return $row;
     }
 
-    public function register($data){
+    public function register($data) {
+        try {
+            // Start a transaction
+            $this->db->beginTransaction();
+        
+            // Insert into the users table
+            $this->db->query('INSERT INTO users (name, email, phone, status, user_type, password) 
+                              VALUES (:name, :email, :phone, :status, :user_type, :password)');
+            $this->db->bind(':name', $data['name']);
+            $this->db->bind(':email', $data['email']);
+            $this->db->bind(':phone', $data['phone']);
+            $this->db->bind(':user_type', $data['user_type']);
+            $this->db->bind(':password', $data['password']);
+            $this->db->bind(':status', 'unverified'); // Default status for users
+            $this->db->execute();
+        
+            // Get the last inserted user_id
+            $userId = $this->db->lastInsertId();
+        
+            // Insert into the corresponding table based on user_type
+            switch ($data['user_type']) {
+                case 'supplier':
+                    $this->db->query('INSERT INTO suppliers (supplier_id, document_path) VALUES (:user_id, :document_path)');
+                    $this->db->bind(':user_id', $userId);
+                    $this->db->bind(':document_path', $data['document']);
+                    $this->db->execute(); // Execute the insert query
+                    break;
+    
+                case 'farmer':
+                    $this->db->query('INSERT INTO farmers (farmer_id, address, district) 
+                                      VALUES (:user_id, :address, :district)');
+                    $this->db->bind(':user_id', $userId);
+                    $this->db->bind(':address', $data['address']);
+                    $this->db->bind(':district', $data['district']);
+                    $this->db->execute();  // Execute the insert query
+        
+                    // Update the status to 'verified'
+                    $this->db->query('UPDATE users SET status = :status WHERE user_id = :user_id');
+                    $this->db->bind(':status', 'verified');
+                    $this->db->bind(':user_id', $userId);
+                    $this->db->execute();  // Execute the update query
+                    break;
+    
+                case 'farmworker':
+                    $this->db->query('INSERT INTO farmworkers (farmworker_id, working_area) 
+                                      VALUES (:user_id, :working_area)');
+                    $this->db->bind(':user_id', $userId);
+                    $this->db->bind(':working_area', $data['working_area']);
+                    $this->db->execute();  // Execute the insert query
+        
+                    // Update the status to 'verified'
+                    $this->db->query('UPDATE users SET status = :status WHERE user_id = :user_id');
+                    $this->db->bind(':status', 'verified');
+                    $this->db->bind(':user_id', $userId);
+                    $this->db->execute();  // Execute the update query
+                    break;
+    
+                case 'manufacturer':
+                    $this->db->query('INSERT INTO manufacturers (manufacturer_id, company_name, document_path) 
+                                      VALUES (:user_id, :company_name, :document_path)');
+                    $this->db->bind(':user_id', $userId);
+                    $this->db->bind(':company_name', $data['company_name']);
+                    $this->db->bind(':document_path', $data['document']);
+                    $this->db->execute();  // Execute the insert query
+        
+                    // Update the status to 'verified'
+                    $this->db->query('UPDATE users SET status = :status WHERE user_id = :user_id');
+                    $this->db->bind(':status', 'verified');
+                    $this->db->bind(':user_id', $userId);
+                    $this->db->execute();  // Execute the update query
+                    break;
+            }
+        
+            // Commit transaction
+            $this->db->commit();
+            return true;
+        
+        } catch (Exception $e) {
+            // Rollback if something goes wrong
+            $this->db->rollBack();
+            die('Registration failed: ' . $e->getMessage());
+        }
+    }
+
+    public function VerifyUsers($data){
+        $this->db->query('UPDATE users SET status = :status WHERE email = :email');
+        $this->db->bind(':status','verified');
+        $this->db->bind(':email',$data['email']);
+        if($this->db->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    
+    
+
+    public function registersa($data){
         $this->db->query('INSERT INTO users (name,email,phone,address,status,title,password) VALUES (:name,:email,:phone,:address,:status,:title,:password)');
         $this->db->bind(':name',$data['name']);
         $this->db->bind(':email',$data['email']);

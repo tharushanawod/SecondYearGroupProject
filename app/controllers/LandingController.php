@@ -1,4 +1,8 @@
 <?php 
+ use PHPMailer\PHPMailer\PHPMailer;
+ use PHPMailer\PHPMailer\SMTP;
+ use PHPMailer\PHPMailer\Exception;
+ 
 class LandingController extends Controller{
     private $userModel;
 
@@ -25,119 +29,163 @@ class LandingController extends Controller{
         $this->View('Landing/products',$data);
     }
 
-    public function signup()
-    {
+    public function Register(){
+        $data = [];
+        $this->View('Landing/SignUp',$data);
+    }
 
-        //validate data
-        $_POST = filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING);
-
-        if($_SERVER['REQUEST_METHOD'] == 'POST')
+    public function signup() {
+        // Sanitize data
+        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
         
-        {
+        // Initialize the user type
+        $user_type = $_POST['user_type'] ?? $_GET['user_type'];
+        
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data = [
                 'name' => trim($_POST['name']),
+                'company_name' => isset($_POST['company_name']) ? trim($_POST['company_name']) : '',
                 'email' => trim($_POST['email']),
                 'phone' => trim($_POST['phone']),
-                'address' => trim($_POST['address']),
-                'title' => trim($_POST['title']),
+                'address' => isset($_POST['address']) ? trim($_POST['address']) : '',
+                'district' => isset($_POST['district']) ? trim($_POST['district']) : '',
+                'document' => '',
+                'working_area' => isset($_POST['working_area']) ? trim($_POST['working_area']) : '',
+                'user_type' => $_POST['user_type'],
                 'password' => trim($_POST['password']),
                 'confirm_password' => trim($_POST['confirm_password']),
                 'name_err' => '',
                 'email_err' => '',
                 'phone_err' => '',
-                'title_err' => '',
+                'address_err' => '',
                 'password_err' => '',
                 'confirm_password_err' => ''
             ];
-
-            if(empty($data['name']))
-            {
-                $data['name_err'] = 'Please enter name';
+    
+            // Validate data
+            if (empty($data['name'])) $data['name_err'] = 'Please enter name';
+            if ($data['user_type'] == 'manufacturer' && empty($data['company_name'])) $data['company_name_err'] = 'Please enter company name';
+            if (empty($data['email'])) $data['email_err'] = 'Please enter email';
+            if ($this->userModel->finduserbyemail($data['email'])) $data['email_err'] = 'Email already taken';
+            if (empty($data['phone'])) $data['phone_err'] = 'Please enter phone number';
+            if ($data['user_type'] == 'farmer' && empty($data['address'])) $data['address_err'] = 'Please enter address';
+            if ($data['user_type'] == 'farmer' && empty($data['district'])) $data['district_err'] = 'Please enter district';
+    
+            // File upload validation
+            if (isset($_FILES['document']) && $_FILES['document']['error'] == 0) {
+                // File handling logic here
+            } else {
+                $data['document_err'] = 'File not selected';
             }
-
-            if(empty($data['email']))
-            {
-                $data['email_err'] = 'Please enter email';
-            }
-            else
-            {
-                if($this->userModel->finduserbyemail($data['email']))
-                {
-                    $data['email_err'] = 'Email already taken';
+    
+            if ($data['user_type'] == 'farmworker' && empty($data['working_area'])) $data['working_area_err'] = 'Please enter working area';
+            if (empty($data['password'])) $data['password_err'] = 'Please enter password';
+            if (empty($data['confirm_password'])) $data['confirm_password_err'] = 'Please enter confirm password';
+            elseif ($data['password'] != $data['confirm_password']) $data['confirm_password_err'] = 'Passwords do not match';
+    
+            // If no errors, hash password and register user
+            if (empty($data['name_err']) && empty($data['email_err']) && empty($data['phone_err']) && empty($data['address_err']) && empty($data['district_err']) && empty($data['document_err']) && empty($data['password_err']) && empty($data['confirm_password_err'])) {
+                $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+                if ($this->userModel->register($data)) {
+                   
+                    $_SESSION['user_email'] = $data['email'];
+                    // Redirect('LandingController/Otppage');
+                    $this->View('Landing/Otppage',$data);
+                    exit;
+                } else {
+                    die('Something went wrong');
                 }
+            } else {
+                $view = 'Landing/' . ucfirst($data['user_type']) . 'Reg';
+                $this->View($view, $data);
             }
-
-            if(empty($data['phone']))
-            {
-                $data['phone_err'] = 'Please enter phone number';
-            }
-
-            if(empty($data['address']))
-            {
-                $data['address_err'] = 'Please enter address';
-            }
-
-            if(empty($data['title']))
-            {
-                $data['title_err'] = 'Please select a title';
-            }
-
-            if(empty($data['password']))
-            {
-                $data['password_err'] = 'Please enter password';
-            }
-
-            if(empty($data['confirm_password']))
-            {
-                $data['confirm_password_err'] = 'Please eneter confirm password';
-            }
-            else{
-                if($data['password'] != $data['confirm_password'])
-                {
-                    $data['confirm_password_err'] = 'Passwords do not match';
-                }
-            }
-
-            if(empty($data['name_err']) && empty($data['email_err']) && empty($data['phone_err']) && empty($data['address_err']) && empty($data['title_err']) && empty($data['password_err']) && empty($data['confirm_password_err']))
-            { 
-                $data['password'] = password_hash($data['password'],PASSWORD_DEFAULT);
-               //resgister user
-                if($this->userModel->register($data))
-                {
-                     Redirect('LandingController/Login');
-                     exit;
-                }
-                else
-                {
-                     die('Something went wrong');
-                }
-            }
-            else
-            {
-                $this->View('Landing/signup',$data);
-            }
-        }
-        else
-        {
+        } else {
+            // Default form load with empty data
             $data = [
                 'name' => '',
                 'email' => '',
                 'phone' => '',
                 'address' => '',
-                'title' => '',
                 'password' => '',
                 'confirm_password' => '',
                 'name_err' => '',
                 'email_err' => '',
                 'phone_err' => '',
                 'address_err' => '',
-                'title_err' => '',
                 'password_err' => '',
                 'confirm_password_err' => ''
             ];
-            $this->View('Landing/signup',$data);
+    
+            $view = 'Landing/' . ucfirst($user_type) . 'Reg';
+            $this->View($view, $data);
         }
     }
+
+    public function OTP(){
+        echo $_SESSION['user_email'];
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        
+        
+            // Generate a 6-digit OTP
+            $otp = rand(100000, 999999); 
+            $_SESSION['otp'] = $otp; // Store OTP in session
+            $receiver = $_SESSION['user_email']; // Get the email address from the session
+            
+        
+            // Send OTP via Email
+            $mail = new PHPMailer(true);
+            try {
+                $mail->isSMTP();
+                $mail->Host = 'smtp.gmail.com';
+                $mail->SMTPAuth = true;
+                $mail->Username = 'tharushanjayasinghe222@gmail.com';
+                $mail->Password = 'vzsuwxuiitfvakpl';
+                $mail->SMTPSecure = 'tls';
+                $mail->Port = 587;
+        
+                $mail->setFrom('tharushanjayasinghe222@gmail.com', 'Tharusha Nawod');
+                $mail->addAddress($receiver);
+        
+                $mail->isHTML(true);
+                $mail->Subject = 'Corn Cradle Verification';
+                $mail->Body = "Hello,<br><br>Your OTP code is: <b>$otp</b><br><br>Thank you for using our service.";
+
+        
+                $mail->send();
+                echo "✅ OTP has been successfully sent to $receiver.";
+                
+            } catch (Exception $e) {
+                echo "Mailer Error: {$mail->ErrorInfo}";
+            }
+        }
+
+        else{
+            echo 'isset is not working';
+        }
+       
+        
+    }
+
+    public function VerifyOTP() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $otp = $_POST['code'];
+            if ($otp == $_SESSION['otp']) {
+                $data['email'] = $_SESSION['user_email'];
+                if($this->userModel->VerifyUsers($data)){
+                    // OTP is correct
+                    echo json_encode(['status' => 'success', 'message' => '✅ OTP is correct', 'redirect' => URLROOT . '/LandingController/Login']);
+                }
+             
+               
+            } else {
+                // OTP is incorrect
+                echo json_encode(['status' => 'error', 'message' => '❌ OTP is incorrect']);
+            }
+        }
+    }
+    
+    
 
     public function Login(){
         if($_SERVER['REQUEST_METHOD'] == 'POST')
@@ -189,6 +237,7 @@ class LandingController extends Controller{
                         $this->View('Landing/Login', $data);  // Show the error in the login page
                         return;  // Stop further execution
                     }
+               
     
                     // If the user is verified, create session
                     $this->CreateUserSession($loggedInUser);
@@ -215,31 +264,31 @@ class LandingController extends Controller{
     }
 
     public function CreateUserSession($user){
-        $_SESSION['user_id'] = $user->id;
+        $_SESSION['user_id'] = $user->user_id;
         $_SESSION['user_email'] = $user->email;
         $_SESSION['user_name'] = $user->name;
-        $_SESSION['user_role'] = $user->title;
+        $_SESSION['user_role'] = $user->user_type;
          // Check if the user is an admin
-    if ($user->title == 'admin') {
+    if ($user->user_type == 'admin') {
         // Redirect to the admin dashboard if the user is an admin
         Redirect('AdminController/Dashboard');
-    } else if ($user->title == 'moderator') {
+    } else if ($user->user_type == 'moderator') {
         // Redirect to the user home page if the user is not an admin
         Redirect('ModeratorController/Dashboard');
     }
-    else if($user->title == 'farmer'){
+    else if($user->user_type == 'farmer'){
         Redirect('FarmerController/Dashboard');
     }
-    else if($user->title == 'buyer'){
+    else if($user->user_type == 'buyer'){
         Redirect('BuyerController/Dashboard');
     }
-    else if($user->title == 'supplier'){
+    else if($user->user_type == 'supplier'){
         Redirect('SupplierController/Dashboard');
     }
-    else if($user->title == 'farmworker'){
+    else if($user->user_type == 'worker'){
         Redirect('WorkerController/Dashboard');
     }
-    else if($user->title == 'manufacturer'){
+    else if($user->user_type == 'manufacturer'){
         Redirect('ManufacturerController/Dashboard');
     }
     }
