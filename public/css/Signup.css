@@ -30,6 +30,7 @@ h1 {
   padding: 1rem;
 }
 
+
 .card {
   background: white;
   border-radius: 1rem;
@@ -84,8 +85,117 @@ h1 {
   max-width: 200px;
 }
 
+.header-container {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.header-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #4b5563;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 8px 12px;
+  position: relative;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+/* Button hover effect */
+.back-button::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #4b5563;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease;
+}
+
+.back-button:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.back-button:hover {
+  color: #1f2937;
+  transform: translateX(-4px);
+}
+
+.back-button:active {
+  transform: translateX(-2px);
+}
+
+.back-icon {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+.back-button:hover .back-icon {
+  transform: translateX(-4px);
+  animation: bounceLeft 0.5s ease infinite;
+}
+
+@keyframes bounceLeft {
+
+  0%,
+  100% {
+      transform: translateX(-4px);
+  }
+
+  50% {
+      transform: translateX(-8px);
+  }
+}
+
+.page-title {
+  font-size: 32px;
+  font-weight: bold;
+  color: #1f2937;
+  text-align: center;
+  margin: 0;
+}
+
+.spacer {
+  width: 96px;
+}
+
 .register-btn:hover {
   background: #07601a;
+}
+
+@media (max-width: 640px) {
+  .header-wrapper {
+      margin-bottom: 24px;
+  }
+
+  .page-title {
+      font-size: 24px;
+  }
+
+  .spacer {
+      width: 48px;
+  }
 }
 
 @media (max-width: 768px) {

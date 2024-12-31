@@ -8,7 +8,23 @@
 </head>
 <body>
     <div class="container">
-        <h1>Choose Your Registration Type</h1>
+    <header class="header-container">
+        <div class="header-wrapper">
+            <button class="back-button" onclick="window.location.href='<?php echo URLROOT; ?>/LandingController/index'">
+                <svg class="back-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                Back to Home
+            </button>
+
+            <h1 class="page-title">Choose Your Registration Type</h1>
+
+            <!-- Empty div to maintain center alignment -->
+            <div class="spacer"></div>
+        </div>
+    </header>
+       
         <form method="GET" action="<?php echo URLROOT;?>/LandingController/signup">
             <div class="cards-grid">
                 <!-- Farmer Card -->
@@ -56,6 +72,7 @@
              
                     <button type="submit" name="user_type" value="farmworker" class="register-btn">Register Now</button>
                 </div>
+               
             </div>
         </form>
     </div>

@@ -10,13 +10,26 @@
     crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/HomePagestyles.css?v=<?php echo time(); ?>" />
  
+<style>
+  /* Animate child elements */
+  section > * {
+      opacity: 0;
+      transform: translateX(-50%);
+      transition: all 1s ease-in-out;
+    }
 
+    /* Active class to trigger animation */
+    section.scroll > * {
+      opacity: 1;
+      transform: translateX(0);
+    }
+</style>
 
 </head>
 
 <body>
 <?php require APPROOT . '/views/inc/components/Header.php'; ?>
-  <section class="home">
+  <section class="home animate">
     <div class="home-content">
       <h1>Corn  Cradle</h1>
       <h2>Empowering Sri Lankan corn farmers to trade and thrive</h2>
@@ -24,7 +37,7 @@
     </div>
   </section>
 
-  <section class="About-us">
+  <section class="About-us animate">
     <div class="About-us-content">
       <h2>About US</h2>
       <p>
@@ -59,7 +72,7 @@
 
   <!-- third section our services -->
 
-  <section class="our-services">
+  <section class="our-services animate">
     <div class="our-services-content">
       <div class="services-button">
         <button>Our Features & Services</button>
@@ -93,7 +106,7 @@
 
   <!-- feedback section -->
 
-  <section class="feedback">
+  <section class="feedback animate">
     <div class="feedback-heading">
       <h1>What They Say About Us</h1>
     </div>
@@ -196,7 +209,7 @@
 
   <!-- Frequently asked questions part -->
 
-  <section class="faqpart">
+  <section class="faqpart animate">
     <h1>Frequently asked questions</h1>
     <div class="wrapper">
       <div class="faq">
@@ -271,6 +284,29 @@
 
 
   <!-- javascript linking -->
+  <script>
+  // Select all sections with the class 'animate'
+  const sections = document.querySelectorAll('.animate');
+
+// Create an Intersection Observer
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('scroll');
+    } else {
+      entry.target.classList.remove('scroll');
+    }
+  });
+}, {
+  threshold: 0.2 // Trigger when 20% of the section is visible
+});
+
+// Observe each section
+sections.forEach(section => {
+  observer.observe(section);
+});
+
+  </script>
 
   <script src="<?php echo URLROOT; ?>/js/carousel.js"></script>
   <script src="<?php echo URLROOT; ?>/js/FAQ.js"></script>

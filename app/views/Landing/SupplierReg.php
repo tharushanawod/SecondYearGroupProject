@@ -10,7 +10,7 @@
    
     <div class="container">
         <div class="left-section">
-            <div class="logo"><img src="<?php echo URLROOT; ?>/images/logo.png" alt="" style="width:150px;"></div>
+            <div class="logo"><a href="<?php echo URLROOT;?>/LandingController/index"><img src="<?php echo URLROOT; ?>/images/logo.png" alt="" style="width:150px;"></a></div>
             <div class="icons-container">
                 <div class="icon icon-1"></div>
                 <div class="icon icon-2"></div>
@@ -49,7 +49,7 @@
                                 <span class="form-invalid">
                             <?php echo $data['phone_err']; ?>
                         </span>
-                            </div> 
+                </div> 
 
                 <div class="form-group">
                     <label for="document">Verificaton Document (license to sell agricultural chemicals) </label>
@@ -66,7 +66,6 @@
 
                 <div class="form-group">
                     <label for="confirm-password">Re Type Password</label>
-                   
                     <input type="password" id="confirm-password" name="confirm_password" placeholder="Enter At least 8 characters" minlength="8" value="<?php echo $data['confirm_password'];?>">
                     <span class="form-invalid">
                         <?php echo $data['confirm_password_err'];?>

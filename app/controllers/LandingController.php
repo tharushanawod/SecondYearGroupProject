@@ -45,12 +45,15 @@ class LandingController extends Controller{
             $data = [
                 'name' => trim($_POST['name']),
                 'company_name' => isset($_POST['company_name']) ? trim($_POST['company_name']) : '',
+                'compamy_name_err' => '',
                 'email' => trim($_POST['email']),
                 'phone' => trim($_POST['phone']),
                 'address' => isset($_POST['address']) ? trim($_POST['address']) : '',
                 'district' => isset($_POST['district']) ? trim($_POST['district']) : '',
                 'document' => '',
+                'document_err' => '',
                 'working_area' => isset($_POST['working_area']) ? trim($_POST['working_area']) : '',
+                'working_area_err' => '',
                 'user_type' => $_POST['user_type'],
                 'password' => trim($_POST['password']),
                 'confirm_password' => trim($_POST['confirm_password']),
@@ -61,7 +64,8 @@ class LandingController extends Controller{
                 'password_err' => '',
                 'confirm_password_err' => ''
             ];
-    
+
+         
             // Validate data
             if (empty($data['name'])) $data['name_err'] = 'Please enter name';
             if ($data['user_type'] == 'manufacturer' && empty($data['company_name'])) $data['company_name_err'] = 'Please enter company name';
@@ -70,23 +74,61 @@ class LandingController extends Controller{
             if (empty($data['phone'])) $data['phone_err'] = 'Please enter phone number';
             if ($data['user_type'] == 'farmer' && empty($data['address'])) $data['address_err'] = 'Please enter address';
             if ($data['user_type'] == 'farmer' && empty($data['district'])) $data['district_err'] = 'Please enter district';
+            if ($data['user_type']== 'manufacturer' && empty($data['company_name'])) $data['company_name_err'] = 'Please enter company name';
+
     
             // File upload validation
             if (isset($_FILES['document']) && $_FILES['document']['error'] == 0) {
-                // File handling logic here
-            } else {
-                $data['document_err'] = 'File not selected';
+
+                if($data['user_type']=='manufacturer'){
+                    $targetDir = "uploads/Manufacturer/Documents/"; // Folder to store uploads
+                }
+                else{
+                    $targetDir = "uploads/Supplier/Documents/"; // Folder to store uploads
+                }
+              
+               
+                $fileName = basename($_FILES['document']['name']);
+                $targetFilePath = $targetDir . $fileName;
+    
+                $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+                $allowedTypes = ['jpg', 'jpeg', 'png', 'pdf'];
+
+    
+                if (in_array(strtolower($fileType), $allowedTypes)) {
+                    // Move file to server
+                    if (move_uploaded_file($_FILES['document']['tmp_name'], $targetFilePath)) {
+                        $data['document'] = $targetFilePath;
+                    } else {
+                        $data['document_err'] = 'Failed to upload the file';
+                    }
+                } else {
+                    $data['document_err'] = 'Invalid file type';
+                }
+            } else if(!isset($_FILES['document'])) {
+                $data['document_err'] = '';
+            }
+            else{
+                $data['document_err'] = 'File Not selected';
             }
     
             if ($data['user_type'] == 'farmworker' && empty($data['working_area'])) $data['working_area_err'] = 'Please enter working area';
             if (empty($data['password'])) $data['password_err'] = 'Please enter password';
             if (empty($data['confirm_password'])) $data['confirm_password_err'] = 'Please enter confirm password';
             elseif ($data['password'] != $data['confirm_password']) $data['confirm_password_err'] = 'Passwords do not match';
+
+            echo '<pre>';
+print_r($data);
+echo '</pre>';
+
+
     
             // If no errors, hash password and register user
             if (empty($data['name_err']) && empty($data['email_err']) && empty($data['phone_err']) && empty($data['address_err']) && empty($data['district_err']) && empty($data['document_err']) && empty($data['password_err']) && empty($data['confirm_password_err'])) {
                 $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
                 if ($this->userModel->register($data)) {
+
+                    
                    
                     $_SESSION['user_email'] = $data['email'];
                     // Redirect('LandingController/Otppage');
@@ -285,7 +327,7 @@ class LandingController extends Controller{
     else if($user->user_type == 'supplier'){
         Redirect('SupplierController/Dashboard');
     }
-    else if($user->user_type == 'worker'){
+    else if($user->user_type == 'farmworker'){
         Redirect('WorkerController/Dashboard');
     }
     else if($user->user_type == 'manufacturer'){

@@ -55,47 +55,28 @@ class Users {
                     break;
     
                 case 'farmer':
-                    $this->db->query('INSERT INTO farmers (farmer_id, address, district) 
+                    $this->db->query('INSERT INTO farmers (user_id, address, district) 
                                       VALUES (:user_id, :address, :district)');
                     $this->db->bind(':user_id', $userId);
                     $this->db->bind(':address', $data['address']);
                     $this->db->bind(':district', $data['district']);
                     $this->db->execute();  // Execute the insert query
-        
-                    // Update the status to 'verified'
-                    $this->db->query('UPDATE users SET status = :status WHERE user_id = :user_id');
-                    $this->db->bind(':status', 'verified');
-                    $this->db->bind(':user_id', $userId);
-                    $this->db->execute();  // Execute the update query
                     break;
     
                 case 'farmworker':
-                    $this->db->query('INSERT INTO farmworkers (farmworker_id, working_area) 
-                                      VALUES (:user_id, :working_area)');
+                    $this->db->query('INSERT INTO farmworkers (user_id, working_area) VALUES (:user_id, :working_area)');
                     $this->db->bind(':user_id', $userId);
                     $this->db->bind(':working_area', $data['working_area']);
                     $this->db->execute();  // Execute the insert query
-        
-                    // Update the status to 'verified'
-                    $this->db->query('UPDATE users SET status = :status WHERE user_id = :user_id');
-                    $this->db->bind(':status', 'verified');
-                    $this->db->bind(':user_id', $userId);
-                    $this->db->execute();  // Execute the update query
                     break;
     
                 case 'manufacturer':
-                    $this->db->query('INSERT INTO manufacturers (manufacturer_id, company_name, document_path) 
+                    $this->db->query('INSERT INTO manufacturers (user_id, company_name, document_path) 
                                       VALUES (:user_id, :company_name, :document_path)');
                     $this->db->bind(':user_id', $userId);
                     $this->db->bind(':company_name', $data['company_name']);
                     $this->db->bind(':document_path', $data['document']);
                     $this->db->execute();  // Execute the insert query
-        
-                    // Update the status to 'verified'
-                    $this->db->query('UPDATE users SET status = :status WHERE user_id = :user_id');
-                    $this->db->bind(':status', 'verified');
-                    $this->db->bind(':user_id', $userId);
-                    $this->db->execute();  // Execute the update query
                     break;
             }
         
