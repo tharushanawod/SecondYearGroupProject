@@ -117,11 +117,6 @@ class LandingController extends Controller{
             if (empty($data['confirm_password'])) $data['confirm_password_err'] = 'Please enter confirm password';
             elseif ($data['password'] != $data['confirm_password']) $data['confirm_password_err'] = 'Passwords do not match';
 
-            echo '<pre>';
-print_r($data);
-echo '</pre>';
-
-
     
             // If no errors, hash password and register user
             if (empty($data['name_err']) && empty($data['email_err']) && empty($data['phone_err']) && empty($data['address_err']) && empty($data['district_err']) && empty($data['document_err']) && empty($data['password_err']) && empty($data['confirm_password_err'])) {
@@ -267,14 +262,14 @@ echo '</pre>';
                 
                 if ($loggedInUser) {
                     // Check if the user is verified
-                    if ($loggedInUser->status == 'unverified') {
+                    if ($loggedInUser->otp_status == 'unverified') {
                         // If user is unverified, set error message and prevent login
-                        $data['verified_err'] = 'Your account is not verified. Please wait Untill An Admin Verify You.';
+                        $data['verified_err'] = 'Your account is not verified. Please verify account using OTP.';
                         $this->View('Landing/Login', $data);  // Show the error in the login page
                         return;  // Stop further execution
                     }
 
-                    if($loggedInUser->status == 'restricted'){
+                    if($loggedInUser->otp_status == 'restricted'){
                         $data['verified_err'] = 'Your account is restricted. Please contact the admin. ⬇️  CornCradleadmin@mail.com';
                         $this->View('Landing/Login', $data);  // Show the error in the login page
                         return;  // Stop further execution
@@ -303,6 +298,11 @@ echo '</pre>';
             ];
             $this->View('Landing/Login',$data);
         }
+    }
+
+    public function verifyAccount(){
+        $data = [];
+        $this->View('Landing/Otppage',$data);
     }
 
     public function CreateUserSession($user){

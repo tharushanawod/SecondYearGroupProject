@@ -32,14 +32,15 @@ class Users {
             $this->db->beginTransaction();
         
             // Insert into the users table
-            $this->db->query('INSERT INTO users (name, email, phone, status, user_type, password) 
-                              VALUES (:name, :email, :phone, :status, :user_type, :password)');
+            $this->db->query('INSERT INTO users (name, email, phone, otp_status,user_status, user_type, password) 
+                              VALUES (:name, :email, :phone, :otp_status,:user_status, :user_type, :password)');
             $this->db->bind(':name', $data['name']);
             $this->db->bind(':email', $data['email']);
             $this->db->bind(':phone', $data['phone']);
             $this->db->bind(':user_type', $data['user_type']);
             $this->db->bind(':password', $data['password']);
-            $this->db->bind(':status', 'unverified'); // Default status for users
+            $this->db->bind(':user_status','pending');
+            $this->db->bind(':otp_status', 'unverified'); // Default status for users
             $this->db->execute();
         
             // Get the last inserted user_id
@@ -78,6 +79,15 @@ class Users {
                     $this->db->bind(':document_path', $data['document']);
                     $this->db->execute();  // Execute the insert query
                     break;
+                    
+                
+            }
+
+            if (in_array($data['user_type'], ['farmer', 'farmworker', 'buyer'])) {
+                $this->db->query('UPDATE users SET user_status = :user_status WHERE user_id = :id');
+                $this->db->bind(':user_status', 'verified');
+                $this->db->bind(':id', $userId);
+                $this->db->execute();
             }
         
             // Commit transaction
@@ -92,7 +102,7 @@ class Users {
     }
 
     public function VerifyUsers($data){
-        $this->db->query('UPDATE users SET status = :status WHERE email = :email');
+        $this->db->query('UPDATE users SET otp_status = :status WHERE email = :email');
         $this->db->bind(':status','verified');
         $this->db->bind(':email',$data['email']);
         if($this->db->execute()){
@@ -101,44 +111,11 @@ class Users {
             return false;
         }
     }
-    
-    
-    
 
-    public function registersa($data){
-        $this->db->query('INSERT INTO users (name,email,phone,address,status,title,password) VALUES (:name,:email,:phone,:address,:status,:title,:password)');
-        $this->db->bind(':name',$data['name']);
-        $this->db->bind(':email',$data['email']);
-        $this->db->bind(':phone',$data['phone']);
-        $this->db->bind(':address',$data['address']);
-        $this->db->bind(':status','verified');
-        $this->db->bind(':title',$data['title']);
-        $this->db->bind(':password',$data['password']);
-        if($this->db->execute()){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
-    public function RegisterManufacturer($data){
-        $this->db->query('INSERT INTO users (name,email,phone,verification_document,title,password) VALUES (:name,:email,:phone,:verification_document,:title,:password)');
-        $this->db->bind(':name',$data['name']);
-        $this->db->bind(':email',$data['email']);
-        $this->db->bind(':phone',$data['phone']);
-        $this->db->bind(':verification_document',$data['document']);
-        $this->db->bind(':title','manufacturer');
-        $this->db->bind(':password',$data['password']);
-        if($this->db->execute()){
-            return true;
-        }else{
-            return false;
-        }
-    }
 
     public function getUsers() {
         // Prepare a query to fetch all users except those with the title 'admin'
-        $this->db->query("SELECT * FROM users WHERE title != 'admin'");
+        $this->db->query("SELECT * FROM users WHERE user_type != 'admin'");
         
         // Execute the query
         $this->db->execute();
@@ -180,7 +157,7 @@ class Users {
     }
     
     public function getUserCount($title){
-        $this->db->query('SELECT * FROM users WHERE title = :title');
+        $this->db->query('SELECT * FROM users WHERE user_type = :title');
         $this->db->bind(':title', $title);
         $this->db->execute(); // Executes the query
         return $this->db->rowCount(); // Returns the number of rows
@@ -233,16 +210,6 @@ class Users {
         return $this->db->resultSet(); // Returns the result set
     }
 
-    public function  verifyUser($id){
-        $this->db->query('UPDATE users SET status = :status WHERE id = :id');
-        $this->db->bind(':status','verified');
-        $this->db->bind(':id',$id);
-        if($this->db->execute()){
-            return true;
-        }else{
-            return false;
-        }
-    }
 
     public function getManufacturers(){
         $this->db->query('SELECT * FROM users WHERE title = :title AND status = :status');
