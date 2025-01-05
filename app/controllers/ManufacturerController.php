@@ -50,7 +50,68 @@ class ManufacturerController extends Controller
 
     public function ManageProfile()
     {
-        $this->view('Manufacturer/ManageProfile');
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){ 
+            $_POST = filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING);
+            $data = [
+                'name' => trim($_POST['name']),
+                'contact' => trim($_POST['contact']),
+                'address' => trim($_POST['address']),
+                'email' => trim($_POST['email']),
+                'password' => trim($_POST['password']),
+                'name_err' => '',
+                'contact_err' => '',
+                'address_err' => '',
+                'email_err' => '',
+                'password_err' => ''
+            ];
+
+            if(empty($data['name'])){
+                $data['name_err'] = 'Please input a name';
+            }
+
+            if(empty($data['contact'])){
+                $data['contact_err'] = 'Please input a contact number';
+            }
+
+            if(empty($data['address'])){
+                $data['address_err'] = 'Please input an address';
+            }
+
+            if(empty($data['email'])){
+                $data['email_err'] = 'Please input an email';
+            }
+
+            if(empty($data['password'])){
+                $data['password_err'] = 'Please input a password';
+            }
+
+            if(empty($data['name_err']) && empty($data['contact_err']) && empty($data['address_err']) && empty($data['email_err']) && empty($data['password_err'])){
+                $result = $this->ManufacturerModel->ManageProfile($data);
+                if($result){
+                    Redirect('ManufacturerController/Dashboard');
+                }
+            }else{
+                $this->view('Manufacturer/ManageProfile',$data);
+            }
+        
+            }
+            else{
+
+                $user=$this->ManufacturerModel->getUserById($_SESSION['user_id']);
+                var_dump($_SESSION['user_id']);
+                $data = [
+                    'name' => $user->name,
+                    'contact' => $user->phone,
+                    'email' => $user->email,
+                    'password' => '',
+                    'name_err' => '',
+                    'phone_err' => '',
+                    'email_err' => '',
+                    'password_err' => ''
+                ];
+                $this->view('Buyer/ManageProfile',$data);
+                
+            }
     }
 
     public function AddPrices()

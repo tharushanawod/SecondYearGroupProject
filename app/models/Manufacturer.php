@@ -8,6 +8,13 @@ class Manufacturer{
         $this->db = new Database();
     }
 
+    public function getUserById ($id){
+        $this->db->query('SELECT * FROM users WHERE user_id = :id');
+        $this->db->bind(':id',$id);
+        $row = $this->db->single();
+        return $row;
+    }
+
     public function getPrices($id){
         $this->db->query('SELECT * FROM prices WHERE manufacturerid = :id');
         $this->db->bind(':id',$id);
