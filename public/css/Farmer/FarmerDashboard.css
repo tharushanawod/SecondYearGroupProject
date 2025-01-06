@@ -21,7 +21,6 @@ body {
 
 .main-content {
   margin-left: 270px;
-  padding: 20px;
   flex-grow: 1;
 }
 
@@ -261,4 +260,83 @@ table tbody tr:hover {
     1.02
   ); /* Optional: Slightly scale the row for a nice effect */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for more emphasis */
+}
+
+.header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #e2e8f0;
+}
+.header-bar .search-bar {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  margin-right: 20px;
+}
+.header-bar .search-bar input {
+  padding: 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 5px;
+  width: 80%;
+}
+.header-bar .search-bar i {
+  margin-left: 10px;
+  color: #a0aec0;
+}
+.header-bar .icons {
+  display: flex;
+  align-items: center;
+}
+.header-bar .icons i {
+  margin-left: 20px;
+  cursor: pointer;
+  color: #4a5568;
+}
+
+@media (max-width:1200px) {
+  .cardBox {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+}
+}
+
+@media (max-width:1024px) {
+  .details {
+    grid-template-columns: repeat(1, 1fr); /* 2 columns */
+}
+}
+
+@media (max-width: 768px) {
+
+  h1{
+    font-size: 30px;
+  }
+
+  .cardBox {
+    grid-template-columns: repeat(1, 1fr); /* 2 columns */
+}
+  .main-content {
+    margin-left: 110px;
+  }
+  .header-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .header-bar .search-bar {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .header-bar .search-bar input {
+    width: 100%;
+  }
+
+  .header-bar .icons {
+    margin-left: 0;
+    justify-content: flex-start;
+  }
 }

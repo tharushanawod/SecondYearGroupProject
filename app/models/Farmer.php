@@ -15,7 +15,7 @@ class Farmer {
     }
 
     public function AddProduct($data) {
-        $this->db->query('INSERT INTO products (type, price, quantity, media, expiry_date, userid) 
+        $this->db->query('INSERT INTO cornproducts (type, price, quantity, media, expiry_date, userid) 
         VALUES(:type, :price, :quantity, :media, :expiry_date, :userid)');
         $this->db->bind(':type', $data['type']);
         $this->db->bind(':price', $data['price']);
@@ -94,7 +94,7 @@ class Farmer {
     }
 
     public function getProductsByFarmerId($farmerId) {
-        $this->db->query('SELECT * FROM products WHERE userid = :userid');
+        $this->db->query('SELECT * FROM corn_products WHERE user_id = :userid');
         $this->db->bind(':userid', $farmerId);
         return $this->db->resultSet(); // Fetch all products
     }

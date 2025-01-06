@@ -32,3 +32,13 @@ CREATE TABLE carddetails (
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
+
+CREATE TABLE corn_products (
+    product_id INT AUTO_INCREMENT PRIMARY KEY,
+    starting_price DECIMAL(10, 2) NOT NULL,
+    quantity INT NOT NULL,
+    media VARCHAR(255) NOT NULL,
+    closing_date DATETIME NOT NULL,
+    user_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES farmers(user_id)
+);

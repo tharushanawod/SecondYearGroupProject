@@ -12,8 +12,7 @@
   animation: slideIn 0.5s ease;
   background: rgb(26,82,59);
 background: linear-gradient(90deg, rgba(26,82,59,1) 0%, rgba(46,143,104,1) 84%);
-  border-top-right-radius: 5%;
-  border-bottom-right-radius: 5%;
+
 
 }
 
