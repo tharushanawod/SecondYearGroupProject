@@ -6,6 +6,7 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Farmer/ManageProfile.css">
+  <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet"/>
  </head>
  <body>
  <?php require APPROOT . '/views/inc/sidebar.php'; ?>

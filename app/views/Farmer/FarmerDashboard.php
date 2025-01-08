@@ -9,27 +9,19 @@
       href="<?php echo URLROOT;?>/css/Farmer/FarmerDashboard.css"
     />
     <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css"
       rel="stylesheet"
     />
    
   </head>
   <body>
-    <div class="dashboard-container">
-      <?php require APPROOT . '/views/inc/sidebar.php'; ?>
+  <?php require APPROOT . '/views/inc/sidebar.php'; ?>  
+   
+    <div class="main-content">
+    <?php require APPROOT . '/views/inc/NotificationBar.php'; ?> 
 
-      <div class="main-content">
-        <div class="header-bar">
-          <div class="search-bar">
-            <input placeholder="Search" type="text" />
-            <i class="fas fa-search"> </i>
-          </div>
-          <div class="icons">
-            <i class="fas fa-bell"> </i>
-            <i class="fas fa-question-circle"> </i>
-          </div>
-        </div>
-        <div class="main-content-header">
+
+    <div class="main-content-header">
           <h1>Farmer Dashboard</h1>
         </div>
 
@@ -315,7 +307,32 @@
             </table>
           </div>
         </div>
-      </div>
     </div>
+   <script>
+   document.addEventListener('DOMContentLoaded', () => {
+  const links = document.querySelectorAll('.sidebar .menu ul li');
+
+  // Apply active class from localStorage
+  const activeLink = localStorage.getItem('activeLink');
+  if (activeLink) {
+    links.forEach(link => {
+      if (link.href === activeLink) {
+        link.classList.add('active');
+      }
+    });
+  }
+
+  // Add click event
+  links.forEach(link => {
+    link.addEventListener('click', () => {
+      links.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+      localStorage.setItem('activeLink', link.href);
+    });
+  });
+});
+
+
+   </script>
   </body>
 </html>
