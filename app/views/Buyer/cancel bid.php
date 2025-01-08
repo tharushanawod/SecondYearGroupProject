@@ -34,7 +34,7 @@
         <div class="product-card">
             <img src="<?php echo URLROOT;?>/images/images/img7.jpeg" alt="Product Image" class="product-img">
             <div class="product-details">
-                <h3>Fresh Corn</h3>
+                <h3>Sweet Corn</h3>
                 <p>Current Bid: LKR 1000</p>
                 <p>Current Highest Bid: LKR 1000</p>
                 <p>Number of Bids: 5</p>

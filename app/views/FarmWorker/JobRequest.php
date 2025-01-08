@@ -24,7 +24,7 @@
         </div>
         <div class="request">
        
-            <p><strong>Farmer:</strong> Jane Smith</p>
+            <p><strong>Farmer:</strong> F.G Gamage</p>
             <p><strong>Start Date:</strong> 2024/12/25</p>
             <p><strong>End Date:</strong> 2024/12/30</p>
             <p><strong>Description:</strong> Seeking a farm worker to assist with planting and harvesting.</p>

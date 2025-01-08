@@ -21,7 +21,7 @@
                     <div>
                     <?php $row = $this->LastPrice(); ?>
                     <div class="numbers"><?php echo $row->type; ?></div>
-                        <div class="cardName">Current Product Type</div>
+                        <div class="cardName">Last Product Type</div>
                     </div>
                     <img width="50" height="50" src="https://img.icons8.com/wired/50/checkmark.png" alt="checkmark"/>
                 </div>
@@ -29,7 +29,7 @@
                     <div>
                         <?php $row = $this->LastPrice(); ?>
                         <div class="numbers">LKR <?php echo $row->price; ?></div>
-                        <div class="cardName">Current Price</div>
+                        <div class="cardName">Last Price</div>
                     </div>
                     <img width="50" height="50" src="https://img.icons8.com/ios-filled/50/money-bag-euro.png" alt="money-bag-euro"/>
                 </div>

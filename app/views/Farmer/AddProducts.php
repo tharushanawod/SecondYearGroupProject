@@ -169,14 +169,14 @@
                 </div>
                 <div class="form-group">
                     <label for="price">Price (LKR)</label>
-                    <input type="number" step="10" name="price" class="form-control" id="price" placeholder="Enter price" value="<?php echo $data['price']?>" required>
+                    <input type="number" name="price" class="form-control" id="price" placeholder="Enter price" value="<?php echo $data['price']?>" required>
                      <span class="form-invalid">
                         <?php echo $data['price_err'];?>
                     </span>
                 </div>
                 <div class="form-group">
                     <label for="quantity">Quantity (Kg)</label>
-                    <input type="number" step="100" name="quantity" class="form-control" id="quantity" placeholder="Enter quantity" value="<?php echo $data['quantity']?>" required>
+                    <input type="number"  name="quantity" class="form-control" id="quantity" placeholder="Enter quantity" value="<?php echo $data['quantity']?>" required>
                     <span class="form-invalid">
                         <?php echo $data['quantity_err'];?>
                     </span>

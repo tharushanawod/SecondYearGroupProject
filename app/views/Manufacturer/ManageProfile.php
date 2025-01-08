@@ -31,9 +31,7 @@
      <a class="active" href="#">
       General
      </a>
-     <a href="#">
-      Billings
-     </a>
+     
     </div>
     <h2>
      Profile

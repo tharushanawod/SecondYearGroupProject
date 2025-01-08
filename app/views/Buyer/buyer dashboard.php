@@ -75,7 +75,7 @@
                             </tr>
 
                             <tr>
-                                <td>Fresh Corn</td>
+                                <td>Sweet Corn</td>
                                 <td>LKR 2500</td>
                                 <td><span class="pending">Pending</span></td>
                             </tr>
@@ -87,7 +87,7 @@
                             </tr>
 
                             <tr>
-                                <td>Fresh Corn</td>
+                                <td>sweet Corn</td>
                                 <td>LKR 1700</td>
                                 <td><span class="accepted">Accepted</span></td>
                             </tr>
@@ -99,7 +99,7 @@
                             </tr>
 
                             <tr>
-                                <td>Fresh Corn</td>
+                                <td>Sweet Corn</td>
                                 <td>LKR 2000</td>
                                 <td><span class="pending">Pending</span></td>
                             </tr>
@@ -111,7 +111,7 @@
                             </tr>
 
                             <tr>
-                                <td>Fresh Corn</td>
+                                <td>Sweet Corn</td>
                                 <td>LKR 1000</td>
                                 <td><span class="pending">Pending</span></td>
                             </tr>

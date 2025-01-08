@@ -130,36 +130,7 @@
                  </div>
               </div>
            </div>
-           <div class="section">
-              <div class="section-title">
-                 <i class="fas fa-credit-card"></i>
-                 Personal account
-              </div>
-              <div class="payment-methods">
-                 <div class="payment-method selected">
-                    <img alt="VISA" height="30" src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" width="50"/>
-                    <img alt="MasterCard" height="30" src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" width="50"/>
-                 </div>
-              </div>
-              <div class="form-group">
-                 <div class="form-control">
-                    <label for="name-on-card">Name on card</label>
-                    <input id="name-on-card" placeholder="Enter name on card" type="text"/>
-                 </div>
-                 <div class="form-control">
-                    <label for="card-number">Card number</label>
-                    <input id="card-number" placeholder="Enter card number" type="text"/>
-                 </div>
-                 <div class="form-control">
-                 <label for="month-year">Select Month and Year:</label>
-<input type="month" id="month-year" name="month-year">
-                 </div>
-                 <div class="form-control">
-                    <label for="cvv">CVV</label>
-                    <input id="cvv" placeholder="Enter CVV" type="text"/>
-                 </div>
-              </div>
-           </div>
+           <div class="section">              
            <a href="<?php echo URLROOT;?>/SupplierController/ManageProfile">
            <button class="btn">
               Save

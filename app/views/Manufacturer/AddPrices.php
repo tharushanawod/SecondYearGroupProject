@@ -15,7 +15,7 @@
         <div class="form-group">
         <label for="type">Corn type</label>
           <select name="type" id="type">
-          <option value="SweeCorn">Sweet Corn</option>
+          <option value="SweetCorn">Sweet Corn</option>
           <option value="DryCorn">Dry Corn</option>
           </select>
           <span class="form-invalid">

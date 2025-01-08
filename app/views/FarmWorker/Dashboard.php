@@ -43,7 +43,8 @@
                     <thead>
                         <tr>
                             <td><b>Farmer</b></td>
-                            <td><b>Duration</b></td>
+                            <td><b>Start Date</b></td>
+                            <td><b>End Date</b></td>
                             <td><b>Description</b></td>
                         </tr>
                     </thead>
@@ -52,21 +53,24 @@
                         <tr>
                         
                             <td>Samith Perera</td>
-                            <td>3 Days</td>
+                            <td>2024/12/20</td>
+                            <td>2024/12/28</td>
                             <td>Looking for a farm worker to help with daily tasks.</td>
                         </tr>
 
                         <tr>
                          
                             <td>F.G Gamage</td>
-                            <td>6 Days</td>
+                            <td>2024/12/25</td>
+                            <td>2024/12/30</td>
                             <td>Seeking a farm worker to assist with planting and harvesting.</td>
                         </tr>
 
                         <tr>
                    
                             <td>Aruna Gamage</td>
-                            <td>2 Days</td>
+                            <td>2024/12/15</td>
+                            <td>2024/12/20</td>
                             <td>Looking for a farm worker to help with apply pesticides.</td>
                         </tr>                        
                     </tbody>

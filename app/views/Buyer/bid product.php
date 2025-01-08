@@ -19,7 +19,7 @@
                 <div class="filter-section">
                     <h4 id="category-label">Category</h4>
                     <select name="category" aria-labelledby="category-label">
-                        <option value="fresh">Fresh</option>
+                        <option value="fresh">Sweet</option>
                         <option value="dry">Dry</option>                        
                     </select>
                 </div>
@@ -41,7 +41,7 @@
             <div class="bids-grid" id="activeBids">
                 <div class="bid-card" data-category="fresh" data-quantity="200">
                 <img src="<?php echo URLROOT;?>/images/images/img22.jpg" alt="Fresh Corn">
-                    <h3>Fresh Corn</h3>
+                    <h3>Dry Corn</h3>
                     <p>Current Bid: LKR 800</p>
                     <p>Current Highest Bid: LKR 1500</p>                    
                     <p>Number of Bids: 8</p>
@@ -54,7 +54,7 @@
                 </div>
                 <div class="bid-card" data-category="fresh" data-quantity="100">
                 <img src="<?php echo URLROOT;?>/images/images/img28.jpg" alt="Fresh Corn">
-                    <h3>Fresh Corn</h3>
+                    <h3>Sweet Corn</h3>
                     <p>Current Bid: LKR 800</p>
                     <p>Current Highest Bid: LKR 1000</p>
                     <p>Number of Bids: 5</p>
@@ -66,7 +66,7 @@
                     </div>
                 </div>
                 <div class="bid-card" data-category="dry" data-quantity="50">
-                <img src="<?php echo URLROOT;?>/images/images/img7.jpeg" alt="Dry Corn">
+                <img src="<?php echo URLROOT;?>/images/images/img26.jpg" alt="Dry Corn">
                     <h3>Dry Corn</h3>
                     <p>Current Bid: LKR 800</p>
                     <p>Current Highest Bid: LKR 500</p>
@@ -93,7 +93,7 @@
                 </div>
                 <div class="bid-card" data-category="fresh" data-quantity="150">
                 <img src="<?php echo URLROOT;?>/images/images/img8.jpeg" alt="Processed Corn">
-                    <h3>Fresh Corn</h3>
+                    <h3>Sweet Corn</h3>
                     <p>Current Bid: LKR 800</p>
                     <p>Current Highest Bid: LKR 1200</p>
                     <p>Number of Bids: 4</p>
@@ -118,7 +118,7 @@
                     </div>
                 </div>
                 <div class="bid-card" data-category="dry" data-quantity="75">
-                <img src="<?php echo URLROOT;?>/images/images/img9.jpeg" alt="Dry Corn">
+                <img src="<?php echo URLROOT;?>/images/images/img26.jpg" alt="Dry Corn">
                     <h3>Dry Corn</h3>
                     <p>Current Bid: LKR 800</p>
                     <p>Current Highest Bid: LKR 1000</p>

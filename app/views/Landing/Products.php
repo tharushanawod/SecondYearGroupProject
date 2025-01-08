@@ -40,10 +40,7 @@
       <div class="price">
        RS.108
       </div>
-      <div class="cart-icon">
-       <i class="fas fa-shopping-cart">
-       </i>
-      </div>
+      
      </div>
     </div>
     <div class="product-item">
@@ -58,10 +55,7 @@
       <div class="price">
        RS.99
       </div>
-      <div class="cart-icon">
-       <i class="fas fa-shopping-cart">
-       </i>
-      </div>
+      
      </div>
     </div>
     <div class="product-item">
@@ -76,10 +70,7 @@
       <div class="price">
        RS.105
       </div>
-      <div class="cart-icon">
-       <i class="fas fa-shopping-cart">
-       </i>
-      </div>
+      
      </div>
     </div>
     <div class="product-item">
@@ -94,10 +85,7 @@
       <div class="price">
        RS.100
       </div>
-      <div class="cart-icon">
-       <i class="fas fa-shopping-cart">
-       </i>
-      </div>
+      
      </div>
     </div>
     <div class="product-item">
@@ -112,10 +100,7 @@
       <div class="price">
        RS.108
       </div>
-      <div class="cart-icon">
-       <i class="fas fa-shopping-cart">
-       </i>
-      </div>
+      
      </div>
     </div>
     <div class="product-item">
@@ -130,10 +115,7 @@
       <div class="price">
        RS.99
       </div>
-      <div class="cart-icon">
-       <i class="fas fa-shopping-cart">
-       </i>
-      </div>
+      
      </div>
     </div>
     <div class="product-item">
@@ -148,10 +130,7 @@
       <div class="price">
        RS.105
       </div>
-      <div class="cart-icon">
-       <i class="fas fa-shopping-cart">
-       </i>
-      </div>
+      
      </div>
     </div>
     <div class="product-item">
@@ -166,10 +145,7 @@
       <div class="price">
        RS.100
       </div>
-      <div class="cart-icon">
-       <i class="fas fa-shopping-cart">
-       </i>
-      </div>
+      
      </div>
     </div>
     <div class="product-item">
@@ -184,10 +160,7 @@
       <div class="price">
        RS.100
       </div>
-      <div class="cart-icon">
-       <i class="fas fa-shopping-cart">
-       </i>
-      </div>
+      
      </div>
     </div>
 
@@ -203,10 +176,7 @@
       <div class="price">
        RS.100
       </div>
-      <div class="cart-icon">
-       <i class="fas fa-shopping-cart">
-       </i>
-      </div>
+      
      </div>
     </div>
 
@@ -222,10 +192,7 @@
       <div class="price">
        RS.100
       </div>
-      <div class="cart-icon">
-       <i class="fas fa-shopping-cart">
-       </i>
-      </div>
+      
      </div>
     </div>
 
@@ -241,10 +208,7 @@
       <div class="price">
        RS.100
       </div>
-      <div class="cart-icon">
-       <i class="fas fa-shopping-cart">
-       </i>
-      </div>
+      
      </div>
     </div>
 

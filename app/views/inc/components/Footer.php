@@ -9,11 +9,11 @@
       </div>
       <div class="footerNav">
         <ul>
-          <li><a href="">Home</a></li>
-          <li><a href="">About</a></li>
-          <li><a href="">Products</a></li>
-          <li><a href="">Contact Us</a></li>
-          <li><a href="">Join Now</a></li>
+          <li><a href="<?php echo URLROOT; ?>/LandingController/index">Home</a></li>
+          <li><a href="<?php echo URLROOT; ?>/LandingController/Aboutus">About</a></li>
+          <li><a href="<?php echo URLROOT; ?>/LandingController/Products">Products</a></li>
+          <li><a href="mailto:CornCradle@gmail.com?subject=Contact%20Us&body=Hello,%20I%20would%20like%20to%20contact%20you.">Contact Us</a></li>
+          <li><a href="<?php echo URLROOT; ?>/LandingController/signup">Join Now</a></li>
         </ul>
       </div>
     </div>

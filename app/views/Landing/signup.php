@@ -84,15 +84,23 @@
                     </div>
 
 
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <div class="input-wrapper">
-                        <input type="password" id="password" name="password" placeholder="Enter password" value="<?php echo $data['password'];?>">
-                    </div>
-                    <span class="form-invalid">
-                        <?php echo $data['password_err'];?>
-                    </span>
-                </div>
+                    <div class="form-group">
+    <label for="password">Password</label>
+    <div class="input-wrapper">
+        <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            placeholder="Enter password" 
+            value="<?php echo $data['password'];?>" 
+            pattern=".{8,}" 
+            title="Password must be at least 8 characters long." 
+            required>
+    </div>
+    <span class="form-invalid">
+        <?php echo $data['password_err'];?>
+    </span>
+</div>
 
                 <div class="form-group">
                     <label for="confirm-password">Confirm Password</label>
