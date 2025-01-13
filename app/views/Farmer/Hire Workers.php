@@ -10,8 +10,8 @@
 </head>
 <body>
 <?php require APPROOT . '/views/inc/sidebar.php'; ?>
-
-    <section class="sub-header">
+<div class="main-container">
+<section class="sub-header">
         <h2>Find the Best Farm Workers for Your Needs</h2>
         <p>Hire skilled farm workers and leave feedback to help others find the best talent.</p>
         <div class="cta-buttons">
@@ -96,6 +96,9 @@
         <h3>Ready to hire top farm workers?</h3>
         <a href="<?php echo URLROOT;?>/FarmerController/workerManagement"><button class="cta-btn">Get Started</button></a>
     </section>
+</div>
+
+    
 
 </body>
 </html>

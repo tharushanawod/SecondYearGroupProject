@@ -46,31 +46,28 @@
 
                     <!-- Product details from the database -->
                     <div class="product-code">Product ID:
-                        <?php echo htmlspecialchars($product->productid); ?>
+                        <?php echo htmlspecialchars($product->product_id); ?>
                     </div>
                     <div class="product-code">Quantity :
                         <?php echo htmlspecialchars($product->quantity); ?>(Kg)
                     </div>
                     <div class="product-price">Rs.
-                        <?php echo htmlspecialchars($product->price); ?>
+                        <?php echo htmlspecialchars($product->starting_price); ?>
                     </div>
 
-                    <div class="countdown-timer" data-expiry-date="<?php echo $product->expiry_date; ?>">
-                        Expires in: <span id="countdown-<?php echo $product->productid; ?>"></span>
+                    <div class="countdown-timer" data-expiry-date="<?php echo $product->closing_date; ?>">
+                        Closing Time: <span id="countdown-<?php echo $product->product_id; ?>"></span>
                     </div>
-
-                    <div class="low-stock-label">
-                        <?php echo htmlspecialchars($product->type); ?>
-                    </div>
+                    
 
 
                     <!-- Action buttons -->
                     <div class="action-label">
-                        <a href="<?php echo URLROOT; ?>/FarmerController/DeleteProducts/<?php echo $product->productid; ?>"
+                        <a href="<?php echo URLROOT; ?>/FarmerController/DeleteProducts/<?php echo $product->product_id; ?>"
                             onclick="return confirm('Are you sure you want to delete this product?');">Delete </a>
                     </div>
                     <div class="action-label">
-                        <a href="#" onclick="openPopup('<?php echo $product->productid; ?>'); return false;">Update</a>
+                        <a href="#" onclick="openPopup('<?php echo $product->product_id; ?>'); return false;">Update</a>
                     </div>
 
                 </div>
@@ -90,13 +87,12 @@
             <h2 class="popup-title">Add Corn for Auction </h2>
 
             <form id="create-product-form"
-                action="<?php echo !empty($data['id']) ? URLROOT . '/FarmerController/UpdateProducts/' . $data['id'] : URLROOT . '/FarmerController/AddProduct'; ?>"
                 method="POST" enctype="multipart/form-data">
                 
                 <div class="form-group">
                     <label for="price">Starting Price (LKR)</label>
                     <input type="number" name="price" class="form-control" id="price"
-                        placeholder="Enter price" value="<?php echo $data['price']?>" required>
+                        placeholder="Enter price" value="<?php echo $data['price']?>" min="0" required>
                     <span class="form-invalid">
                         <?php echo $data['price_err'];?>
                     </span>
@@ -104,14 +100,14 @@
                 <div class="form-group">
                     <label for="quantity">Quantity (Kg)</label>
                     <input type="number" name="quantity" class="form-control" id="quantity"
-                        placeholder="Enter quantity" value="<?php echo $data['quantity']?>" required>
+                        placeholder="Enter quantity" value="<?php echo $data['quantity']?>" min="0" required>
                     <span class="form-invalid">
                         <?php echo $data['quantity_err'];?>
                     </span>
                 </div>
                 <div class="form-group">
                     <label for="expiry-date">Closing Date & Time</label>
-                    <input type="datetime-local" id="auction-end" name="auction-end" class="form-control">
+                    <input type="datetime-local" id="closing_date" name="closing_date" class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="media">Media (images Only)</label>
@@ -161,8 +157,12 @@
         </table>
         <button class="prices-close-btn" id="pricesPopupMessage" onclick="closePricesPopup()">Close</button>
     </div>
-
-    <script src="<?php echo URLROOT;?>/js/Farmer/AddProducts.js"></script>
+    
+    <script>
+    const URLROOT = '<?php echo URLROOT; ?>';
+ 
+</script>
+<script src="<?php echo URLROOT;?>/js/Farmer/AddProducts.js"></script>
 
 </body>
 </html>

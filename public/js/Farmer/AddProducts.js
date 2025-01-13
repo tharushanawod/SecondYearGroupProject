@@ -3,26 +3,37 @@ function openPricesPopup() {
     document.body.classList.add("blurred-background"); // Add the blur effect to the body
 }
 
+console.log('Hello');
 // Function to close the popup
 function closePricesPopup() {
     document.getElementById("pricesPopupMessage").style.display = "none";
     document.body.classList.remove("blurred-background"); // Remove the blur effect from the body
 }
+
+
 //  document.addEventListener('DOMContentLoaded', function () {
 // <?php if (!empty($data['show_popup']) && $data['show_popup'] === true): ?>
 //     openPopup(); // Call your JavaScript function to show the popup
 // <?php endif; ?>
 // });
 
-// document.getElementsByClassName('')
 
 function openPopup(productId) {
+
+
+
 const popup = document.getElementById('popup-overlay');
 const form = document.getElementById('create-product-form');
 
+// Show the popup
+popup.style.opacity = '1';
+popup.style.visibility = 'visible';
+
 if (productId) {
 // Set the form action for the update (UpdateProducts)
-form.action = `<?php echo URLROOT; ?>/FarmerController/UpdateProducts/${productId}`;
+form.action = `${URLROOT}/FarmerController/UpdateProducts/${productId}`;
+const updatebutton=document.querySelector('.btn-primary');
+updatebutton.textContent='Update';
 
 // Prepopulate the form with the current product data
 // You can do an AJAX request here to fetch product details if needed
@@ -30,27 +41,34 @@ form.action = `<?php echo URLROOT; ?>/FarmerController/UpdateProducts/${productI
 // Example:
 fetchProductData(productId);  // Function to fetch and fill the form (you'll need to implement it)
 } else {
+
+    
 // Set the form action for the create (AddProduct)
-form.action = `<?php echo URLROOT; ?>/FarmerController/AddProduct`;
+form.action = `${URLROOT}/FarmerController/AddProduct`;
+
+ // Clear all form fields
+ form.reset();
+
+  // Hide the media preview
+  const mediaPreview = document.getElementById('media-preview');
+        mediaPreview.style.display = 'none';
 }
 
-// Show the popup
-popup.style.opacity = '1';
-popup.style.visibility = 'visible';
+
 }
 function fetchProductData(productId) {
-fetch(`<?php echo URLROOT; ?>/FarmerController/getProductDetails/${productId}`)
+fetch(`${URLROOT}/FarmerController/getProductDetails/${productId}`)
 .then(response => response.json())
 .then(data => {
-    document.getElementById('product-type').value = data.type;
-    document.getElementById('price').value = data.price;
+   
+    document.getElementById('price').value = data.starting_price;
     document.getElementById('quantity').value = data.quantity;
-    document.getElementById('expiry-period').value = data.expiry_period;
+    document.getElementById('closing_date').value = data.closing_date;
 
     // Update image preview
     const mediaPreview = document.getElementById('media-preview');
     if (data.media) {
-        mediaPreview.src = `<?php echo URLROOT; ?>/${data.media}`;
+        mediaPreview.src = `${URLROOT}/${data.media}`;
         mediaPreview.style.display = 'block';
     } else {
         mediaPreview.style.display = 'none';
@@ -95,3 +113,4 @@ timers.forEach(timer => {
     updateCountdown(); // Initial call
 });
 });
+

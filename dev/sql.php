@@ -42,3 +42,13 @@ CREATE TABLE corn_products (
     user_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES farmers(user_id)
 );
+
+//changed
+CREATE TABLE farmworkers (
+    user_id INT(11) PRIMARY KEY,
+    working_area VARCHAR(255) NOT NULL,  -- Location of the worker
+    availability ENUM('Available', 'Unavailable') DEFAULT 'Available',  -- Availability status of the worker
+    experience VARCHAR(50) ,  -- Work experience of the worker (e.g., '5+ years')
+    skills TEXT,  -- A list of skills (can be stored as comma-separated values or JSON)
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE
+);

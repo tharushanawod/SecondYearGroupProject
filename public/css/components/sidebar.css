@@ -59,7 +59,7 @@
 
   
 
-   .sidebar .menu ul li.active {
+  .active {
         background-color: #5865f2;
         border-radius: 5px;
       }

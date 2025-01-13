@@ -61,8 +61,14 @@ class FarmerController extends Controller {
     }
 
     public function workerManagement() {
+       
         $data = [];
         $this->View('Farmer/WorkerManagement', $data);
+    }
+
+    public function getFarmworkers(){
+        $result=$this->farmerModel->getFarmworkers();
+       
     }
 
      public function purchaseIngredients() {
@@ -162,25 +168,26 @@ class FarmerController extends Controller {
                 $data['show_popup'] = true; // Keep popup open on validation error
                 $this->view('Farmer/AddProducts', $data); // Use edit product view
             }
-        } else {
+        } 
+        // else {
 
-            $product = $this->farmerModel->getProducts($id);
-            $products = $this->farmerModel->getProductsByFarmerId($_SESSION['user_id']);
+        //     $product = $this->farmerModel->getProducts($id);
+        //     $products = $this->farmerModel->getProductsByFarmerId($_SESSION['user_id']);
 
-            $data = [
-                'id' => $product->id,
-                'price' => $product->price,
-                'quantity' => $product->quantity,
-                'type' => $product->type,
-                'media' => $product->media,
-                'price_err' => '',
-                'quantity_err' => '',
-                'type_err' => '',
-                'product' => $products,
-                'show_popup' => true
-            ];
-            $this->view('Farmer/AddProducts', $data);
-        }
+        //     $data = [
+        //         'id' => $product->id,
+        //         'price' => $product->price,
+        //         'quantity' => $product->quantity,
+        //         'type' => $product->type,
+        //         'media' => $product->media,
+        //         'price_err' => '',
+        //         'quantity_err' => '',
+        //         'type_err' => '',
+        //         'product' => $products,
+        //         'show_popup' => true
+        //     ];
+        //     $this->view('Farmer/AddProducts', $data);
+        // }
     }
     
 
@@ -191,37 +198,18 @@ class FarmerController extends Controller {
     
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-            $expiryPeriod = trim($_POST['expiry_period']);
-
-            // Calculate the expiry date by adding the selected period to the current date
-            $expiryDate = new DateTime('now');
-            $expiryDate->modify("+$expiryPeriod days"); // Add the selected days to today's date
-            $formattedExpiryDate = $expiryDate->format('Y-m-d H:i:s');
-
+            
             $data = [
                 'price' => trim($_POST['price']),
                 'quantity' => trim($_POST['quantity']),
-                'type' => trim($_POST['type']),
-                'expiry_date' => $formattedExpiryDate,
+                'closing_date' => trim($_POST['closing_date']),
                 'media' => '',
-                'price_err' => '',
-                'quantity_err' => '',
                 'type_err' => '',
                 'products' => $products,
-                'userid' => $_SESSION['user_id']
+                'user_id' => $_SESSION['user_id']
             ];
     
-            // Validate fields
-            if (empty($data['price'])) {
-                $data['price_err'] = 'Please enter a price';
-            }
-    
-            if (empty($data['quantity'])) {
-                $data['quantity_err'] = 'Please enter quantity';
-            }
-            if (empty($data['expiry_date'])) {
-                $data['expiry_err'] = 'Please select an expiry period';
-            }
+           
     
             // Validate and upload file
             if (isset($_FILES['media']) && $_FILES['media']['error'] == 0) {
@@ -247,7 +235,7 @@ class FarmerController extends Controller {
             }
     
             // Check for no errors
-            if (empty($data['price_err']) && empty($data['quantity_err']) && empty($data['type_err']) && empty($data['expiry_err'])) {
+            if (empty($data['type_err']) ) {
                 if ($this->farmerModel->AddProduct($data)) {
                     Redirect('FarmerController/AddProduct');
                 } else {
@@ -263,7 +251,6 @@ class FarmerController extends Controller {
             $data = [
                 'price' => '',
                 'quantity' => '',
-                'type' => '',
                 'media' => '',
                 'price_err' => '',
                 'quantity_err' => '',

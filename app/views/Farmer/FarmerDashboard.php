@@ -81,7 +81,7 @@
               />
             </div>
             <div>
-              <div class="numbers">LKR 77,842</div>
+              <div class="test">LKR 77,842</div>
               <div class="cardName">Earning</div>
             </div>
           </div>
@@ -308,31 +308,45 @@
           </div>
         </div>
     </div>
-   <script>
-   document.addEventListener('DOMContentLoaded', () => {
-  const links = document.querySelectorAll('.sidebar .menu ul li');
 
-  // Apply active class from localStorage
-  const activeLink = localStorage.getItem('activeLink');
-  if (activeLink) {
-    links.forEach(link => {
-      if (link.href === activeLink) {
-        link.classList.add('active');
-      }
-    });
+
+<script>
+// Get all the links
+const elements = document.querySelectorAll('.test');
+
+// When the page loads, check if any link should be "active"
+window.addEventListener('load', () => {
+  // Get the active link from localStorage
+  const activeLinkId = localStorage.getItem('activeLink');
+
+  if (activeLinkId) {
+    // If there's an active link, add the "active" class to it
+    const activeElement = document.getElementById(activeLinkId);
+    if (activeElement) {
+      activeElement.classList.add('active');
+    }
   }
-
-  // Add click event
-  links.forEach(link => {
-    link.addEventListener('click', () => {
-      links.forEach(l => l.classList.remove('active'));
-      link.classList.add('active');
-      localStorage.setItem('activeLink', link.href);
-    });
-  });
 });
 
+// When a link is clicked, mark it as active
+elements.forEach(element => {
+  element.addEventListener('click', (event) => {
+    event.preventDefault();  // Prevent the default link behavior
 
-   </script>
+    // Remove the "active" class from all elements
+    elements.forEach(el => el.classList.remove('active'));
+
+    // Add the "active" class to the clicked element
+    element.classList.add('active');
+
+    // Store the clicked link's ID in localStorage
+    localStorage.setItem('activeLink', element.id);
+
+    // Optionally navigate after class is added
+    window.location.href = element.href;
+  });
+});
+</script>
+
   </body>
 </html>

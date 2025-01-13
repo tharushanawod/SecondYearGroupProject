@@ -335,3 +335,29 @@ a {
 .prices-popup .prices-close-btn:hover {
   background-color: #e53935;
 }
+
+@media (max-width:768px) {
+  .container{
+    margin-left: 110px;
+  }
+  .header{
+    flex-direction: column;
+    align-items: flex-start;
+    
+  }
+  .header *{
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .header{
+    flex-direction: column;
+    align-items: flex-start;
+    
+  }
+  .header *{
+    margin-bottom: 10px;
+  }
+  
+}

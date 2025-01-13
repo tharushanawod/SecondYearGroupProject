@@ -15,14 +15,13 @@ class Farmer {
     }
 
     public function AddProduct($data) {
-        $this->db->query('INSERT INTO cornproducts (type, price, quantity, media, expiry_date, userid) 
-        VALUES(:type, :price, :quantity, :media, :expiry_date, :userid)');
-        $this->db->bind(':type', $data['type']);
-        $this->db->bind(':price', $data['price']);
+        $this->db->query('INSERT INTO corn_products (starting_price,quantity, media, closing_date, user_id) 
+        VALUES(:starting_price,:quantity, :media, :closing_date, :user_id)');
+        $this->db->bind(':starting_price', $data['price']);
         $this->db->bind(':quantity', $data['quantity']);
         $this->db->bind(':media', $data['media']);
-        $this->db->bind(':expiry_date', $data['expiry_date']); 
-        $this->db->bind(':userid', $data['userid']);
+        $this->db->bind(':closing_date', $data['closing_date']); 
+        $this->db->bind(':user_id', $data['user_id']);
     
         if($this->db->execute()){
             return true;
@@ -32,7 +31,7 @@ class Farmer {
     }
 
     public function getProducts($id){
-        $this->db->query('SELECT * FROM products WHERE productid = :id');
+        $this->db->query('SELECT * FROM corn_products WHERE product_id = :id');
         $this->db->bind(':id', $id);
         $result = $this->db->single();
         return $result;
@@ -100,7 +99,7 @@ class Farmer {
     }
 
     public function deleteProduct($id){
-        $this->db->query('DELETE FROM products WHERE productid = :id');
+        $this->db->query('DELETE FROM corn_products WHERE product_id = :id');
         $this->db->bind(':id', $id);
 
         if($this->db->execute()){
@@ -109,6 +108,40 @@ class Farmer {
             return false;
         }
     }
+
+    public function getFarmworkers() {
+        try {
+           
+
+            // Query the database to fetch all farmworkers
+            $this->db->query(' SELECT *
+FROM users
+INNER JOIN farmworkers
+ON users.user_id = farmworkers.user_id');
+            $workers = $this->db->resultSet();
+            print_r($workers);
+    
+            // Convert skills from JSON to an array for each worker
+            // foreach ($workers as &$worker) {
+            //     $worker['skills'] = json_decode($worker['skills'], true); // Decode JSON into an associative array
+            // }
+            $jsonString = '{"name": "Sarah", "age": 30, "skills": ["PHP", "JavaScript"]}';
+            $result = json_decode($jsonString);
+            
+            print_r($result);
+            
+            // Set header for JSON response
+            header('Content-Type: application/json; charset=utf-8');
+    
+            // Return the workers as a JSON response
+            echo json_encode($workers);
+        } catch (Exception $e) {
+            // Handle any exceptions and return an error response
+            http_response_code(500); // Set HTTP response code to 500 for server error
+            echo json_encode(['error' => 'Failed to fetch farmworkers: ' . $e->getMessage()]);
+        }
+    }
+    
     
 
     
