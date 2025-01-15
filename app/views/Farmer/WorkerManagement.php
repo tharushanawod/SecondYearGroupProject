@@ -60,21 +60,32 @@ console.log(fetchWorkersData());
 
         // Function to create worker card HTML
         function createWorkerCard(worker) {
+            const skills = ${worker.skills}; // Example string
+const skillsArray = skills.split(','); // Split the string by comma
+
+let formattedskills = skillsArray.map(item => `<span>${item.trim()}</span>`).join(' ');
+console.log(formattedskills);
             return `
                 <div class="worker-card">
                 <div class="worker-photo-container">
-  <img src="${worker.photo}" alt="${worker.name}" class="worker-photo">
-  <div class="overlay">View Profile</div>
-</div>
+                <img src="<?php echo URLROOT;?>/${worker.file_path}" alt="${worker.name}" class="worker-photo">
+                <div class="overlay">View Profile</div>
+                </div>
 
                    
                     <h2 class="worker-name">${worker.name}</h2>
                     <div class="location-experience">
                         <span>📍 ${worker.working_area}</span>
                         <span>💼 ${worker.experience}</span>
+                        
                     </div>
+                     <div class="skills-list">
+                ${formattedskills}
+
+
+            </div>
                     <div class="location-experience">
-                    <span>${worker.availabilty}</span>
+                    <span>${worker.availability}</span>
                     </div>
                    
                     <button class="hire-button" onclick="hireWorker(${worker.id})">Hire Now</button>

@@ -287,11 +287,94 @@ class FarmerController extends Controller {
         $this->View('Farmer/BuyIngredients', $data);
     }
 
-    public function ManageProfile() {
-        $data = [];
-        $this->View('Farmer/ManageProfile', $data);
+    public function ManageProfile()
+    {
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){ 
+            $_POST = filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING);
+            $data = [
+                'user_id' => $_SESSION['user_id'],
+                'name' => trim($_POST['name']),
+                'phone' => trim($_POST['phone']),
+                'email' => trim($_POST['email']),
+                'password' => trim($_POST['password']),
+                'name_err' => '',
+                'phone_err' => '',
+                'address_err' => '',
+                'email_err' => ''
+            ];
+
+            if(empty($data['name'])){
+                $data['name_err'] = 'Please input a name';
+            }
+
+            if(empty($data['phone'])){
+                $data['contact_err'] = 'Please input a contact number';
+            }
+           
+
+            if(empty($data['email'])){
+                $data['email_err'] = 'Please input an email';
+            }
+
+           
+            
+
+            if(empty($data['name_err']) && empty($data['phone_err'])  && empty($data['email_err'])){
+                echo 'Profile Updated';
+                if(!empty($data['password'])){
+                    $data['password'] = password_hash($data['password'],PASSWORD_DEFAULT);
+                    }
+                
+                $result = $this->farmerModel->UpdateProfile($data);
+              
+                if($result){
+                    // Redirect('BuyerController/ManageProfile');
+                    Redirect('LandingController/logout');
+                }
+            }else{
+                $this->view('Farmer/ManageProfile',$data);
+            }
+        
+            }
+            else{
+                $user=$this->farmerModel->getUserById($_SESSION['user_id']);
+                $data = [
+                    'name' => $user->name,
+                    'phone' => $user->phone,
+                    'email' => $user->email,
+                    'password' => '',
+                    'name_err' => '',
+                    'phone_err' => '',
+                    'email_err' => '',
+                    'password_err' => ''
+                ];
+                $this->view('Farmer/ManageProfile',$data);
+                
+            }
     }
 
+    // Get profile image URL
+    public function getProfileImage($user_id) {
+        $imagePath = $this->farmerModel->getProfileImage($_SESSION['user_id']);
+        return $imagePath ? URLROOT .'/'.$imagePath : URLROOT . '/images/default.jpg';
+    }
+
+    public function uploadProfileImage() {
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) {
+    $targetDir = "uploads/ProfilePictures/";
+    $fileName = basename($_FILES["profile_picture"]["name"]);
+    $targetFile = $targetDir . $fileName;
+
+    if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $targetFile)) {
+        $uploadResult = $this->farmerModel->updateProfileImage($_SESSION['user_id'], $targetFile);
+       Redirect('FarmerController/ManageProfile');
+        // Update user's profile picture in the database here
+    } else {
+        echo "Error uploading file.";
+    }
+}
+    }
     public function ViewCart() {
         $data = [];
         $this->View('Farmer/ViewCart', $data);

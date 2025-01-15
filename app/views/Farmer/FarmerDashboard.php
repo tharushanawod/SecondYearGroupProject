@@ -18,7 +18,7 @@
   <?php require APPROOT . '/views/inc/sidebar.php'; ?>  
    
     <div class="main-content">
-    <?php require APPROOT . '/views/inc/NotificationBar.php'; ?> 
+ 
 
 
     <div class="main-content-header">
