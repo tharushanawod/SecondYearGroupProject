@@ -11,43 +11,73 @@
     <script src="<?php echo URLROOT;?>/js/Ingredient Supplier/ProductManagement.js" defer></script>
 </head>
 <body>
-<?php require APPROOT . '/views/inc/sidebar.php'; ?>
-<div class="maincontainer">
-    <h1>Products Inventory</h1>
-    <button class="add-product-btn" onclick="showModal('addProductModal')">Add Product</button>
+    <?php require APPROOT . '/views/inc/sidebar.php'; ?>
+    
+    <div class="maincontainer">
+        
+        <div class="header-section">
+            <div class="header-content">
+                <h1>Products Inventory</h1>
+                <div class="search-section">
+                <input type="text" class="search-box" placeholder="Search products..." oninput="filterProducts()">
+                    <button class="add-product-btn" onclick="showModal('addProductModal')">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                        </svg>
+                        Add Product
+                    </button>
+                </div>
+            </div>
+        </div>
 
-    <!-- Product Table -->
-    <table id="productTable">
-        <thead>
-            <tr>
-                <th>Image</th>
-                <th>Product Name</th>
-                <th>Category</th>
-                <th>Price</th>
-                <th>Stock</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if (!empty($data['products'])) : ?>
-                <?php foreach ($data['products'] as $product) : ?>
+        
+        <div class="table-container">
+            <table id="productTable">
+                <thead>
                     <tr>
-                        <td><img src="<?php echo URLROOT; ?>/uploads/<?php echo $product->image; ?>" alt="<?php echo $product->product_name; ?>" class="product-thumb"></td>
-                        <td><?= htmlspecialchars($product->product_name) ?></td>
-                        <td><?= htmlspecialchars($product->category_name) ?></td>
-                        <td>LKR <?= htmlspecialchars(number_format($product->price, 2)) ?></td>
-                        <td><?= htmlspecialchars($product->stock) ?></td>
-                        <td>
-                            <button class="edit-btn" onclick="showModal('updateProductModal', <?= htmlspecialchars(json_encode($product)) ?>)">Update</button>
-                            <button class="delete-btn" onclick="showModal('deleteProductModal', <?= htmlspecialchars(json_encode($product)) ?>)">Delete</button>
-                        </td>
+                        <th>Image</th>
+                        <th>Product Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Actions</th>
                     </tr>
-                <?php endforeach; ?>
-            <?php else : ?>
-                <tr><td colspan="6">No products available.</td></tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
+                </thead>
+                <tbody>
+                    <?php if (!empty($data['products'])) : ?>
+                        <?php foreach ($data['products'] as $product) : ?>
+                            <tr>
+                                <td>
+                                    <img src="<?php echo URLROOT; ?>/uploads/<?php echo $product->image; ?>" 
+                                         alt="<?php echo $product->product_name; ?>" 
+                                         class="product-thumb">
+                                </td>
+                                <td><?= htmlspecialchars($product->product_name) ?></td>
+                                <td><?= htmlspecialchars($product->category_name) ?></td>
+                                <td>LKR <?= htmlspecialchars(number_format($product->price, 2)) ?></td>
+                                <td><?= htmlspecialchars($product->stock) ?></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="edit-btn" onclick="showModal('updateProductModal', <?= htmlspecialchars(json_encode($product)) ?>)">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="delete-btn" onclick="showModal('deleteProductModal', <?= htmlspecialchars(json_encode($product)) ?>)">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else : ?>
+                        <tr><td colspan="6">No products available.</td></tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
 
     <!-- Add Product Modal -->
     <div id="addProductModal" class="modal">

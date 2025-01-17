@@ -37,12 +37,29 @@ window.onclick = function(event) {
     }
 }
 
-// function previewImage(input, previewId) {
-//     if (input.files && input.files[0]) {
-//         var reader = new FileReader();
-//         reader.onload = function(e) {
-//             document.getElementById(previewId).src = e.target.result;
-//         }
-//         reader.readAsDataURL(input.files[0]);
-//     }
-// }
+function previewImage(input, previewId) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById(previewId).src = e.target.result;
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function filterProducts() {
+    const searchBox = document.querySelector('.search-box');
+    const filter = searchBox.value.toLowerCase();
+    const rows = document.querySelectorAll('#productTable tbody tr');
+
+    rows.forEach(row => {
+        const categoryCell = row.querySelector('td:nth-child(3)');
+        const category = categoryCell.textContent.toLowerCase();
+
+        if (category.includes(filter)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
