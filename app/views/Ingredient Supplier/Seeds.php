@@ -25,6 +25,7 @@
             <div class="categories-dropdown">
                 <h2>Categories</h2>
                 <select onchange="location = this.value;">
+                    <option value=""></option>
                     <option value="<?php echo URLROOT;?>/SupplierController/shop">All Products</option>
                     <option value="<?php echo URLROOT;?>/SupplierController/fertilizer">Fertilizer (<?php echo isset($data['fertilizerProducts']) ? count($data['fertilizerProducts']) : 0; ?>)</option>
                     <option value="<?php echo URLROOT;?>/SupplierController/seeds">Seeds (<?php echo isset($data['products']) ? count($data['products']) : 0; ?>)</option>

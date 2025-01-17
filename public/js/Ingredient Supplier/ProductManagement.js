@@ -9,14 +9,13 @@ function showModal(modalId, product = null) {
             document.getElementById('updateStock').value = product.stock;
             document.getElementById('updateDescription').value = product.description;
             document.getElementById('updateProductExistingImage').value = product.image;
-            document.getElementById('updateProductImage').src = `${URLROOT}/uploads/${product.image}`;
+            document.getElementById('updateImagePreview').src = `${URLROOT}/uploads/${product.image}`;
         } else if (modalId === 'deleteProductModal') {
             document.getElementById('deleteProductId').value = product.id;
             document.getElementById('deleteProductName').innerText = product.product_name;
             document.getElementById('deleteProductCategory').innerText = product.category_name;
             document.getElementById('deleteProductPrice').innerText = product.price;
             document.getElementById('deleteProductStock').innerText = product.stock;
-            document.getElementById('deleteProductDescription').innerText = product.description;
             document.getElementById('deleteProductImage').src = `${URLROOT}/uploads/${product.image}`;
         }
     }
@@ -38,12 +37,12 @@ window.onclick = function(event) {
     }
 }
 
-function previewImage(input, previewId) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById(previewId).src = e.target.result;
-        }
-        reader.readAsDataURL(input.files[0]);
-    }
-}
+// function previewImage(input, previewId) {
+//     if (input.files && input.files[0]) {
+//         var reader = new FileReader();
+//         reader.onload = function(e) {
+//             document.getElementById(previewId).src = e.target.result;
+//         }
+//         reader.readAsDataURL(input.files[0]);
+//     }
+// }

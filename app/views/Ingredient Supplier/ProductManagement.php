@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Management</title>
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Ingredient Supplier/ProductManagement.css">    
+    <script>
+        const URLROOT = '<?php echo URLROOT; ?>';
+    </script>
     <script src="<?php echo URLROOT;?>/js/Ingredient Supplier/ProductManagement.js" defer></script>
 </head>
 <body>
@@ -84,7 +87,7 @@
 
                 <div class="form-group">
                     <label for="image">Product Image:</label>
-                    <input type="file" name="image" accept="image/*" required>
+                    <input type="file" name="image" accept="image/*" required onchange="previewImage(this, 'imagePreview')">
                     <img id="imagePreview" class="preview-image" src="" alt="">
                 </div>
 
@@ -135,7 +138,7 @@
 
                 <div class="form-group">
                     <label for="image">Product Image:</label>
-                    <input type="file" name="image" accept="image/*">
+                    <input type="file" name="image" accept="image/*" onchange="previewImage(this, 'updateImagePreview')">
                     <img id="updateImagePreview" class="preview-image" src="" alt="">
                 </div>
 
@@ -154,7 +157,7 @@
             <p>Are you sure you want to delete "<span id="deleteProductName"></span>"?</p>
             
             <div class="product-preview">
-                <img id="deleteProductImage" src="" alt="">
+                <img id="deleteProductImage" class="delete-preview-image" src="" alt="">
                 <p><strong>Category:</strong> <span id="deleteProductCategory"></span></p>
                 <p><strong>Price:</strong> LKR <span id="deleteProductPrice"></span></p>
                 <p><strong>Stock:</strong> <span id="deleteProductStock"></span></p>
