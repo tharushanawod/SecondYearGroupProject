@@ -1,4 +1,5 @@
 <?php
+
 class Product {
     private $db;
 
@@ -6,49 +7,53 @@ class Product {
         $this->db = new Database();
     }
 
+    public function addProduct($data) {
+        $this->db->query('INSERT INTO supplier_products (product_name, category_id, supplier_id, price, stock, description, image) VALUES (:product_name, :category_id, :supplier_id, :price, :stock, :description, :image)');
+        $this->db->bind(':product_name', $data['product_name']);
+        $this->db->bind(':category_id', $data['category_id']);
+        $this->db->bind(':supplier_id', $data['supplier_id']);
+        $this->db->bind(':price', $data['price']);
+        $this->db->bind(':stock', $data['stock']);
+        $this->db->bind(':description', $data['description']);
+        $this->db->bind(':image', $data['image']);
+        
+        return $this->db->execute();
+    }
+
     public function getProducts() {
-        $this->db->query("SELECT * FROM supplier_products");
+        $this->db->query('SELECT supplier_products.*, categories.name as category_name FROM supplier_products JOIN categories ON supplier_products.category_id = categories.id');
         return $this->db->resultSet();
     }
 
-    public function getProduct($product_id) {
-        $this->db->query("SELECT * FROM supplier_products WHERE product_id = :product_id");
-        $this->db->bind(':product_id', $product_id);
+    public function getProductById($id) {
+        $this->db->query('SELECT * FROM supplier_products WHERE id = :id');
+        $this->db->bind(':id', $id);
         return $this->db->single();
     }
 
-    public function addProduct($data) {
-        $this->db->query("INSERT INTO supplier_products (product_name, category, price, stock, description, image) VALUES (:product_name, :category, :price, :stock, :description, :image)");
-        $this->db->bind(':product_name', $data['product_name']);
-        $this->db->bind(':category', $data['category']);
-        $this->db->bind(':price', $data['price']);
-        $this->db->bind(':stock', $data['stock']);
-        $this->db->bind(':description', $data['description']);
-        $this->db->bind(':image', $data['image']);
-        return $this->db->execute();
-    }
-
     public function updateProduct($data) {
-        $this->db->query("UPDATE supplier_products SET product_name = :product_name, category = :category, price = :price, stock = :stock, description = :description, image = :image WHERE product_id = :id");
+        $this->db->query('UPDATE supplier_products SET product_name = :product_name, category_id = :category_id, price = :price, stock = :stock, description = :description, image = :image WHERE id = :id');
         $this->db->bind(':id', $data['id']);
         $this->db->bind(':product_name', $data['product_name']);
-        $this->db->bind(':category', $data['category']);
+        $this->db->bind(':category_id', $data['category_id']);
         $this->db->bind(':price', $data['price']);
         $this->db->bind(':stock', $data['stock']);
         $this->db->bind(':description', $data['description']);
         $this->db->bind(':image', $data['image']);
+        
         return $this->db->execute();
     }
 
-    public function deleteProduct($product_id) {
-        $this->db->query("DELETE FROM supplier_products WHERE product_id = :product_id");
-        $this->db->bind(':product_id', $product_id);
+    public function deleteProduct($id) {
+        $this->db->query('DELETE FROM supplier_products WHERE id = :id');
+        $this->db->bind(':id', $id);
+        
         return $this->db->execute();
     }
 
-    public function getProductsByCategory($category) {
-        $this->db->query("SELECT * FROM supplier_products WHERE category = :category");
-        $this->db->bind(':category', $category);
+    public function getProductsByCategory($category_id) {
+        $this->db->query('SELECT * FROM supplier_products WHERE category_id = :category_id');
+        $this->db->bind(':category_id', $category_id);
         return $this->db->resultSet();
     }
 

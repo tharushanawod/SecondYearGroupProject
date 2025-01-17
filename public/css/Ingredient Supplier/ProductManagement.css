@@ -1,14 +1,13 @@
 @import url(../components/sidebar.css);
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
 body {
-    font-family:sans-serif;
-  
+    font-family: sans-serif;
     background-color: #f4f4f4;
 }
 
@@ -22,7 +21,7 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.maincontainer{
+.maincontainer {
     padding: 30px;
 }
 
@@ -50,42 +49,63 @@ h1 {
 }
 
 table {
-  width: 75%;
-  border-collapse: separate; 
-  border-spacing: 0 8px; 
-  margin-left:300px;
-  margin-bottom: 20px;
-  border-radius: 15px; 
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #e5faec;
-  padding: 20px;  
+    width: 75%;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+    margin-left: 300px;
+    margin-bottom: 20px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #e5faec;
+    padding: 20px;
 }
 
 table th {
-  background-color: #b3e4b4; 
-  color: rgb(0, 0, 0);
-  font-weight: bold;
-  padding: 15px;
-  text-align: center;
- 
+    background-color: #b3e4b4;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    padding: 15px;
+    text-align: center;
 }
 
 table tr {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-  border-radius: 10px;  
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
 }
 
 tr:hover {
-  background-color: #d8e8e1; 
-  cursor: pointer;
+    background-color: #d8e8e1;
+    cursor: pointer;
 }
 
 td {
-  padding: 15px;
-  text-align: center;
-  font-size: 14px;
-  color: #333;    
+    padding: 15px;
+    text-align: center;
+    font-size: 14px;
+    color: #333;
+}
+
+.product-thumb {
+    width: 80px;
+    height: 80px; 
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+    margin: 5px;
+}
+
+td:first-child {
+    width: 100px;
+    height: 100px;
+    padding: 10px;
+    vertical-align: middle;
+}
+
+.product-thumb:hover {
+    transform: scale(1.1);
+    cursor: pointer;
 }
 
 button {
@@ -139,8 +159,8 @@ button {
     top: 47%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 500px;    
-    max-height: 90vh; 
+    width: 500px;
+    max-height: 90vh;
     background-color: transparent;
     border-radius: 10px;
     box-shadow: 0 0 4px #035a1b;
@@ -152,16 +172,13 @@ button {
     padding: 30px;
     width: 100%;
     border-radius: 10px;
-    box-shadow: 0 0 4px #a0e9b5;   
-    /* display: flex;
-    flex-direction: column;
-    gap: 15px; */
+    box-shadow: 0 0 4px #a0e9b5;
 }
 
 .modal-content h2 {
     text-align: center;
-    font-size: 24px; 
-    margin-top: 0; 
+    font-size: 24px;
+    margin-top: 0;
     color: #023802;
 }
 
@@ -176,8 +193,8 @@ button {
 .modal-content input[type="number"],
 .modal-content select {
     width: 100%;
-    padding: 8px; 
-    margin-bottom: 15px; 
+    padding: 8px;
+    margin-bottom: 15px;
     border: 1px solid #c1cbc3;
     border-radius: 5px;
     background-color: #ebf4eb;
@@ -186,8 +203,8 @@ button {
 
 .modal-content textarea {
     width: 100%;
-    resize: none; 
-    height: 60px; 
+    resize: none;
+    height: 60px;
     padding: 8px;
     margin-bottom: 15px;
     border: 1px solid #c1cbc3;
@@ -231,8 +248,8 @@ button {
     background: #3d903d;
 }
 
-.modal-content .edit {    
-    background: #2b10db;    
+.modal-content .edit {
+    background: #2b10db;
 }
 
 .modal-content .edit:hover {
@@ -240,16 +257,16 @@ button {
 }
 
 .modal-content .delete {
-    background: #ed0505;    
+    background: #ed0505;
 }
 
 .modal-content .delete:hover {
     background: #e14242;
 }
 
-.modal-content .cancel {    
-    background: #616261;  
-    margin-top: 10px;  
+.modal-content .cancel {
+    background: #616261;
+    margin-top: 10px;
     display: inline-block;
     text-align: center;
     width: 96%;

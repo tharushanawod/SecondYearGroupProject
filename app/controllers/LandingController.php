@@ -1,8 +1,9 @@
 <?php 
- use PHPMailer\PHPMailer\PHPMailer;
- use PHPMailer\PHPMailer\SMTP;
- use PHPMailer\PHPMailer\Exception;
- 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+
 class LandingController extends Controller{
     private $userModel;
 
@@ -180,18 +181,19 @@ class LandingController extends Controller{
                 $mail->Password = 'vzsuwxuiitfvakpl';
                 $mail->SMTPSecure = 'tls';
                 $mail->Port = 587;
-        
+
                 $mail->setFrom('tharushanjayasinghe222@gmail.com', 'Tharusha Nawod');
                 $mail->addAddress($receiver);
-        
+
                 $mail->isHTML(true);
                 $mail->Subject = 'Corn Cradle Verification';
                 $mail->Body = "Hello,<br><br>Your OTP code is: <b>$otp</b><br><br>Thank you for using our service.";
 
-        
                 $mail->send();
                 echo "✅ OTP has been successfully sent to $receiver.";
-                
+                $mail->SMTPDebug = 3; // Debug level (0 to disable debugging)
+                $mail->Debugoutput = 'html'; // Output debug info as HTML (useful for web apps)
+
             } catch (Exception $e) {
                 echo "Mailer Error: {$mail->ErrorInfo}";
             }
@@ -199,8 +201,7 @@ class LandingController extends Controller{
 
         else{
             echo 'isset is not working';
-        }
-       
+        }       
         
     }
 
