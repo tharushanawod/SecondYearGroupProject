@@ -5,7 +5,7 @@
    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet" />
    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Farmer/ManageProfile.css" />
-   <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet" />
+   <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet" />  
 </head>
 
 <body>
@@ -36,7 +36,7 @@
             <div class="image-preview">
                <img src="<?php echo URLROOT;?>/images/profile.jpg" alt="Profile preview" id="preview-image">
             </div>
-            <form class="upload-form" action="<?php echo URLROOT;?>/BuyerController/uploadProfileImage" method="POST"
+            <form class="upload-form" action="<?php echo URLROOT;?>/WorkerController/uploadProfileImage" method="POST"
                enctype="multipart/form-data">
                <input type="file" name="profile_picture" accept="image/*" required>
                <button type="submit">Save Profile Image</button>
@@ -62,7 +62,7 @@
          </div>
          <h2>Profile</h2>
 
-         <form action="<?php echo URLROOT;?>/BuyerController/ManageProfile" method="post" id="profileForm">
+         <form action="<?php echo URLROOT;?>/WorkerController/ManageProfile" method="post" id="profileForm">
             <div class="form-group">
                <div>
                   <label for="name"> Name </label>
@@ -78,6 +78,13 @@
                      value="<?php echo $data['phone']?>" />
                   <span class="invalid">
                      <?php echo $data['phone_err']; ?>
+                  </span>
+               </div>
+               <div>
+                  <label for="bio"> Bio </label>
+                  <textarea id="bio" name="bio" placeholder="Enter About YourSelf" type="text"> <?php echo $data['bio']?></textarea>
+                  <span class="invalid">
+                     <?php echo $data['bio_err']; ?>
                   </span>
                </div>
             </div>

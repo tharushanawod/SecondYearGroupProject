@@ -52,3 +52,14 @@ CREATE TABLE farmworkers (
     skills TEXT,  -- A list of skills (can be stored as comma-separated values or JSON)
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+CREATE TABLE farmer_reviews_worker (
+    id INT AUTO_INCREMENT PRIMARY KEY,         -- Unique ID for each review
+    review_text TEXT NOT NULL,                 -- Stores the review text
+    rating INT NOT NULL,                       -- Stores the star rating (1 to 5)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    farmer_id INT NOT NULL,                    -- Farmer's ID (foreign key)
+    worker_id INT NOT NULL,                    -- Worker's ID (foreign key)
+    FOREIGN KEY (farmer_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (worker_id) REFERENCES users(user_id) ON DELETE CASCADE
+);

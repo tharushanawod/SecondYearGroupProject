@@ -31,13 +31,13 @@
           
           
           <?php elseif ($user_role === 'farmer'): ?>
-            <li ><a class="test" href="<?php echo URLROOT;?>/FarmerController/Dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>
-            <li ><a class="test" href="<?php echo URLROOT;?>/FarmerController/AddProduct"><i class="fa-solid fa-store"></i><span class="menu-text">Products</span></a></li>
-            <li class="test"><a href="<?php echo URLROOT;?>/FarmerController/orderManagement"><i class="fas fa-comments"></i><span class="menu-text">Orders</span></a></li>
-            <li class="test"><a href="<?php echo URLROOT;?>/FarmerController/workerManagement"><i class="fa-solid fa-user"></i><span class="menu-text">Workers</span></a></li>
-            <li class="test"><a href="<?php echo URLROOT;?>/FarmerController/BuyIngredients"><i class="fa-solid fa-flask"></i><span class="menu-text">Ingredients</span></a></li>
-            <li class="test"><a href="<?php echo URLROOT;?>/FarmerController/inventory"><i class="fa-solid fa-business-time"></i><span class="menu-text">My Orders</span></a></li>
-            <li class="test"><a href="<?php echo URLROOT;?>/FarmerController/requestHelp"><i class="fa-solid fa-comment"></i><span class="menu-text">Chat</span></a></li>
+            <li><a href="<?php echo URLROOT;?>/FarmerController/Dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>
+            <li><a  href="<?php echo URLROOT;?>/FarmerController/AddProduct"><i class="fa-solid fa-store"></i><span class="menu-text">Products</span></a></li>
+            <li><a href="<?php echo URLROOT;?>/FarmerController/orderManagement"><i class="fas fa-comments"></i><span class="menu-text">Orders</span></a></li>
+            <li><a href="<?php echo URLROOT;?>/FarmerController/workerManagement"><i class="fa-solid fa-user"></i><span class="menu-text">Workers</span></a></li>
+            <li><a href="<?php echo URLROOT;?>/FarmerController/BuyIngredients"><i class="fa-solid fa-flask"></i><span class="menu-text">Ingredients</span></a></li>
+            <li><a href="<?php echo URLROOT;?>/FarmerController/inventory"><i class="fa-solid fa-business-time"></i><span class="menu-text">My Orders</span></a></li>
+            <li><a href="<?php echo URLROOT;?>/FarmerController/requestHelp"><i class="fa-solid fa-comment"></i><span class="menu-text">Chat</span></a></li>
            
            
             <?php elseif ($user_role === 'farmworker'): ?>
@@ -63,14 +63,22 @@
   </div>
 
   <div class="profile">
-    <img
-      alt="Profile Picture"
-      height="40"
-      width="40"
-      src="https://storage.googleapis.com/a1aa/image/3nj5elSPqtzAfE0A1gunUEeeP7xlqGODBcFraf3sS6MndUWgC.jpg"
-    />
+  <img
+    alt="Profile Picture"
+    <?php $imagepath = $this->getProfileImage($_SESSION['user_id']); ?>
+    height="40"
+    width="40"
+    style="object-fit: cover;"
+    src="<?php echo $imagepath; ?>" />
+
+
+
+  
     <div class="profile-info">
-      <div class="name"><?php echo $_SESSION['user_name']; ?></div>
+     
+    
+      
+      <div class="name"><?php echo $_SESSION['user_name'];?></div>
       <div class="view-profile"><a href="
       <?php 
       
@@ -91,8 +99,30 @@
       ">View profile</a></div>
     </div>
     <div class="settings">
-      <i class="fas fa-cog"></i>
-    </div>
+  <i class="fas fa-cog" onclick="toggleSettingsMenu()"></i>
+  <div class="settings-menu" id="settings-menu">
+    <ul>
+      <li><i class="fas fa-sign-out-alt"></i><a href="<?php echo URLROOT; ?>/LandingController/logout">Logout</a></li>
+      <li><i class="fas fa-bell"></i><a href="<?php echo URLROOT; ?>/NotificationController/index">Notifications</a></li>
+    </ul>
   </div>
 </div>
 
+  </div>
+</div>
+
+<script>
+  function toggleSettingsMenu() {
+  const menu = document.getElementById("settings-menu");
+  menu.style.display = menu.style.display === "block" ? "none" : "block";
+}
+
+document.addEventListener("click", function (e) {
+  const menu = document.getElementById("settings-menu");
+  const settingsIcon = document.querySelector(".settings i");
+  if (!menu.contains(e.target) && e.target !== settingsIcon) {
+    menu.style.display = "none";
+  }
+});
+
+</script>

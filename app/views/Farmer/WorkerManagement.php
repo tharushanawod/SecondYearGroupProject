@@ -34,101 +34,43 @@
                 </select>
             </div>
         </div>
-
+      
         <div class="worker-grid" id="worker-grid">
-            <!-- Worker cards will be inserted here by JavaScript -->
-        </div>
-    </div>
-    </div>
-
-<script>
-   const URLROOT = "<?php echo URLROOT; ?>";
-</script>
-    <script>
-        // Function to fetch worker data from the server
-async function fetchWorkersData() {
-    try {
-        const response = await fetch(`${URLROOT}/FarmerController/getFarmworkers`); // Replace with the actual URL to your PHP script
-        const workers = await response.json(); // Parse the JSON response
-        displayWorkers(workers); // Call the function to display the workers
-    } catch (error) {
-        console.error('Error fetching worker data:', error);
-    }
-}
-
-console.log(fetchWorkersData());
-
-        // Function to create worker card HTML
-        function createWorkerCard(worker) {
-            const skills = ${worker.skills}; // Example string
-const skillsArray = skills.split(','); // Split the string by comma
-
-let formattedskills = skillsArray.map(item => `<span>${item.trim()}</span>`).join(' ');
-console.log(formattedskills);
-            return `
-                <div class="worker-card">
-                <div class="worker-photo-container">
-                <img src="<?php echo URLROOT;?>/${worker.file_path}" alt="${worker.name}" class="worker-photo">
+    <?php foreach ($data as $worker): ?>
+        <div class="worker-card">
+            <a href="<?php echo URLROOT . '/FarmerController/WorkerProfile/' . $worker->user_id; ?>">
+            <div class="worker-photo-container">
+                <img src="<?php echo URLROOT . '/' . htmlspecialchars($worker->file_path); ?>" 
+                     alt="<?php echo htmlspecialchars($worker->name); ?>" 
+                     class="worker-photo">
                 <div class="overlay">View Profile</div>
-                </div>
-
-                   
-                    <h2 class="worker-name">${worker.name}</h2>
-                    <div class="location-experience">
-                        <span>📍 ${worker.working_area}</span>
-                        <span>💼 ${worker.experience}</span>
-                        
-                    </div>
-                     <div class="skills-list">
-                ${formattedskills}
-
-
             </div>
-                    <div class="location-experience">
-                    <span>${worker.availability}</span>
-                    </div>
-                   
-                    <button class="hire-button" onclick="hireWorker(${worker.id})">Hire Now</button>
-                </div>
-            `;
-        }
+            </a>
+           
+            <h2 class="worker-name"><?php echo htmlspecialchars($worker->name); ?></h2>
+            <div class="location-experience">
+                <span>📍 <?php echo htmlspecialchars($worker->working_area); ?></span>
+               
+            </div>
+            <div class="skills-list">
+                <?php
+                // Assuming `skills` is a comma-separated string, split and format it.
+                $skills = explode(',', $worker->skills);
+                foreach ($skills as $skill) {
+                    echo '<span class="skill-tag">' . htmlspecialchars($skill) . '</span>';
+                }
+                ?>
+            </div>
+            <div class="location-experience">
+                <span><?php echo htmlspecialchars($worker->availability); ?></span>
+            </div>
+            <button class="hire-button" onclick="hireWorker(<?php echo $worker->id; ?>)">Hire Now</button>
+        </div>
+    <?php endforeach; ?>
+</div>
 
-        // Function to filter workers
-        function filterWorkers() {
-            const searchTerm = document.getElementById('search').value.toLowerCase();
-            const locationFilter = document.getElementById('location-filter').value;
-            const experienceFilter = document.getElementById('experience-filter').value;
+    </div>
+    </div>
 
-            const filteredWorkers = workers.filter(worker => {
-                const matchesSearch = worker.name.toLowerCase().includes(searchTerm) ||
-                    worker.skills.some(skill => skill.toLowerCase().includes(searchTerm));
-                const matchesLocation = !locationFilter || worker.location === locationFilter;
-                const matchesExperience = !experienceFilter || worker.experience === experienceFilter;
-                
-                return matchesSearch && matchesLocation && matchesExperience;
-            });
-
-            displayWorkers(filteredWorkers);
-        }
-
-        // Function to display workers
-        function displayWorkers(workersToDisplay) {
-            const grid = document.getElementById('worker-grid');
-            grid.innerHTML = workersToDisplay.map(worker => createWorkerCard(worker)).join('');
-        }
-
-        // Function to handle hiring
-        function hireWorker(workerId) {
-            alert(`Initiating hiring process for worker ${workerId}`);
-            // In a real app, this would open a hiring flow
-        }
-
-        // Add event listeners
-        document.getElementById('search').addEventListener('input', filterWorkers);
-        document.getElementById('location-filter').addEventListener('change', filterWorkers);
-        document.getElementById('experience-filter').addEventListener('change', filterWorkers);
-
-        
-    </script>
 </body>
 </html>

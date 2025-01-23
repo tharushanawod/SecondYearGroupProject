@@ -62,13 +62,15 @@ class FarmerController extends Controller {
 
     public function workerManagement() {
        
-        $data = [];
+        $data = $this->farmerModel->getFarmworkers();
         $this->View('Farmer/WorkerManagement', $data);
     }
 
-    public function getFarmworkers(){
-        $result=$this->farmerModel->getFarmworkers();
+    public function WorkerProfile($id) {
+        $data = $this->farmerModel->getFarmworkerById($id);
        
+        $this->View('Farmer/WorkerProfile', $data);
+
     }
 
      public function purchaseIngredients() {
@@ -375,6 +377,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
     }
 }
     }
+
+
+    public function AddReview($farmworker_id) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $new = [
+                'review_text' => trim($_POST['review_text']),
+                'rating' => (int) $_POST['rating'],
+                'worker_id' => $farmworker_id,
+                'farmer_id' => $_SESSION['user_id'],
+                'reviewText_err' => '',
+                'rating_err' => ''
+            ];
+    
+            // Validation
+            if (empty($new['review_text'])) {
+                $new['reviewText_err'] = 'Please enter a review';
+            }
+            if ($new['rating'] < 1 || $new['rating'] > 5) {
+                $new['rating_err'] = 'Please select a rating between 1 and 5';
+            }
+
+            var_dump($new);
+    
+            // If no errors, add the review
+            if (empty($new['reviewText_err']) && empty($new['rating_err'])) {
+                if ($this->farmerModel->AddReview($new)) {
+                    Redirect('FarmerController/WorkerProfile/' . $farmworker_id);
+                } else {
+                    die('Something went wrong while saving the review.');
+                }
+            } else {
+                // Reload the form with errors
+                $this->view('Farmer/WorkerProfile', $new);
+            }
+        } else {
+            $new = [];
+            $this->view('Farmer/WorkerProfile', $new);
+        }
+    }
+    
+
+    
     public function ViewCart() {
         $data = [];
         $this->View('Farmer/ViewCart', $data);

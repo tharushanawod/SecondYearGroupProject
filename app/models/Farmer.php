@@ -110,40 +110,32 @@ class Farmer {
     }
 
     public function getFarmworkers() {
-        try {
+   
            
 
             // Query the database to fetch all farmworkers
             $this->db->query(' SELECT *
-FROM users
-INNER JOIN farmworkers ON users.user_id = farmworkers.user_id
-INNER JOIN profile_pictures ON farmworkers.user_id = profile_pictures.user_id
-
-
-');
+                                FROM users
+                                INNER JOIN farmworkers ON users.user_id = farmworkers.user_id
+                                INNER JOIN profile_pictures ON farmworkers.user_id = profile_pictures.user_id');
 
 
             $workers = $this->db->resultSet();
-            
-    
-            // // Convert skills from JSON to an array for each worker
-            // foreach ($workers as &$worker) {
-            //     $worker['skills'] = json_decode($worker['skills'], true); // Decode JSON into an associative array
-            // }
-           
-            
-           
-            
-            // Set header for JSON response
-            header('Content-Type: application/json; charset=utf-8');
-    
-            // Return the workers as a JSON response
-            echo json_encode($workers);
-        } catch (Exception $e) {
-            // Handle any exceptions and return an error response
-            http_response_code(500); // Set HTTP response code to 500 for server error
-            echo json_encode(['error' => 'Failed to fetch farmworkers: ' . $e->getMessage()]);
-        }
+            return $workers;
+       
+    }
+
+    public function getFarmworkerById($id) {
+        $this->db->query(' SELECT *
+        FROM users
+        INNER JOIN farmworkers ON users.user_id = farmworkers.user_id
+        INNER JOIN profile_pictures ON farmworkers.user_id = profile_pictures.user_id
+        WHERE users.user_id = :id');
+       
+
+        $this->db->bind(':id', $id);
+        $worker = $this->db->single();
+        return $worker;
     }
 
 
@@ -217,6 +209,22 @@ INNER JOIN profile_pictures ON farmworkers.user_id = profile_pictures.user_id
         $row = $this->db->single();
         return $row;
     }
+
+    public function AddReview($data) {
+        $this->db->query('INSERT INTO farmer_reviews_worker (review_text, rating, farmer_id, worker_id) VALUES (:review_text, :rating, :farmer_id, :worker_id)');
+        $this->db->bind(':review_text', $data['review_text']);
+        $this->db->bind(':rating', $data['rating']);
+        $this->db->bind(':farmer_id', $data['farmer_id']);
+        $this->db->bind(':worker_id', $data['worker_id']);
+    
+        // Execute and return result
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     
 
     
