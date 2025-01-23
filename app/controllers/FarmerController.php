@@ -61,8 +61,16 @@ class FarmerController extends Controller {
     }
 
     public function workerManagement() {
-        $data = [];
+       
+        $data = $this->farmerModel->getFarmworkers();
         $this->View('Farmer/WorkerManagement', $data);
+    }
+
+    public function WorkerProfile($id) {
+        $data = $this->farmerModel->getFarmworkerById($id);
+       
+        $this->View('Farmer/WorkerProfile', $data);
+
     }
 
      public function purchaseIngredients() {
@@ -162,25 +170,26 @@ class FarmerController extends Controller {
                 $data['show_popup'] = true; // Keep popup open on validation error
                 $this->view('Farmer/AddProducts', $data); // Use edit product view
             }
-        } else {
+        } 
+        // else {
 
-            $product = $this->farmerModel->getProducts($id);
-            $products = $this->farmerModel->getProductsByFarmerId($_SESSION['user_id']);
+        //     $product = $this->farmerModel->getProducts($id);
+        //     $products = $this->farmerModel->getProductsByFarmerId($_SESSION['user_id']);
 
-            $data = [
-                'id' => $product->id,
-                'price' => $product->price,
-                'quantity' => $product->quantity,
-                'type' => $product->type,
-                'media' => $product->media,
-                'price_err' => '',
-                'quantity_err' => '',
-                'type_err' => '',
-                'product' => $products,
-                'show_popup' => true
-            ];
-            $this->view('Farmer/AddProducts', $data);
-        }
+        //     $data = [
+        //         'id' => $product->id,
+        //         'price' => $product->price,
+        //         'quantity' => $product->quantity,
+        //         'type' => $product->type,
+        //         'media' => $product->media,
+        //         'price_err' => '',
+        //         'quantity_err' => '',
+        //         'type_err' => '',
+        //         'product' => $products,
+        //         'show_popup' => true
+        //     ];
+        //     $this->view('Farmer/AddProducts', $data);
+        // }
     }
     
 
@@ -191,37 +200,18 @@ class FarmerController extends Controller {
     
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-            $expiryPeriod = trim($_POST['expiry_period']);
-
-            // Calculate the expiry date by adding the selected period to the current date
-            $expiryDate = new DateTime('now');
-            $expiryDate->modify("+$expiryPeriod days"); // Add the selected days to today's date
-            $formattedExpiryDate = $expiryDate->format('Y-m-d H:i:s');
-
+            
             $data = [
                 'price' => trim($_POST['price']),
                 'quantity' => trim($_POST['quantity']),
-                'type' => trim($_POST['type']),
-                'expiry_date' => $formattedExpiryDate,
+                'closing_date' => trim($_POST['closing_date']),
                 'media' => '',
-                'price_err' => '',
-                'quantity_err' => '',
                 'type_err' => '',
                 'products' => $products,
-                'userid' => $_SESSION['user_id']
+                'user_id' => $_SESSION['user_id']
             ];
     
-            // Validate fields
-            if (empty($data['price'])) {
-                $data['price_err'] = 'Please enter a price';
-            }
-    
-            if (empty($data['quantity'])) {
-                $data['quantity_err'] = 'Please enter quantity';
-            }
-            if (empty($data['expiry_date'])) {
-                $data['expiry_err'] = 'Please select an expiry period';
-            }
+           
     
             // Validate and upload file
             if (isset($_FILES['media']) && $_FILES['media']['error'] == 0) {
@@ -247,7 +237,7 @@ class FarmerController extends Controller {
             }
     
             // Check for no errors
-            if (empty($data['price_err']) && empty($data['quantity_err']) && empty($data['type_err']) && empty($data['expiry_err'])) {
+            if (empty($data['type_err']) ) {
                 if ($this->farmerModel->AddProduct($data)) {
                     Redirect('FarmerController/AddProduct');
                 } else {
@@ -263,7 +253,6 @@ class FarmerController extends Controller {
             $data = [
                 'price' => '',
                 'quantity' => '',
-                'type' => '',
                 'media' => '',
                 'price_err' => '',
                 'quantity_err' => '',
@@ -300,11 +289,136 @@ class FarmerController extends Controller {
         $this->View('Farmer/BuyIngredients', $data);
     }
 
-    public function ManageProfile() {
-        $data = [];
-        $this->View('Farmer/ManageProfile', $data);
+    public function ManageProfile()
+    {
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){ 
+            $_POST = filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING);
+            $data = [
+                'user_id' => $_SESSION['user_id'],
+                'name' => trim($_POST['name']),
+                'phone' => trim($_POST['phone']),
+                'email' => trim($_POST['email']),
+                'password' => trim($_POST['password']),
+                'name_err' => '',
+                'phone_err' => '',
+                'address_err' => '',
+                'email_err' => ''
+            ];
+
+            if(empty($data['name'])){
+                $data['name_err'] = 'Please input a name';
+            }
+
+            if(empty($data['phone'])){
+                $data['contact_err'] = 'Please input a contact number';
+            }
+           
+
+            if(empty($data['email'])){
+                $data['email_err'] = 'Please input an email';
+            }
+
+           
+            
+
+            if(empty($data['name_err']) && empty($data['phone_err'])  && empty($data['email_err'])){
+                echo 'Profile Updated';
+                if(!empty($data['password'])){
+                    $data['password'] = password_hash($data['password'],PASSWORD_DEFAULT);
+                    }
+                
+                $result = $this->farmerModel->UpdateProfile($data);
+              
+                if($result){
+                    // Redirect('BuyerController/ManageProfile');
+                    Redirect('LandingController/logout');
+                }
+            }else{
+                $this->view('Farmer/ManageProfile',$data);
+            }
+        
+            }
+            else{
+                $user=$this->farmerModel->getUserById($_SESSION['user_id']);
+                $data = [
+                    'name' => $user->name,
+                    'phone' => $user->phone,
+                    'email' => $user->email,
+                    'password' => '',
+                    'name_err' => '',
+                    'phone_err' => '',
+                    'email_err' => '',
+                    'password_err' => ''
+                ];
+                $this->view('Farmer/ManageProfile',$data);
+                
+            }
     }
 
+    // Get profile image URL
+    public function getProfileImage($user_id) {
+        $imagePath = $this->farmerModel->getProfileImage($_SESSION['user_id']);
+        return $imagePath ? URLROOT .'/'.$imagePath : URLROOT . '/images/default.jpg';
+    }
+
+    public function uploadProfileImage() {
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) {
+    $targetDir = "uploads/ProfilePictures/";
+    $fileName = basename($_FILES["profile_picture"]["name"]);
+    $targetFile = $targetDir . $fileName;
+
+    if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $targetFile)) {
+        $uploadResult = $this->farmerModel->updateProfileImage($_SESSION['user_id'], $targetFile);
+       Redirect('FarmerController/ManageProfile');
+        // Update user's profile picture in the database here
+    } else {
+        echo "Error uploading file.";
+    }
+}
+    }
+
+
+    public function AddReview($farmworker_id) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $new = [
+                'review_text' => trim($_POST['review_text']),
+                'rating' => (int) $_POST['rating'],
+                'worker_id' => $farmworker_id,
+                'farmer_id' => $_SESSION['user_id'],
+                'reviewText_err' => '',
+                'rating_err' => ''
+            ];
+    
+            // Validation
+            if (empty($new['review_text'])) {
+                $new['reviewText_err'] = 'Please enter a review';
+            }
+            if ($new['rating'] < 1 || $new['rating'] > 5) {
+                $new['rating_err'] = 'Please select a rating between 1 and 5';
+            }
+
+            var_dump($new);
+    
+            // If no errors, add the review
+            if (empty($new['reviewText_err']) && empty($new['rating_err'])) {
+                if ($this->farmerModel->AddReview($new)) {
+                    Redirect('FarmerController/WorkerProfile/' . $farmworker_id);
+                } else {
+                    die('Something went wrong while saving the review.');
+                }
+            } else {
+                // Reload the form with errors
+                $this->view('Farmer/WorkerProfile', $new);
+            }
+        } else {
+            $new = [];
+            $this->view('Farmer/WorkerProfile', $new);
+        }
+    }
+    
+
+    
     public function ViewCart() {
         $data = [];
         $this->View('Farmer/ViewCart', $data);

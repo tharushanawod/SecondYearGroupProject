@@ -15,14 +15,13 @@ class Farmer {
     }
 
     public function AddProduct($data) {
-        $this->db->query('INSERT INTO products (type, price, quantity, media, expiry_date, userid) 
-        VALUES(:type, :price, :quantity, :media, :expiry_date, :userid)');
-        $this->db->bind(':type', $data['type']);
-        $this->db->bind(':price', $data['price']);
+        $this->db->query('INSERT INTO corn_products (starting_price,quantity, media, closing_date, user_id) 
+        VALUES(:starting_price,:quantity, :media, :closing_date, :user_id)');
+        $this->db->bind(':starting_price', $data['price']);
         $this->db->bind(':quantity', $data['quantity']);
         $this->db->bind(':media', $data['media']);
-        $this->db->bind(':expiry_date', $data['expiry_date']); 
-        $this->db->bind(':userid', $data['userid']);
+        $this->db->bind(':closing_date', $data['closing_date']); 
+        $this->db->bind(':user_id', $data['user_id']);
     
         if($this->db->execute()){
             return true;
@@ -32,7 +31,7 @@ class Farmer {
     }
 
     public function getProducts($id){
-        $this->db->query('SELECT * FROM products WHERE productid = :id');
+        $this->db->query('SELECT * FROM corn_products WHERE product_id = :id');
         $this->db->bind(':id', $id);
         $result = $this->db->single();
         return $result;
@@ -94,13 +93,13 @@ class Farmer {
     }
 
     public function getProductsByFarmerId($farmerId) {
-        $this->db->query('SELECT * FROM products WHERE userid = :userid');
+        $this->db->query('SELECT * FROM corn_products WHERE user_id = :userid');
         $this->db->bind(':userid', $farmerId);
         return $this->db->resultSet(); // Fetch all products
     }
 
     public function deleteProduct($id){
-        $this->db->query('DELETE FROM products WHERE productid = :id');
+        $this->db->query('DELETE FROM corn_products WHERE product_id = :id');
         $this->db->bind(':id', $id);
 
         if($this->db->execute()){
@@ -109,9 +108,130 @@ class Farmer {
             return false;
         }
     }
+
+    public function getFarmworkers() {
+   
+           
+
+            // Query the database to fetch all farmworkers
+            $this->db->query(' SELECT *
+                                FROM users
+                                INNER JOIN farmworkers ON users.user_id = farmworkers.user_id
+                                INNER JOIN profile_pictures ON farmworkers.user_id = profile_pictures.user_id');
+
+
+            $workers = $this->db->resultSet();
+            return $workers;
+       
+    }
+
+    public function getFarmworkerById($id) {
+        $this->db->query(' SELECT *
+        FROM users
+        INNER JOIN farmworkers ON users.user_id = farmworkers.user_id
+        INNER JOIN profile_pictures ON farmworkers.user_id = profile_pictures.user_id
+        WHERE users.user_id = :id');
+       
+
+        $this->db->bind(':id', $id);
+        $worker = $this->db->single();
+        return $worker;
+    }
+
+
+    public function UpdateProfile($data) {
+        if (!empty($data['password'])) {
+            // Include password in the update query
+            $this->db->query('UPDATE users SET name = :name, email = :email, phone = :phone,  password = :password WHERE user_id = :id');
+            $this->db->bind(':password', $data['password']);
+        } else {
+            // Exclude password from the update query
+            $this->db->query('UPDATE users SET name = :name, email = :email, phone = :phone WHERE user_id = :id');
+        }
+    
+     
+        $this->db->bind(':id', $data['user_id']);
+        $this->db->bind(':name', $data['name']);
+        $this->db->bind(':email', $data['email']);
+        $this->db->bind(':phone', $data['phone']);
+       
+    
+
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+     // Get profile image path by user ID
+     public function getProfileImage($userId) {
+        $this->db->query("SELECT file_path FROM profile_pictures WHERE user_id = :userId");
+        $this->db->bind(':userId', $userId);
+        $row = $this->db->single();
+
+        if($row){
+            return $row->file_path;
+        } else {
+            return false;
+        }
+       
+    }
+
+
+     // Update or Insert profile image path in the database
+    public function updateProfileImage($userId, $imagePath) {
+        // Check if a record already exists for the user
+        $this->db->query("SELECT id FROM profile_pictures WHERE user_id = :userId");
+        $this->db->bind(':userId', $userId);
+        $row = $this->db->single();
+
+        if ($row) {
+            // Update existing record
+            $this->db->query("UPDATE profile_pictures SET file_path = :imagePath WHERE user_id = :userId");
+            $this->db->bind(':imagePath', $imagePath);
+            $this->db->bind(':userId', $userId);
+        } else {
+            // Insert new record
+            $this->db->query("INSERT INTO profile_pictures (user_id, file_path) VALUES (:userId, :imagePath)");
+            $this->db->bind(':userId', $userId);
+            $this->db->bind(':imagePath', $imagePath);
+        }
+
+        return $this->db->execute();
+    }
+
+
+    public function getUserById ($id){
+        $this->db->query('SELECT * FROM users WHERE user_id = :id');
+        $this->db->bind(':id',$id);
+        $row = $this->db->single();
+        return $row;
+    }
+
+    public function AddReview($data) {
+        $this->db->query('INSERT INTO farmer_reviews_worker (review_text, rating, farmer_id, worker_id) VALUES (:review_text, :rating, :farmer_id, :worker_id)');
+        $this->db->bind(':review_text', $data['review_text']);
+        $this->db->bind(':rating', $data['rating']);
+        $this->db->bind(':farmer_id', $data['farmer_id']);
+        $this->db->bind(':worker_id', $data['worker_id']);
+    
+        // Execute and return result
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     
 
     
 }
+
+
+
+
 ?>
 

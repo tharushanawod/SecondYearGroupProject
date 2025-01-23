@@ -1,4 +1,5 @@
 @import url(../components/sidebar.css);
+@import url(../components/NotificationBar.css);
 * {
   font-family: sans-serif;
   margin: 0;
@@ -13,18 +14,23 @@ body {
   background-color: #f4f4f4;
   background-size: cover;
   background-position: center;
+  display: flex;
+  height: 100vh;
 }
 
-.dashboard-container {
-  display: flex;
-}
+
 
 .main-content {
-  margin-left: 270px;
-  padding: 20px;
+  margin-left: 250px;
   flex-grow: 1;
+  background-color: #f6f8fa;
+  padding: 20px;
 }
 
+.main-body{
+  display: flex;
+  flex-direction: column;
+}
 .main-content-header h1 {
   font-size: 45px;
   font-weight: bold;
@@ -261,4 +267,32 @@ table tbody tr:hover {
     1.02
   ); /* Optional: Slightly scale the row for a nice effect */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for more emphasis */
+}
+
+
+@media (max-width:1200px) {
+  .cardBox {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+}
+}
+
+@media (max-width:1024px) {
+  .details {
+    grid-template-columns: repeat(1, 1fr); /* 2 columns */
+}
+}
+
+@media (max-width: 768px) {
+
+  h1{
+    font-size: 30px;
+  }
+
+  .cardBox {
+    grid-template-columns: repeat(1, 1fr); /* 2 columns */
+}
+  .main-content {
+    margin-left: 110px;
+  }
+  
 }

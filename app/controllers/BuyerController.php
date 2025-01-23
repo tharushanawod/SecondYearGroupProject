@@ -103,7 +103,8 @@ class BuyerController extends Controller {
                 $result = $this->BuyerModel->UpdateProfile($data);
               
                 if($result){
-                    Redirect('BuyerController/ManageProfile');
+                    // Redirect('BuyerController/ManageProfile');
+                    Redirect('LandingController/logout');
                 }
             }else{
                 $this->view('Buyer/ManageProfile',$data);
@@ -142,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
 
     if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $targetFile)) {
         $uploadResult = $this->BuyerModel->updateProfileImage($_SESSION['user_id'], $targetFile);
-        echo "File uploaded successfully.";
+       Redirect('BuyerController/ManageProfile');
         // Update user's profile picture in the database here
     } else {
         echo "Error uploading file.";
