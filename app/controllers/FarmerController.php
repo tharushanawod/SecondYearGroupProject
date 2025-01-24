@@ -146,7 +146,7 @@ class FarmerController extends Controller {
                     $data['type_err'] = 'Invalid file type';
                 }
             } else {
-                $data['media'] = $products->media; // Keep existing media if no new file is uploaded
+                $data['media'] = $products->media; // Keep existing media if no data file is uploaded
             }
 
             ini_set('display_errors', 1);
@@ -381,7 +381,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
 
     public function AddReview($farmworker_id) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $new = [
+            $data = [
                 'review_text' => trim($_POST['review_text']),
                 'rating' => (int) $_POST['rating'],
                 'worker_id' => $farmworker_id,
@@ -391,33 +391,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
             ];
     
             // Validation
-            if (empty($new['review_text'])) {
-                $new['reviewText_err'] = 'Please enter a review';
+            if (empty($data['review_text'])) {
+                $data['reviewText_err'] = 'Please enter a review';
             }
-            if ($new['rating'] < 1 || $new['rating'] > 5) {
-                $new['rating_err'] = 'Please select a rating between 1 and 5';
+            if ($data['rating'] < 1 || $data['rating'] > 5) {
+                $data['rating_err'] = 'Please select a rating between 1 and 5';
             }
-
-            var_dump($new);
+            
     
             // If no errors, add the review
-            if (empty($new['reviewText_err']) && empty($new['rating_err'])) {
-                if ($this->farmerModel->AddReview($new)) {
+            if (empty($data['reviewText_err']) && empty($data['rating_err'])) {
+                if ($this->farmerModel->AddReview($data)) {
                     Redirect('FarmerController/WorkerProfile/' . $farmworker_id);
                 } else {
                     die('Something went wrong while saving the review.');
                 }
             } else {
                 // Reload the form with errors
-                $this->view('Farmer/WorkerProfile', $new);
+                $this->view('Farmer/WorkerProfile', $data);
             }
         } else {
-            $new = [];
-            $this->view('Farmer/WorkerProfile', $new);
+            $data = [];
+            $this->view('Farmer/WorkerProfile', $data);
         }
     }
     
-
+    public function fetchReviews($id) {
+        $reviews = $this->farmerModel->fetchReviews($id);
+        header('Content-Type: application/json');
+        echo json_encode($reviews);
+       
+    }
     
     public function ViewCart() {
         $data = [];

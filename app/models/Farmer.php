@@ -126,16 +126,29 @@ class Farmer {
     }
 
     public function getFarmworkerById($id) {
-        $this->db->query(' SELECT *
-        FROM users
-        INNER JOIN farmworkers ON users.user_id = farmworkers.user_id
-        INNER JOIN profile_pictures ON farmworkers.user_id = profile_pictures.user_id
-        WHERE users.user_id = :id');
+        $this->db->query('
+        SELECT 
+    users.*, 
+    farmworkers.*, 
+    profile_pictures.file_path, 
+    AVG(farmer_reviews_worker.rating) AS average_rating
+FROM users
+INNER JOIN farmworkers ON users.user_id = farmworkers.user_id
+INNER JOIN profile_pictures ON farmworkers.user_id = profile_pictures.user_id
+LEFT JOIN farmer_reviews_worker ON users.user_id = farmer_reviews_worker.worker_id
+WHERE users.user_id = :id
+GROUP BY 
+    users.user_id, 
+    farmworkers.user_id, 
+    profile_pictures.user_id, 
+    profile_pictures.file_path;
+    ');
+    $this->db->bind(':id', $id);
+    $worker = $this->db->single();
+    return $worker;
+    
        
 
-        $this->db->bind(':id', $id);
-        $worker = $this->db->single();
-        return $worker;
     }
 
 
@@ -223,6 +236,23 @@ class Farmer {
         } else {
             return false;
         }
+    }
+
+
+    //function to get all reviews
+    public function fetchReviews($id){
+
+        $this->db->query('
+        SELECT farmer_reviews_worker.*, users.name,profile_pictures.file_path
+        FROM farmer_reviews_worker
+        INNER JOIN users  ON farmer_reviews_worker.farmer_id = users.user_id
+        INNER JOIN profile_pictures  ON users.user_id = profile_pictures.user_id
+        WHERE farmer_reviews_worker.worker_id = :id
+    ');
+       
+        $this->db->bind(':id', $id);
+        $results = $this->db->resultSet();
+        return $results;
     }
     
     
