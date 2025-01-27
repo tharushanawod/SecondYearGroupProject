@@ -13,7 +13,8 @@
     <div class="profile-card">
         <div class="profile-header">
             <div class="profile-image">
-                <img src="<?php echo URLROOT . '/' . $data->file_path;?>" alt="Profile Image">
+                <img src=" <?php echo empty($data->file_path) ? URLROOT . '/images/profile.jpg' : URLROOT . '/' . htmlspecialchars($data->file_path);?> " alt="Profile Image">
+
             </div>
             <div class="profile-info">
                 <h1><?php echo $data->name;?></h1>

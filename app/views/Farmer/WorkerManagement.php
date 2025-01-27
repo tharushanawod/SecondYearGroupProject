@@ -15,42 +15,57 @@
         
         <div class="filters">
             <div class="input-group">
-                <input type="text" id="search" placeholder="Search by name or skills...">
+            <input type="text" id="search" placeholder="Search by name or skills...">
             </div>
             <div class="input-group">
-                <select id="location-filter">
-                    <option value="">All locations</option>
-                    <option value="California">California</option>
-                    <option value="Oregon">Oregon</option>
-                    <option value="Texas">Texas</option>
-                </select>
+            <select id="location-filter">
+                <option value="">All locations</option>
+                <option value="California">California</option>
+                <option value="Oregon">Oregon</option>
+                <option value="Texas">Texas</option>
+            </select>
             </div>
             <div class="input-group">
-                <select id="experience-filter">
-                    <option value="">All experience</option>
-                    <option value="3+ years">3+ years</option>
-                    <option value="5+ years">5+ years</option>
-                    <option value="7+ years">7+ years</option>
-                </select>
+            <select id="experience-filter">
+                <option value="">All experience</option>
+                <option value="3+ years">3+ years</option>
+                <option value="5+ years">5+ years</option>
+                <option value="7+ years">7+ years</option>
+            </select>
             </div>
+            <div class="input-group">
+            <a href="<?php echo URLROOT . '/FarmerController/PendingRequests'; ?>">
+            <button class="pending-requests-button">Pending Requests</button>
+            </a>
         </div>
+        </div>
+        
       
         <div class="worker-grid" id="worker-grid">
+      
     <?php foreach ($data as $worker): ?>
         <div class="worker-card">
-            <a href="<?php echo URLROOT . '/FarmerController/WorkerProfile/' . $worker->user_id; ?>">
+        <a href="<?php echo URLROOT . '/FarmerController/WorkerProfile/' . $worker->user_id; ?>">
             <div class="worker-photo-container">
-                <img src="<?php echo URLROOT . '/' . htmlspecialchars($worker->file_path); ?>" 
-                     alt="<?php echo htmlspecialchars($worker->name); ?>" 
-                     class="worker-photo">
-                <div class="overlay">View Profile</div>
-            </div>
-            </a>
+           
+    <img src="<?php 
+        // Check if file_path is empty or NULL, and provide the appropriate image
+        echo empty($worker->file_path) ? URLROOT . '/images/profile.jpg' : URLROOT . '/' . htmlspecialchars($worker->file_path);
+    ?>" 
+    alt="<?php echo htmlspecialchars($worker->name); ?>" 
+    class="worker-photo">
+    <div class="overlay">View Profile</div>
+</div>
+
+</a>     
            
             <h2 class="worker-name"><?php echo htmlspecialchars($worker->name); ?></h2>
             <div class="location-experience">
-                <span>📍 <?php echo htmlspecialchars($worker->working_area); ?></span>
-               
+                <span>Prefered Area 📍<?php echo htmlspecialchars($worker->working_area); ?></span>
+                
+            </div>
+            <div class="rate">
+            <span>Hourly Rate 💵 <?php echo htmlspecialchars($worker->hourly_rate)?></span>
             </div>
             <div class="skills-list">
                 <?php
@@ -64,7 +79,8 @@
             <div class="location-experience">
                 <span><?php echo htmlspecialchars($worker->availability); ?></span>
             </div>
-            <button class="hire-button" onclick="hireWorker(<?php echo $worker->id; ?>)">Hire Now</button>
+            <a href="<?php echo URLROOT.'/FarmerController/HireWorker/'.$worker->user_id ;?>"><button class="hire-button" onclick="hireWorker(<?php echo $worker->id; ?>)">Hire Now</button></a>
+            
         </div>
     <?php endforeach; ?>
 </div>

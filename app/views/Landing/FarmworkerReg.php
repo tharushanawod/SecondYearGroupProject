@@ -93,6 +93,27 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="skills">Skills</label>
+                    <div id="skills">
+                        <label><input type="checkbox" name="skills[]" value="Operating Machinery"> Operating Machinery</label><br>
+                        <label><input type="checkbox" name="skills[]" value="Maintaining Crops"> Maintaining Crops</label><br>
+                        <label><input type="checkbox" name="skills[]" value="Harvesting"> Harvesting</label><br>
+                        <label><input type="checkbox" name="skills[]" value="Planting"> Planting</label>
+                    </div>
+                    <span class="form-invalid">
+                        <?php echo $data['skills_err']; ?>
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label for="hourly_rate">Hourly Rate</label>
+                    <input type="number" id="hourly_rate" name="hourly_rate" placeholder="Enter hourly rate" value="<?php echo $data['hourly_rate']; ?>"  min="0">
+                    <span class="form-invalid">
+                        <?php echo $data['hourly_rate_err']; ?>
+                    </span>
+                </div>
+
+                <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" placeholder="Enter At least 8 characters" minlength="8" value="<?php echo $data['password'];?>">
                     <span class="form-invalid">

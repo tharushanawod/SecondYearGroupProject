@@ -32,14 +32,14 @@ class Users {
             $this->db->beginTransaction();
         
             // Insert into the users table
-            $this->db->query('INSERT INTO users (name, email, phone, otp_status,user_status, user_type, password) 
-                              VALUES (:name, :email, :phone, :otp_status,:user_status, :user_type, :password)');
+            $this->db->query('INSERT INTO users (name, email, phone, otp_status, user_status, user_type, password) 
+                              VALUES (:name, :email, :phone, :otp_status, :user_status, :user_type, :password)');
             $this->db->bind(':name', $data['name']);
             $this->db->bind(':email', $data['email']);
             $this->db->bind(':phone', $data['phone']);
             $this->db->bind(':user_type', $data['user_type']);
             $this->db->bind(':password', $data['password']);
-            $this->db->bind(':user_status','pending');
+            $this->db->bind(':user_status', 'pending');
             $this->db->bind(':otp_status', 'unverified'); // Default status for users
             $this->db->execute();
         
@@ -65,9 +65,12 @@ class Users {
                     break;
     
                 case 'farmworker':
-                    $this->db->query('INSERT INTO farmworkers (user_id, working_area) VALUES (:user_id, :working_area)');
+                    $this->db->query('INSERT INTO farmworkers (user_id, working_area, skills, hourly_rate) 
+                                      VALUES (:user_id, :working_area, :skills, :hourly_rate)');
                     $this->db->bind(':user_id', $userId);
                     $this->db->bind(':working_area', $data['working_area']);
+                    $this->db->bind(':skills', implode(',', $data['skills']));
+                    $this->db->bind(':hourly_rate', $data['hourly_rate']);
                     $this->db->execute();  // Execute the insert query
                     break;
     
@@ -272,8 +275,8 @@ class Users {
         }
        
     }
-
     
+
 
 }
 
