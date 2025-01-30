@@ -27,6 +27,7 @@
                 <h2>Categories</h2>
                 <select onchange="location = this.value;">
                     <option value=""></option>
+                    <option value="<?php echo URLROOT;?>/SupplierController/shop">All Products</option>
                     <option value="<?php echo URLROOT;?>/SupplierController/fertilizer">Fertilizer (<?php echo isset($data['fertilizerProducts']) ? count($data['fertilizerProducts']) : 0; ?>)</option>
                     <option value="<?php echo URLROOT;?>/SupplierController/seeds">Seeds (<?php echo isset($data['seedsProducts']) ? count($data['seedsProducts']) : 0; ?>)</option>
                     <option value="<?php echo URLROOT;?>/SupplierController/pestControl">Pest Controls (<?php echo isset($data['products']) ? count($data['products']) : 0; ?>)</option>
@@ -37,7 +38,7 @@
             <?php foreach ($data['products'] as $product): ?>
             <div class="product">
                 <img src="<?php echo URLROOT;?>/uploads/<?php echo $product->image; ?>" alt="<?php echo $product->product_name; ?>">
-                <p class="category"><?php echo $product->category; ?></p>
+                <p class="category"><?php echo $product->category_name; ?></p>
                 <h3><?php echo $product->product_name; ?></h3>
                 <p class="price">LKR <?php echo $product->price; ?></p>
                 <!-- <form action="<?php echo URLROOT; ?>/SupplierController/viewCart/<?php echo $product->id; ?>" method="get">
