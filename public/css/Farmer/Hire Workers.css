@@ -7,19 +7,15 @@
 }
 
 body {
-
+  background-color: #d2edda;
   background-size: cover;
   background-position: center;
-  background-color: white;
-  
 }
 
-.main-container{
-  margin-left: 250px;
-}
 .sub-header {
   text-align: center;
   padding: 50px 20px;
+  background: linear-gradient(to bottom, #e0f7fa, #b2ebf2);
 }
 
 .sub-header h2 {

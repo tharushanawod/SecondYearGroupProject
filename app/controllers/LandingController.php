@@ -311,7 +311,6 @@ class LandingController extends Controller{
         $_SESSION['user_email'] = $user->email;
         $_SESSION['user_name'] = $user->name;
         $_SESSION['user_role'] = $user->user_type;
-        $_SESSION['profile_picture'] = $user->file_path;
          // Check if the user is an admin
     if ($user->user_type == 'admin') {
         // Redirect to the admin dashboard if the user is an admin
@@ -353,23 +352,130 @@ class LandingController extends Controller{
         }
     }
 
-    public function getProfileImage($userid) {
-        $imagePath = $this->userModel->getProfileImage($userid);
+    public function RegisterManufacturer()
+    {
+
+        //validate data
+        $_POST = filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING);
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST')
+        
+        {
+            $data = [
+                'name' => trim($_POST['name']),
+                'email' => trim($_POST['email']),
+                'phone' => trim($_POST['phone']),
+                'document' => '',
+                'password' => trim($_POST['password']),
+                'confirm_password' => trim($_POST['confirm_password']),
+                'name_err' => '',
+                'email_err' => '',
+                'phone_err' => '',
+                'document_err' => '',
+                'password_err' => '',
+                'confirm_password_err' => ''
+            ];
+
+            if(empty($data['name']))
+            {
+                $data['name_err'] = 'Please enter name';
+            }
+
+            if(empty($data['email']))
+            {
+                $data['email_err'] = 'Please enter email';
+            }
+            else
+            {
+                if($this->userModel->finduserbyemail($data['email']))
+                {
+                    $data['email_err'] = 'Email already taken';
+                }
+            }
+
+            if(empty($data['phone']))
+            {
+                $data['phone_err'] = 'Please enter phone number';
+            }
+
+            if (isset($_FILES['document']) && $_FILES['document']['error'] == 0) {
+                $targetDir = "uploads/Manufacturer/Documents/"; // Folder to store uploads
+                $fileName = basename($_FILES['document']['name']);
+                $targetFilePath = $targetDir . $fileName;
     
-        if (file_exists($imagePath)) {
-            header("Content-Type: image/jpeg");
-            readfile($imagePath);
-            echo URLROOT.'/'.$imagePath;
-        } else {
-            echo "Image not found at: $imagePath";
+                $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+                $allowedTypes = ['jpg', 'jpeg', 'png', 'pdf'];
+
+    
+                if (in_array(strtolower($fileType), $allowedTypes)) {
+                    // Move file to server
+                    if (move_uploaded_file($_FILES['document']['tmp_name'], $targetFilePath)) {
+                        $data['document'] = $targetFilePath;
+                    } else {
+                        $data['document_err'] = 'Failed to upload the file';
+                    }
+                } else {
+                    $data['document_err'] = 'Invalid file type';
+                }
+            } else {
+                $data['document_err'] = 'File Not selected';
+            }
+          
+
+            if(empty($data['password']))
+            {
+                $data['password_err'] = 'Please enter password';
+            }
+
+            if(empty($data['confirm_password']))
+            {
+                $data['confirm_password_err'] = 'Please eneter confirm password';
+            }
+            else{
+                if($data['password'] != $data['confirm_password'])
+                {
+                    $data['confirm_password_err'] = 'Passwords do not match';
+                }
+            }
+
+            if(empty($data['name_err']) && empty($data['email_err']) && empty($data['phone_err']) && empty($data['document_err']) && empty($data['password_err']) && empty($data['confirm_password_err']))
+            { 
+                $data['password'] = password_hash($data['password'],PASSWORD_DEFAULT);
+               //resgister user
+                if($this->userModel->RegisterManufacturer($data))
+                {
+                     Redirect('LandingController/Login');
+                     exit;
+                }
+                else
+                {
+                     die('Something went wrong');
+                }
+            }
+            else
+            {
+                $this->View('Landing/RegisterManufacturer',$data);
+            }
         }
-
-       
+        else
+        {
+            $data = [
+                'name' => '',
+                'email' => '',
+                'phone' => '',
+                'document' => '',
+                'password' => '',
+                'confirm_password' => '',
+                'name_err' => '',
+                'email_err' => '', 
+                'document_err' => '',
+                'phone_err' => '',
+                'password_err' => '',
+                'confirm_password_err' => ''
+            ];
+            $this->View('Landing/RegisterManufacturer',$data);
+        }
     }
-    
-    
-    
-
 
 }
 

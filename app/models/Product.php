@@ -62,10 +62,11 @@ class Product {
         return $this->db->resultSet();
     }
 
-    public function getOrderById($id) {
-        $this->db->query('SELECT * FROM orders WHERE id = :id');
-        $this->db->bind(':id', $id);
-        return $this->db->single();
+    public function getOrdersBySupplierId($supplierId) {
+        $this->db->query('SELECT * FROM orders WHERE supplier_id = :supplier_id');
+        $this->db->bind(':supplier_id', $supplierId);
+        $results = $this->db->resultSet();
+        return $results;
     }
 
     public function updateOrder($data) {

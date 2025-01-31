@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Payment</title>
   <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Buyer/payment.css">
-  <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet"/>
 </head>
 <body>
 <?php require APPROOT . '/views/inc/sidebar.php'; ?>

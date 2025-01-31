@@ -1,187 +1,177 @@
 @import url(../components/sidebar.css);
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', system-ui, sans-serif;
-}
+    font-family: sans-serif;
+  }
 
 body {
-    background-color: #f5f5f5;
-   
-}
-
-.container {
-    margin-left: 250px;
-    padding: 1rem;
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
     
-}
+  }
+
+  .maincontainer {
+   text-align: center;
+   margin-left: 300px;
+ 
+  }
 
 
 h1 {
-    color: #1a1a1a;
-    margin-bottom: 2rem;
-    font-size: 2rem;
+    text-align: center;
+    font-size: 42px;
+    margin-bottom: 20px;
+    color: black;;
 }
 
-.filters {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    margin-bottom: 2rem;
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: 1fr;
-}
-
-@media (min-width: 768px) {
-    .filters {
-        grid-template-columns: 2fr 1fr 1fr;
-    }
-}
-
-.input-group {
-    position: relative;
-}
-
-.input-group input,
-.input-group select {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 1rem;
-    outline: none;
-    transition: border-color 0.2s;
-}
-
-.input-group input:focus,
-.input-group select:focus {
-    border-color: #2563eb;
-}
-
-.worker-grid {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+.worker-container {
+   
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    background-color: #f4f4f4;
+  
 }
 
 .worker-card {
-    background: white;
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    transition: transform 0.2s;
+    background-color: #eafaf6;
+    padding: 15px;
+    border-radius: 10px;
+    width: 300px;
+    box-shadow: 0px 4px 8px rgba(116, 114, 114, 0.1);
+    text-align: left;
     display: flex;
     flex-direction: column;
-
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 30px;
 }
 
-.worker-card:hover {
-    transform: translateY(-4px);
-}
-
-/* Container styling for the photo and overlay */
-.worker-photo-container {
-    position: relative;
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    overflow: hidden; /* Ensures the overlay doesn't go outside the circle */
-    margin: 0 auto 1rem; /* Center and spacing */
-  }
-  
-  /* Image styling */
-  .worker-photo {
+.worker-card p {
+    margin: 5px 0;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-    transition: filter 0.3s ease; /* Smooth blur effect */
-  }
-  
-  /* Overlay styling */
-  .worker-photo-container .overlay {
-    position: absolute;
+    text-align: left;
+    margin-top: 20px;
+}
+
+.worker-card h3 {
+    text-align: center;
+    margin: 10px 0;
+}
+
+.worker-img {
+    width: 100px; 
+    height: 100px; 
+    margin: 0 auto;
+    display: block;
+    overflow: hidden; 
+}
+
+.worker-img img {
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    border-radius: 50%; 
+}
+
+.hire-btn {
+    margin: 5px;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width:80px; 
+    margin-top: 20px;
+    background-color: #1ac020;
+    color: white;    
+}
+
+.rate-btn {
+    margin: 5px;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer; 
+    margin-top: 20px;
+    background-color: #097c3e;
+    color: #f9f9f9;    
+}
+
+.modal {
+    display: none;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
-    color: white;
-    display: flex;
+    background: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
-    opacity: 0; /* Hidden by default */
-    font-size: 1rem; /* Adjust text size */
-    font-weight: bold;
-    border-radius: 50%; /* Match the circular shape */
-    transition: opacity 0.3s ease; /* Smooth fade-in effect */
-  }
-  
-  /* Hover effects */
-  .worker-photo-container:hover .worker-photo {
-    filter: blur(5px); /* Blur effect */
-  }
-  
-  .worker-photo-container:hover .overlay {
-    opacity: 1; /* Show the overlay */
-  }
-  
+}
 
-.worker-name {
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
     text-align: center;
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.worker-info {
-    text-align: center;
-    color: #666;
-    margin-bottom: 1rem;
+.modal-content h3 {
+    margin-bottom: 15px;
+    color: #333;
 }
 
-.skills-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin: 1rem 0;
-    justify-content: center;
+.modal-content label {
+    display: block;
+    margin: 10px 0 5px;
+    text-align: left;
 }
 
-.skill-tag {
-    background: #c7f9e5;
-    color: #2e8f68;
-    padding: 0.25rem 0.75rem;
-    border-radius: 999px;
-    font-size: 0.875rem;
+.modal-content input[type="text"],
+.modal-content textarea {
+    width: 250px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 15px;
 }
 
-.hire-button {
-    width: 100%;
-    background: #2e8f68;
-    color: white;
+.modal-content button {
+    padding: 10px 15px;
     border: none;
-    padding: 0.75rem;
-    border-radius: 6px;
-    font-size: 1rem;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.2s;
-    margin-top: auto;
-
+    background-color: #4CAF50;
+    color: white;
+    transition: background-color 0.3s;
 }
 
-.hire-button:hover {
-    background: #1c5840;
+.modal-content button:hover {
+    background-color: #45a049;
 }
 
-.location-experience {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    color: #666;
-    margin-bottom: 1rem;
+.close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    color: #333;
+}
+
+.star-rating {
+    margin: 10px 0;
+}
+
+.star-rating span {
+    font-size: 24px;
+    cursor: pointer;
+    color: #FFD700;
 }

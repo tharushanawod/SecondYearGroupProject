@@ -2,11 +2,7 @@
 
 class SupplierController extends Controller {
     private $Product;
-<<<<<<< HEAD
-    private $Supplier;
-=======
     private $supplierModel;
->>>>>>> 10abb4135cd8f1e16480b199826aaced30ef8ac7
 
     public function __construct() {
         if (!$this->isloggedin()) {
@@ -17,11 +13,7 @@ class SupplierController extends Controller {
             Redirect('LandingController/login');
         }
         $this->Product = $this->model('Product');
-<<<<<<< HEAD
-        $this->Supplier = $this->model('Supplier');
-=======
         $this->supplierModel = $this->model('Supplier');
->>>>>>> 10abb4135cd8f1e16480b199826aaced30ef8ac7
     }
 
     public function isloggedin() {
@@ -204,7 +196,13 @@ class SupplierController extends Controller {
     }
 
     public function viewOrders() {
-        $data = [];
+        $supplierId = $_SESSION['user_id']; // Assuming supplier ID is stored in session
+        $orders = $this->supplierModel->getOrdersBySupplierId($supplierId);
+
+        // Debugging: Log the fetched orders
+        error_log(print_r($orders, true));
+
+        $data = ['orders' => $orders];
         $this->view('Ingredient Supplier/Orders', $data);
     }
 
@@ -213,100 +211,9 @@ class SupplierController extends Controller {
         $this->view('Ingredient Supplier/RequestHelp', $data);
     }
 
-<<<<<<< HEAD
-  
-    public function ManageProfile()
-    {
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){ 
-            $_POST = filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING);
-            $data = [
-                'user_id' => $_SESSION['user_id'],
-                'name' => trim($_POST['name']),
-                'phone' => trim($_POST['phone']),
-                'email' => trim($_POST['email']),
-                'password' => trim($_POST['password']),
-                'name_err' => '',
-                'phone_err' => '',
-                'address_err' => '',
-                'email_err' => ''
-            ];
-
-            if(empty($data['name'])){
-                $data['name_err'] = 'Please input a name';
-            }
-
-            if(empty($data['phone'])){
-                $data['contact_err'] = 'Please input a contact number';
-            }
-           
-
-            if(empty($data['email'])){
-                $data['email_err'] = 'Please input an email';
-            }
-
-           
-            
-
-            if(empty($data['name_err']) && empty($data['phone_err'])  && empty($data['email_err'])){
-                echo 'Profile Updated';
-                if(!empty($data['password'])){
-                    $data['password'] = password_hash($data['password'],PASSWORD_DEFAULT);
-                    }
-                
-                $result = $this->Supplier->UpdateProfile($data);
-              
-                if($result){
-                    // Redirect('BuyerController/ManageProfile');
-                    Redirect('LandingController/logout');
-                }
-            }else{
-                $this->view('Ingredient Supplier/ManageProfile',$data);
-            }
-        
-            }
-            else{
-                $user=$this->Supplier->getUserById($_SESSION['user_id']);
-                $data = [
-                    'name' => $user->name,
-                    'phone' => $user->phone,
-                    'email' => $user->email,
-                    'password' => '',
-                    'name_err' => '',
-                    'phone_err' => '',
-                    'email_err' => '',
-                    'password_err' => ''
-                ];
-                $this->view('Ingredient Supplier/ManageProfile',$data);
-                
-            }
-    }
-
-    // Get profile image URL
-    public function getProfileImage($user_id) {
-        $imagePath = $this->Supplier->getProfileImage($_SESSION['user_id']);
-        return $imagePath ? URLROOT .'/'.$imagePath : URLROOT . '/images/default.jpg';
-    }
-
-    public function uploadProfileImage() {
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) {
-    $targetDir = "uploads/ProfilePictures/";
-    $fileName = basename($_FILES["profile_picture"]["name"]);
-    $targetFile = $targetDir . $fileName;
-
-    if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $targetFile)) {
-        $uploadResult = $this->Supplier->updateProfileImage($_SESSION['user_id'], $targetFile);
-       Redirect('SupplierController/ManageProfile');
-        // Update user's profile picture in the database here
-    } else {
-        echo "Error uploading file.";
-    }
-}
-=======
     public function manageProfile() {
         $data = [];
         $this->view('Ingredient Supplier/ManageProfile', $data);
->>>>>>> 10abb4135cd8f1e16480b199826aaced30ef8ac7
     }
 }
 ?>

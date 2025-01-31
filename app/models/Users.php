@@ -145,15 +145,7 @@ class Users {
 
     //login user
     public function login($email,$password){
-        $this->db->query('
-        SELECT users.*, profile_pictures.file_path 
-        FROM users 
-        LEFT JOIN profile_pictures 
-        ON 
-            users.user_id = profile_pictures.user_id
-        WHERE 
-            users.email = :email
-        ');
+        $this->db->query('SELECT * FROM users WHERE email = :email');
         $this->db->bind(':email',$email);
         $row = $this->db->single();
         $hashed_password = $row->password;
@@ -259,20 +251,7 @@ class Users {
             return false;
         }
     }
-
-    public function getProfileImage($userId) {
-        $this->db->query("SELECT file_path FROM profile_pictures WHERE user_id = :userId");
-        $this->db->bind(':userId', $userId);
-        $row = $this->db->single();
-
-        if($row){
-            return $row->file_path;
-        } else {
-            return false;
-        }
-       
-    }
-
+    
     
 
 }
