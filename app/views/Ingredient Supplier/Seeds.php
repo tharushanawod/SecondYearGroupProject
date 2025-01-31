@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seeds</title>
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Ingredient Supplier/shop.css">
+    <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet" />
 </head>
 <body>
 <?php require APPROOT . '/views/inc/sidebar.php'; ?>   
@@ -26,7 +27,6 @@
                 <h2>Categories</h2>
                 <select onchange="location = this.value;">
                     <option value=""></option>
-                    <option value="<?php echo URLROOT;?>/SupplierController/shop">All Products</option>
                     <option value="<?php echo URLROOT;?>/SupplierController/fertilizer">Fertilizer (<?php echo isset($data['fertilizerProducts']) ? count($data['fertilizerProducts']) : 0; ?>)</option>
                     <option value="<?php echo URLROOT;?>/SupplierController/seeds">Seeds (<?php echo isset($data['products']) ? count($data['products']) : 0; ?>)</option>
                     <option value="<?php echo URLROOT;?>/SupplierController/pestControl">Pest Controls (<?php echo isset($data['pestControlProducts']) ? count($data['pestControlProducts']) : 0; ?>)</option>
@@ -37,10 +37,10 @@
             <?php foreach ($data['products'] as $product): ?>
             <div class="product">
                 <img src="<?php echo URLROOT;?>/uploads/<?php echo $product->image; ?>" alt="<?php echo $product->product_name; ?>">
-                <p class="category"><?php echo $product->category_name; ?></p>
+                <p class="category"><?php echo $product->category; ?></p>
                 <h3><?php echo $product->product_name; ?></h3>
                 <p class="price">LKR <?php echo $product->price; ?></p>
-                <!-- <form action="<?php echo URLROOT; ?>/SupplierController/viewCart/<?php echo $product->id; ?>" method="get">
+                <!-- <form action="<?php echo URLROOT; ?>/SupplierController/viewCart/<?php echo $product->product_id; ?>" method="get">
                     <button type="submit" class="add-to-cart-button">Add to Cart</button>
                 </form>                  -->
             </div>

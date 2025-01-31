@@ -5,51 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orders Page</title>
     <link rel="stylesheet" type="text/css" href="<?php echo URLROOT;?>/public/css/ingredient supplier/Orders.css">
+    <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet" />
 </head>
 <body>
 <?php require APPROOT . '/views/inc/sidebar.php'; ?>
 <div class="container">
 <h1>Orders</h1>
-    <div class="filter-options">
-        <label for="statusFilter">Filter by Status:</label>
-        <select id="statusFilter">
-            <option value="all">All</option>
-            <option value="pending">Pending</option>
-            <option value="accepted">Accepted</option>
-        </select>
-    </div>
-    <table id="ordersTable">
-        <thead>
-            <tr>
-                <th>Order ID</th>
-                <th>Product</th>
-                <th>Customer</th>
-                <th>Price</th>
-                <th>Payment</th>
-                <th>Quantity</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($data['orders'] as $order): ?>
+        <div class="filter-options">
+            <label for="statusFilter">Filter by Status:</label>
+            <select id="statusFilter">
+                <option value="all">All</option>
+                <option value="pending">Pending</option>
+                <option value="accepted">Accepted</option>
+         
+            </select>
+        </div>
+
+       
+        <table id="ordersTable">
+            <thead>
                 <tr>
-                    <td><?php echo $order->id; ?></td>
-                    <td><?php echo $order->product_name; ?></td>
-                    <td><?php echo $order->farmer_id; ?></td>
-                    <td><?php echo $order->price; ?></td>
-                    <td><?php echo $order->payment_status; ?></td>
-                    <td><?php echo $order->quantity; ?></td>
-                    <td><?php echo $order->order_status; ?></td>
-                    <td class="actions">
-                        <button class="accept">Accept</button>
-                        <button class="send-code">Cancel</button>
-                    </td>
+                    <th>Order ID</th>
+                    <th>Product</th>
+                    <th>Customer</th>
+                    <th>Price</th>
+                    <th>Payment</th>
+                    <th>Quantity</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+
+        <!-- Order Details Modal -->
+        <div id="orderDetailsModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Order Details</h2>
+                <p><strong>Customer Name:</strong> <span id="customerName"></span></p>
+                <p><strong>Delivery Address:</strong> <span id="deliveryAddress"></span></p>
+                <p><strong>Product Details:</strong> <span id="productDetails"></span></p>
+                <p><strong>Special Instructions:</strong> <span id="specialInstructions"></span></p>
+
+                <div class="modal-actions">
+                    <button id="acceptOrderBtn">Accept Order</button>
+                    <button id="closeBtn">Close</button>
+                </div>
+            </div>
+        </div>
 </div>
-<script src="<?php echo URLROOT; ?>/public/js/ingredient supplier/Orders.js"></script>
+    
+   
+    
+    <script src="<?php echo URLROOT;?>/js/Ingredient Supplier/Orders.js"></script>    
 </body>
 </html>
