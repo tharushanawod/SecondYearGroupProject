@@ -6,20 +6,19 @@
     <title>Farmworker - Job Requests</title>
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/FarmWorker/JobRequest.css">
     <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet"/>
-   
 </head>
 <body>
 <?php require APPROOT . '/views/inc/sidebar.php'; ?>
     <div class="main-content">
-        <h1>Job Requests</h1>
+        <h1>Do List(Accepted Jobs)</h1>
 
         <table>
             <thead>
             <tr>
                 <th>Profile</th>
                 <th>Farmer Name</th>
-                <th>Request Time</th>
-                <th>Actions</th>
+                <th>Accepted Time</th>
+                <th>Job Descption</th>
             </tr>
             </thead>
             <tbody>
@@ -32,9 +31,9 @@
                 </div>
                 </td>
                 <td class="farmer-name"><?php echo $request->name; ?></td>
-                <td class="request-time"><?php echo $request->created_at; ?></td>
+                <td class="request-time"><?php echo $request->updated_at; ?></td>
                 <td class="action-buttons">
-                    <a href="<?php echo URLROOT.'/WorkerController/ViewRequest/'.$request->job_id; ?>"><button class="btn btn-view">View</button></a>
+                    <a href="<?php echo URLROOT.'/WorkerController/ViewAcceptedJob/'.$request->job_id; ?>"><button class="btn btn-view">Click To View</button></a>
                 
                 </td>
     </tr>

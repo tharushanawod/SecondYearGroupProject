@@ -191,6 +191,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
         }
         
     }
+
+    public function RejectJob($job_id) {
+        $Result= $this->WorkerModel->RejectJob($job_id);
+        
+
+        if($Result){
+            Redirect('WorkerController/JobRequest');
+        }
+        
+    }
+
+    public function DoList(){
+        $data['jobRequests'] = $this->WorkerModel->DoList($_SESSION['user_id']);
+    
+       
+        $this->view('FarmWorker/DoList',$data);
+    }
+
+    public function ViewAcceptedJob($job_id) {
+        $requests =  $this->WorkerModel->ViewRequest($job_id);
+        $data= $requests[0];
+        $this->view('FarmWorker/ViewAcceptedJob', $data);
+    }
+
+    public function getAcceptedJobCount(){
+        $count = $this->WorkerModel->getAcceptedJobCount($_SESSION['user_id']);
+        return $count;
+    }
+
+    public function getPendingJobCount(){
+        $count = $this->WorkerModel->getPendingJobCount($_SESSION['user_id']);
+        return $count;
+    }
  
  
 

@@ -180,6 +180,68 @@ class Worker {
             die("SQL Error: " . $e->getMessage()); // Stop execution & show error
         }
     }
+
+    public function RejectJob($job_id) {
+        try {
+           
+            // Update the job_requests table
+            $this->db->query('UPDATE job_requests SET status = "Rejected" WHERE job_id = :job_id');
+            $this->db->bind(':job_id', $job_id);
+           
+            $this->db->execute();
+            return true;
+    
+        } catch (Exception $e) {
+            die("SQL Error: " . $e->getMessage()); // Stop execution & show error
+        }
+    }
+
+    public function DoList($userId){
+        try {
+            $this->db->query('SELECT users.name, profile_pictures.file_path, job_requests.updated_at,job_requests.job_id
+                FROM job_requests
+                INNER JOIN users ON job_requests.farmer_id = users.user_id
+                LEFT JOIN profile_pictures ON users.user_id = profile_pictures.user_id
+                WHERE job_requests.worker_id = :userId AND job_requests.status = "Confirmed"');
+    
+            $this->db->bind(':userId', $userId);
+            
+            $result = $this->db->resultSet();
+            return $result;
+        } catch (Exception $e) {
+            die("SQL Error: " . $e->getMessage()); // Stop execution & show error
+        }
+    }
+
+    public function getAcceptedJobCount($userId){
+        try {
+            $this->db->query('SELECT COUNT(job_id) as count
+                FROM job_requests
+                WHERE worker_id = :userId AND status = "Confirmed"');
+    
+            $this->db->bind(':userId', $userId);
+            
+            $result = $this->db->single();
+            return $result->count;
+        } catch (Exception $e) {
+            die("SQL Error: " . $e->getMessage()); // Stop execution & show error
+        }
+    }
+
+    public function getPendingJobCount($userId){
+        try {
+            $this->db->query('SELECT COUNT(job_id) as count
+                FROM job_requests
+                WHERE worker_id = :userId AND status = "Pending"');
+    
+            $this->db->bind(':userId', $userId);
+            
+            $result = $this->db->single();
+            return $result->count;
+        } catch (Exception $e) {
+            die("SQL Error: " . $e->getMessage()); // Stop execution & show error
+        }
+    }
     
 }
 
