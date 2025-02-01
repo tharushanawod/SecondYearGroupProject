@@ -42,6 +42,8 @@ class LandingController extends Controller{
         $user_type = $_POST['user_type'] ?? $_GET['user_type'];
         
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+           
             $data = [
                 'name' => trim($_POST['name']),
                 'company_name' => isset($_POST['company_name']) ? trim($_POST['company_name']) : '',
@@ -54,6 +56,10 @@ class LandingController extends Controller{
                 'document_err' => '',
                 'working_area' => isset($_POST['working_area']) ? trim($_POST['working_area']) : '',
                 'working_area_err' => '',
+                'skills' => isset($_POST['skills']) ? $_POST['skills'] : [],
+                'skills_err' => '',
+                'hourly_rate' => isset($_POST['hourly_rate']) ? trim($_POST['hourly_rate']) : '',
+                'hourly_rate_err' => '',
                 'user_type' => $_POST['user_type'],
                 'password' => trim($_POST['password']),
                 'confirm_password' => trim($_POST['confirm_password']),
@@ -65,6 +71,9 @@ class LandingController extends Controller{
                 'confirm_password_err' => ''
             ];
 
+           
+            
+
          
             // Validate data
             if (empty($data['name'])) $data['name_err'] = 'Please enter name';
@@ -75,6 +84,8 @@ class LandingController extends Controller{
             if ($data['user_type'] == 'farmer' && empty($data['address'])) $data['address_err'] = 'Please enter address';
             if ($data['user_type'] == 'farmer' && empty($data['district'])) $data['district_err'] = 'Please enter district';
             if ($data['user_type']== 'manufacturer' && empty($data['company_name'])) $data['company_name_err'] = 'Please enter company name';
+            if ($data['user_type'] == 'farmworker' && empty($data['skills'])) $data['skills_err'] = 'Please select at least one skill';
+            if ($data['user_type'] == 'farmworker' && empty($data['hourly_rate'])) $data['hourly_rate_err'] = 'Please enter hourly rate';
 
     
             // File upload validation
@@ -119,7 +130,7 @@ class LandingController extends Controller{
 
     
             // If no errors, hash password and register user
-            if (empty($data['name_err']) && empty($data['email_err']) && empty($data['phone_err']) && empty($data['address_err']) && empty($data['district_err']) && empty($data['document_err']) && empty($data['password_err']) && empty($data['confirm_password_err'])) {
+            if (empty($data['name_err']) && empty($data['email_err']) && empty($data['phone_err']) && empty($data['address_err']) && empty($data['district_err']) && empty($data['document_err']) && empty($data['password_err']) && empty($data['confirm_password_err']) && empty($data['skills_err']) && empty($data['hourly_rate_err'])) {
                 $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
                 if ($this->userModel->register($data)) {
 

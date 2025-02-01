@@ -133,6 +133,43 @@ class Worker {
         $this->db->bind(':id', $id);
         return $this->db->execute();
     }
+
+    public function getJobRequests($userId) {
+        try {
+            $this->db->query('SELECT users.name, profile_pictures.file_path, job_requests.created_at,job_requests.job_id
+                FROM job_requests
+                INNER JOIN users ON job_requests.farmer_id = users.user_id
+                LEFT JOIN profile_pictures ON users.user_id = profile_pictures.user_id
+                WHERE job_requests.worker_id = :userId');
+    
+            $this->db->bind(':userId', $userId);
+            
+            $result = $this->db->resultSet();
+            return $result;
+        } catch (Exception $e) {
+            die("SQL Error: " . $e->getMessage()); // Stop execution & show error
+        }
+    }
+
+    public function ViewRequest($job_id) {
+        try {
+            $this->db->query('SELECT *
+                FROM job_requests
+                WHERE job_requests.job_id = :job_id');
+    
+            $this->db->bind(':job_id', $job_id);
+            
+            $result = $this->db->resultSet();
+            return $result;
+        } catch (Exception $e) {
+            die("SQL Error: " . $e->getMessage()); // Stop execution & show error
+        }
+    }
+
+    public function details(){
+        return 'tharusha';
+    }
+    
 }
 
 

@@ -73,6 +73,13 @@ class FarmerController extends Controller {
 
     }
 
+    public function PendingRequests() {
+        $data = $this->farmerModel->getPendingRequests($_SESSION['user_id']);
+        $this->View('Farmer/PendingRequests', $data);
+       
+
+    }
+
      public function purchaseIngredients() {
         $data = [];
         $this->View('Farmer/Purchase Ingredients', $data);
@@ -146,7 +153,7 @@ class FarmerController extends Controller {
                     $data['type_err'] = 'Invalid file type';
                 }
             } else {
-                $data['media'] = $products->media; // Keep existing media if no new file is uploaded
+                $data['media'] = $products->media; // Keep existing media if no data file is uploaded
             }
 
             ini_set('display_errors', 1);
@@ -381,7 +388,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
 
     public function AddReview($farmworker_id) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $new = [
+            $data = [
                 'review_text' => trim($_POST['review_text']),
                 'rating' => (int) $_POST['rating'],
                 'worker_id' => $farmworker_id,
@@ -391,33 +398,108 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
             ];
     
             // Validation
-            if (empty($new['review_text'])) {
-                $new['reviewText_err'] = 'Please enter a review';
+            if (empty($data['review_text'])) {
+                $data['reviewText_err'] = 'Please enter a review';
             }
-            if ($new['rating'] < 1 || $new['rating'] > 5) {
-                $new['rating_err'] = 'Please select a rating between 1 and 5';
+            if ($data['rating'] < 1 || $data['rating'] > 5) {
+                $data['rating_err'] = 'Please select a rating between 1 and 5';
             }
-
-            var_dump($new);
+            
     
             // If no errors, add the review
-            if (empty($new['reviewText_err']) && empty($new['rating_err'])) {
-                if ($this->farmerModel->AddReview($new)) {
+            if (empty($data['reviewText_err']) && empty($data['rating_err'])) {
+                if ($this->farmerModel->AddReview($data)) {
                     Redirect('FarmerController/WorkerProfile/' . $farmworker_id);
                 } else {
                     die('Something went wrong while saving the review.');
                 }
             } else {
                 // Reload the form with errors
-                $this->view('Farmer/WorkerProfile', $new);
+                $this->view('Farmer/WorkerProfile', $data);
             }
         } else {
-            $new = [];
-            $this->view('Farmer/WorkerProfile', $new);
+            $data = [];
+            $this->view('Farmer/WorkerProfile', $data);
         }
     }
     
+    public function fetchReviews($id) {
+        $reviews = $this->farmerModel->fetchReviews($id);
+        header('Content-Type: application/json');
+        echo json_encode($reviews);
+       
+    }
 
+    public function HireWorker($workerid){
+        $data=[
+            'workerid'=>$workerid
+        ];
+
+        $this->view('Farmer/HireWorker',$data);
+
+
+    }
+
+    public function HireWorkerConfirmation($workerid){
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+            $data = [
+                'farmerid' => $_SESSION['user_id'],
+                'workerid' => $workerid,
+                'job_type' => trim($_POST['job_type']),
+                'work_duration' => trim($_POST['work_duration']),
+                'start_date' => trim($_POST['start_date']),
+                'end_date' => trim($_POST['end_date']),
+                'skills' => isset($_POST['skills']) ? $_POST['skills'] : [],
+                'location' => trim($_POST['location']),
+                'accommodation' => trim($_POST['accommodation']),
+                'food' => trim($_POST['food']),
+                'job_type_err' => '',
+                'work_duration_err' => '',
+                'start_date_err' => '',
+                'end_date_err' => '',
+                'location_err' => '',
+                'accommodation_err' => '',
+                'food_err' => ''
+            ];
+
+            // Validate fields
+            if (empty($data['job_type'])) {
+                $data['job_type_err'] = 'Please select a job type';
+            }
+            if (empty($data['work_duration'])) {
+                $data['work_duration_err'] = 'Please select work duration';
+            }
+            if (empty($data['start_date'])) {
+                $data['start_date_err'] = 'Please select a start date';
+            }
+            if (empty($data['end_date'])) {
+                $data['end_date_err'] = 'Please select an end date';
+            }
+            if (empty($data['location'])) {
+                $data['location_err'] = 'Please enter a location';
+            }
+            if (empty($data['accommodation'])) {
+                $data['accommodation_err'] = 'Please select accommodation option';
+            }
+            if (empty($data['food'])) {
+                $data['food_err'] = 'Please select food option';
+            }
+
+            // Check for no errors
+            if (empty($data['job_type_err']) && empty($data['work_duration_err']) && empty($data['start_date_err']) && empty($data['end_date_err']) && empty($data['location_err']) && empty($data['accommodation_err']) && empty($data['food_err'])) {
+                if ($this->farmerModel->HireWorker($data)) {
+                    Redirect('FarmerController/workerManagement');
+                } else {
+                    die('Something went wrong');
+                }
+            } else {
+                $this->view('Farmer/HireWorker', $data);
+            }
+        }
+
+    }
     
     public function ViewCart() {
         $data = [];

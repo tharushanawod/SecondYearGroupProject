@@ -114,11 +114,16 @@ class Farmer {
            
 
             // Query the database to fetch all farmworkers
-            $this->db->query(' SELECT *
+            $this->db->query(' SELECT users.name,farmworkers.*, profile_pictures.file_path
                                 FROM users
                                 INNER JOIN farmworkers ON users.user_id = farmworkers.user_id
-                                INNER JOIN profile_pictures ON farmworkers.user_id = profile_pictures.user_id');
-
+                                LEFT JOIN profile_pictures ON farmworkers.user_id = profile_pictures.user_id
+                                WHERE users.otp_status = :otp_status AND users.user_status = :user_status AND users.user_type = :user_type;
+                                ');
+            // Bind parameters
+            $this->db->bind(':otp_status', 'verified');
+            $this->db->bind(':user_status', 'verified');
+            $this->db->bind(':user_type', 'farmworker');
 
             $workers = $this->db->resultSet();
             return $workers;
@@ -126,16 +131,29 @@ class Farmer {
     }
 
     public function getFarmworkerById($id) {
-        $this->db->query(' SELECT *
-        FROM users
-        INNER JOIN farmworkers ON users.user_id = farmworkers.user_id
-        INNER JOIN profile_pictures ON farmworkers.user_id = profile_pictures.user_id
-        WHERE users.user_id = :id');
+        $this->db->query('
+        SELECT 
+    users.*, 
+    farmworkers.*, 
+    profile_pictures.file_path, 
+    AVG(farmer_reviews_worker.rating) AS average_rating
+FROM users
+INNER JOIN farmworkers ON users.user_id = farmworkers.user_id
+LEFT JOIN profile_pictures ON farmworkers.user_id = profile_pictures.user_id
+LEFT JOIN farmer_reviews_worker ON users.user_id = farmer_reviews_worker.worker_id
+WHERE users.user_id = :id
+GROUP BY 
+    users.user_id, 
+    farmworkers.user_id, 
+    profile_pictures.user_id, 
+    profile_pictures.file_path;
+    ');
+    $this->db->bind(':id', $id);
+    $worker = $this->db->single();
+    return $worker;
+    
        
 
-        $this->db->bind(':id', $id);
-        $worker = $this->db->single();
-        return $worker;
     }
 
 
@@ -224,6 +242,68 @@ class Farmer {
             return false;
         }
     }
+
+
+    //function to get all reviews
+    public function fetchReviews($id){
+
+        $this->db->query('
+        SELECT farmer_reviews_worker.*, users.name,profile_pictures.file_path
+        FROM farmer_reviews_worker
+        INNER JOIN users  ON farmer_reviews_worker.farmer_id = users.user_id
+        INNER JOIN profile_pictures  ON users.user_id = profile_pictures.user_id
+        WHERE farmer_reviews_worker.worker_id = :id
+    ');
+       
+        $this->db->bind(':id', $id);
+        $results = $this->db->resultSet();
+        return $results;
+    }
+
+    public function HireWorker($data) {
+        $this->db->query('INSERT INTO job_requests (farmer_id,worker_id, job_type, work_duration, start_date, end_date, skills, location, accommodation, food) 
+                          VALUES (:farmer_id,:worker_id, :job_type, :work_duration, :start_date, :end_date, :skills, :location, :accommodation, :food)');
+        $this->db->bind(':farmer_id', $data['farmerid']);
+        $this->db->bind(':worker_id', $data['workerid']);
+        $this->db->bind(':job_type', $data['job_type']);
+        $this->db->bind(':work_duration', $data['work_duration']);
+        $this->db->bind(':start_date', $data['start_date']);
+        $this->db->bind(':end_date', $data['end_date']);
+        $this->db->bind(':skills', implode(',', $data['skills']));
+        $this->db->bind(':location', $data['location']);
+        $this->db->bind(':accommodation', $data['accommodation']);
+        $this->db->bind(':food', $data['food']);
+
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function getPendingRequests($id) {
+        try {
+            // Updated query to get worker's name from the same users table
+            $this->db->query('SELECT workers.name AS worker_name, job_requests.* 
+                              FROM job_requests
+                              INNER JOIN users AS farmers 
+                              ON farmers.user_id = job_requests.farmer_id 
+                              INNER JOIN users AS workers 
+                              ON workers.user_id = job_requests.worker_id 
+                              WHERE job_requests.farmer_id = :id');
+            
+            $this->db->bind(':id', $id);
+            
+            // Fetch results
+            $results = $this->db->resultSet();
+            return $results;
+        } catch (Exception $e) {
+            // Log the exception message for debugging
+            error_log($e->getMessage());
+            return false;
+        }
+    }
+    
     
     
 

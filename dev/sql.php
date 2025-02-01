@@ -63,3 +63,22 @@ CREATE TABLE farmer_reviews_worker (
     FOREIGN KEY (farmer_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (worker_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
+
+CREATE TABLE job_requests (
+    job_id INT AUTO_INCREMENT PRIMARY KEY,        -- Unique identifier for each record
+    farmer_id INT NOT NULL,                       -- ID of the farmer who posted the job (foreign key)
+    worker_id INT NOT NULL,                   -- ID of the hired worker (foreign key)
+    job_type ENUM('Irrigation Worker', 'Tractor Operator', 'Crop Worker') NOT NULL,  -- Job type with predefined options
+    work_duration ENUM('Full Time', 'Part Time') NOT NULL, -- Work duration
+    start_date DATE NOT NULL,                 -- Start date of the work
+    end_date DATE NOT NULL,                   -- End date of the work
+    skills TEXT NOT NULL,                     -- Skills required, stored as a comma-separated string
+    location VARCHAR(255) NOT NULL,           -- Location of the work
+    accommodation ENUM('Yes', 'No') NOT NULL, -- Accommodation availability
+    food ENUM('Yes', 'No') NOT NULL,          -- Food availability
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp of record creation
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- Timestamp of record update
+    status ENUM('Pending', 'Confirmed', 'Rejected') DEFAULT 'Pending',
+    FOREIGN KEY (farmer_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (worker_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
