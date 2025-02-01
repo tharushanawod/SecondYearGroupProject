@@ -6,75 +6,7 @@
     <title>View Request Details</title>
     <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/FarmWorker/ViewRequest.css">
     <style>
-        body {
-            font-family: "Roboto", sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            background-color: #fff;
-            padding: 60px;
-            border-radius: 10px;
-            margin-left: 250px;
-           
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        th, td {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        .buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-        .buttons button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-        .accept-btn {
-            background-color: #28a745;
-            color: white;
-        }
-        .accept-btn:hover {
-            background-color: #218838;
-        }
-        .reject-btn {
-            background-color: #dc3545;
-            color: white;
-        }
-        .reject-btn:hover {
-            background-color: #c82333;
-        }
-        .popup-message {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            z-index: 1000;
-        }
+
     </style>
 </head>
 <body>
@@ -121,8 +53,10 @@
         </tr>
     </table>
     <div class="buttons">
-        <button class="accept-btn" onclick="acceptRequest(<?php echo $data->job_id; ?>)">Accept</button>
-        <button class="reject-btn" onclick="rejectRequest(<?php echo $data->job_id; ?>)">Reject</button>
+        <a href="<?php echo URLROOT.'/WorkerController/AcceptJob/'.$data->job_id ;?>"><button class="accept-btn" >Accept</button></a>
+        <a href="<?php echo URLROOT.'/WorkerController/RejectJob/'.$data->job_id ;?>"><button class="reject-btn" onclick="rejectRequest(<?php echo $data->job_id; ?>)">Reject</button></a>
+        
+        
     </div>
 </div>
 

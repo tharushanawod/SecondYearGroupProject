@@ -181,6 +181,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
     public function trainingSelection() {
         $this->view('FarmWorker/TrainingSelection');
     }
+
+    public function AcceptJob($job_id) {
+        $Result= $this->WorkerModel->AcceptJob($job_id);
+        
+
+        if($Result){
+            Redirect('WorkerController/JobRequest');
+        }
+        
+    }
  
  
 

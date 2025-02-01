@@ -140,7 +140,7 @@ class Worker {
                 FROM job_requests
                 INNER JOIN users ON job_requests.farmer_id = users.user_id
                 LEFT JOIN profile_pictures ON users.user_id = profile_pictures.user_id
-                WHERE job_requests.worker_id = :userId');
+                WHERE job_requests.worker_id = :userId AND job_requests.status = "Pending"');
     
             $this->db->bind(':userId', $userId);
             
@@ -166,8 +166,19 @@ class Worker {
         }
     }
 
-    public function details(){
-        return 'tharusha';
+    public function AcceptJob($job_id) {
+        try {
+           
+            // Update the job_requests table
+            $this->db->query('UPDATE job_requests SET status = "Confirmed" WHERE job_id = :job_id');
+            $this->db->bind(':job_id', $job_id);
+           
+            $this->db->execute();
+            return true;
+    
+        } catch (Exception $e) {
+            die("SQL Error: " . $e->getMessage()); // Stop execution & show error
+        }
     }
     
 }
