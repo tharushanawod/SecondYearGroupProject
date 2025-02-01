@@ -6,10 +6,12 @@ class Product {
         $this->db = new Database();
     }
 
-    public function getProducts() {
+    public function getProducts($supplier_id) {
         $this->db->query("SELECT p.*, c.name as category_name 
                          FROM supplier_products p 
-                         LEFT JOIN categories c ON p.category_id = c.id");
+                         LEFT JOIN categories c ON p.category_id = c.id
+                         WHERE p.supplier_id = :supplier_id");
+        $this->db->bind(':supplier_id', $supplier_id);
         return $this->db->resultSet();
     }
 
@@ -68,15 +70,15 @@ class Product {
         return $this->db->execute();
     }
 
-    public function getProductsByCategory($category_id) {
+    public function getProductsByCategory($category_id, $supplier_id) {
         $this->db->query("SELECT p.*, c.name as category_name 
                          FROM supplier_products p 
                          LEFT JOIN categories c ON p.category_id = c.id 
-                         WHERE p.category_id = :category_id");
+                         WHERE p.category_id = :category_id AND p.supplier_id = :supplier_id");
         $this->db->bind(':category_id', $category_id);
+        $this->db->bind(':supplier_id', $supplier_id);
         return $this->db->resultSet();
     }
-
     public function getCategories() {
         $this->db->query('SELECT * FROM categories');
         return $this->db->resultSet();

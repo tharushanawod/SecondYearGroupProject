@@ -150,10 +150,11 @@ class SupplierController extends Controller {
     }
 
     public function shop() {
-        $products = $this->Product->getProducts();
-        $fertilizerProducts = $this->Product->getProductsByCategory('1') ?? [];
-        $seedsProducts = $this->Product->getProductsByCategory('2') ?? [];
-        $pestControlProducts = $this->Product->getProductsByCategory('3') ?? [];
+        $supplier_id = $_SESSION['user_id'];
+        $products = $this->Product->getProducts($supplier_id);
+        $fertilizerProducts = $this->Product->getProductsByCategory('1' , $supplier_id);
+        $seedsProducts = $this->Product->getProductsByCategory('2' , $supplier_id);
+        $pestControlProducts = $this->Product->getProductsByCategory('3' , $supplier_id);
         $this->view('Ingredient Supplier/shop', [
             'products' => $products,
             'fertilizerProducts' => $fertilizerProducts,
@@ -163,31 +164,34 @@ class SupplierController extends Controller {
     }
 
     public function fertilizer() {
-        $products = $this->Product->getProductsByCategory('1');
-        $seedsProducts = $this->Product->getProductsByCategory('2');
-        $pestControlProducts = $this->Product->getProductsByCategory('3');
+        $supplier_id = $_SESSION['user_id'];
+        $products = $this->Product->getProductsByCategory('1', $supplier_id);
+        $seedsProducts = $this->Product->getProductsByCategory('2', $supplier_id);
+        $pestControlProducts = $this->Product->getProductsByCategory('3', $supplier_id);
         $this->view('Ingredient Supplier/Fertilizer', [
             'products' => $products,
             'seedsProducts' => $seedsProducts,
             'pestControlProducts' => $pestControlProducts
         ]);
     }
-
+    
     public function seeds() {
-        $products = $this->Product->getProductsByCategory('2');
-        $fertilizerProducts = $this->Product->getProductsByCategory('1');
-        $pestControlProducts = $this->Product->getProductsByCategory('3');
+        $supplier_id = $_SESSION['user_id'];
+        $products = $this->Product->getProductsByCategory('2', $supplier_id);
+        $fertilizerProducts = $this->Product->getProductsByCategory('1', $supplier_id);
+        $pestControlProducts = $this->Product->getProductsByCategory('3', $supplier_id);
         $this->view('Ingredient Supplier/Seeds', [
             'products' => $products,
             'fertilizerProducts' => $fertilizerProducts,
             'pestControlProducts' => $pestControlProducts
         ]);
     }
-
+    
     public function pestControl() {
-        $products = $this->Product->getProductsByCategory('3');
-        $seedsProducts = $this->Product->getProductsByCategory('2');
-        $fertilizerProducts = $this->Product->getProductsByCategory('1');
+        $supplier_id = $_SESSION['user_id'];
+        $products = $this->Product->getProductsByCategory('3', $supplier_id);
+        $seedsProducts = $this->Product->getProductsByCategory('2', $supplier_id);
+        $fertilizerProducts = $this->Product->getProductsByCategory('1', $supplier_id);
         $this->view('Ingredient Supplier/PestControl', [
             'products' => $products,
             'seedsProducts' => $seedsProducts,
