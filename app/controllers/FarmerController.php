@@ -74,8 +74,9 @@ class FarmerController extends Controller {
     }
 
     public function PendingRequests() {
-        $data = [];
+        $data = $this->farmerModel->getPendingRequests($_SESSION['user_id']);
         $this->View('Farmer/PendingRequests', $data);
+       
 
     }
 
@@ -444,6 +445,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
             $data = [
+                'farmerid' => $_SESSION['user_id'],
                 'workerid' => $workerid,
                 'job_type' => trim($_POST['job_type']),
                 'work_duration' => trim($_POST['work_duration']),

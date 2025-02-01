@@ -1,92 +1,100 @@
 @import url(../components/sidebar.css);
-
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: sans-serif;
-}
-body{
-    background-color: #f4f4f4;
+    font-family: Arial, sans-serif;
 }
 
-.requests-container {
-    width: 900px; 
-    margin: 50px auto; 
+body {
+    background-color: #f5f5f5;
+}
+
+.main-content {
+    margin-left: 250px; /* Space for sidebar */
     padding: 20px;
-    background-color: #f7fbf6;
-    box-shadow: 0 0 10px rgba(211, 248, 217, 0.1);
-    border-radius: 10px;
-    margin-left: 400px;
+   
+}
+
+.card-container {
+    display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two columns by default */
+  gap: 20px;
+  padding: 20px;
 }
 
 h1 {
-    text-align: center;
-    margin-bottom: 30px;
-    color: #065618;
-    font-size: 45px;
-    margin-left: 300px;
-    text-shadow:0 0 10px #b4eabd; 
-}
-
-.request {
-    border-bottom: 1px solid #e3e2e2;
-    padding: 15px 0;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
+    color: #2c3e50;
     margin-bottom: 20px;
+    font-size: 24px;
 }
 
-.request:last-child {
-    border-bottom: none; 
+.job-card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    width: 100%;
 }
 
-.request h3 {
-    margin: 0;
-    font-size: 22px;
-    color: #07582d;
+.profile-icon {
+    width: 50px;
+    height: 50px;
+    background-color: #ddd;
+    border-radius: 50%;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.request p {
-    margin: 5px 0;
-    font-size: 16px;
-    color: #333;
+.profile-icon img {
+    width: 30px;
+    height: 30px;
 }
 
-.button-row{
+.job-info {
+    flex-grow: 1;
+}
+
+.farmer-name {
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.request-time {
+    color: #7f8c8d;
+    font-size: 14px;
+}
+
+.action-buttons {
     display: flex;
     gap: 10px;
 }
 
-button {
-    padding: 10px 15px;
-    margin-right: 10px;
+.btn {
+    padding: 8px 15px;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
-    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.3s;
 }
 
-
-.accept-btn, .reject-btn {
-    width: 120px; 
-    height: 40px; 
-    text-align: center;
+.btn-view {
+    background-color: #3498db;
+    color: white;
 }
 
-.accept-btn {
-    background-color: #5cb85c;
-    color: #fff;
+.btn-delete {
+    background-color: #e74c3c;
+    color: white;
 }
 
-.reject-btn {
-    background-color: #e01109;
-    color: #fff;
-}
-
-button:hover {
-    opacity: 0.9; 
-    transform: scale(1.02); 
+.btn:hover {
+    opacity: 0.9;
 }

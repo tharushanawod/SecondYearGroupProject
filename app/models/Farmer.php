@@ -261,8 +261,9 @@ GROUP BY
     }
 
     public function HireWorker($data) {
-        $this->db->query('INSERT INTO job_requests (worker_id, job_type, work_duration, start_date, end_date, skills, location, accommodation, food) 
-                          VALUES (:worker_id, :job_type, :work_duration, :start_date, :end_date, :skills, :location, :accommodation, :food)');
+        $this->db->query('INSERT INTO job_requests (farmer_id,worker_id, job_type, work_duration, start_date, end_date, skills, location, accommodation, food) 
+                          VALUES (:farmer_id,:worker_id, :job_type, :work_duration, :start_date, :end_date, :skills, :location, :accommodation, :food)');
+        $this->db->bind(':farmer_id', $data['farmerid']);
         $this->db->bind(':worker_id', $data['workerid']);
         $this->db->bind(':job_type', $data['job_type']);
         $this->db->bind(':work_duration', $data['work_duration']);
@@ -279,6 +280,30 @@ GROUP BY
             return false;
         }
     }
+
+    public function getPendingRequests($id) {
+        try {
+            // Updated query to get worker's name from the same users table
+            $this->db->query('SELECT workers.name AS worker_name, job_requests.* 
+                              FROM job_requests
+                              INNER JOIN users AS farmers 
+                              ON farmers.user_id = job_requests.farmer_id 
+                              INNER JOIN users AS workers 
+                              ON workers.user_id = job_requests.worker_id 
+                              WHERE job_requests.farmer_id = :id');
+            
+            $this->db->bind(':id', $id);
+            
+            // Fetch results
+            $results = $this->db->resultSet();
+            return $results;
+        } catch (Exception $e) {
+            // Log the exception message for debugging
+            error_log($e->getMessage());
+            return false;
+        }
+    }
+    
     
     
 

@@ -1,7 +1,7 @@
 <?php 
 
 class WorkerController extends Controller {
-    private $workerModel;
+    private $WorkerModel;
 
     public function __construct() {  
         if (!$this->isloggedin()) {
@@ -122,6 +122,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
 }
 
     }
+
+
  
 
 
@@ -156,12 +158,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
     }
 
     public function jobDescription() {
+
+       
         $this->view('FarmWorker/JobDescription');
     }
 
     public function jobRequest() {
-        $this->view('FarmWorker/JobRequest');
+        $data['jobRequests'] = $this->WorkerModel->getJobRequests($_SESSION['user_id']);
+    
+       
+        $this->view('FarmWorker/JobRequest',$data);
+        
     }
+
+    public function ViewRequest($job_id) {
+        $requests =  $this->WorkerModel->ViewRequest($job_id);
+        $data= $requests[0];
+        $this->view('FarmWorker/ViewRequest', $data);
+    }
+    
 
     public function trainingSelection() {
         $this->view('FarmWorker/TrainingSelection');

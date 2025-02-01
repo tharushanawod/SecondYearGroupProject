@@ -12,6 +12,7 @@
 <?php require APPROOT . '/views/inc/sidebar.php'; ?> 
 <div class="main-container">
 <h1>Pending Requests</h1>
+
     <table>
         <thead>
             <tr>
@@ -22,15 +23,16 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($data['requests'] as $request) : ?>
+            <?php foreach ($data as $request) : ?>
                 <tr>
-                    <td><?php echo htmlspecialchars($request['request_id']); ?></td>
-                    <td><?php echo htmlspecialchars($request['farm_worker_name']); ?></td>
-                    <td><?php echo htmlspecialchars($request['status']); ?></td>
-                    <td><button onclick="contactWorker('<?php echo htmlspecialchars($request['farm_worker_name']); ?>')">Contact</button></td>
+                    <td><?php echo htmlspecialchars($request->job_id); ?></td>
+                    <td><?php echo htmlspecialchars($request->worker_name); ?></td>
+                    <td><?php echo htmlspecialchars($request->status); ?></td>
+                    <td><button onclick="contactWorker('<?php echo htmlspecialchars($request->worker_name); ?>')">Contact</button></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
+   
 </div>
   
 
