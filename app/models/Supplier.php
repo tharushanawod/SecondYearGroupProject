@@ -78,7 +78,27 @@ class Supplier {
 
     public function getCategories() {
         $this->db->query('SELECT * FROM categories');
-        return $this->db->resultSet();
+        return $this->db->resultSet();    
+    }    
+
+    public function getOrders() {
+        $this->db->query('SELECT * FROM orders');
+        $results = $this->db->resultSet();
+        return $results;
+    }
+
+    public function getOrderById($id) {
+        $this->db->query('SELECT * FROM orders WHERE id = :id');
+        $this->db->bind(':id', $id);
+        $row = $this->db->single();
+        return $row;
+    }
+
+    public function getOrdersBySupplierId($supplierId) {
+        $this->db->query('SELECT * FROM orders WHERE supplier_id = :supplier_id');
+        $this->db->bind(':supplier_id', $supplierId);
+        $results = $this->db->resultSet();
+        return $results;
     }
 
     public function updateProfile($data) {
@@ -126,6 +146,13 @@ class Supplier {
         $this->db->query('SELECT * FROM users WHERE user_id = :id');
         $this->db->bind(':id', $id);
         return $this->db->single();
+    }
+    private function view($view, $data = []) {
+        if (file_exists("../app/views/" . $view . ".php")) {
+            require_once "../app/views/" . $view . ".php";
+        } else {
+            die("View does not exist.");
+        }
     }
 }
 ?>

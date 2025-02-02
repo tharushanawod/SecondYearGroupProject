@@ -4,30 +4,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeModal = document.getElementsByClassName('close')[0];
     const closeBtn = document.getElementById('closeBtn');
     const acceptOrderBtn = document.getElementById('acceptOrderBtn');
-    const sendCodeBtn = document.getElementById('sendCodeBtn');
     const statusFilter = document.getElementById('statusFilter');
+    const sendCodeBtn = document.getElementById('sendCodeBtn'); // Add this line
 
-    const sampleOrders = [
-        { id: 1, product: 'Fertilizer', customer: 'E.K.D Ekanayake', price: 1000, payment: 'Credit Card', quantity: 2, status: 'Pending', address: '123 Main St', instructions: 'Leave at the front door' },
-        { id: 2, product: 'Pesticide', customer: 'R.M.H Sampath', price: 1500, payment: 'Credit Card', quantity: 1, status: 'Accepted', address: '456 Oak St', instructions: 'Ring the bell' },
-        { id: 3, product: 'Seed', customer: 'D.M.M Rajapaksha', price: 2000, payment: 'Credit Card', quantity: 5, status: 'Pending', address: '789 Pine St', instructions: 'Call upon arrival' },
-    ];
-
+    
     function loadOrders(orders) {
         ordersTable.innerHTML = ''; // Clear table
         orders.forEach(order => {
             const newRow = ordersTable.insertRow();
             newRow.innerHTML = `
                 <td>${order.id}</td>
-                <td>${order.product}</td>
-                <td>${order.customer}</td>
-                <td>${order.price}</td>
-                <td>${order.payment}</td>
+                <td>${order.product_name}</td>
+                <td>${order.customer_name}</td>
+                <td>LKR ${order.price}</td>
+                <td>${order.payment_status}</td>
                 <td>${order.quantity}</td>
-                <td>${order.status}</td>
+                <td>${order.order_status}</td>
                 <td class="actions">
-                    <button class="accept">Accept</button>
-                    <button class="send-code">Cancel</button>
+                    <button class="accept" onclick="acceptOrder(${order.id})">Accept</button>
+                    <button class="send-code" onclick="sendCode(${order.id})">Send Code</button>
                 </td>
             `;
 
@@ -41,21 +36,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showOrderDetails(order) {
-        document.getElementById('customerName').innerText = order.customer;
-        document.getElementById('deliveryAddress').innerText = order.address;
-        document.getElementById('productDetails').innerText = `${order.product} (Quantity: ${order.quantity})`;
-        document.getElementById('specialInstructions').innerText = order.instructions;
+        document.getElementById('customerName').innerText = order.customer_name;
+        document.getElementById('deliveryAddress').innerText = order.delivery_address;
+        document.getElementById('productDetails').innerText = `${order.product_name} (Quantity: ${order.quantity})`;
+        document.getElementById('specialInstructions').innerText = order.special_instructions;
 
-        acceptOrderBtn.addEventListener('click', () => acceptOrder(order.id));
-        sendCodeBtn.addEventListener('click', () => sendDeliveryCode(order.id));
+        acceptOrderBtn.onclick = () => acceptOrder(order.id);
+        sendCodeBtn.onclick = () => sendDeliveryCode(order.id); // Fix this line
 
         orderDetailsModal.style.display = 'block';
     }
 
     function acceptOrder(orderId) {
-        alert(`Order ID ${orderId} has been accepted.`);
-        orderDetailsModal.style.display = 'none';
-        // Logic to update order status in the database can go here
+        fetch(`${URLROOT}/SupplierController/updateOrderStatus/${orderId}/accepted`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(`Order ID ${orderId} has been accepted.`);
+                    orderDetailsModal.style.display = 'none';
+                    loadOrders(data.orders);
+                } else {
+                    alert('Error accepting order');
+                }
+            });
     }
 
     function sendDeliveryCode(orderId) {
@@ -83,10 +86,22 @@ document.addEventListener('DOMContentLoaded', () => {
         if (filterValue === 'all') {
             loadOrders(sampleOrders);
         } else {
-            const filteredOrders = sampleOrders.filter(order => order.status.toLowerCase() === filterValue);
+            const filteredOrders = sampleOrders.filter(order => order.order_status.toLowerCase() === filterValue);
             loadOrders(filteredOrders);
         }
     });
+
+    function checkNewOrders() {
+        fetch(`${URLROOT}/SupplierController/checkNewOrders`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.new_orders > 0) {
+                    alert(`You have ${data.new_orders} new orders!`);
+                }
+            });
+    }
+
+    setInterval(checkNewOrders, 60000); // Check every 60 seconds
 
     // Load initial orders
     loadOrders(sampleOrders);

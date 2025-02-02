@@ -198,25 +198,24 @@ class SupplierController extends Controller {
             'fertilizerProducts' => $fertilizerProducts
         ]);
     }
-
+    
     public function viewOrders() {
-        $supplierId = $_SESSION['user_id']; // Assuming supplier ID is stored in session
+        $supplierId = $_SESSION['user_id']; 
         $orders = $this->Supplier->getOrdersBySupplierId($supplierId);
 
-        // Debugging: Log the fetched orders
         error_log(print_r($orders, true));
 
         $data = ['orders' => $orders];
         $this->view('Ingredient Supplier/Orders', $data);
-    }
-
+    }    
+    
     public function RequestHelp() {
         $data = [];
         $this->view('Ingredient Supplier/RequestHelp', $data);
     }
     public function manageProfile() {
         if($_SERVER['REQUEST_METHOD'] == 'POST'){ 
-            $_POST = filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING);
+            $_POST = custom_filter_input_array(INPUT_POST,FILTER_SANITIZE_SPECIAL_CHARS);
             $data = [
                 'user_id' => $_SESSION['user_id'],
                 'name' => trim($_POST['name']),
@@ -287,6 +286,12 @@ class SupplierController extends Controller {
                 echo "Error uploading file.";
             }
         }
+    }
+
+    public function notifications() {
+        $supplierId = $_SESSION['user_id'];
+        $notifications = $this->model('Notification')->getNotificationsByUserId($supplierId);
+        $this->view('Ingredient Supplier/Notifications', ['notifications' => $notifications]);
     }
 
 }
