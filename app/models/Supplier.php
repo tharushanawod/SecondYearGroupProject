@@ -79,8 +79,8 @@ class Supplier {
     public function getCategories() {
         $this->db->query('SELECT * FROM categories');
         return $this->db->resultSet();    
-    }    
-
+    }
+    
     public function getOrders() {
         $this->db->query('SELECT * FROM orders');
         $results = $this->db->resultSet();
@@ -100,6 +100,7 @@ class Supplier {
         $results = $this->db->resultSet();
         return $results;
     }
+    
 
     public function updateProfile($data) {
         if (!empty($data['password'])) {

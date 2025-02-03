@@ -32,6 +32,7 @@ class SupplierController extends Controller {
         $data = [];
         $this->view('Ingredient Supplier/Supplier Dashboard', $data);
     }
+    
 
     public function productManagement() {
         $supplier = $this->Supplier;
