@@ -3,6 +3,7 @@
 class SupplierController extends Controller {
     private $Product;
     private $Supplier;
+    private $Order;
 
     public function __construct() {
         if (!$this->isloggedin()) {
@@ -14,6 +15,7 @@ class SupplierController extends Controller {
         }
         $this->Product = $this->model('Product');
         $this->Supplier = $this->model('Supplier');
+        $this->Order = $this->model('Order');
     }
 
     public function isloggedin() {
@@ -32,7 +34,6 @@ class SupplierController extends Controller {
         $data = [];
         $this->view('Ingredient Supplier/Supplier Dashboard', $data);
     }
-    
 
     public function productManagement() {
         $supplier = $this->Supplier;
@@ -153,9 +154,9 @@ class SupplierController extends Controller {
     public function shop() {
         $supplier_id = $_SESSION['user_id'];
         $products = $this->Product->getProducts($supplier_id);
-        $fertilizerProducts = $this->Product->getProductsByCategory('1' , $supplier_id);
-        $seedsProducts = $this->Product->getProductsByCategory('2' , $supplier_id);
-        $pestControlProducts = $this->Product->getProductsByCategory('3' , $supplier_id);
+        $fertilizerProducts = $this->Product->getProductsByCategory('1', $supplier_id);
+        $seedsProducts = $this->Product->getProductsByCategory('2', $supplier_id);
+        $pestControlProducts = $this->Product->getProductsByCategory('3', $supplier_id);
         $this->view('Ingredient Supplier/shop', [
             'products' => $products,
             'fertilizerProducts' => $fertilizerProducts,
@@ -175,7 +176,7 @@ class SupplierController extends Controller {
             'pestControlProducts' => $pestControlProducts
         ]);
     }
-    
+
     public function seeds() {
         $supplier_id = $_SESSION['user_id'];
         $products = $this->Product->getProductsByCategory('2', $supplier_id);
@@ -187,7 +188,7 @@ class SupplierController extends Controller {
             'pestControlProducts' => $pestControlProducts
         ]);
     }
-    
+
     public function pestControl() {
         $supplier_id = $_SESSION['user_id'];
         $products = $this->Product->getProductsByCategory('3', $supplier_id);
@@ -199,24 +200,25 @@ class SupplierController extends Controller {
             'fertilizerProducts' => $fertilizerProducts
         ]);
     }
-    
+
     public function viewOrders() {
-        $supplierId = $_SESSION['user_id']; 
-        $orders = $this->Supplier->getOrdersBySupplierId($supplierId);
+        $supplierId = $_SESSION['user_id'];
+        $orders = $this->Order->getOrdersBySupplierId($supplierId);
 
         error_log(print_r($orders, true));
 
         $data = ['orders' => $orders];
         $this->view('Ingredient Supplier/Orders', $data);
-    }    
-    
+    }
+
     public function RequestHelp() {
         $data = [];
         $this->view('Ingredient Supplier/RequestHelp', $data);
     }
+
     public function manageProfile() {
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){ 
-            $_POST = custom_filter_input_array(INPUT_POST,FILTER_SANITIZE_SPECIAL_CHARS);
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $_POST = custom_filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
             $data = [
                 'user_id' => $_SESSION['user_id'],
                 'name' => trim($_POST['name']),
@@ -228,26 +230,26 @@ class SupplierController extends Controller {
                 'email_err' => ''
             ];
 
-            if(empty($data['name'])){
+            if (empty($data['name'])) {
                 $data['name_err'] = 'Please input a name';
             }
 
-            if(empty($data['phone'])){
+            if (empty($data['phone'])) {
                 $data['phone_err'] = 'Please input a contact number';
             }
 
-            if(empty($data['email'])){
+            if (empty($data['email'])) {
                 $data['email_err'] = 'Please input an email';
             }
 
-            if(empty($data['name_err']) && empty($data['phone_err']) && empty($data['email_err'])){
-                if(!empty($data['password'])){
-                    $data['password'] = password_hash($data['password'],PASSWORD_DEFAULT);
+            if (empty($data['name_err']) && empty($data['phone_err']) && empty($data['email_err'])) {
+                if (!empty($data['password'])) {
+                    $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
                 }
-                
+
                 $result = $this->Supplier->updateProfile($data);
-              
-                if($result){
+
+                if ($result) {
                     Redirect('LandingController/logout');
                 }
             } else {
@@ -271,7 +273,7 @@ class SupplierController extends Controller {
 
     public function getProfileImage($user_id) {
         $imagePath = $this->Supplier->getProfileImage($_SESSION['user_id']);
-        return $imagePath ? URLROOT .'/'.$imagePath : URLROOT . '/images/default.jpg';
+        return $imagePath ? URLROOT . '/' . $imagePath : URLROOT . '/images/default.jpg';
     }
 
     public function uploadProfileImage() {
@@ -294,6 +296,5 @@ class SupplierController extends Controller {
         $notifications = $this->model('Notification')->getNotificationsByUserId($supplierId);
         $this->view('Ingredient Supplier/Notifications', ['notifications' => $notifications]);
     }
-
 }
 ?>

@@ -4,10 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeModal = document.getElementsByClassName('close')[0];
     const closeBtn = document.getElementById('closeBtn');
     const acceptOrderBtn = document.getElementById('acceptOrderBtn');
+    const rejectOrderBtn = document.getElementById('rejectOrderBtn');
     const statusFilter = document.getElementById('statusFilter');
-    const sendCodeBtn = document.getElementById('sendCodeBtn'); // Add this line
+    const sendCodeBtn = document.getElementById('sendCodeBtn');
 
-    
     function loadOrders(orders) {
         ordersTable.innerHTML = ''; // Clear table
         orders.forEach(order => {
@@ -21,16 +21,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${order.quantity}</td>
                 <td>${order.order_status}</td>
                 <td class="actions">
-                    <button class="accept" onclick="acceptOrder(${order.id})">Accept</button>
-                    <button class="send-code" onclick="sendCode(${order.id})">Send Code</button>
+                    <button class="accept" onclick="showOrderDetails(${order.id})">Accept</button>
+                    <button class="reject" onclick="showOrderDetails(${order.id})">Reject</button>
+                    <button class="send-code" onclick="showOrderDetails(${order.id})">Send Code</button>
                 </td>
             `;
 
             // Event listeners for actions
             const acceptBtn = newRow.querySelector('.accept');
+            const rejectBtn = newRow.querySelector('.reject');
             const sendCodeBtn = newRow.querySelector('.send-code');
 
             acceptBtn.addEventListener('click', () => showOrderDetails(order));
+            rejectBtn.addEventListener('click', () => showOrderDetails(order));
             sendCodeBtn.addEventListener('click', () => showOrderDetails(order));
         });
     }
@@ -42,12 +45,14 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('specialInstructions').innerText = order.special_instructions;
 
         acceptOrderBtn.onclick = () => acceptOrder(order.id);
-        sendCodeBtn.onclick = () => sendDeliveryCode(order.id); // Fix this line
+        rejectOrderBtn.onclick = () => rejectOrder(order.id);
+        sendCodeBtn.onclick = () => sendDeliveryCode(order.id);
 
         orderDetailsModal.style.display = 'block';
     }
 
     function acceptOrder(orderId) {
+        console.log(`Accepting order ID: ${orderId}`);
         fetch(`${URLROOT}/SupplierController/updateOrderStatus/${orderId}/accepted`)
             .then(response => response.json())
             .then(data => {
@@ -61,10 +66,26 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
-    function sendDeliveryCode(orderId) {
-        alert(`Delivery code sent for Order ID ${orderId}.`);
-        orderDetailsModal.style.display = 'none';
-        // Logic to send delivery code can go here
+    function rejectOrder(orderId) {
+        const reason = document.getElementById('rejectionReason').value;
+        console.log(`Rejecting order ID: ${orderId} with reason: ${reason}`);
+        fetch(`${URLROOT}/SupplierController/updateOrderStatus/${orderId}/rejected`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ reason: reason }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(`Order ID ${orderId} has been rejected.`);
+                orderDetailsModal.style.display = 'none';
+                loadOrders(data.orders);
+            } else {
+                alert('Error rejecting order');
+            }
+        });
     }
 
     closeModal.addEventListener('click', () => {

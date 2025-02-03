@@ -81,27 +81,6 @@ class Supplier {
         return $this->db->resultSet();    
     }
     
-    public function getOrders() {
-        $this->db->query('SELECT * FROM orders');
-        $results = $this->db->resultSet();
-        return $results;
-    }
-
-    public function getOrderById($id) {
-        $this->db->query('SELECT * FROM orders WHERE id = :id');
-        $this->db->bind(':id', $id);
-        $row = $this->db->single();
-        return $row;
-    }
-
-    public function getOrdersBySupplierId($supplierId) {
-        $this->db->query('SELECT * FROM orders WHERE supplier_id = :supplier_id');
-        $this->db->bind(':supplier_id', $supplierId);
-        $results = $this->db->resultSet();
-        return $results;
-    }
-    
-
     public function updateProfile($data) {
         if (!empty($data['password'])) {
             $this->db->query('UPDATE users SET name = :name, email = :email, phone = :phone, password = :password WHERE user_id = :id');

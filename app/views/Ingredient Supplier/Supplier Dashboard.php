@@ -21,7 +21,7 @@
                 <div class="card">
                     <div class="icon"><img width="50" height="50" src="https://img.icons8.com/ios/50/clock--v1.png" alt="clock--v1"/></div>
                     <div>
-                        <div class="numbers">15</div>
+                        <div class="numbers"><?php echo $data['pendingOrders']; ?></div>
                         <div class="cardName">Pending Orders</div>
                     </div>
                 </div>
@@ -81,88 +81,33 @@
                         </tbody>
                     </table>
                 </div>
+                
+                
 
                 <div class="recentCustomers">
                     <div class="cardHeader">
                         <h2>Recent Customers</h2>
                     </div>
-
                     <table>
-                        <tr>
-                            <td width="60px">
-                                <div class="imgBx"><img src="<?php echo URLROOT;?>/images/images/img2.jpg" alt=""></div>
-                            </td>
-                            <td>
-                                <h4> Sunil <br> <span> Anuradhapura</span></h4>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td width="60px">
-                                <div class="imgBx"><img src="<?php echo URLROOT;?>/images/images/img2.jpg" alt=""></div>
-                            </td>
-                            <td>
-                                <h4> Nimal<br> <span> Ampara</span></h4>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td width="60px">
-                                <div class="imgBx"><img src="<?php echo URLROOT;?>/images/images/img2.jpg" alt=""></div>
-                            </td>
-                            <td>
-                                <h4> Gamage<br> <span>Anuradhapura</span></h4>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td width="60px">
-                                <div class="imgBx"><img src="<?php echo URLROOT;?>/images/images/img2.jpg" alt=""></div>
-                            </td>
-                            <td>
-                                <h4> Siriwardhana<br> <span>Anuradhapura</span></h4>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td width="60px">
-                                <div class="imgBx"><img src="<?php echo URLROOT;?>/images/images/img2.jpg" alt=""></div>
-                            </td>
-                            <td>
-                                <h4>Dissanyaka <br> <span>Puttlam</span></h4>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td width="60px">
-                                <div class="imgBx"><img src="<?php echo URLROOT;?>/images/images/img2.jpg" alt=""></div>
-                            </td>
-                            <td>
-                                <h4>Ranathunga <br> <span>Kurunegala</span></h4>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td width="60px">
-                                <div class="imgBx"><img src="<?php echo URLROOT;?>/images/images/img2.jpg" alt=""></div>
-                            </td>
-                            <td>
-                                <h4>Somapala <br> <span>Ampara</span></h4>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td width="60px">
-                                <div class="imgBx"><img src="<?php echo URLROOT;?>/images/images/img2.jpg" alt=""></div>
-                            </td>
-                            <td>
-                                <h4>Sarath<br> <span>Anuradhapura</span></h4>
-                            </td>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <td>Customer ID</td>
+                                <td>Customer Name</td>
+                                <td>Contact</td>
+                                <td>Location</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach($data['recentCustomers'] as $customer): ?>
+                            <tr>
+                                <td><?php echo $customer->customer_id; ?></td>
+                                <td><?php echo $customer->customer_name; ?></td>
+                                <td><?php echo $customer->contact; ?></td>
+                                <td><?php echo $customer->location; ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
                     </table>
-                </div>
-            </div>
-        </div>
-    </div>
+                </div>   
 </body>
 </html>

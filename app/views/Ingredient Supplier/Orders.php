@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orders Page</title>
     <link rel="stylesheet" type="text/css" href="<?php echo URLROOT; ?>/public/css/ingredient supplier/Orders.css">
-    <script src="<?php echo URLROOT; ?>/js/Ingredient Supplier/Orders.js"></script>
+    <script src="<?php echo URLROOT; ?>/public/js/Ingredient Supplier/Orders.js" defer></script>
     <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet" />
 </head>
 <body>
@@ -19,14 +19,14 @@
                 <option value="pending">Pending</option>
                 <option value="accepted">Accepted</option>
             </select>
-        </div> <!-- Closing filter-options div -->
+        </div> 
 
         <table id="ordersTable">
             <thead>
                 <tr>
                     <th>Order ID</th>
                     <th>Product</th>
-                    <th>Customer</th>
+                    <th>Customer ID</th>
                     <th>Price</th>
                     <th>Payment</th>
                     <th>Quantity</th>
@@ -40,14 +40,15 @@
                         <tr>
                             <td><?php echo htmlspecialchars($order->id); ?></td>
                             <td><?php echo htmlspecialchars($order->product_name); ?></td>
-                            <td><?php echo htmlspecialchars($order->customer_name); ?></td>
+                            <td><?php echo htmlspecialchars($order->farmer_id); ?></td>                            
                             <td>LKR <?php echo htmlspecialchars($order->price); ?></td>
                             <td><?php echo htmlspecialchars($order->payment_status); ?></td>
                             <td><?php echo htmlspecialchars($order->quantity); ?></td>
                             <td><?php echo htmlspecialchars($order->order_status); ?></td>
                             <td class="actions">
                                 <button class="accept" onclick="acceptOrder(<?php echo htmlspecialchars($order->id); ?>)">Accept</button>
-                                <button class="send-code" onclick="sendCode(<?php echo htmlspecialchars($order->id); ?>)">Send Code</button>
+                                <button class="reject" onclick="rejectOrder(<?php echo htmlspecialchars($order->id); ?>)">Reject</button>
+                                <button class="view" onclick="viewOrderDetails(<?php echo htmlspecialchars($order->id); ?>)">View</button>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -59,7 +60,7 @@
             </tbody>
         </table>
 
-        <!-- Order Details Modal -->
+        <!-- Order Details Modal
         <div id="orderDetailsModal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
@@ -68,14 +69,14 @@
                 <p><strong>Delivery Address:</strong> <span id="deliveryAddress"></span></p>
                 <p><strong>Product Details:</strong> <span id="productDetails"></span></p>
                 <p><strong>Special Instructions:</strong> <span id="specialInstructions"></span></p>
-
+                <textarea id="rejectionReason" placeholder="Enter reason for rejection"></textarea>
                 <div class="modal-actions">
                     <button id="acceptOrderBtn">Accept Order</button>
-                    <button id="sendCodeBtn">Send Code</button>
+                    <button id="rejectOrderBtn">Reject Order</button>
                     <button id="closeBtn">Close</button>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </body>
 </html>
