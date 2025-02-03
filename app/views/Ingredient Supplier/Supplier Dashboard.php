@@ -60,68 +60,24 @@
                     <table>
                         <thead>
                             <tr>
-                                <td>Name</td>
-                                <td>Price</td>
+                                <td>Order ID</td>
+                                <td>Customer Name</td>
+                                <td>Order Date</td>
+                                <td>Total Amount</td>
                                 <td>Status</td>
                             </tr>
                         </thead>
 
                         <tbody>
+                            <?php foreach($data['recentOrders'] as $order): ?>
                             <tr>
-                                <td>Urea (Granular/Prilled)</td>
-                                <td>LKR 1200</td>
-                              
-                                <td><span class="delivered">Accepted</span></td>
+                                <td><?php echo $order->order_id; ?></td>
+                                <td><?php echo $order->customer_name; ?></td>
+                                <td><?php echo date('Y-m-d', strtotime($order->order_date)); ?></td>
+                                <td><?php echo $order->total_amount; ?></td>
+                                <td><span class="<?php echo strtolower($order->status); ?>"><?php echo $order->status; ?></span></td>
                             </tr>
-
-                            <tr>
-                                <td>TF 222 Hybrid Maize seeds</td>
-                                <td>LKR 2500</td>
-                               
-                                <td><span class="pending">Pending</span></td>
-                            </tr>
-
-                            <tr>
-                                <td>Chlorpyrifos</td>
-                                <td>LKR 1200</td>
-                              
-                                <td><span class="delivered">Accepted</span></td>
-                            </tr>
-
-                            <tr>
-                                <td>Lambda-Cyhalothrin</td>
-                                <td>LKR 1700</td>
-                             
-                                <td><span class="pending">Pending</span></td>
-                            </tr>
-
-                            <tr>
-                                <td>SA 336 Hybrid Maize seeds</td>
-                                <td>LKR 1200</td>
-                             
-                                <td><span class="delivered">Accepted</span></td>
-                            </tr>
-
-                            <tr>
-                                <td>Zinc Sulphate</td>
-                                <td>LKR 2000</td>
-                             
-                                <td><span class="pending">Pending</span></td>
-                            </tr>
-
-                            <tr>
-                                <td>Emamectin Benzoate</td>
-                                <td>LKR 1500</td>
-                              
-                                <td><span class="delivered">Accepted</span></td>
-                            </tr>
-
-                            <tr>
-                                <td>HP 4311 Hybrid Maize Seeds</td>
-                                <td>LKR 1000</td>
-                             
-                                <td><span class="delivered">Accepted</span></td>
-                            </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
