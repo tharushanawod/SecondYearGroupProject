@@ -5,27 +5,37 @@ require_once '../app/libraries/Database.php'; // Include database connection
 // Create database instance
 $db = new Database();
 
-// Update worker availability (Unavailable for workers whose job starts today and is confirmed)
-$query = "UPDATE farmworkers 
-          SET availability = 'Unavailable' 
-          WHERE user_id IN (
-              SELECT worker_id FROM job_requests 
-              WHERE start_date = CURDATE() 
-              AND status = 'Confirmed'
-          )";
-$db->query($query);
-$db->execute();
+try {
+    // Begin transaction
+    $db->beginTransaction();
 
-// Update worker availability (Available for workers whose job ends before today and is confirmed)
-$query = "UPDATE farmworkers 
-          SET availability = 'Available' 
-          WHERE user_id IN (
-              SELECT worker_id FROM job_requests 
-              WHERE end_date < CURDATE() 
-              AND status = 'Confirmed'
-          )";
-$db->query($query);
-$db->execute();
+    // First query: Update worker availability (Unavailable)
+    $query = "UPDATE farmworkers
+              INNER JOIN job_requests ON farmworkers.user_id = job_requests.worker_id
+              SET farmworkers.availability = 'Unavailable'
+              WHERE job_requests.start_date = CURDATE() AND job_requests.status = 'Confirmed'";
+    $db->query($query);
+    $db->execute();
+
+    // Second query: Update worker availability (Available)
+    $query = "UPDATE farmworkers 
+              INNER JOIN job_requests ON farmworkers.user_id = job_requests.worker_id
+              SET farmworkers.availability = 'Available' 
+              WHERE job_requests.end_date < CURDATE() AND job_requests.status = 'Confirmed'";
+    $db->query($query);
+    $db->execute();
+
+    // Commit the transaction if both queries succeed
+    $db->commit();
+
+    echo "Worker availability updated.";
+} catch (PDOException $e) {
+    // Rollback in case of an error
+    $db->rollBack();
+    echo "Error: " . $e->getMessage();
+}
+
+
 
 echo "Worker availability updated.";
 ?>
