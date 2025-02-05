@@ -3,120 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up Form</title>
-    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Signup.css">
+    <title>Registration Options</title>
+    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/SignUp.css">
 </head>
 <body>
     <div class="container">
-        <div class="image-section"><p>Create<br>
-            A<br>
-            <strong>CornCradle</strong><br>
-            Account<br>
-            Today
-         </p>
+    <header class="header-container">
+        <div class="header-wrapper">
+            <button class="back-button" onclick="window.location.href='<?php echo URLROOT; ?>/LandingController/index'">
+                <svg class="back-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                Back to Home
+            </button>
 
-         <div class="login-link">
-            Already have an account? <a href="<?php echo URLROOT;?>/LandingController/Login"><button class="submit">Log in</button></a>
+            <h1 class="page-title">Choose Your Registration Type</h1>
+
+            <!-- Empty div to maintain center alignment -->
+            <div class="spacer"></div>
         </div>
-        <div class="login-link">
-        A Company
-        <a href="<?php echo URLROOT;?>/LandingController/RegisterManufacturer"><button class="submit">Register As A Manufacturer</button></a>
-        </div>
-        </div>
-        <div class="form-section">
+    </header>
+       
+        <form method="GET" action="<?php echo URLROOT;?>/LandingController/signup">
+            <div class="cards-grid">
+                <!-- Farmer Card -->
+                <div class="card">
+                    <div class="card-icon"><img width="100" height="100" src="https://img.icons8.com/plasticine/100/farmer-male.png" alt="farmer-male"/></div>
+                    <h2>Register as a Farmer</h2>
+                    <p>Join our platform as a farmer and connect with buyers, access market insights, and grow your business.</p>
             
-            <form action="<?php echo URLROOT;?>/LandingController/signup" method="POST">
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <div class="input-wrapper">
-                        <input type="text" id="name" name="name" placeholder="Enter name" value="<?php echo $data['name'];?>">
-                    </div>
-                    <span class="form-invalid">
-                        <?php echo $data['name_err'];?>
-                    </span>
+                    <button type="submit" name="user_type" value="farmer" class="register-btn">Register Now</button>
+                  
                 </div>
 
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <div class="input-wrapper">
-                        <input type="email" id="email"  name="email" placeholder="Enter email" value="<?php echo $data['email'];?>">
-                    </div>
-                    <span class="form-invalid">
-                        <?php echo $data['email_err'];?>
-                    </span>
+                <!-- Buyer Card -->
+                <div class="card">
+                    <div class="card-icon"><img width="96" height="96" src="https://img.icons8.com/color/96/budget.png" alt="budget"/></div>
+                    <h2>Register as a Buyer</h2>
+                    <p>Source quality products directly from farmers and suppliers for your business needs.</p>
+       
+                    <button type="submit" name="user_type" value="buyer" class="register-btn">Register Now</button>
                 </div>
 
-                        <div class="form-group">
-                        <label for="phone">Contact Number</label>
-                        <div class="input-wrapper">
-                            <input type="tel" id="phone" name="phone" placeholder="Enter phone number" 
-                                value="<?php echo $data['phone'];?>" 
-                                pattern="0\d{9}" 
-                                title="Phone number must start with 0 and be exactly 10 digits.">
-                        </div>
-                        <span class="form-invalid">
-                            <?php echo $data['phone_err']; ?>
-                        </span>
-                    </div>
-
-
-                <div class="form-group">
-                    <label for="address">Address</label>
-                    <div class="input-wrapper">
-                        <input type="text" id="address" name="address" placeholder="Enter your address" value="<?php echo $data['address'];?>">
-                    </div>
-                    <span class="form-invalid">
-                        <?php echo $data['address_err'];?>
-                    </span>
+                <!-- Manufacturer Card -->
+                <div class="card">
+                    <div class="card-icon"><img width="100" height="100" src="https://img.icons8.com/officel/100/manufacturing.png" alt="manufacturing"/></div>
+                    <h2>Register as a Manufacturer</h2>
+                    <p>Connect with suppliers and streamline your manufacturing process with our platform.</p>
+              
+                    <button type="submit" name="user_type" value="manufacturer" class="register-btn">Register Now</button>
                 </div>
 
-                <div class="form-group">
-                        <label for="title">Choose a Title :</label>
-                        <select id="title" name="title">
-                            <option value="farmer">Farmer</option>
-                            <option value="buyer">Buyer</option>
-                            <option value="supplier">Ingredient Supplier</option>
-                            <option value="farmworker">Farm Worker</option>
-                        </select>
-                        <span class="form-invalid">
-                            <?php echo $data['title_err']; ?>
-                        </span>
-                    </div>
-
-
-                    <div class="form-group">
-    <label for="password">Password</label>
-    <div class="input-wrapper">
-        <input 
-            type="password" 
-            id="password" 
-            name="password" 
-            placeholder="Enter password" 
-            value="<?php echo $data['password'];?>" 
-            pattern=".{8,}" 
-            title="Password must be at least 8 characters long." 
-            required>
-    </div>
-    <span class="form-invalid">
-        <?php echo $data['password_err'];?>
-    </span>
-</div>
-
-                <div class="form-group">
-                    <label for="confirm-password">Confirm Password</label>
-                    <div class="input-wrapper">
-                        <input type="password" id="confirm-password" name="confirm_password" placeholder="Enter password" value="<?php echo $data['confirm_password'];?>">
-                    </div>
-                    <span class="form-invalid">
-                        <?php echo $data['confirm_password_err'];?>
-                    </span>
+                <!-- Ingredient Supplier Card -->
+                <div class="card">
+                    <div class="card-icon"><img width="64" height="64" src="https://img.icons8.com/external-filled-outline-geotatah/64/external-chemical-free-eco-friendly-lifestyle-filled-outline-filled-outline-geotatah-5.png" alt="ingredient-supplier"/></div>
+                    <h2>Register as an Ingredient Supplier</h2>
+                    <p>Reach manufacturers and businesses looking for quality ingredients and supplies.</p>
+              
+                    <button type="submit" name="user_type" value="supplier" class="register-btn">Register Now</button>
                 </div>
 
-                <button type="submit">Sign Up</button>
-            </form>
-
-           
-        </div>
+                <!-- Farmworker Card -->
+                <div class="card">
+                    <div class="card-icon"><img width="96" height="96" src="https://img.icons8.com/color/96/worker-beard.png" alt="worker-beard"/></div>
+                    <h2>Register as a Farmworker</h2>
+                    <p>Find opportunities to work with farmers and contribute to agricultural success.</p>
+             
+                    <button type="submit" name="user_type" value="farmworker" class="register-btn">Register Now</button>
+                </div>
+               
+            </div>
+        </form>
     </div>
 </body>
 </html>

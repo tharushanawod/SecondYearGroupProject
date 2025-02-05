@@ -3,6 +3,8 @@
 //load config
 require_once 'config/config.php'; 
 
+//Load Composer's autoloader
+require 'vendor/autoload.php';
 
 //session helper
 require_once 'helpers/SessionHelper.php';

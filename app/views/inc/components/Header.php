@@ -48,7 +48,7 @@
     
 <?php else : ?>
   <div class="buttons">
-  <a href="<?php echo URLROOT; ?>/LandingController/signup" class="sign-up-btn">Sign Up</a>
+  <a href="<?php echo URLROOT; ?>/LandingController/Register" class="sign-up-btn">Sign Up</a>
   <a href="<?php echo URLROOT; ?>/LandingController/login" class="sign-up-btn">Login</a>
   </div>
     

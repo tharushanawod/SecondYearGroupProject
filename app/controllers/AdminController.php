@@ -33,9 +33,17 @@ class AdminController extends Controller {
 
         // Pass the user data to the view
         $data = ['users' => $users];
-
+  
         // Render the view
         $this->View('Admin/LandingDashboard', $data);
+
+       
+
+        echo '<pre>';
+        print_r($users);
+        echo '</pre>';
+        
+
     }
 
     public function RemoveUsers(){

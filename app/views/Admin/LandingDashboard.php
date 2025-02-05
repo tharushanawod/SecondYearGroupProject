@@ -67,7 +67,7 @@
         ?>
             <tr>
                 <td><?php echo $user->name; ?></td>  <!-- User ID -->
-                <td><?php echo $user->title; ?></td>  <!-- User Name -->
+                <td><?php echo $user->user_type; ?></td>  <!-- User Name -->
                 <td><?php echo $user->phone; ?></td>  <!-- User Email -->
                 <td style="
     <?php

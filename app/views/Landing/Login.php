@@ -30,7 +30,7 @@
                         <span class="form-invalid" ><?php echo $data['email_err'];?></span>
                     </div>
                 </div>
-
+               
 
 
                 <div class="form-group">
@@ -45,9 +45,33 @@
                  <?php echo $data['verified_err'];?>
                  </span>
 
+                <?php $_SESSION['user_email'] = $data['email']; ?>
+
+                <div class="forgot-password" >
+                    <p>For</p>
+                <a href="<?php echo URLROOT;?>/LandingController/ForgotPassword">Forgot password?</a>
+            </div>
+
+
+
                 <button type="submit">Log in</button>
-             
+                <?php
+                echo $_SESSION['user_email'];
+                ?>
             </form>
+
+            <?php if (isset($data['verified_err']) && !empty($data['verified_err'])): ?>
+    <!-- Display the "Verify Account" button if the error is related to unverified status -->
+    <?php if ($data['verified_err'] == 'Your account is not verified. Please verify account using OTP.'): ?>
+        <form action="<?php echo URLROOT; ?>/LandingController/verifyAccount" method="POST">
+            <button type="submit" class="verify-button">Click here to verify your account</button>
+        </form>
+    <?php endif; ?>
+<?php endif; ?>
+
+
+            
+
         </div>
 
         <div class="image-section">
@@ -59,7 +83,7 @@
             </p>
 
             <div class="login-link">
-                Don't have an account? <a href="<?php echo URLROOT;?>/LandingController/signup"><button class="new" type="submit">Sign up</button></a>
+                Don't have an account? <a href="<?php echo URLROOT;?>/LandingController/Register"><button class="new" >Sign up</button></a>
             </div>
         </div>
 

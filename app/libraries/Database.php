@@ -72,8 +72,26 @@ class Database{
         return $this->statement->rowCount();
     }
 
+
+        // Start a transaction
+    public function beginTransaction() {
+        return $this->dbh->beginTransaction();
+    }
+
+    // Commit the transaction
+    public function commit() {
+        return $this->dbh->commit();
+    }
+
+    // Rollback the transaction
+    public function rollBack() {
+        return $this->dbh->rollBack();
+    }
+
+    // Get the last inserted ID
     public function lastInsertId() {
         return $this->dbh->lastInsertId();
     }
+
 }
 ?>
