@@ -21,7 +21,7 @@
                 <div class="card">
                     <div class="image"><img width="50" height="50" src="https://img.icons8.com/ios/50/approval--v1.png" alt="approval--v1"/></div>
                     <div>
-                        <div class="numbers">50</div>
+                        <div class="numbers"><?php echo $this->getAcceptedJobCount();?></div>
                         <div class="cardName">Accepted Requests</div>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                 <div class="card">
                     <div class="image"><img width="50" height="50" src="https://img.icons8.com/ios/50/clock--v1.png" alt="clock--v1"/></div>
                     <div>
-                        <div class="numbers">80</div>
+                        <div class="numbers"><?php echo $this->getPendingJobCount();?></div>
                         <div class="cardName">Pending Requests</div>
                     </div>
                 </div>                              

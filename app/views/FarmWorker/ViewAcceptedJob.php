@@ -6,12 +6,15 @@
     <title>View Request Details</title>
     <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/FarmWorker/ViewRequest.css">
     <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet"/>
+    <style>
+
+    </style>
 </head>
 <body>
 <?php require APPROOT . '/views/inc/sidebar.php'; ?>
   
 <div class="container">
-    <h1>Job Request Details</h1>
+    <h1>Accepted Job Details</h1>
     <table>
         <tr>
             <th>Job ID</th>
@@ -51,10 +54,7 @@
         </tr>
     </table>
     <div class="buttons">
-        <a href="<?php echo URLROOT.'/WorkerController/AcceptJob/'.$data->job_id ;?>"><button class="accept-btn" >Accept</button></a>
-        <a href="<?php echo URLROOT.'/WorkerController/RejectJob/'.$data->job_id ;?>"><button class="reject-btn" onclick="rejectRequest(<?php echo $data->job_id; ?>)">Reject</button></a>
-        
-        
+        <a href="tel:<?php echo '+94788278880' ?>"><button class="accept-btn">Contact The Farmer</button></a>
     </div>
 </div>
 
