@@ -82,3 +82,14 @@ CREATE TABLE job_requests (
     FOREIGN KEY (farmer_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (worker_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
+
+
+CREATE TABLE bids (
+    bid_id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT NOT NULL,
+    buyer_id INT NOT NULL,
+    bid_amount DECIMAL(10,2) NOT NULL,
+    bid_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES corn_products(product_id) ON DELETE CASCADE,
+    FOREIGN KEY (buyer_id) REFERENCES users(user_id) ON DELETE CASCADE
+);

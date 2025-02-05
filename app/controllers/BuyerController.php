@@ -29,12 +29,12 @@ class BuyerController extends Controller {
 
     public function LandingPage() {
         $data = [];
-        $this->View('Buyer/landing page', $data);
+        $this->View('Buyer/LandingPage', $data);
     }
 
     public function bidProduct() {
-        $data = [];
-        $this->View('Buyer/bid product', $data);
+        $data = $this->BuyerModel->getAvailableProducts();
+        $this->View('Buyer/bidProduct', $data);
     }
 
     public function placeBid() {
