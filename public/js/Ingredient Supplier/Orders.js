@@ -1,93 +1,337 @@
-document.addEventListener('DOMContentLoaded', () => {
+function showModal(modalId, order = null) {
+
+    const modal = document.getElementById(modalId);
+    if (order) {
+        if (modalId === 'orderDetailsModal') {
+            populateOrderDetails(order);
+        }
+    }
+    modal.style.display = 'block';
+}
+
+function populateOrderDetails(order) {
+    document.getElementById('customerName').innerText = order.customer_name;
+    document.getElementById('deliveryAddress').innerText = order.delivery_address;
+    document.getElementById('productDetails').innerText = `${order.product_name} (Quantity: ${order.quantity})`;
+    document.getElementById('specialInstructions').innerText = order.special_instructions;
+
+    document.getElementById('acceptOrderBtn').onclick = () => acceptOrder(order.id);
+    document.getElementById('rejectOrderBtn').onclick = () => rejectOrder(order.id);
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    modal.style.display = 'none';
+}
+
+function loadOrders(orders) {
     const ordersTable = document.getElementById('ordersTable').getElementsByTagName('tbody')[0];
-    const orderDetailsModal = document.getElementById('orderDetailsModal');
-    const closeModal = document.getElementsByClassName('close')[0];
-    const closeBtn = document.getElementById('closeBtn');
-    const acceptOrderBtn = document.getElementById('acceptOrderBtn');
-    const sendCodeBtn = document.getElementById('sendCodeBtn');
-    const statusFilter = document.getElementById('statusFilter');
+    ordersTable.innerHTML = ''; // Clear table
+    orders.forEach(order => {
+        const newRow = ordersTable.insertRow();
+        newRow.innerHTML = `
+            <td>${order.id}</td>
+            <td>${order.product_name}</td>
+            <td>${order.farmer_id}</td>
+            <td>LKR ${order.price}</td>
+            <td>${order.payment_status}</td>
+            <td>${order.quantity}</td>
+            <td>${order.order_status}</td>
+            <td class="actions">
+                <button class="accept" onclick="acceptOrder(${order.id})">Accept</button>
+                <button class="reject" onclick="rejectOrder(${order.id})">Reject</button>
+                <button class="view" onclick="viewOrderDetails(${order.id})">View</button>
+            </td>
+        `;
+    });
+}
 
-    const sampleOrders = [
-        { id: 1, product: 'Fertilizer', customer: 'E.K.D Ekanayake', price: 1000, payment: 'Credit Card', quantity: 2, status: 'Pending', address: '123 Main St', instructions: 'Leave at the front door' },
-        { id: 2, product: 'Pesticide', customer: 'R.M.H Sampath', price: 1500, payment: 'Credit Card', quantity: 1, status: 'Accepted', address: '456 Oak St', instructions: 'Ring the bell' },
-        { id: 3, product: 'Seed', customer: 'D.M.M Rajapaksha', price: 2000, payment: 'Credit Card', quantity: 5, status: 'Pending', address: '789 Pine St', instructions: 'Call upon arrival' },
-    ];
-
-    function loadOrders(orders) {
-        ordersTable.innerHTML = ''; // Clear table
-        orders.forEach(order => {
-            const newRow = ordersTable.insertRow();
-            newRow.innerHTML = `
-                <td>${order.id}</td>
-                <td>${order.product}</td>
-                <td>${order.customer}</td>
-                <td>${order.price}</td>
-                <td>${order.payment}</td>
-                <td>${order.quantity}</td>
-                <td>${order.status}</td>
-                <td class="actions">
-                    <button class="accept">Accept</button>
-                    <button class="send-code">Cancel</button>
-                </td>
-            `;
-
-            // Event listeners for actions
-            const acceptBtn = newRow.querySelector('.accept');
-            const sendCodeBtn = newRow.querySelector('.send-code');
-
-            acceptBtn.addEventListener('click', () => showOrderDetails(order));
-            sendCodeBtn.addEventListener('click', () => showOrderDetails(order));
+function viewOrderDetails(orderId) {
+    fetch(`${URLROOT}/OrderController/getOrderDetails/${orderId}`, {
+        mode: 'cors'
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(order => {
+            showModal('orderDetailsModal', order);
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+            alert('Failed to fetch order details');
         });
-    }
+}
 
-    function showOrderDetails(order) {
-        document.getElementById('customerName').innerText = order.customer;
-        document.getElementById('deliveryAddress').innerText = order.address;
-        document.getElementById('productDetails').innerText = `${order.product} (Quantity: ${order.quantity})`;
-        document.getElementById('specialInstructions').innerText = order.instructions;
+function acceptOrder(orderId) {
+    fetch(`${URLROOT}/OrderController/updateOrderStatus/${orderId}/accepted`, {
+        mode: 'cors'
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                alert(`Order ID ${orderId} has been accepted.`);
+                closeModal('orderDetailsModal');
+                loadOrders(data.orders);
+            } else {
+                alert('Error accepting order');
+            }
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+            alert('Failed to accept order');
+        });
+}
 
-        acceptOrderBtn.addEventListener('click', () => acceptOrder(order.id));
-        sendCodeBtn.addEventListener('click', () => sendDeliveryCode(order.id));
+function rejectOrder(orderId) {
+    const reason = document.getElementById('rejectionReason').value;
+    fetch(`${URLROOT}/OrderController/updateOrderStatus/${orderId}/rejected`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ reason: reason }),
+        mode: 'cors'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            alert(`Order ID ${orderId} has been rejected.`);
+            closeModal('orderDetailsModal');
+            loadOrders(data.orders);
+        } else {
+            alert('Error rejecting order');
+        }
+    })
+    .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+        alert('Failed to reject order');
+    });
+}
 
-        orderDetailsModal.style.display = 'block';
-    }
-
-    function acceptOrder(orderId) {
-        alert(`Order ID ${orderId} has been accepted.`);
-        orderDetailsModal.style.display = 'none';
-        // Logic to update order status in the database can go here
-    }
-
-    function sendDeliveryCode(orderId) {
-        alert(`Delivery code sent for Order ID ${orderId}.`);
-        orderDetailsModal.style.display = 'none';
-        // Logic to send delivery code can go here
-    }
-
-    closeModal.addEventListener('click', () => {
-        orderDetailsModal.style.display = 'none';
+document.addEventListener('DOMContentLoaded', () => {
+    const closeModalButtons = document.querySelectorAll('.close, #closeBtn');
+    closeModalButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            closeModal('orderDetailsModal');
+        });
     });
 
-    closeBtn.addEventListener('click', () => {
-        orderDetailsModal.style.display = 'none';
-    });
-
-    window.onclick = function(event) {
-        if (event.target == orderDetailsModal) {
-            orderDetailsModal.style.display = 'none';
+    window.onclick = (event) => {
+        if (event.target.classList.contains('modal')) {
+            closeModal(event.target.id);
         }
     };
 
-    statusFilter.addEventListener('change', () => {
-        const filterValue = statusFilter.value;
-        if (filterValue === 'all') {
-            loadOrders(sampleOrders);
-        } else {
-            const filteredOrders = sampleOrders.filter(order => order.status.toLowerCase() === filterValue);
-            loadOrders(filteredOrders);
+    document.getElementById('statusFilter').addEventListener('change', () => {
+        const filterValue = document.getElementById('statusFilter').value;
+        fetch(`${URLROOT}/OrderController/filterOrders/${filterValue}`, {
+            mode: 'cors'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(filteredOrders => {
+                loadOrders(filteredOrders);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+                alert('Failed to filter orders');
+            });
+    });
+
+});
+
+function showModal(modalId, order = null) {
+    const modal = document.getElementById(modalId);
+    if (order) {
+        if (modalId === 'orderDetailsModal') {
+            populateOrderDetails(order);
         }
+    }
+    modal.style.display = 'block';
+}
+
+function populateOrderDetails(order) {
+    document.getElementById('customerName').innerText = order.customer_name;
+    document.getElementById('deliveryAddress').innerText = order.delivery_address;
+    document.getElementById('productDetails').innerText = `${order.product_name} (Quantity: ${order.quantity})`;
+    document.getElementById('specialInstructions').innerText = order.special_instructions;
+
+    document.getElementById('acceptOrderBtn').onclick = () => acceptOrder(order.id);
+    document.getElementById('rejectOrderBtn').onclick = () => rejectOrder(order.id);
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    modal.style.display = 'none';
+}
+
+function loadOrders(orders) {
+    const ordersTable = document.getElementById('ordersTable').getElementsByTagName('tbody')[0];
+    ordersTable.innerHTML = ''; // Clear table
+    orders.forEach(order => {
+        const newRow = ordersTable.insertRow();
+        newRow.innerHTML = `
+            <td>${order.id}</td>
+            <td>${order.product_name}</td>
+            <td>${order.farmer_id}</td>
+            <td>LKR ${order.price}</td>
+            <td>${order.payment_status}</td>
+            <td>${order.quantity}</td>
+            <td>${order.order_status}</td>
+            <td class="actions">
+                <button class="accept" onclick="acceptOrder(${order.id})">Accept</button>
+                <button class="reject" onclick="rejectOrder(${order.id})">Reject</button>
+                <button class="view" onclick="viewOrderDetails(${order.id})">View</button>
+            </td>
+        `;
+    });
+}
+
+function viewOrderDetails(orderId) {
+    fetch(`${URLROOT}/OrderController/getOrderDetails/${orderId}`, {
+        mode: 'cors'
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(order => {
+            showModal('orderDetailsModal', order);
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+            alert('Failed to fetch order details');
+        });
+}
+
+function acceptOrder(orderId) {
+    fetch(`${URLROOT}/OrderController/updateOrderStatus/${orderId}/accepted`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        mode: 'cors'
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                alert(`Order ID ${orderId} has been accepted.`);
+                closeModal('orderDetailsModal');
+                loadOrders(data.orders);
+            } else {
+                alert('Error accepting order');
+            }
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+            alert('Failed to accept order');
+        });
+}
+
+function rejectOrder(orderId) {
+    const reason = document.getElementById('rejectionReason').value;
+    fetch(`${URLROOT}/OrderController/updateOrderStatus/${orderId}/rejected`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ reason: reason }),
+        mode: 'cors'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            alert(`Order ID ${orderId} has been rejected.`);
+            closeModal('orderDetailsModal');
+            loadOrders(data.orders);
+        } else {
+            alert('Error rejecting order');
+        }
+    })
+    .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+        alert('Failed to reject order');
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const closeModalButtons = document.querySelectorAll('.close, #closeBtn');
+    closeModalButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            closeModal('orderDetailsModal');
+        });
+    });
+
+    window.onclick = (event) => {
+        if (event.target.classList.contains('modal')) {
+            closeModal(event.target.id);
+        }
+    };
+
+    document.getElementById('statusFilter').addEventListener('change', () => {
+        const filterValue = document.getElementById('statusFilter').value;
+        fetch(`${URLROOT}/OrderController/filterOrders/${filterValue}`, {
+            mode: 'cors'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(filteredOrders => {
+                loadOrders(filteredOrders);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+                alert('Failed to filter orders');
+            });
     });
 
     // Load initial orders
-    loadOrders(sampleOrders);
+    fetch(`${URLROOT}/OrderController/getOrders`, {
+        mode: 'cors'
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(orders => {
+            loadOrders(orders);
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+            alert('Failed to load orders');
+        });
 });
