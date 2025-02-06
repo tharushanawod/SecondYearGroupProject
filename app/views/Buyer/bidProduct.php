@@ -18,11 +18,15 @@
     <div class="main-content">
         <div class="filter-bar">                
             <div class="filter-section">
-                <h4 id="category-label">Category</h4>
-                <select name="category" aria-labelledby="category-label">
-                    <option value="fresh">Fresh</option>
-                    <option value="dry">Dry</option>                        
-                </select>
+                <h4>Price Range (LKR per 1Kg)</h4>
+                <label>
+                    Min: 
+                    <input type="number" id="minPrice" min="0" step="50">
+                </label>
+                <label>
+                    Max: 
+                    <input type="number" id="maxPrice" min="0" step="50">
+                </label>
             </div>
             <div class="filter-section">
                 <h4>Quantity</h4>                    
@@ -44,7 +48,7 @@
                         <img src="<?php echo URLROOT.'/'.$product->media;?>" alt="Product Image">
                         <h3><?php echo $product->name; ?></h3>
                         <p>Starting Price(1Kg): LKR <?php echo $product->starting_price; ?></p>
-                        <p>Current Highest Bid: LKR <?php echo $product->highest_bid; ?></p>
+                        <p>Current Highest Bid:  <?php echo isset($product->highest_bid) ? 'LKR'.$product->highest_bid : 'No bids yet'; ?></p>
                         <p>Auction Closes In: <?php
                             $current_time = new DateTime();
                             $expire_time = new DateTime($product->closing_date);
