@@ -87,6 +87,34 @@ class Buyer {
         return $rows;
     }
 
+    public function getProductById($id) {
+        $this->db->query("
+        SELECT corn_products.*,users.name,farmers.district 
+        FROM corn_products
+        INNER JOIN users ON corn_products.user_id = users.user_id
+        LEFT JOIN farmers ON corn_products.user_id = farmers.user_id
+         WHERE product_id = :id
+        ");
+        $this->db->bind(':id', $id);
+        $row = $this->db->single();
+        return $row;
+    }
+
+    public function SubmitBid($data) {
+        $this->db->query("INSERT INTO bids (product_id, buyer_id, bid_amount) VALUES (:product_id, :buyer_id, :bid_amount)");
+        $this->db->bind(':product_id', $data['product_id']);
+        $this->db->bind(':buyer_id', $data['buyer_id']);
+        $this->db->bind(':bid_amount', $data['bid_amount']);
+
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    
+
   
     
 

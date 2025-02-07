@@ -37,10 +37,36 @@ class BuyerController extends Controller {
         $this->View('Buyer/bidProduct', $data);
     }
 
-    public function placeBid() {
-        $data = [];
-        $this->View('Buyer/place bid', $data);
+    public function PlaceBid($product_id) {
+        $data= $this->BuyerModel->getProductById($product_id);
+        $this->View('Buyer/PlaceBid', $data);
     }
+
+    public function SubmitBid() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Sanitize input data
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            $data = [
+                'product_id' => trim($_POST['product_id']),
+                'buyer_id' => trim($_POST['buyer_id']),
+                'bid_amount' => trim($_POST['bid_amount']),
+            ];
+    
+            // Process the bid submission
+            $result = $this->BuyerModel->submitBid($data);
+            
+            // Return JSON response based on the result
+            header('Content-Type: application/json');
+            
+            if ($result) {
+                echo json_encode(['success' => true, 'message' => 'Bid submitted successfully!']);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Error submitting the bid.']);
+            }
+            exit;
+        }
+    }
+    
 
     public function cancelBid() {
         $data = [];

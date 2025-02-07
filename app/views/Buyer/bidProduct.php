@@ -5,6 +5,280 @@
     <title>Bidding Page</title>
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Buyer/bidProduct.css">
     <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet"/>
+    <style>
+        @import url(../components/sidebar.css);
+*{
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+   
+    background-color:#f4f4f4;
+    background-size: cover;
+    background-position: center;
+   
+}
+
+.header-content {
+    align-items: center;    
+    color: #034616;
+    padding: 10px 20px;
+}
+
+.header-content h1 {
+    margin-top: 30px;
+    margin-left: 700px;
+    font-size: 55px;
+    text-shadow: 2px 2px 4px #78bb80;
+}
+
+.header-content p {
+    margin-left: 680px;
+    font-size: 20px;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+}
+
+.filter-bar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 75px;
+    background-color: #ecf7f0;
+    padding: 16px 24px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 0 auto 20px;
+    width: 72%;
+    margin-left:340px;
+}
+
+.filter-section {    
+    margin-left: 30px;
+}
+
+.filter-section h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.filter-section select {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: white;
+    width: 200px;
+    font-size: 14px;
+}
+
+.filter-section label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;    
+}
+
+.filter-section input[type="number"] {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 120px;
+    font-size: 14px;
+}
+
+#applyFilters {
+    padding: 8px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    height: 36px;
+    margin-right: 15px;
+}
+
+#applyFilters:hover {
+    background-color: #45a049;
+}
+
+.active-bids {    
+    background-color: #ffffff;
+    padding: 40px;    
+    width:76%;
+    margin-left:300px;
+
+}
+
+.active-bids h2 {
+    text-align: center;
+    font-size: 45px;
+    color: #225428;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px #78bb80;
+}
+
+.bids-grid {
+    display: grid;    
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.bid-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px #a5d0b0;
+    padding: 15px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s;
+}
+
+.bid-card h3 {    
+    text-align: center;
+}
+
+.bid-card:hover {
+    transform: translateY(-5px);
+}
+
+.bid-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.bid-card h3 {
+    font-size: 18px;
+    margin: 0 0 10px;
+}
+
+.bid-card p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.action-btn {
+    padding: 10px;
+    background-color: #299233;
+    color: white;    
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    flex: 1;
+    margin: 5px;    
+}
+
+.action-btn:hover {
+    background-color: #5b9162;
+}
+
+.button-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.modal {
+    display: none;
+    position: fixed;    
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    height: auto;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #bcc2bc;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content .close {
+    color: #000000;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal-content h2 {
+    font-size: 24px;
+    color: #000000;
+    margin-bottom: 10px;
+}
+
+.modal-content p {
+    font-size: 16px;
+    color: #000000;
+    margin-bottom: 20px;
+}
+
+.modal-content input[type="number"] {
+    padding: 10px;
+    width: 300px;
+    border: 1px solid #f5f6e8;
+    border-radius: 5px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+}
+
+.modal-content .submit-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;    
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    background-color: #1a4f2c;
+}
+
+.modal-content .submit-btn:hover {
+    background-color: #174b25;
+}
+
+@media (max-width: 768px) {
+    .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .bids-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .bids-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+    </style>
 </head>
 <body>
 
@@ -57,7 +331,7 @@
                         ?></p>
                         <p>Quantity: <?php echo $product->quantity; ?> kg</p>
                         <div class="button-row">
-                            <a href="<?php echo URLROOT;?>/BuyerController/placeBid" class="action-btn">Place Bid</a>                        
+                            <a href="<?php echo URLROOT;?>/BuyerController/PlaceBid/<?php echo $product->product_id ;?>" class="action-btn">Place Bid</a>                        
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -65,18 +339,9 @@
         </div>
     </div> 
     
-    <div id="bidModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h2>Place Your Bid</h2>
-            <p id="modalProduct">Dry Corn</p>
-            <p id="modalCurrentBid">LKR 1000</p>
-            <p id="yourBid">Your Bid: LKR 800</p>
-            <p>You are about to bid on this product. Make sure to place a bid higher than the current bid to increase your chances of winning.</p>
-            <input type="number" id="newBid" placeholder="Enter your bid">
-            <button class="submit-btn" onclick="placeBid()">Place Bid</button>
-        </div>
-    </div>
-    <script src="<?php echo URLROOT;?>/js/Buyer/bid product.js"></script> 
+    
+    <script>
+
+    </script>
 </body>
 </html>
