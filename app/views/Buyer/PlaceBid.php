@@ -25,12 +25,13 @@
             <p>Auction Closes In: <span id="countdown"></span></p>
             <p>Quantity: <?php echo $data->quantity; ?> kg</p>
 
-            <form class="bid-form" action="<?php echo URLROOT; ?>/bids/placeBid" method="post" onsubmit="return validateBid()">
-            <input type="hidden" name="product_id" value="<?php echo $product->id; ?>">
+            <form class="bid-form" id="bidForm" action="<?php echo URLROOT; ?>/BuyerController/SubmitBid" method="post" onsubmit="return validateBid()">
+            <input type="hidden" name="product_id" value="<?php echo $data->product_id; ?>">
+            <input type="hidden" name="buyer_id" value="<?php echo $_SESSION['user_id']; ?>">
             <input type="number" id="bid_amount" name="bid_amount" placeholder="Enter your bid amount" required>
             <button type="submit">Submit Bid</button>
             </form>
-
+            <?php echo $product->seller_id; ?>
             </div>
             
         </div>
@@ -100,6 +101,36 @@
             }
             return true;
         }
+
+        document.getElementById('bidForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            if (!validateBid()) {
+            return;
+            }
+
+            var formData = new FormData(this);
+
+            fetch(this.action, {
+            method: 'POST',
+            body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+            if (data.success) {
+                showAlert('Your bid has been submitted successfully!');
+
+                setTimeout(function() {
+                window.location.href = data.redirectUrl || "<?php echo URLROOT; ?>/BuyerController/bidProduct"; // Redirect to the desired URL
+            }, 3000); // 3000 milliseconds = 3 seconds
+            } else {
+                alert('There was an error submitting your bid: ' + (data.error || 'Unknown error'));
+            }
+            })
+            .catch(error => {
+            alert('There was an error submitting your bid: ' + error.message);
+            });
+        });
     </script>
 </body>
 </html>

@@ -100,6 +100,19 @@ class Buyer {
         return $row;
     }
 
+    public function SubmitBid($data) {
+        $this->db->query("INSERT INTO bids (product_id, buyer_id, bid_amount) VALUES (:product_id, :buyer_id, :bid_amount)");
+        $this->db->bind(':product_id', $data['product_id']);
+        $this->db->bind(':buyer_id', $data['buyer_id']);
+        $this->db->bind(':bid_amount', $data['bid_amount']);
+
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     
 
   
