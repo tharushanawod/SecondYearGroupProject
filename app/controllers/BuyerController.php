@@ -37,9 +37,9 @@ class BuyerController extends Controller {
         $this->View('Buyer/bidProduct', $data);
     }
 
-    public function placeBid() {
-        $data = [];
-        $this->View('Buyer/place bid', $data);
+    public function PlaceBid($product_id) {
+        $data= $this->BuyerModel->getProductById($product_id);
+        $this->View('Buyer/PlaceBid', $data);
     }
 
     public function cancelBid() {
