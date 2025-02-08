@@ -103,25 +103,23 @@ class SupplierController extends Controller {
         $target_file = $target_dir . basename($image);
 
         if (!empty($image)) {
-            // Move the uploaded file to the target directory
             move_uploaded_file($_FILES['image']['tmp_name'], $target_file);
         } else {
             $image = $_POST['existing_image'];
         }
 
         $data = [
-            'product_id' => $_POST['product_id'],
+            'product_id' => $_POST['product_id'],  // Changed from 'id'
             'product_name' => $_POST['product_name'],
             'category_id' => $_POST['category_id'],
             'price' => $_POST['price'],
             'stock' => $_POST['stock'],
             'description' => $_POST['description'],
-            'image' => $image
+            'image' => $image,
+            'supplier_id' => $_SESSION['user_id']
         ];
 
         $this->Product->updateProduct($data);
-
-        // Redirect to the product management page
         header('Location: ' . URLROOT . '/SupplierController/productManagement');
     }
 
@@ -135,28 +133,32 @@ class SupplierController extends Controller {
     }
 
     public function destroy() {
-        // Get the product ID from the POST request
-        $product_id = $_POST['product_id'];
-
-        // Fetch the product details from the database
-        $product = $this->Product->getProductById($product_id);
-
-        // Check if the product exists
-        if ($product) {
-            // Delete the product image from the server
-            if (file_exists('uploads/' . $product->image)) {
-                unlink('uploads/' . $product->image);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product_id'])) {
+            $product_id = $_POST['product_id'];
+            
+            // Get product details before deletion
+            $product = $this->Product->getProductById($product_id);
+            
+            if ($product) {
+                // Delete the image file if it exists
+                $image_path = 'uploads/' . $product->image;
+                if (file_exists($image_path)) {
+                    unlink($image_path);
+                }
+                
+                // Delete the product from database
+                if ($this->Product->deleteProduct($product_id)) {
+                    // Set success message
+                    $_SESSION['message'] = 'Product deleted successfully';
+                    $_SESSION['message_type'] = 'success';
+                } else {
+                    $_SESSION['message'] = 'Failed to delete product';
+                    $_SESSION['message_type'] = 'error';
+                }
             }
-
-            // Delete the product from the database
-            $this->Product->deleteProduct($product_id);
-
-            // Redirect to the product management page
-            header('Location: ' . URLROOT . '/SupplierController/productManagement');
-        } else {
-            // Handle the case where the product does not exist
-            echo "Product not found.";
         }
+        header('Location: ' . URLROOT . '/SupplierController/productManagement');
+        exit();
     }
 
     public function shop() {

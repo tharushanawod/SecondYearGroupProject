@@ -20,7 +20,7 @@ class Product {
                          FROM supplier_products p 
                          LEFT JOIN categories c ON p.category_id = c.category_id 
                          WHERE p.product_id = :product_id');
-        $this->db->bind(':id', $id);
+        $this->db->bind(':product_id', $id); // Correct binding of product ID
         return $this->db->single();
     }
 
@@ -49,11 +49,11 @@ class Product {
         if ($data['image']) {
             $query .= ', image = :image';
         }
-        $query .= ' WHERE id = :id AND supplier_id = :supplier_id';
+        $query .= ' WHERE product_id = :product_id AND supplier_id = :supplier_id';
 
         $this->db->query($query);
         
-        $this->db->bind(':id', $data['id']);
+        $this->db->bind(':product_id', $data['product_id']);
         $this->db->bind(':name', $data['product_name']);
         $this->db->bind(':category_id', $data['category_id']);
         $this->db->bind(':price', $data['price']);
@@ -62,14 +62,14 @@ class Product {
         if ($data['image']) {
             $this->db->bind(':image', $data['image']);
         }
-        $this->db->bind(':supplier_id', $_SESSION['user_id']);
+        $this->db->bind(':supplier_id', $data['supplier_id']);
 
         return $this->db->execute();
     }
 
-    public function deleteProduct($id) {
-        $this->db->query('DELETE FROM supplier_products WHERE id = :id AND supplier_id = :supplier_id');
-        $this->db->bind(':id', $id);
+    public function deleteProduct($product_id) {
+        $this->db->query('DELETE FROM supplier_products WHERE product_id = :product_id AND supplier_id = :supplier_id');
+        $this->db->bind(':product_id', $product_id); // Ensure correct product ID is used
         $this->db->bind(':supplier_id', $_SESSION['user_id']);
         return $this->db->execute();
     }

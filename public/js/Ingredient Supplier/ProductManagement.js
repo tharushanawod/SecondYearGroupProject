@@ -11,7 +11,7 @@ function showModal(modalId, product = null, URLROOT = '') {
 }
 
 function populateUpdateForm(product, URLROOT) {
-    document.getElementById('updateProductId').value = product.product_id;
+    document.getElementById('updateProductId').value = product.product_id; // Changed from 'id'
     document.getElementById('updateProductName').value = product.product_name;
     document.getElementById('updateCategory').value = product.category_id;
     document.getElementById('updatePrice').value = product.price;
@@ -23,7 +23,7 @@ function populateUpdateForm(product, URLROOT) {
 }
 
 function populateDeleteForm(product, URLROOT) {
-    document.getElementById('deleteProductId').value = product.product_id;
+    document.getElementById('deleteProductId').value = product.product_id; // Ensure correct product ID is used
     document.getElementById('deleteProductName').innerText = product.product_name;
     document.getElementById('deleteProductCategory').innerText = product.category_name;
     document.getElementById('deleteProductPrice').innerText = product.price;
@@ -76,30 +76,6 @@ function previewImage(input, previewId) {
         };
         reader.readAsDataURL(file);
     }
-}
-
-function validateForm(formId) {
-    const form = document.getElementById(formId);
-    const price = form.querySelector('[name="price"]');
-    const stock = form.querySelector('[name="stock"]');
-    const description = form.querySelector('[name="description"]');
-
-    if (parseFloat(price.value) <= 0) {
-        alert('Price must be greater than 0');
-        return false;
-    }
-
-    if (parseInt(stock.value) < 0) {
-        alert('Stock cannot be negative');
-        return false;
-    }
-
-    if (description.value.length < 10) {
-        alert('Description must be at least 10 characters');
-        return false;
-    }
-
-    return true;
 }
 
 function filterProducts() {
