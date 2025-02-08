@@ -10,10 +10,10 @@ class Supplier {
 
     public function addProduct($data) {
         $this->db->query('INSERT INTO supplier_products (product_name, category_id, price, stock, description, image, supplier_id) 
-                         VALUES (:name, :category, :price, :stock, :description, :image, :supplier_id)');
+                         VALUES (:name, :category_id, :price, :stock, :description, :image, :supplier_id)');
         
         $this->db->bind(':name', $data['product_name']);
-        $this->db->bind(':category', $data['category_id']);
+        $this->db->bind(':category_id', $data['category_id']);
         $this->db->bind(':price', $data['price']);
         $this->db->bind(':stock', $data['stock']);
         $this->db->bind(':description', $data['description']);
@@ -35,7 +35,7 @@ class Supplier {
     public function updateProduct($data) {
         $this->db->query('UPDATE supplier_products 
                          SET product_name = :name, 
-                             category_id = :category,
+                             category_id = :category_id,
                              price = :price,
                              stock = :stock,
                              description = :description,
@@ -43,7 +43,7 @@ class Supplier {
                          WHERE id = :id AND supplier_id = :supplier_id');
         
         $this->db->bind(':name', $data['product_name']);
-        $this->db->bind(':category', $data['category_id']);
+        $this->db->bind(':category_id', $data['category_id']);
         $this->db->bind(':price', $data['price']);
         $this->db->bind(':stock', $data['stock']);
         $this->db->bind(':description', $data['description']);

@@ -130,7 +130,7 @@
             <div class="modal-content">
                 <h2>Update Product</h2>
                 <form action="<?php echo URLROOT; ?>/SupplierController/update" method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="id" id="updateProductId">
+                    <input type="hidden" name="product_id" id="updateProductId">
                     <input type="hidden" name="existing_image" id="updateProductExistingImage">
                     
                     <div class="form-group">

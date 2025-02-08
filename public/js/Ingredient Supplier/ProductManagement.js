@@ -11,7 +11,7 @@ function showModal(modalId, product = null, URLROOT = '') {
 }
 
 function populateUpdateForm(product, URLROOT) {
-    document.getElementById('updateProductId').value = product.id;
+    document.getElementById('updateProductId').value = product.product_id;
     document.getElementById('updateProductName').value = product.product_name;
     document.getElementById('updateCategory').value = product.category_id;
     document.getElementById('updatePrice').value = product.price;
@@ -23,7 +23,7 @@ function populateUpdateForm(product, URLROOT) {
 }
 
 function populateDeleteForm(product, URLROOT) {
-    document.getElementById('deleteProductId').value = product.id;
+    document.getElementById('deleteProductId').value = product.product_id;
     document.getElementById('deleteProductName').innerText = product.product_name;
     document.getElementById('deleteProductCategory').innerText = product.category_name;
     document.getElementById('deleteProductPrice').innerText = product.price;

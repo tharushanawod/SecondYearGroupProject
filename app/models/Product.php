@@ -19,17 +19,17 @@ class Product {
         $this->db->query('SELECT p.*, c.category_name 
                          FROM supplier_products p 
                          LEFT JOIN categories c ON p.category_id = c.category_id 
-                         WHERE p.id = :id');
+                         WHERE p.product_id = :product_id');
         $this->db->bind(':id', $id);
         return $this->db->single();
     }
 
     public function addProduct($data) {
         $this->db->query('INSERT INTO supplier_products (product_name, category_id, price, stock, description, image, supplier_id) 
-                         VALUES (:name, :category, :price, :stock, :description, :image, :supplier_id)');
+                         VALUES (:name, :category_id, :price, :stock, :description, :image, :supplier_id)');
         
         $this->db->bind(':name', $data['product_name']);
-        $this->db->bind(':category', $data['category_id']);
+        $this->db->bind(':category_id', $data['category_id']);
         $this->db->bind(':price', $data['price']);
         $this->db->bind(':stock', $data['stock']);
         $this->db->bind(':description', $data['description']);
@@ -55,7 +55,7 @@ class Product {
         
         $this->db->bind(':id', $data['id']);
         $this->db->bind(':name', $data['product_name']);
-        $this->db->bind(':category', $data['category_id']);
+        $this->db->bind(':category_id', $data['category_id']);
         $this->db->bind(':price', $data['price']);
         $this->db->bind(':stock', $data['stock']);
         $this->db->bind(':description', $data['description']);

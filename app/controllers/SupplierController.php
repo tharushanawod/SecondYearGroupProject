@@ -40,11 +40,15 @@ class SupplierController extends Controller {
     }
 
     public function productManagement() {
-        $supplier = $this->Supplier;
+        $supplierId = $_SESSION['user_id'];
+        $products = $this->Product->getProducts($supplierId);
+        $categories = $this->Supplier->getCategories();
+        
         $data = [
-            'products' => $supplier->getProducts(),
-            'categories' => $supplier->getCategories()
+            'products' => $products,
+            'categories' => $categories
         ];
+        
         $this->view('Ingredient Supplier/ProductManagement', $data);
     }
 
@@ -106,7 +110,7 @@ class SupplierController extends Controller {
         }
 
         $data = [
-            'id' => $_POST['id'],
+            'product_id' => $_POST['product_id'],
             'product_name' => $_POST['product_name'],
             'category_id' => $_POST['category_id'],
             'price' => $_POST['price'],
