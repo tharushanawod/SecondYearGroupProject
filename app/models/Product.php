@@ -7,18 +7,18 @@ class Product {
     }
 
     public function getProducts($supplier_id) {
-        $this->db->query("SELECT p.*, c.name as category_name 
+        $this->db->query("SELECT p.*, c.category_name 
                          FROM supplier_products p 
-                         LEFT JOIN categories c ON p.category_id = c.id
+                         LEFT JOIN categories c ON p.category_id = c.category_id 
                          WHERE p.supplier_id = :supplier_id");
         $this->db->bind(':supplier_id', $supplier_id);
         return $this->db->resultSet();
     }
 
     public function getProductById($id) {
-        $this->db->query('SELECT p.*, c.name as category_name 
+        $this->db->query('SELECT p.*, c.category_name 
                          FROM supplier_products p 
-                         LEFT JOIN categories c ON p.category_id = c.id 
+                         LEFT JOIN categories c ON p.category_id = c.category_id 
                          WHERE p.id = :id');
         $this->db->bind(':id', $id);
         return $this->db->single();
@@ -42,7 +42,7 @@ class Product {
     public function updateProduct($data) {
         $query = 'UPDATE supplier_products 
                   SET product_name = :name, 
-                      category_id = :category,
+                      category_id = :category_id,
                       price = :price,
                       stock = :stock,
                       description = :description';
@@ -75,9 +75,9 @@ class Product {
     }
 
     public function getProductsByCategory($category_id, $supplier_id) {
-        $this->db->query("SELECT p.*, c.name as category_name 
+        $this->db->query("SELECT p.*, c.category_name 
                          FROM supplier_products p 
-                         LEFT JOIN categories c ON p.category_id = c.id 
+                         LEFT JOIN categories c ON p.category_id = c.category_id 
                          WHERE p.category_id = :category_id AND p.supplier_id = :supplier_id");
         $this->db->bind(':category_id', $category_id);
         $this->db->bind(':supplier_id', $supplier_id);
@@ -85,10 +85,9 @@ class Product {
     }
 
     public function getCategories() {
-        $this->db->query('SELECT * FROM categories');
+        $this->db->query('SELECT category_id, category_name FROM categories');
         return $this->db->resultSet();
     }
-
     public function getOrderById($order_id) {
         $this->db->query('SELECT o.*, p.product_name, u.name as customer_name 
                          FROM orders o 

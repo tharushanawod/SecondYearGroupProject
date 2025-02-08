@@ -24,7 +24,10 @@ class Supplier {
     }
     
     public function getProductById($id) {
-        $this->db->query('SELECT * FROM supplier_products WHERE id = :id');
+        $this->db->query('SELECT p.*, c.category_name 
+                         FROM supplier_products p 
+                         LEFT JOIN categories c ON p.category_id = c.category_id 
+                         WHERE p.id = :id');
         $this->db->bind(':id', $id);
         return $this->db->single();
     }
@@ -58,27 +61,28 @@ class Supplier {
         return $this->db->execute();
     }
 
-    public function getProducts() {
-        $this->db->query('SELECT p.*, c.name as category_name 
-                         FROM supplier_products p
-                         JOIN categories c ON p.category_id = c.id
-                         WHERE p.supplier_id = :supplier_id');
-        $this->db->bind(':supplier_id', $_SESSION['user_id']);
+    public function getProducts($supplier_id) {
+        $this->db->query("SELECT p.*, c.category_name 
+                         FROM supplier_products p 
+                         LEFT JOIN categories c ON p.category_id = c.category_id 
+                         WHERE p.supplier_id = :supplier_id");
+        $this->db->bind(':supplier_id', $supplier_id);
         return $this->db->resultSet();
     }
 
-    public function getProductsByCategory($category_id) {
-        $this->db->query('SELECT p.*, c.name as category_name 
-                         FROM supplier_products p
-                         JOIN categories c ON p.category_id = c.id
-                         WHERE p.category_id = :category_id');
+    public function getProductsByCategory($category_id, $supplier_id) {
+        $this->db->query("SELECT p.*, c.category_name 
+                         FROM supplier_products p 
+                         LEFT JOIN categories c ON p.category_id = c.category_id 
+                         WHERE p.category_id = :category_id AND p.supplier_id = :supplier_id");
         $this->db->bind(':category_id', $category_id);
+        $this->db->bind(':supplier_id', $supplier_id);
         return $this->db->resultSet();
     }
 
     public function getCategories() {
-        $this->db->query('SELECT * FROM categories');
-        return $this->db->resultSet();    
+        $this->db->query('SELECT category_id, category_name FROM categories');
+        return $this->db->resultSet();
     }
     
     public function updateProfile($data) {
