@@ -3,8 +3,7 @@
 class SupplierController extends Controller {
     private $Product;
     private $Supplier;
-    private $Order;
-
+    
     public function __construct() {
         if (!$this->isloggedin()) {
             unset($_SESSION['user_id']);
@@ -15,7 +14,6 @@ class SupplierController extends Controller {
         }
         $this->Product = $this->model('Product');
         $this->Supplier = $this->model('Supplier');
-        $this->Order = $this->model('Order');
     }
 
     public function isloggedin() {
@@ -31,7 +29,13 @@ class SupplierController extends Controller {
     }
 
     public function dashboard() {
-        $data = [];
+        $supplierId = $_SESSION['user_id'];
+        $recentOrders = $this->Supplier->getRecentOrders($supplierId);
+        
+        $data = [
+            'recentOrders' => $recentOrders
+        ];
+        
         $this->view('Ingredient Supplier/Supplier Dashboard', $data);
     }
 
@@ -202,15 +206,34 @@ class SupplierController extends Controller {
     }
 
     public function viewOrders() {
+        $status = $_GET['status'] ?? 'all';
         $supplierId = $_SESSION['user_id'];
-        $orders = $this->Order->getOrdersBySupplierId($supplierId);
-
-        error_log(print_r($orders, true));
-
+        if ($status === 'all') {
+            $orders = $this->Supplier->getOrdersBySupplierId($supplierId);
+        } else {
+            $orders = $this->Supplier->getOrdersByStatusAndSupplierId($status, $supplierId);
+        }
         $data = ['orders' => $orders];
         $this->view('Ingredient Supplier/Orders', $data);
     }
 
+    public function acceptOrder($orderId) {
+        $this->Supplier->updateOrderStatus($orderId, 'accepted');
+        Redirect('SupplierController/viewOrders');
+    }
+
+    public function rejectOrder() {
+        $orderId = $_POST['order_id'];
+        $reason = $_POST['rejection_reason'];
+        $this->Supplier->updateOrderStatus($orderId, 'rejected', $reason);
+        Redirect('SupplierController/viewOrders');
+    }
+
+    public function viewOrderDetails($orderId) {
+        $order = $this->Supplier->getOrderById($orderId);
+        echo json_encode($order);
+    }
+    
     public function RequestHelp() {
         $data = [];
         $this->view('Ingredient Supplier/RequestHelp', $data);

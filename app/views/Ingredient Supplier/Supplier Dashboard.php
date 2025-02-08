@@ -69,7 +69,9 @@
                         </thead>
 
                         <tbody>
-                            <?php foreach($data['recentOrders'] as $order): ?>
+                            <?php
+                            $orders = $data['recentOrders'];
+                            foreach($orders as $order): ?>
                             <tr>
                                 <td><?php echo $order->order_id; ?></td>
                                 <td><?php echo $order->customer_name; ?></td>

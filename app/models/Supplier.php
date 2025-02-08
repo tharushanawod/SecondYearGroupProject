@@ -134,5 +134,94 @@ class Supplier {
             die("View does not exist.");
         }
     }
+
+    public function updateOrderStatus($orderId, $status, $reason = null) {
+        $this->db->query('UPDATE orders SET order_status = :status, rejection_reason = :reason WHERE id = :orderId');
+        $this->db->bind(':status', $status);
+        $this->db->bind(':reason', $reason);
+        $this->db->bind(':orderId', $orderId);
+
+        return $this->db->execute();
+    }
+
+    public function getOrdersWithFarmerName() {
+        $this->db->query('
+            SELECT orders.*, farmers.name as farmer_name
+            FROM orders
+            JOIN farmers ON orders.farmer_id = farmers.user_id
+        ');
+        return $this->db->resultSet();
+    }
+
+    public function getSupplierIdByOrderId($orderId) {
+        $this->db->query('SELECT supplier_id FROM orders WHERE id = :orderId');
+        $this->db->bind(':orderId', $orderId);
+        return $this->db->single()->supplier_id;
+    }
+
+    public function getFarmerIdByOrderId($orderId) {
+        $this->db->query('SELECT farmer_id FROM orders WHERE id = :orderId');
+        $this->db->bind(':orderId', $orderId);
+        return $this->db->single()->farmer_id;
+    }
+
+    public function getOrdersBySupplierId($supplierId) {
+        $this->db->query('SELECT * FROM orders WHERE supplier_id = :supplierId');
+        $this->db->bind(':supplierId', $supplierId);
+        return $this->db->resultSet();
+    }
+    
+    public function getOrders() {
+        $this->db->query('SELECT * FROM orders');
+        $results = $this->db->resultSet();
+        return $results;
+    }
+
+    public function getOrderById($id) {
+        $this->db->query('SELECT * FROM orders WHERE id = :id');
+        $this->db->bind(':id', $id);
+        $row = $this->db->single();
+        return $row;
+    }
+
+    public function getOrdersByStatus($status) {
+        $this->db->query('SELECT * FROM orders WHERE order_status = :status');
+        $this->db->bind(':status', $status);
+        return $this->db->resultSet();
+    }
+
+    public function getOrdersByStatusAndSupplierId($status, $supplierId) {
+        $this->db->query('SELECT * FROM orders WHERE order_status = :status AND supplier_id = :supplierId');
+        $this->db->bind(':status', $status);
+        $this->db->bind(':supplierId', $supplierId);
+        return $this->db->resultSet();
+    }
+
+    public function getRecentCustomers($supplierId) {
+        $this->db->query('
+            SELECT DISTINCT farmers.user_id as customer_id, farmers.name as customer_name, farmers.contact, farmers.location
+            FROM orders
+            JOIN farmers ON orders.farmer_id = farmers.user_id
+            WHERE orders.supplier_id = :supplierId
+            ORDER BY orders.created_at DESC LIMIT 5
+        ');
+        $this->db->bind(':supplierId', $supplierId);
+        return $this->db->resultSet();
+    }
+
+    public function getRecentOrders($supplierId, $limit = 5) {
+        $this->db->query('
+            SELECT o.*, f.name as customer_name 
+            FROM orders o
+            JOIN users f ON o.farmer_id = f.user_id
+            WHERE o.supplier_id = :supplierId
+            ORDER BY o.created_at DESC 
+            LIMIT :limit
+        ');
+        
+        $this->db->bind(':supplierId', $supplierId);
+        $this->db->bind(':limit', $limit);
+        return $this->db->resultSet();
+    }
 }
 ?>
