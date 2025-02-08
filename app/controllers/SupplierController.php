@@ -218,22 +218,62 @@ class SupplierController extends Controller {
     }
 
     public function acceptOrder($orderId) {
-        $this->Supplier->updateOrderStatus($orderId, 'accepted');
+        if (!isset($orderId)) {
+            $_SESSION['message'] = 'Invalid order ID';
+            $_SESSION['message_type'] = 'error';
+            Redirect('SupplierController/viewOrders');
+            return;
+        }
+        
+        $result = $this->Supplier->updateOrderStatus($orderId, 'accepted');
+        
+        if ($result) {
+            $_SESSION['message'] = 'Order accepted successfully';
+            $_SESSION['message_type'] = 'success';
+        } else {
+            $_SESSION['message'] = 'Failed to accept order';
+            $_SESSION['message_type'] = 'error';
+        }
+        
         Redirect('SupplierController/viewOrders');
     }
-
+    
     public function rejectOrder() {
+        if (!isset($_POST['order_id']) || !isset($_POST['rejection_reason'])) {
+            $_SESSION['message'] = 'Invalid request';
+            $_SESSION['message_type'] = 'error';
+            Redirect('SupplierController/viewOrders');
+            return;
+        }
+        
         $orderId = $_POST['order_id'];
-        $reason = $_POST['rejection_reason'];
-        $this->Supplier->updateOrderStatus($orderId, 'rejected', $reason);
+        $reason = trim($_POST['rejection_reason']);
+        
+        if (empty($reason)) {
+            $_SESSION['message'] = 'Rejection reason is required';
+            $_SESSION['message_type'] = 'error';
+            Redirect('SupplierController/viewOrders');
+            return;
+        }
+        
+        $result = $this->Supplier->updateOrderStatus($orderId, 'rejected', $reason);
+        
+        if ($result) {
+            $_SESSION['message'] = 'Order rejected successfully';
+            $_SESSION['message_type'] = 'success';
+        } else {
+            $_SESSION['message'] = 'Failed to reject order';
+            $_SESSION['message_type'] = 'error';
+        }
+        
         Redirect('SupplierController/viewOrders');
     }
-
+    
     public function viewOrderDetails($orderId) {
         $order = $this->Supplier->getOrderById($orderId);
         echo json_encode($order);
     }
-    
+
     public function RequestHelp() {
         $data = [];
         $this->view('Ingredient Supplier/RequestHelp', $data);

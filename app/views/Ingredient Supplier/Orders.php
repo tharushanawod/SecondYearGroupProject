@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="url-root" content="<?php echo URLROOT; ?>">
     <title>Orders Page</title>
     <link rel="stylesheet" type="text/css" href="<?php echo URLROOT; ?>/public/css/ingredient supplier/Orders.css">
-    <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet" />
+    <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet" />  
 </head>
 <body>
     <?php require APPROOT . '/views/inc/sidebar.php'; ?>
     <div class="container">
         <h1>Orders</h1>
-        <div class="filter-options">
-            <label for="statusFilter">Filter by Status:</label>
+        <div class="filter-options">            
             <form method="GET" action="<?php echo URLROOT; ?>/SupplierController/viewOrders">
                 <select id="statusFilter" name="status">
                     <option value="all">All</option>
@@ -66,18 +66,18 @@
 
         <!-- Order Details Modal -->
         <div id="orderDetailsModal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeModal('orderDetailsModal')">&times;</span>
+            <div class="modal-content"> 
+                <span class="close" onclick="closeModal('orderDetailsModal')">&times;</span>           
                 <h2>Order Details</h2>
                 <p><strong>Order ID:</strong> <span id="orderId"></span></p>
-                <p><strong>Customer Name:</strong> <span id="customerName"></span></p>
-                <p><strong>Delivery Address:</strong> <span id="deliveryAddress"></span></p>
-                <p><strong>Product Details:</strong> <span id="productDetails"></span></p>
-                <p><strong>Special Instructions:</strong> <span id="specialInstructions"></span></p>
-                <p><strong>Order Date:</strong> <span id="orderDate"></span></p>
-                <p><strong>Payment Method:</strong> <span id="paymentMethod"></span></p>
-                <p><strong>Total Amount:</strong> <span id="totalAmount"></span></p>
-                <button id="closeBtn" onclick="closeModal('orderDetailsModal')">Close</button>
+                <p><strong>Product:</strong> <span id="productName"></span></p>
+                <p><strong>Customer ID:</strong> <span id="customerId"></span></p>
+                <p><strong>Price:</strong> LKR <span id="price"></span></p>
+                <p><strong>Quantity:</strong> <span id="quantity"></span></p>
+                <p><strong>Order Status:</strong> <span id="orderStatus"></span></p>
+                <p><strong>Payment Status:</strong> <span id="paymentStatus"></span></p>
+                <p><strong>Created At:</strong> <span id="createdAt"></span></p>
+                <p id="rejectionReasonContainer" style="display: none;"><strong>Rejection Reason:</strong> <span id="rejectionReason"></span></p>
             </div>
         </div>
 
