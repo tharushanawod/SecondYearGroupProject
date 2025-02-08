@@ -33,7 +33,7 @@ class FarmerController extends Controller {
         $this->View('Farmer/InventoryManagement', $data);
 
         if($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            $_POST = custom_filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
             $data = [
                 'product_name' => trim($_POST['product_name']),
@@ -97,7 +97,7 @@ class FarmerController extends Controller {
             Redirect('LandingController/index'); // Redirect if not authorized
         }
     
-        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+        $_POST = custom_filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
         $products = $this->farmerModel->getProductsByFarmerId($_SESSION['user_id']);
     
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -168,7 +168,6 @@ class FarmerController extends Controller {
                 
                 if ($this->farmerModel->editProduct($data)) { // Call update function
                     Redirect('FarmerController/AddProduct'); // Redirect to products list
-                    
                   
                 } else {
                     die('Something went wrong');
@@ -202,7 +201,7 @@ class FarmerController extends Controller {
 
     public function AddProduct() {
     
-        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+        $_POST = custom_filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
         $products = $this->farmerModel->getProductsByFarmerId($_SESSION['user_id']);
     
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -292,14 +291,15 @@ class FarmerController extends Controller {
     
 
     public function BuyIngredients() {
-        $data = [];
+        $products = $this->farmerModel->getSupplierProducts();
+        $data = ['products' => $products];
         $this->View('Farmer/BuyIngredients', $data);
     }
 
     public function ManageProfile()
     {
         if($_SERVER['REQUEST_METHOD'] == 'POST'){ 
-            $_POST = filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING);
+            $_POST = custom_filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING);
             $data = [
                 'user_id' => $_SESSION['user_id'],
                 'name' => trim($_POST['name']),
@@ -442,7 +442,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
 
     public function HireWorkerConfirmation($workerid){
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            $_POST = custom_filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
             $data = [
                 'farmerid' => $_SESSION['user_id'],
