@@ -230,10 +230,10 @@
         <div class="container-card">
             <img src="<?php echo URLROOT;?>/images/images/img39.png" alt="Product Image" class="large-image">
             <div class="text">
-            <h1>Bid on Premium Corn Products!</h1>
-            <p>Fresh from the farm</p>
-            <a href="<?php echo URLROOT;?>/BuyerController/bidProduct" class="button-link">
-                <button class="cta-button">START BIDDING →</button>
+            <h1>Get Higher Price from Buyers!</h1>
+            <p>Get Better Prices, We Find Buyers!</p>
+            <a href="<?php echo URLROOT;?>/FarmerController/AddProduct" class="button-link">
+                <button class="cta-button">Add Your Product→</button>
             </a>
             </div>
         </div>

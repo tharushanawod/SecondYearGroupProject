@@ -278,6 +278,32 @@ body {
     }
 }
 
+.farmer-info {
+    margin: 10px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+.farmer-link {
+    color: #299233;
+    text-decoration: none;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.farmer-link:hover {
+    color: #5b9162;
+}
+
+.rating {
+    color: #ffd700;
+    font-size: 16px;
+}
+
     </style>
 </head>
 <body>
@@ -321,8 +347,25 @@ body {
                     <div class="bid-card" data-category="<?php echo $product->category; ?>" data-quantity="<?php echo $product->quantity; ?>">
                         <img src="<?php echo URLROOT.'/'.$product->media;?>" alt="Product Image">
                         <h3><?php echo $product->name; ?></h3>
+                        <div class="farmer-info">
+                            <a href="<?php echo URLROOT;?>/BuyerController/ViewFarmerProfile/<?php echo $product->farmer_id;?>" class="farmer-link">
+                            <i class="fa-solid fa-user"></i> View Farmer Profile
+                            </a>
+                            <div class="rating">
+                                <?php
+                                $rating = isset($product->farmer_rating) ? $product->farmer_rating : 0;
+                                for ($i = 1; $i <= 5; $i++) {
+                                    if ($i <= $rating) {
+                                        echo '<i class="fa-solid fa-star"></i>';
+                                    } else {
+                                        echo '<i class="fa-regular fa-star"></i>';
+                                    }
+                                }
+                                ?>
+                            </div>
+                        </div>
                         <p>Starting Price(1Kg): LKR <?php echo $product->starting_price; ?></p>
-                        <p>Current Highest Bid:  <?php echo isset($product->highest_bid) ? 'LKR'.$product->highest_bid : 'No bids yet'; ?></p>
+                        <p>Current Highest Bid: <?php echo isset($product->highest_bid) ? 'LKR'.$product->highest_bid : 'No bids yet'; ?></p>
                         <p>Auction Closes In: <?php
                             $current_time = new DateTime();
                             $expire_time = new DateTime($product->closing_date);

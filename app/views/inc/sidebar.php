@@ -32,7 +32,7 @@
           
           <?php elseif ($user_role === 'farmer'): ?>
             <li><a href="<?php echo URLROOT;?>/FarmerController/Dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>
-            <li><a  href="<?php echo URLROOT;?>/FarmerController/AddProduct"><i class="fa-solid fa-store"></i><span class="menu-text">Products</span></a></li>
+            <li><a  href="<?php echo URLROOT;?>/FarmerController/GetIdea"><i class="fa-solid fa-store"></i><span class="menu-text">Products</span></a></li>
             <li><a href="<?php echo URLROOT;?>/FarmerController/orderManagement"><i class="fas fa-comments"></i><span class="menu-text">Orders</span></a></li>
             <li><a href="<?php echo URLROOT;?>/FarmerController/workerManagement"><i class="fa-solid fa-user"></i><span class="menu-text">Workers</span></a></li>
             <li><a href="<?php echo URLROOT;?>/FarmerController/BuyIngredients"><i class="fa-solid fa-flask"></i><span class="menu-text">Ingredients</span></a></li>

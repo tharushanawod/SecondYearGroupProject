@@ -500,11 +500,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
         }
 
     }
+
+    public function GetIdea(){
+        $data = [];
+        $this->View('Farmer/GetIdea', $data);
+    }
     
     public function ViewCart() {
         $data = [];
         $this->View('Farmer/ViewCart', $data);
     }
+
     public function Checkout() {
         $data = [];
         $this->View('Farmer/Checkout', $data);
