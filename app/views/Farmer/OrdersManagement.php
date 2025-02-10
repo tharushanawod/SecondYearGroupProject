@@ -1,304 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orders Page</title>
-    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Farmer/OrdersManagement.css">
-    <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet"/>
-    <style>
-        @import url(../components/sidebar.css);
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: sans-serif;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Table with Pagination</title>
+  <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Farmer/Checkout.css">
+  <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fa;
+    }
 
-}
+    .table-container {
+        max-width: 1200px;
+        margin-left: 250px;
+        padding: 30px;
+        background-color: white;
+        border-radius: 10px;
+        margin-top: 20px;
+    }
 
-body {
-  margin: 0;
-  padding: 0;
-  background-color: #f4f4f4;
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        overflow: hidden;
+    }
 
-}
+    thead {
+        background-color: #1f6146;
+        color: white;
+    }
 
-.container {
-  margin-left: 300px;
-  gap: 20px; /* Space between image and form */
-  height: 100vh;
-  padding: 40px;
-}
+    th, td {
+        padding: 15px 20px;
+        text-align: left;
+        border: none;
+        border-bottom: 1px solid #eee;
+    }
 
-h1 {
-  text-align: center;
-  font-size: 40px;
-}
+    th {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+    }
 
-.filter-options {
-  margin-bottom: 20px;
-}
+    td {
+        font-size: 14px;
+        color: #333;
+    }
 
-label {
-  margin-right: 10px;
-}
+    tbody tr {
+        transition: all 0.3s ease;
+    }
 
-select {
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid #ddd;
-}
+    tbody tr:hover {
+        background-color: #f5f8ff;
+        transform: scale(1.003);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    }
 
-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  overflow: hidden;
-}
+    tbody tr:nth-child(even) {
+        background-color: #f8f9fa;
+    }
 
-th,
-td {
-  padding: 16px 20px;
-  text-align: left;
-  border-bottom: 1px solid #e0e0e0;
-}
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        margin-top: 30px;
+    }
 
-th {
-  background-color: #f5f5f5;
-  color: #333;
-  font-weight: 600;
-  text-transform: uppercase;
-  font-size: 14px;
-  letter-spacing: 0.5px;
-  border-bottom: 2px solid #e0e0e0;
-}
+    button {
+        padding: 10px 20px;
+        background-color: #1f6146;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
 
-tr {
-  background-color: white;
-}
+    button:hover:not(:disabled) {
+        background-color: #34495e;
+        transform: translateY(-2px);
+    }
 
-tr:nth-child(even) {
-  background-color: #f8f9fa;
-}
+    button:disabled {
+        background-color: #95a5a6;
+        cursor: not-allowed;
+    }
 
-table tbody tr {
-  transition: all 0.2s ease;
-}
+    #pageInfo {
+        font-size: 14px;
+        font-weight: 500;
+        color: #2c3e50;
+    }
 
-tr:hover {
-  background-color: #f1f9f6;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.actions button {
-  padding: 5px 10px;
-  margin-right: 5px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 150px;
-}
-
-.actions button.accept {
-  background-color: #28a745;
-  color: white;
-}
-
-.actions button.send-code {
-  background-color: #007bff;
-  color: white;
-}
-
-.actions button:hover {
-  opacity: 0.8;
-}
-
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding-top: 60px;
-}
-
-.modal-content {
-  background-color: #fff;
-  margin: 5% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  max-width: 500px;
-  border-radius: 8px;
-}
-
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.close:hover,
-.close:focus {
-  color: black;
-}
-
-.modal-actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.modal-actions button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-#acceptOrderBtn {
-  background-color: #28a745;
-  color: white;
-}
-
-#acceptOrderBtn:hover {
-  background-color: #218838;
-}
-
-#sendCodeBtn {
-  background-color: #007bff;
-  color: white;
-}
-
-#sendCodeBtn:hover {
-  background-color: #0056b3;
-}
-
-#closeBtn {
-  background-color: #6c757d;
-  color: white;
-}
-
-#closeBtn:hover {
-  background-color: #5a6268;
-}
-
-.main-container {
-  background-color: white;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.filter-options {
-  margin-bottom: 30px;
-  padding: 15px 0;
-}
-
-.filter-options select {
-  padding: 10px 15px;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-  background-color: white;
-  font-size: 14px;
-  min-width: 200px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.filter-options select:hover {
-  border-color: #2c3e50;
-}
-
-.filter-options select:focus {
-  outline: none;
-  border-color: #2c3e50;
-  box-shadow: 0 0 0 2px rgba(44, 62, 80, 0.1);
-}
-
-    </style>
+    h1 {
+        text-align: center;
+        color: #2c3e50;
+        font-size: 28px;
+        font-weight: 600;
+        padding-top:40px;
+        font-size:2rem;
+    }
+  </style>
 </head>
 <body>
-<?php require APPROOT . '/views/inc/sidebar.php'; ?>
-
-    <div class="container">
-        <h1>Orders From Buyers</h1>
-
-        <div class="main-container">
-            <div class="filter-options">
-                <label for="statusFilter">Filter by Status:</label>
-                <select id="statusFilter">
-                    <option value="all">All</option>
-                    <option value="pending">Pending</option>
-                    <option value="accepted">Accepted</option>
-                </select>
-            </div>
-
-            <table id="ordersTable">
-                <thead>
-                    <tr>
-                        <th>Order ID</th>
-                        <th>Product</th>
-                        <th>Buyer</th>
-                        <th> Unit Price(Rs)</th>
-                        <th>Quantity (kg)</th>
-                        <th>Status</th>
-                      
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Dry Corn</td>
-                        <td>Dasanayaka</td>
-                        <td>100</td>
-                        <td>200 kg</td>
-                        <td>Pending</td>
-                      
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Sweet Corn</td>
-                        <td>N.M Herath</td>
-                        <td>120</td>
-                        <td>50 kg</td>
-                        <td>Accepted</td>
-                       
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Dry Cornd</td>
-                        <td>H.K Gajasinghe</td>
-                        <td>89</td>
-                        <td>250 kg</td>
-                        <td>Accepted</td>
-                      
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>Sweet Corn</td>
-                        <td>N.B Asanka</td>
-                        <td>99</td>
-                        <td>300 kg</td>
-                        <td>Pending</td>
-                       
-                    </tr>
-                    <!-- Add remaining orders similarly -->
-                </tbody>
-            </table>
-
-         
-        </div>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?> 
+<h1>Orders</h1>
+  <div class="table-container">
+    <table id="orderTable">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Product</th>
+          <th>Buyer</th>
+          <th>Unit Price (Rs)</th>
+          <th>Quantity (kg)</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Rows will be dynamically inserted here -->
+      </tbody>
+    </table>
+    <div class="pagination">
+      <button id="prevBtn">Previous</button>
+      <span id="pageInfo"></span>
+      <button id="nextBtn">Next</button>
     </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // Sample data
+const orders = [
+  { id: 1, product: "Dry Corn", buyer: "Dasanayaka", price: 100, quantity: "200 kg", status: "Pending" },
+  { id: 2, product: "Sweet Corn", buyer: "N.M Herath", price: 120, quantity: "50 kg", status: "Accepted" },
+  { id: 3, product: "Dry Corn", buyer: "H.K Gajasinghe", price: 89, quantity: "250 kg", status: "Accepted" },
+  { id: 4, product: "Sweet Corn", buyer: "N.B Asanka", price: 99, quantity: "300 kg", status: "Pending" },
+  { id: 4, product: "Sweet Corn", buyer: "N.B Asanka", price: 99, quantity: "300 kg", status: "Pending" },
+  { id: 4, product: "Sweet Corn", buyer: "N.B Asanka", price: 99, quantity: "300 kg", status: "Pending" },
+  { id: 4, product: "Sweet Corn", buyer: "N.B Asanka", price: 99, quantity: "300 kg", status: "Pending" },
+  { id: 4, product: "Sweet Corn", buyer: "N.B Asanka", price: 99, quantity: "300 kg", status: "Pending" },
+  { id: 4, product: "Sweet Corn", buyer: "N.B Asanka", price: 99, quantity: "300 kg", status: "Pending" },
+  { id: 4, product: "Sweet Corn", buyer: "N.B Asanka", price: 99, quantity: "300 kg", status: "Pending" },
+  { id: 4, product: "Sweet Corn", buyer: "N.B Asanka", price: 99, quantity: "300 kg", status: "Pending" },
+  { id: 4, product: "Sweet Corn", buyer: "N.B Asanka", price: 99, quantity: "300 kg", status: "Pending" },
+  { id: 4, product: "Sweet Corn", buyer: "N.B Asanka", price: 99, quantity: "300 kg", status: "Pending" },
+  { id: 4, product: "Sweet Corn", buyer: "N.B Asanka", price: 99, quantity: "300 kg", status: "Pending" },
+  { id: 4, product: "Sweet Corn", buyer: "N.B Asanka", price: 99, quantity: "300 kg", status: "Pending" },
+  { id: 4, product: "Sweet Corn", buyer: "N.B Asanka", price: 99, quantity: "300 kg", status: "Pending" },
+  { id: 4, product: "Sweet Corn", buyer: "N.B Asanka", price: 99, quantity: "300 kg", status: "Pending" },
+  { id: 4, product: "Sweet Corn", buyer: "N.B Asanka", price: 99, quantity: "300 kg", status: "Pending" },
+  // Add more orders as needed
+];
+
+// Pagination variables
+const rowsPerPage = 10;
+let currentPage = 1;
+
+// DOM elements
+const tableBody = document.querySelector("#orderTable tbody");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const pageInfo = document.getElementById("pageInfo");
+
+// Function to render table rows for the current page
+function renderTable() {
+  const start = (currentPage - 1) * rowsPerPage;
+  const end = start + rowsPerPage;
+  const paginatedOrders = orders.slice(start, end);
+
+  tableBody.innerHTML = "";
+
+  paginatedOrders.forEach(order => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td data-label="Order ID">${order.id}</td>
+      <td data-label="Product">${order.product}</td>
+      <td data-label="Buyer">${order.buyer}</td>
+      <td data-label="Unit Price (Rs)">${order.price}</td>
+      <td data-label="Quantity">${order.quantity}</td>
+      <td data-label="Status">${order.status}</td>
+    `;
+    tableBody.appendChild(row);
+  });
+
+  pageInfo.textContent = `Page ${currentPage} of ${Math.ceil(orders.length / rowsPerPage)}`;
+  prevBtn.disabled = currentPage === 1;
+  nextBtn.disabled = currentPage === Math.ceil(orders.length / rowsPerPage);
+}
+
+// Event listeners for pagination buttons
+prevBtn.addEventListener("click", () => {
+  if (currentPage > 1) {
+    currentPage--;
+    renderTable();
+  }
+});
+
+nextBtn.addEventListener("click", () => {
+  if (currentPage < Math.ceil(orders.length / rowsPerPage)) {
+    currentPage++;
+    renderTable();
+  }
+});
+
+// Initial render
+renderTable();
+  </script>
 </body>
-</html>
+</html>Z
