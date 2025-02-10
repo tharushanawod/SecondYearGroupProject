@@ -3,8 +3,7 @@
 class SupplierController extends Controller {
     private $Product;
     private $Supplier;
-    private $Order;
-
+    
     public function __construct() {
         if (!$this->isloggedin()) {
             unset($_SESSION['user_id']);
@@ -15,7 +14,6 @@ class SupplierController extends Controller {
         }
         $this->Product = $this->model('Product');
         $this->Supplier = $this->model('Supplier');
-        $this->Order = $this->model('Order');
     }
 
     public function isloggedin() {
@@ -31,16 +29,26 @@ class SupplierController extends Controller {
     }
 
     public function dashboard() {
-        $data = [];
+        $supplierId = $_SESSION['user_id'];
+        $recentOrders = $this->Supplier->getRecentOrders($supplierId);
+        
+        $data = [
+            'recentOrders' => $recentOrders
+        ];
+        
         $this->view('Ingredient Supplier/Supplier Dashboard', $data);
     }
 
     public function productManagement() {
-        $supplier = $this->Supplier;
+        $supplierId = $_SESSION['user_id'];
+        $products = $this->Product->getProducts($supplierId);
+        $categories = $this->Supplier->getCategories();
+        
         $data = [
-            'products' => $supplier->getProducts(),
-            'categories' => $supplier->getCategories()
+            'products' => $products,
+            'categories' => $categories
         ];
+        
         $this->view('Ingredient Supplier/ProductManagement', $data);
     }
 
@@ -95,25 +103,23 @@ class SupplierController extends Controller {
         $target_file = $target_dir . basename($image);
 
         if (!empty($image)) {
-            // Move the uploaded file to the target directory
             move_uploaded_file($_FILES['image']['tmp_name'], $target_file);
         } else {
             $image = $_POST['existing_image'];
         }
 
         $data = [
-            'id' => $_POST['id'],
+            'product_id' => $_POST['product_id'],  // Changed from 'id'
             'product_name' => $_POST['product_name'],
             'category_id' => $_POST['category_id'],
             'price' => $_POST['price'],
             'stock' => $_POST['stock'],
             'description' => $_POST['description'],
-            'image' => $image
+            'image' => $image,
+            'supplier_id' => $_SESSION['user_id']
         ];
 
         $this->Product->updateProduct($data);
-
-        // Redirect to the product management page
         header('Location: ' . URLROOT . '/SupplierController/productManagement');
     }
 
@@ -127,28 +133,32 @@ class SupplierController extends Controller {
     }
 
     public function destroy() {
-        // Get the product ID from the POST request
-        $product_id = $_POST['product_id'];
-
-        // Fetch the product details from the database
-        $product = $this->Product->getProductById($product_id);
-
-        // Check if the product exists
-        if ($product) {
-            // Delete the product image from the server
-            if (file_exists('uploads/' . $product->image)) {
-                unlink('uploads/' . $product->image);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product_id'])) {
+            $product_id = $_POST['product_id'];
+            
+            // Get product details before deletion
+            $product = $this->Product->getProductById($product_id);
+            
+            if ($product) {
+                // Delete the image file if it exists
+                $image_path = 'uploads/' . $product->image;
+                if (file_exists($image_path)) {
+                    unlink($image_path);
+                }
+                
+                // Delete the product from database
+                if ($this->Product->deleteProduct($product_id)) {
+                    // Set success message
+                    $_SESSION['message'] = 'Product deleted successfully';
+                    $_SESSION['message_type'] = 'success';
+                } else {
+                    $_SESSION['message'] = 'Failed to delete product';
+                    $_SESSION['message_type'] = 'error';
+                }
             }
-
-            // Delete the product from the database
-            $this->Product->deleteProduct($product_id);
-
-            // Redirect to the product management page
-            header('Location: ' . URLROOT . '/SupplierController/productManagement');
-        } else {
-            // Handle the case where the product does not exist
-            echo "Product not found.";
         }
+        header('Location: ' . URLROOT . '/SupplierController/productManagement');
+        exit();
     }
 
     public function shop() {
@@ -202,13 +212,72 @@ class SupplierController extends Controller {
     }
 
     public function viewOrders() {
+        $status = $_GET['status'] ?? 'all';
         $supplierId = $_SESSION['user_id'];
-        $orders = $this->Order->getOrdersBySupplierId($supplierId);
-
-        error_log(print_r($orders, true));
-
+        if ($status === 'all') {
+            $orders = $this->Supplier->getOrdersBySupplierId($supplierId);
+        } else {
+            $orders = $this->Supplier->getOrdersByStatusAndSupplierId($status, $supplierId);
+        }
         $data = ['orders' => $orders];
         $this->view('Ingredient Supplier/Orders', $data);
+    }
+
+    public function acceptOrder($orderId) {
+        if (!isset($orderId)) {
+            $_SESSION['message'] = 'Invalid order ID';
+            $_SESSION['message_type'] = 'error';
+            Redirect('SupplierController/viewOrders');
+            return;
+        }
+        
+        $result = $this->Supplier->updateOrderStatus($orderId, 'accepted');
+        
+        if ($result) {
+            $_SESSION['message'] = 'Order accepted successfully';
+            $_SESSION['message_type'] = 'success';
+        } else {
+            $_SESSION['message'] = 'Failed to accept order';
+            $_SESSION['message_type'] = 'error';
+        }
+        
+        Redirect('SupplierController/viewOrders');
+    }
+    
+    public function rejectOrder() {
+        if (!isset($_POST['order_id']) || !isset($_POST['rejection_reason'])) {
+            $_SESSION['message'] = 'Invalid request';
+            $_SESSION['message_type'] = 'error';
+            Redirect('SupplierController/viewOrders');
+            return;
+        }
+        
+        $orderId = $_POST['order_id'];
+        $reason = trim($_POST['rejection_reason']);
+        
+        if (empty($reason)) {
+            $_SESSION['message'] = 'Rejection reason is required';
+            $_SESSION['message_type'] = 'error';
+            Redirect('SupplierController/viewOrders');
+            return;
+        }
+        
+        $result = $this->Supplier->updateOrderStatus($orderId, 'rejected', $reason);
+        
+        if ($result) {
+            $_SESSION['message'] = 'Order rejected successfully';
+            $_SESSION['message_type'] = 'success';
+        } else {
+            $_SESSION['message'] = 'Failed to reject order';
+            $_SESSION['message_type'] = 'error';
+        }
+        
+        Redirect('SupplierController/viewOrders');
+    }
+    
+    public function viewOrderDetails($orderId) {
+        $order = $this->Supplier->getOrderById($orderId);
+        echo json_encode($order);
     }
 
     public function RequestHelp() {

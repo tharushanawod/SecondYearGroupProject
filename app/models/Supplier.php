@@ -10,10 +10,10 @@ class Supplier {
 
     public function addProduct($data) {
         $this->db->query('INSERT INTO supplier_products (product_name, category_id, price, stock, description, image, supplier_id) 
-                         VALUES (:name, :category, :price, :stock, :description, :image, :supplier_id)');
+                         VALUES (:name, :category_id, :price, :stock, :description, :image, :supplier_id)');
         
         $this->db->bind(':name', $data['product_name']);
-        $this->db->bind(':category', $data['category_id']);
+        $this->db->bind(':category_id', $data['category_id']);
         $this->db->bind(':price', $data['price']);
         $this->db->bind(':stock', $data['stock']);
         $this->db->bind(':description', $data['description']);
@@ -24,7 +24,10 @@ class Supplier {
     }
     
     public function getProductById($id) {
-        $this->db->query('SELECT * FROM supplier_products WHERE id = :id');
+        $this->db->query('SELECT p.*, c.category_name 
+                         FROM supplier_products p 
+                         LEFT JOIN categories c ON p.category_id = c.category_id 
+                         WHERE p.id = :id');
         $this->db->bind(':id', $id);
         return $this->db->single();
     }
@@ -32,7 +35,7 @@ class Supplier {
     public function updateProduct($data) {
         $this->db->query('UPDATE supplier_products 
                          SET product_name = :name, 
-                             category_id = :category,
+                             category_id = :category_id,
                              price = :price,
                              stock = :stock,
                              description = :description,
@@ -40,7 +43,7 @@ class Supplier {
                          WHERE id = :id AND supplier_id = :supplier_id');
         
         $this->db->bind(':name', $data['product_name']);
-        $this->db->bind(':category', $data['category_id']);
+        $this->db->bind(':category_id', $data['category_id']);
         $this->db->bind(':price', $data['price']);
         $this->db->bind(':stock', $data['stock']);
         $this->db->bind(':description', $data['description']);
@@ -58,27 +61,28 @@ class Supplier {
         return $this->db->execute();
     }
 
-    public function getProducts() {
-        $this->db->query('SELECT p.*, c.name as category_name 
-                         FROM supplier_products p
-                         JOIN categories c ON p.category_id = c.id
-                         WHERE p.supplier_id = :supplier_id');
-        $this->db->bind(':supplier_id', $_SESSION['user_id']);
+    public function getProducts($supplier_id) {
+        $this->db->query("SELECT p.*, c.category_name 
+                         FROM supplier_products p 
+                         LEFT JOIN categories c ON p.category_id = c.category_id 
+                         WHERE p.supplier_id = :supplier_id");
+        $this->db->bind(':supplier_id', $supplier_id);
         return $this->db->resultSet();
     }
 
-    public function getProductsByCategory($category_id) {
-        $this->db->query('SELECT p.*, c.name as category_name 
-                         FROM supplier_products p
-                         JOIN categories c ON p.category_id = c.id
-                         WHERE p.category_id = :category_id');
+    public function getProductsByCategory($category_id, $supplier_id) {
+        $this->db->query("SELECT p.*, c.category_name 
+                         FROM supplier_products p 
+                         LEFT JOIN categories c ON p.category_id = c.category_id 
+                         WHERE p.category_id = :category_id AND p.supplier_id = :supplier_id");
         $this->db->bind(':category_id', $category_id);
+        $this->db->bind(':supplier_id', $supplier_id);
         return $this->db->resultSet();
     }
 
     public function getCategories() {
-        $this->db->query('SELECT * FROM categories');
-        return $this->db->resultSet();    
+        $this->db->query('SELECT category_id, category_name FROM categories');
+        return $this->db->resultSet();
     }
     
     public function updateProfile($data) {
@@ -133,6 +137,95 @@ class Supplier {
         } else {
             die("View does not exist.");
         }
+    }
+
+    public function updateOrderStatus($orderId, $status, $reason = null) {
+        $this->db->query('UPDATE orders SET order_status = :status, rejection_reason = :reason WHERE id = :orderId');
+        $this->db->bind(':status', $status);
+        $this->db->bind(':reason', $reason);
+        $this->db->bind(':orderId', $orderId);
+
+        return $this->db->execute();
+    }
+
+    public function getOrdersWithFarmerName() {
+        $this->db->query('
+            SELECT orders.*, farmers.name as farmer_name
+            FROM orders
+            JOIN farmers ON orders.farmer_id = farmers.user_id
+        ');
+        return $this->db->resultSet();
+    }
+
+    public function getSupplierIdByOrderId($orderId) {
+        $this->db->query('SELECT supplier_id FROM orders WHERE id = :orderId');
+        $this->db->bind(':orderId', $orderId);
+        return $this->db->single()->supplier_id;
+    }
+
+    public function getFarmerIdByOrderId($orderId) {
+        $this->db->query('SELECT farmer_id FROM orders WHERE id = :orderId');
+        $this->db->bind(':orderId', $orderId);
+        return $this->db->single()->farmer_id;
+    }
+
+    public function getOrdersBySupplierId($supplierId) {
+        $this->db->query('SELECT * FROM orders WHERE supplier_id = :supplierId');
+        $this->db->bind(':supplierId', $supplierId);
+        return $this->db->resultSet();
+    }
+    
+    public function getOrders() {
+        $this->db->query('SELECT * FROM orders');
+        $results = $this->db->resultSet();
+        return $results;
+    }
+
+    public function getOrderById($id) {
+        $this->db->query('SELECT * FROM orders WHERE id = :id');
+        $this->db->bind(':id', $id);
+        $row = $this->db->single();
+        return $row;
+    }
+
+    public function getOrdersByStatus($status) {
+        $this->db->query('SELECT * FROM orders WHERE order_status = :status');
+        $this->db->bind(':status', $status);
+        return $this->db->resultSet();
+    }
+
+    public function getOrdersByStatusAndSupplierId($status, $supplierId) {
+        $this->db->query('SELECT * FROM orders WHERE order_status = :status AND supplier_id = :supplierId');
+        $this->db->bind(':status', $status);
+        $this->db->bind(':supplierId', $supplierId);
+        return $this->db->resultSet();
+    }
+
+    public function getRecentCustomers($supplierId) {
+        $this->db->query('
+            SELECT DISTINCT farmers.user_id as customer_id, farmers.name as customer_name, farmers.contact, farmers.location
+            FROM orders
+            JOIN farmers ON orders.farmer_id = farmers.user_id
+            WHERE orders.supplier_id = :supplierId
+            ORDER BY orders.created_at DESC LIMIT 5
+        ');
+        $this->db->bind(':supplierId', $supplierId);
+        return $this->db->resultSet();
+    }
+
+    public function getRecentOrders($supplierId, $limit = 5) {
+        $this->db->query('
+            SELECT o.*, f.name as customer_name 
+            FROM orders o
+            JOIN users f ON o.farmer_id = f.user_id
+            WHERE o.supplier_id = :supplierId
+            ORDER BY o.created_at DESC 
+            LIMIT :limit
+        ');
+        
+        $this->db->bind(':supplierId', $supplierId);
+        $this->db->bind(':limit', $limit);
+        return $this->db->resultSet();
     }
 }
 ?>

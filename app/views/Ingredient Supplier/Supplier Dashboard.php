@@ -69,11 +69,13 @@
                         </thead>
 
                         <tbody>
-                            <?php foreach($data['recentOrders'] as $order): ?>
+                            <?php
+                            $orders = $data['recentOrders'];
+                            foreach($orders as $order): ?>
                             <tr>
-                                <td><?php echo $order->order_id; ?></td>
+                                <td><?php echo htmlspecialchars($order->id); ?></td>
                                 <td><?php echo $order->customer_name; ?></td>
-                                <td><?php echo date('Y-m-d', strtotime($order->order_date)); ?></td>
+                                <td><?php echo date('Y-m-d', strtotime($order->created_at)); ?></td>
                                 <td><?php echo $order->total_amount; ?></td>
                                 <td><span class="<?php echo strtolower($order->status); ?>"><?php echo $order->status; ?></span></td>
                             </tr>
@@ -90,8 +92,7 @@
                     </div>
                     <table>
                         <thead>
-                            <tr>
-                                <td>Customer ID</td>
+                            <tr>                                
                                 <td>Customer Name</td>
                                 <td>Contact</td>
                                 <td>Location</td>
@@ -99,8 +100,7 @@
                         </thead>
                         <tbody>
                             <?php foreach($data['recentCustomers'] as $customer): ?>
-                            <tr>
-                                <td><?php echo $customer->customer_id; ?></td>
+                            <tr>                                
                                 <td><?php echo $customer->customer_name; ?></td>
                                 <td><?php echo $customer->contact; ?></td>
                                 <td><?php echo $customer->location; ?></td>

@@ -3,22 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="url-root" content="<?php echo URLROOT; ?>">
     <title>Orders Page</title>
     <link rel="stylesheet" type="text/css" href="<?php echo URLROOT; ?>/public/css/ingredient supplier/Orders.css">
-    <script src="<?php echo URLROOT; ?>/public/js/Ingredient Supplier/Orders.js" defer></script>
-    <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet" />
+    <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet" />  
 </head>
 <body>
     <?php require APPROOT . '/views/inc/sidebar.php'; ?>
     <div class="container">
         <h1>Orders</h1>
-        <div class="filter-options">
-            <label for="statusFilter">Filter by Status:</label>
-            <select id="statusFilter">
-                <option value="all">All</option>
-                <option value="pending">Pending</option>
-                <option value="accepted">Accepted</option>
-            </select>
+        <div class="filter-options">            
+            <form method="GET" action="<?php echo URLROOT; ?>/SupplierController/viewOrders">
+                <select id="statusFilter" name="status">
+                    <option value="all">All</option>
+                    <option value="pending">Pending</option>
+                    <option value="accepted">Accepted</option>
+                </select>
+                <button type="submit">Filter</button>
+            </form>
         </div> 
 
         <table id="ordersTable">
@@ -46,9 +48,11 @@
                             <td><?php echo htmlspecialchars($order->quantity); ?></td>
                             <td><?php echo htmlspecialchars($order->order_status); ?></td>
                             <td class="actions">
-                                <button class="accept" onclick="acceptOrder(<?php echo htmlspecialchars($order->id); ?>)">Accept</button>
-                                <button class="reject" onclick="rejectOrder(<?php echo htmlspecialchars($order->id); ?>)">Reject</button>
-                                <button class="view" onclick="viewOrderDetails(<?php echo htmlspecialchars($order->id); ?>)">View</button>
+                                <form method="POST" action="<?php echo URLROOT; ?>/SupplierController/acceptOrder/<?php echo htmlspecialchars($order->id); ?>">
+                                    <button type="submit" class="accept">Accept</button>
+                                </form>
+                                <button class="reject" onclick="openRejectModal(<?php echo htmlspecialchars($order->id); ?>)">Reject</button>
+                                <button class="view" onclick="openViewModal(<?php echo htmlspecialchars($order->id); ?>)">View</button>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -62,21 +66,34 @@
 
         <!-- Order Details Modal -->
         <div id="orderDetailsModal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
+            <div class="modal-content"> 
+                <span class="close" onclick="closeModal('orderDetailsModal')">&times;</span>           
                 <h2>Order Details</h2>
-                <p><strong>Customer Name:</strong> <span id="customerName"></span></p>
-                <p><strong>Delivery Address:</strong> <span id="deliveryAddress"></span></p>
-                <p><strong>Product Details:</strong> <span id="productDetails"></span></p>
-                <p><strong>Special Instructions:</strong> <span id="specialInstructions"></span></p>
-                <textarea id="rejectionReason" placeholder="Enter reason for rejection"></textarea>
-                <div class="modal-actions">
-                    <button id="acceptOrderBtn">Accept Order</button>
-                    <button id="rejectOrderBtn">Reject Order</button>
-                    <button id="closeBtn">Close</button>
-                </div>
+                <p><strong>Order ID:</strong> <span id="orderId"></span></p>
+                <p><strong>Product:</strong> <span id="productName"></span></p>
+                <p><strong>Customer ID:</strong> <span id="customerId"></span></p>
+                <p><strong>Price:</strong> LKR <span id="price"></span></p>
+                <p><strong>Quantity:</strong> <span id="quantity"></span></p>
+                <p><strong>Order Status:</strong> <span id="orderStatus"></span></p>
+                <p><strong>Payment Status:</strong> <span id="paymentStatus"></span></p>
+                <p><strong>Created At:</strong> <span id="createdAt"></span></p>
+                <p id="rejectionReasonContainer" style="display: none;"><strong>Rejection Reason:</strong> <span id="rejectionReason"></span></p>
+            </div>
+        </div>
+
+        <!-- Reject Order Modal -->
+        <div id="rejectOrderModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('rejectOrderModal')">&times;</span>
+                <h2>Reject Order</h2>
+                <form method="POST" action="<?php echo URLROOT; ?>/SupplierController/rejectOrder">
+                    <input type="hidden" id="rejectOrderId" name="order_id">
+                    <textarea name="rejection_reason" placeholder="Enter reason for rejection" required></textarea>
+                    <button type="submit">Submit</button>
+                </form>
             </div>
         </div>
     </div>
+    <script src="<?php echo URLROOT; ?>/public/js/Ingredient Supplier/Orders.js"></script>
 </body>
 </html>

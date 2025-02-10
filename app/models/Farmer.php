@@ -304,6 +304,11 @@ GROUP BY
         }
     }
     
+    public function getSupplierProducts() {
+        $this->db->query('SELECT * FROM supplier_products');
+        return $this->db->resultSet();
+    }
+    
     
     
 

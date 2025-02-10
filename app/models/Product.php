@@ -7,29 +7,29 @@ class Product {
     }
 
     public function getProducts($supplier_id) {
-        $this->db->query("SELECT p.*, c.name as category_name 
+        $this->db->query("SELECT p.*, c.category_name 
                          FROM supplier_products p 
-                         LEFT JOIN categories c ON p.category_id = c.id
+                         LEFT JOIN categories c ON p.category_id = c.category_id 
                          WHERE p.supplier_id = :supplier_id");
         $this->db->bind(':supplier_id', $supplier_id);
         return $this->db->resultSet();
     }
 
     public function getProductById($id) {
-        $this->db->query('SELECT p.*, c.name as category_name 
+        $this->db->query('SELECT p.*, c.category_name 
                          FROM supplier_products p 
-                         LEFT JOIN categories c ON p.category_id = c.id 
-                         WHERE p.id = :id');
-        $this->db->bind(':id', $id);
+                         LEFT JOIN categories c ON p.category_id = c.category_id 
+                         WHERE p.product_id = :product_id');
+        $this->db->bind(':product_id', $id); // Correct binding of product ID
         return $this->db->single();
     }
 
     public function addProduct($data) {
         $this->db->query('INSERT INTO supplier_products (product_name, category_id, price, stock, description, image, supplier_id) 
-                         VALUES (:name, :category, :price, :stock, :description, :image, :supplier_id)');
+                         VALUES (:name, :category_id, :price, :stock, :description, :image, :supplier_id)');
         
         $this->db->bind(':name', $data['product_name']);
-        $this->db->bind(':category', $data['category_id']);
+        $this->db->bind(':category_id', $data['category_id']);
         $this->db->bind(':price', $data['price']);
         $this->db->bind(':stock', $data['stock']);
         $this->db->bind(':description', $data['description']);
@@ -42,42 +42,42 @@ class Product {
     public function updateProduct($data) {
         $query = 'UPDATE supplier_products 
                   SET product_name = :name, 
-                      category_id = :category,
+                      category_id = :category_id,
                       price = :price,
                       stock = :stock,
                       description = :description';
         if ($data['image']) {
             $query .= ', image = :image';
         }
-        $query .= ' WHERE id = :id AND supplier_id = :supplier_id';
+        $query .= ' WHERE product_id = :product_id AND supplier_id = :supplier_id';
 
         $this->db->query($query);
         
-        $this->db->bind(':id', $data['id']);
+        $this->db->bind(':product_id', $data['product_id']);
         $this->db->bind(':name', $data['product_name']);
-        $this->db->bind(':category', $data['category_id']);
+        $this->db->bind(':category_id', $data['category_id']);
         $this->db->bind(':price', $data['price']);
         $this->db->bind(':stock', $data['stock']);
         $this->db->bind(':description', $data['description']);
         if ($data['image']) {
             $this->db->bind(':image', $data['image']);
         }
-        $this->db->bind(':supplier_id', $_SESSION['user_id']);
+        $this->db->bind(':supplier_id', $data['supplier_id']);
 
         return $this->db->execute();
     }
 
-    public function deleteProduct($id) {
-        $this->db->query('DELETE FROM supplier_products WHERE id = :id AND supplier_id = :supplier_id');
-        $this->db->bind(':id', $id);
+    public function deleteProduct($product_id) {
+        $this->db->query('DELETE FROM supplier_products WHERE product_id = :product_id AND supplier_id = :supplier_id');
+        $this->db->bind(':product_id', $product_id); // Ensure correct product ID is used
         $this->db->bind(':supplier_id', $_SESSION['user_id']);
         return $this->db->execute();
     }
 
     public function getProductsByCategory($category_id, $supplier_id) {
-        $this->db->query("SELECT p.*, c.name as category_name 
+        $this->db->query("SELECT p.*, c.category_name 
                          FROM supplier_products p 
-                         LEFT JOIN categories c ON p.category_id = c.id 
+                         LEFT JOIN categories c ON p.category_id = c.category_id 
                          WHERE p.category_id = :category_id AND p.supplier_id = :supplier_id");
         $this->db->bind(':category_id', $category_id);
         $this->db->bind(':supplier_id', $supplier_id);
@@ -85,10 +85,9 @@ class Product {
     }
 
     public function getCategories() {
-        $this->db->query('SELECT * FROM categories');
+        $this->db->query('SELECT category_id, category_name FROM categories');
         return $this->db->resultSet();
     }
-
     public function getOrderById($order_id) {
         $this->db->query('SELECT o.*, p.product_name, u.name as customer_name 
                          FROM orders o 

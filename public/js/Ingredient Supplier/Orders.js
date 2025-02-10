@@ -1,93 +1,49 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const ordersTable = document.getElementById('ordersTable').getElementsByTagName('tbody')[0];
-    const orderDetailsModal = document.getElementById('orderDetailsModal');
-    const closeModal = document.getElementsByClassName('close')[0];
-    const closeBtn = document.getElementById('closeBtn');
-    const acceptOrderBtn = document.getElementById('acceptOrderBtn');
-    const sendCodeBtn = document.getElementById('sendCodeBtn');
-    const statusFilter = document.getElementById('statusFilter');
-
-    const sampleOrders = [
-        { id: 1, product: 'Fertilizer', customer: 'E.K.D Ekanayake', price: 1000, payment: 'Credit Card', quantity: 2, status: 'Pending', address: '123 Main St', instructions: 'Leave at the front door' },
-        { id: 2, product: 'Pesticide', customer: 'R.M.H Sampath', price: 1500, payment: 'Credit Card', quantity: 1, status: 'Accepted', address: '456 Oak St', instructions: 'Ring the bell' },
-        { id: 3, product: 'Seed', customer: 'D.M.M Rajapaksha', price: 2000, payment: 'Credit Card', quantity: 5, status: 'Pending', address: '789 Pine St', instructions: 'Call upon arrival' },
-    ];
-
-    function loadOrders(orders) {
-        ordersTable.innerHTML = ''; // Clear table
-        orders.forEach(order => {
-            const newRow = ordersTable.insertRow();
-            newRow.innerHTML = `
-                <td>${order.id}</td>
-                <td>${order.product}</td>
-                <td>${order.customer}</td>
-                <td>${order.price}</td>
-                <td>${order.payment}</td>
-                <td>${order.quantity}</td>
-                <td>${order.status}</td>
-                <td class="actions">
-                    <button class="accept">Accept</button>
-                    <button class="send-code">Cancel</button>
-                </td>
-            `;
-
-            // Event listeners for actions
-            const acceptBtn = newRow.querySelector('.accept');
-            const sendCodeBtn = newRow.querySelector('.send-code');
-
-            acceptBtn.addEventListener('click', () => showOrderDetails(order));
-            sendCodeBtn.addEventListener('click', () => showOrderDetails(order));
+function openViewModal(orderId) {
+    const URLROOT = document.querySelector('meta[name="url-root"]').getAttribute('content');
+    fetch(`${URLROOT}/SupplierController/viewOrderDetails/${orderId}`)
+        .then(response => response.json())
+        .then(order => {
+            populateOrderDetails(order);
+            document.getElementById('orderDetailsModal').style.display = 'block';
+        })
+        .catch(error => {
+            console.error('Error fetching order details:', error);
+            alert('Failed to fetch order details. Please try again.');
         });
+}
+
+function populateOrderDetails(order) {
+    document.getElementById('orderId').innerText = order.id;
+    document.getElementById('productName').innerText = order.product_name;
+    document.getElementById('customerId').innerText = order.farmer_id;
+    document.getElementById('price').innerText = order.price;
+    document.getElementById('quantity').innerText = order.quantity;
+    document.getElementById('orderStatus').innerText = order.order_status;
+    document.getElementById('paymentStatus').innerText = order.payment_status;
+    document.getElementById('createdAt').innerText = order.created_at;
+
+    // Handle rejection reason if exists
+    const rejectionContainer = document.getElementById('rejectionReasonContainer');
+    if (order.order_status === 'rejected' && order.rejection_reason) {
+        document.getElementById('rejectionReason').innerText = order.rejection_reason;
+        rejectionContainer.style.display = 'block';
+    } else {
+        rejectionContainer.style.display = 'none';
     }
+}
 
-    function showOrderDetails(order) {
-        document.getElementById('customerName').innerText = order.customer;
-        document.getElementById('deliveryAddress').innerText = order.address;
-        document.getElementById('productDetails').innerText = `${order.product} (Quantity: ${order.quantity})`;
-        document.getElementById('specialInstructions').innerText = order.instructions;
+function openRejectModal(orderId) {
+    document.getElementById('rejectOrderId').value = orderId;
+    document.getElementById('rejectOrderModal').style.display = 'block';
+}
 
-        acceptOrderBtn.addEventListener('click', () => acceptOrder(order.id));
-        sendCodeBtn.addEventListener('click', () => sendDeliveryCode(order.id));
+function closeModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+}
 
-        orderDetailsModal.style.display = 'block';
+// Event Listener for closing modals when clicking outside
+window.onclick = (event) => {
+    if (event.target.classList.contains('modal')) {
+        closeModal(event.target.id);
     }
-
-    function acceptOrder(orderId) {
-        alert(`Order ID ${orderId} has been accepted.`);
-        orderDetailsModal.style.display = 'none';
-        // Logic to update order status in the database can go here
-    }
-
-    function sendDeliveryCode(orderId) {
-        alert(`Delivery code sent for Order ID ${orderId}.`);
-        orderDetailsModal.style.display = 'none';
-        // Logic to send delivery code can go here
-    }
-
-    closeModal.addEventListener('click', () => {
-        orderDetailsModal.style.display = 'none';
-    });
-
-    closeBtn.addEventListener('click', () => {
-        orderDetailsModal.style.display = 'none';
-    });
-
-    window.onclick = function(event) {
-        if (event.target == orderDetailsModal) {
-            orderDetailsModal.style.display = 'none';
-        }
-    };
-
-    statusFilter.addEventListener('change', () => {
-        const filterValue = statusFilter.value;
-        if (filterValue === 'all') {
-            loadOrders(sampleOrders);
-        } else {
-            const filteredOrders = sampleOrders.filter(order => order.status.toLowerCase() === filterValue);
-            loadOrders(filteredOrders);
-        }
-    });
-
-    // Load initial orders
-    loadOrders(sampleOrders);
-});
+};

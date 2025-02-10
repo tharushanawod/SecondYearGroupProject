@@ -54,12 +54,12 @@
                                 <td><?= htmlspecialchars($product->stock) ?></td>
                                 <td>
                                     <div class="action-buttons">
-                                        <button class="edit-btn" onclick="showModal('updateProductModal', <?= htmlspecialchars(json_encode($product)) ?>)">
+                                        <button class="edit-btn" onclick="showModal('updateProductModal', <?= htmlspecialchars(json_encode($product)) ?>, '<?php echo URLROOT; ?>')">
                                             <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                             </svg>
                                         </button>
-                                        <button class="delete-btn" onclick="showModal('deleteProductModal', <?= htmlspecialchars(json_encode($product)) ?>)">
+                                        <button class="delete-btn" onclick="showModal('deleteProductModal', <?= htmlspecialchars(json_encode($product)) ?>, '<?php echo URLROOT; ?>')">
                                             <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                                             </svg>
@@ -91,7 +91,7 @@
                         <label for="category_id">Category:</label>
                         <select name="category_id" required>
                             <?php foreach ($data['categories'] as $category) : ?>
-                                <option value="<?= $category->id ?>"><?= $category->name ?></option>
+                                <option value="<?= $category->category_id ?>"><?= $category->category_name ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -130,7 +130,7 @@
             <div class="modal-content">
                 <h2>Update Product</h2>
                 <form action="<?php echo URLROOT; ?>/SupplierController/update" method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="id" id="updateProductId">
+                    <input type="hidden" name="product_id" id="updateProductId">
                     <input type="hidden" name="existing_image" id="updateProductExistingImage">
                     
                     <div class="form-group">
@@ -142,7 +142,7 @@
                         <label for="category_id">Category:</label>
                         <select name="category_id" id="updateCategory" required>
                             <?php foreach ($data['categories'] as $category) : ?>
-                                <option value="<?= $category->id ?>"><?= $category->name ?></option>
+                                <option value="<?= $category->category_id ?>"><?= $category->category_name ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
