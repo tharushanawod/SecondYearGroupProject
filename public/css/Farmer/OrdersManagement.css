@@ -1,5 +1,5 @@
 @import url(../components/sidebar.css);
-* {
+ /** {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -16,7 +16,7 @@ body {
 
 .container {
   margin-left: 300px;
-  gap: 20px; /* Space between image and form */
+  gap: 20px; 
   height: 100vh;
   padding: 40px;
 }
@@ -57,15 +57,15 @@ td {
 }
 
 table tbody tr {
-  transition: all 0.3s ease; /* Smooth transition for better effect */
+  transition: all 0.3s ease; 
 }
 
 tr:hover {
   background-color: #74dbb2;
   transform: scale(
     1.02
-  ); /* Optional: Slightly scale the row for a nice effect */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for more emphasis */
+  ); 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
 }
 
 th {

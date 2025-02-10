@@ -178,6 +178,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
 
     }
 
+    public function FarmerProfile($id) {
+        $data = $this->BuyerModel->getFarmersById($id);
+       
+        $this->View('Buyer/FarmerProfile', $data);
+
+    }
+
+    public function AddReview($farmer_id) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data = [
+                'review_text' => trim($_POST['review_text']),
+                'rating' => (int) $_POST['rating'],
+                'farmer_id' => $farmer_id,
+                'buyer_id' => $_SESSION['user_id'],
+                'reviewText_err' => '',
+                'rating_err' => ''
+            ];
+    
+            // Validation
+            if (empty($data['review_text'])) {
+                $data['reviewText_err'] = 'Please enter a review';
+            }
+            if ($data['rating'] < 1 || $data['rating'] > 5) {
+                $data['rating_err'] = 'Please select a rating between 1 and 5';
+            }
+            
+    
+            // If no errors, add the review
+            if (empty($data['reviewText_err']) && empty($data['rating_err'])) {
+                if ($this->BuyerModel->AddReview($data)) {
+                    Redirect('BuyerController/FarmerProfile/' . $farmer_id);
+                } else {
+                    die('Something went wrong while saving the review.');
+                }
+            } else {
+                // Reload the form with errors
+                $this->view('Buyer/FarmerProfile', $data);
+            }
+        } else {
+            $data = [];
+            $this->view('Buyer/FarmerProfile', $data);
+        }
+    }
+    
+    public function fetchReviews($id) {
+        $reviews = $this->BuyerModel->fetchReviews($id);
+        header('Content-Type: application/json');
+        echo json_encode($reviews);
+       
+    }
+
 
 
     public function AddBankAccount(){
