@@ -20,9 +20,8 @@
             <img src="<?php echo URLROOT;?>/images/images/img26.jpg" alt="Product Image" class="product-img">
             <div class="product-details">
                 <h3>Dry Corn</h3>
-                <p>Current Bid: LKR 1000</p>
-                <p>Current Highest Bid: LKR 1000</p>
-                <p>Number of Bids: 5</p>
+                <p>Your Bid: LKR 106</p>
+                <p>Current Highest Bid: LKR 106</p>
                 <p>Status: Active</p>
                 <p>Remaining time: 2 days</p>                    
                 <p>Quantity: 100 kg</p>
@@ -36,9 +35,8 @@
             <img src="<?php echo URLROOT;?>/images/images/img7.jpeg" alt="Product Image" class="product-img">
             <div class="product-details">
                 <h3>Sweet Corn</h3>
-                <p>Current Bid: LKR 1000</p>
-                <p>Current Highest Bid: LKR 1000</p>
-                <p>Number of Bids: 5</p>
+                <p>Your Bid: LKR 100</p>
+                <p>Current Highest Bid: LKR 102</p>
                 <p>Status: Active</p>
                 <p>Remaining time: 2 days</p>                    
                 <p>Quantity: 100 kg</p>
@@ -52,9 +50,8 @@
             <img src="<?php echo URLROOT;?>/images/images/img9.jpeg" alt="Product Image" class="product-img">
             <div class="product-details">
                 <h3>Dry Corn</h3>
-                <p>Current Bid: LKR 1000</p>
-                <p>Current Highest Bid: LKR 1000</p>
-                <p>Number of Bids: 5</p>
+                <p>Your Bid: LKR 98</p>
+                <p>Current Highest Bid: LKR 105</p>
                 <p>Status: Active</p>
                 <p>Remaining time: 1 day</p>                    
                 <p>Quantity: 100 kg</p>                

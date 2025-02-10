@@ -348,12 +348,13 @@ body {
                         <img src="<?php echo URLROOT.'/'.$product->media;?>" alt="Product Image">
                         <h3><?php echo $product->name; ?></h3>
                         <div class="farmer-info">
-                            <a href="<?php echo URLROOT;?>/BuyerController/ViewFarmerProfile/<?php echo $product->farmer_id;?>" class="farmer-link">
+                            <a href="<?php echo URLROOT;?>/BuyerController/FarmerProfile/<?php echo $product->user_id;?>" class="farmer-link">
                             <i class="fa-solid fa-user"></i> View Farmer Profile
                             </a>
                             <div class="rating">
                                 <?php
-                                $rating = isset($product->farmer_rating) ? $product->farmer_rating : 0;
+                                $rating = isset($product->avg_rating) ? round((float)$product->avg_rating, 1) : 0;
+
                                 for ($i = 1; $i <= 5; $i++) {
                                     if ($i <= $rating) {
                                         echo '<i class="fa-solid fa-star"></i>';
@@ -361,6 +362,7 @@ body {
                                         echo '<i class="fa-regular fa-star"></i>';
                                     }
                                 }
+                                echo ' ('.$rating.')';
                                 ?>
                             </div>
                         </div>

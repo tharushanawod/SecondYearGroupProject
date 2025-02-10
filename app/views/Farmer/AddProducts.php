@@ -405,8 +405,7 @@ a {
         <div class="header">
             <h1>PRODUCTS</h1>
             <?php echo $data['user_id'];?>
-            <button class="create-btn" onclick="openPricesPopup()">Show Company Purchase Rate</button>
-            <button class="create-btn" onclick="openPopup()">Create New Product</button>
+            <button class="create-btn" onclick="openPopup()">Add New Product</button>
         </div>
         <div class="filters">
             <div class="filter-dropdown">

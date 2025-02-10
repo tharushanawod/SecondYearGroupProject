@@ -245,25 +245,25 @@
                 <img src="<?php echo URLROOT;?>/images/images/img65.png" alt="Company Logo">
                 <h3>Prima</h3>
                 <p>Product: Dry Corn</p>
-                <p>Rate: LKR 1200</p>
+                <p>Rate: LKR 100 (1Kg)</p>
             </div>
             <div class="rate-card">
                 <img src="<?php echo URLROOT;?>/images/images/img66.png" alt="Company Logo">
                 <h3>Munchee</h3>
                 <p>Product: Dry Corn</p>
-                <p>Rate: LKR 1150</p>
+                <p>Rate: LKR 101 (1Kg)</p>
             </div>
             <div class="rate-card">
                 <img src="<?php echo URLROOT;?>/images/images/img67.jpeg" alt="Company Logo">
                 <h3>Maliban</h3>
                 <p>Product: Dry Corn</p>
-                <p>Rate: LKR 1180</p>
+                <p>Rate: LKR 99 (1Kg)</p>
             </div>
             <div class="rate-card">
                 <img src="<?php echo URLROOT;?>/images/images/img70.png" alt="Company Logo">
                 <h3>Cargills</h3>
                 <p>Product: Dry Corn</p>
-                <p>Rate: LKR 1220</p>
+                <p>Rate: LKR 104 (1Kg)</p>
             </div>
         </div>
     </div>    
