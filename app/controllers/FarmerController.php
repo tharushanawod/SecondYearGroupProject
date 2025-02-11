@@ -200,12 +200,11 @@ class FarmerController extends Controller {
     
 
     public function AddProduct() {
-    
-        $_POST = custom_filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+       
         $products = $this->farmerModel->getProductsByFarmerId($_SESSION['user_id']);
     
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
+            $_POST = custom_filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
             
             $data = [
                 'price' => trim($_POST['price']),
@@ -254,7 +253,7 @@ class FarmerController extends Controller {
                 $this->view('Farmer/AddProducts', $data);
             }
         } else {
-
+          
          
             $data = [
                 'price' => '',

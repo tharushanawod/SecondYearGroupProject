@@ -112,6 +112,47 @@
         padding-top:40px;
         font-size:2rem;
     }
+
+    .action-btn {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 13px;
+        margin: 2px;
+        transition: all 0.3s ease;
+    }
+
+    .action-btn.confirm {
+        background-color: #27ae60;
+        color: white;
+    }
+
+    .action-btn.cancel {
+        background-color: #e74c3c;
+        color: white;
+    }
+
+    .action-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .action-btn.confirm:hover {
+        background-color: #219a52;
+    }
+
+    .action-btn.cancel:hover {
+        background-color: #c0392b;
+    }
+
+    @media screen and (max-width: 768px) {
+        .action-btn {
+            width: 100%;
+            margin: 5px 0;
+            padding: 10px;
+        }
+    }
   </style>
 </head>
 <body>
