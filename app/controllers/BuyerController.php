@@ -14,6 +14,11 @@ class BuyerController extends Controller {
         $this->BuyerModel = $this->model('Buyer');
     }
 
+    public function index() {
+        $data=[];
+        $this->View('inc/404.php', $data);
+    }
+
     public function isloggedin() {
         if (isset($_SESSION['user_id']) && ($_SESSION['user_role']=='buyer')){
             return true;
