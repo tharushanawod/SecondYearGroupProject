@@ -37,10 +37,36 @@ class BuyerController extends Controller {
         $this->View('Buyer/bidProduct', $data);
     }
 
-    public function placeBid() {
-        $data = [];
-        $this->View('Buyer/place bid', $data);
+    public function PlaceBid($product_id) {
+        $data= $this->BuyerModel->getProductById($product_id);
+        $this->View('Buyer/PlaceBid', $data);
     }
+
+    public function SubmitBid() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Sanitize input data
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            $data = [
+                'product_id' => trim($_POST['product_id']),
+                'buyer_id' => trim($_POST['buyer_id']),
+                'bid_amount' => trim($_POST['bid_amount']),
+            ];
+    
+            // Process the bid submission
+            $result = $this->BuyerModel->submitBid($data);
+            
+            // Return JSON response based on the result
+            header('Content-Type: application/json');
+            
+            if ($result) {
+                echo json_encode(['success' => true, 'message' => 'Bid submitted successfully!']);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Error submitting the bid.']);
+            }
+            exit;
+        }
+    }
+    
 
     public function cancelBid() {
         $data = [];
@@ -150,6 +176,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
     }
 }
 
+    }
+
+    public function FarmerProfile($id) {
+        $data = $this->BuyerModel->getFarmersById($id);
+       
+        $this->View('Buyer/FarmerProfile', $data);
+
+    }
+
+    public function AddReview($farmer_id) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data = [
+                'review_text' => trim($_POST['review_text']),
+                'rating' => (int) $_POST['rating'],
+                'farmer_id' => $farmer_id,
+                'buyer_id' => $_SESSION['user_id'],
+                'reviewText_err' => '',
+                'rating_err' => ''
+            ];
+    
+            // Validation
+            if (empty($data['review_text'])) {
+                $data['reviewText_err'] = 'Please enter a review';
+            }
+            if ($data['rating'] < 1 || $data['rating'] > 5) {
+                $data['rating_err'] = 'Please select a rating between 1 and 5';
+            }
+            
+    
+            // If no errors, add the review
+            if (empty($data['reviewText_err']) && empty($data['rating_err'])) {
+                if ($this->BuyerModel->AddReview($data)) {
+                    Redirect('BuyerController/FarmerProfile/' . $farmer_id);
+                } else {
+                    die('Something went wrong while saving the review.');
+                }
+            } else {
+                // Reload the form with errors
+                $this->view('Buyer/FarmerProfile', $data);
+            }
+        } else {
+            $data = [];
+            $this->view('Buyer/FarmerProfile', $data);
+        }
+    }
+    
+    public function fetchReviews($id) {
+        $reviews = $this->BuyerModel->fetchReviews($id);
+        header('Content-Type: application/json');
+        echo json_encode($reviews);
+       
     }
 
 

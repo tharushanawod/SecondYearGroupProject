@@ -81,11 +81,103 @@ class Buyer {
 
     //function to display available corn products
     public function getAvailableProducts() {
-        $this->db->query("SELECT * FROM corn_products 
-        WHERE closing_date > NOW()");
+        $this->db->query("SELECT corn_products.*, 
+       COALESCE(AVG(buyer_reviews_farmer.rating), 0) AS avg_rating
+FROM corn_products
+LEFT JOIN buyer_reviews_farmer 
+ON corn_products.user_id = buyer_reviews_farmer.farmer_id
+WHERE closing_date > NOW()
+GROUP BY corn_products.product_id
+");
         $rows = $this->db->resultSet();
         return $rows;
     }
+
+    public function getProductById($id) {
+        $this->db->query("
+        SELECT corn_products.*,users.name,farmers.district 
+        FROM corn_products
+        INNER JOIN users ON corn_products.user_id = users.user_id
+        LEFT JOIN farmers ON corn_products.user_id = farmers.user_id
+         WHERE product_id = :id
+        ");
+        $this->db->bind(':id', $id);
+        $row = $this->db->single();
+        return $row;
+    }
+
+    public function getFarmersById($id) {
+        $this->db->query('
+        SELECT 
+    users.*, 
+    farmers.*, 
+    profile_pictures.file_path, 
+    AVG(buyer_reviews_farmer.rating) AS average_rating
+    FROM users
+    INNER JOIN farmers ON users.user_id = farmers.user_id
+    LEFT JOIN profile_pictures ON farmers.user_id = profile_pictures.user_id
+    LEFT JOIN buyer_reviews_farmer ON users.user_id = buyer_reviews_farmer.farmer_id
+    WHERE users.user_id = :id
+    GROUP BY 
+    users.user_id, 
+    farmers.user_id, 
+    profile_pictures.user_id, 
+    profile_pictures.file_path;
+    ');
+    $this->db->bind(':id', $id);
+    $worker = $this->db->single();
+    return $worker;
+    
+       
+
+    }
+
+    public function SubmitBid($data) {
+        $this->db->query("INSERT INTO bids (product_id, buyer_id, bid_amount) VALUES (:product_id, :buyer_id, :bid_amount)");
+        $this->db->bind(':product_id', $data['product_id']);
+        $this->db->bind(':buyer_id', $data['buyer_id']);
+        $this->db->bind(':bid_amount', $data['bid_amount']);
+
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function AddReview($data) {
+        $this->db->query('INSERT INTO buyer_reviews_farmer (review_text, rating, buyer_id, farmer_id) VALUES (:review_text, :rating, :buyer_id, :farmer_id)');
+        $this->db->bind(':review_text', $data['review_text']);
+        $this->db->bind(':rating', $data['rating']);
+        $this->db->bind(':buyer_id', $data['buyer_id']);
+        $this->db->bind(':farmer_id', $data['farmer_id']);
+    
+        // Execute and return result
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    //function to get all reviews
+    public function fetchReviews($id){
+
+        $this->db->query('
+        SELECT buyer_reviews_farmer.*, users.name,profile_pictures.file_path
+        FROM buyer_reviews_farmer
+        INNER JOIN users  ON buyer_reviews_farmer.buyer_id = users.user_id
+        INNER JOIN profile_pictures  ON users.user_id = profile_pictures.user_id
+        WHERE buyer_reviews_farmer.farmer_id = :id
+    ');
+       
+        $this->db->bind(':id', $id);
+        $results = $this->db->resultSet();
+        return $results;
+    }
+
+    
 
   
     
