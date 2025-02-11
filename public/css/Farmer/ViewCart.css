@@ -36,6 +36,7 @@ h1 {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
+    min-width: 600px;
 }
 
 .cart-table th, .cart-table td {
@@ -140,4 +141,9 @@ hr {
 
 .checkout-button:hover {
     background-color: #45a049; 
+}
+
+.empty-cart {
+    text-align: center;
+    padding: 20px;
 }
