@@ -23,10 +23,10 @@ class LandingController extends Controller{
         $this->View('Landing/aboutus',$data);
     }
 
-    public function products()
+    public function Auction()
     {
         $data = [];
-        $this->View('Landing/products',$data);
+        $this->View('Landing/Auction',$data);
     }
 
     public function Register(){

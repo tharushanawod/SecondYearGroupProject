@@ -73,14 +73,14 @@ class BuyerController extends Controller {
     }
     
 
-    public function cancelBid() {
+    public function BidControl() {
         $data = [];
-        $this->View('Buyer/cancel Bid', $data);
+        $this->View('Buyer/BidControl', $data);
     }
 
-    public function payment() {
+    public function PendingPayment() {
         $data = [];
-        $this->View('Buyer/pendingPayments', $data);
+        $this->View('Buyer/PendingPayment', $data);
     }
 
     public function purchaseHistory() {

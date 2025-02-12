@@ -7,7 +7,170 @@
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Buyer/placeBid.css">
     <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet"/>
     <style>
-       
+       @import url(../components/sidebar.css);
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  height: 100vh;
+  margin-left: 250px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  height: 100%;
+}
+
+h1 {
+  text-align: center;
+  color: #034616;
+  margin-bottom: 20px;
+}
+
+.product-details {
+  text-align: center;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.product-details img {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.product-details h2 {
+  margin: 10px 0;
+  font-size: 24px;
+  color: #225428;
+}
+
+.product-details p {
+  font-size: 16px;
+  color: #333;
+}
+
+.bid-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bid-form input[type="number"] {
+  padding: 12px;
+  width: 60%;
+  margin-bottom: 15px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.bid-form input[type="number"]:focus {
+  border-color: #4caf50;
+  outline: none;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+}
+
+.bid-form button {
+  padding: 12px 30px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.bid-form button:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.alert {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #f44336;
+  color: white;
+  padding: 15px;
+  border-radius: 5px;
+  display: none;
+  z-index: 1000;
+}
+
+.description{
+    padding: 30px;
+}
+.description table {
+  width: 80%;
+  border-collapse: collapse;
+  background-color: gray;
+  margin: auto;
+  
+}
+
+.description h2 {
+  background-color: #e9edee;
+    padding: 20px;
+    text-align: center;
+    
+}
+
+.description tr:nth-child(even) {
+  background-color: lightgray;
+}
+.description tr:nth-child(odd) {
+  background-color: white;
+}
+.description td {
+  border: 1px solid gray;
+  padding: 15px;
+}
+
+.details {
+    background-color: #f8f9fa;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 40%;
+}
+
+.details h2 {
+    color: #2c3e50;
+    border-bottom: 2px solid #4caf50;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.details p {
+    margin: 15px 0;
+    font-size: 1.1em;
+    color: #34495e;
+}
+
+.total-calculation {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #e8f5e9;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1.1em;
+    color: #2e7d32;
+    display: none;
+}
+
     </style>
 </head>
 <body>
@@ -35,6 +198,7 @@
             </div>
             
         </div>
+        <div id="totalCalculation" class="total-calculation"></div>
         <div class="description">
             <h2 style="color: black;">DESCRIPTION</h2>
             <table>
@@ -55,6 +219,7 @@
         
     </div>
     <div class="alert" id="alert"></div>
+    
     <script>
         // Get closing date from PHP
         var closingDate = new Date("<?php echo $data->closing_date; ?>").getTime();
@@ -130,6 +295,27 @@
             .catch(error => {
             alert('There was an error submitting your bid: ' + error.message);
             });
+        });
+
+        // Add this new function for real-time calculation
+        document.getElementById('bid_amount').addEventListener('input', function() {
+            const bidAmount = parseFloat(this.value) || 0;
+            const quantity = <?php echo $data->quantity; ?>;
+            const totalPayment = bidAmount * quantity;
+            
+            const totalCalculationDiv = document.getElementById('totalCalculation');
+            
+            if (bidAmount > 0) {
+                totalCalculationDiv.style.display = 'block';
+                totalCalculationDiv.innerHTML = `
+                    <strong>Payment Summary</strong><br>
+                    Bid Amount per kg: LKR ${bidAmount.toFixed(2)}<br>
+                    Quantity: ${quantity} kg<br>
+                    <strong>Total Payment: LKR ${totalPayment.toFixed(2)}</strong>
+                `;
+            } else {
+                totalCalculationDiv.style.display = 'none';
+            }
         });
     </script>
 </body>
