@@ -14,6 +14,11 @@ class BuyerController extends Controller {
         $this->BuyerModel = $this->model('Buyer');
     }
 
+    public function index() {
+        $data=[];
+        $this->View('inc/404.php', $data);
+    }
+
     public function isloggedin() {
         if (isset($_SESSION['user_id']) && ($_SESSION['user_role']=='buyer')){
             return true;
@@ -68,14 +73,14 @@ class BuyerController extends Controller {
     }
     
 
-    public function cancelBid() {
+    public function BidControl() {
         $data = [];
-        $this->View('Buyer/cancel Bid', $data);
+        $this->View('Buyer/BidControl', $data);
     }
 
-    public function payment() {
+    public function PendingPayment() {
         $data = [];
-        $this->View('Buyer/pendingPayments', $data);
+        $this->View('Buyer/PendingPayment', $data);
     }
 
     public function purchaseHistory() {

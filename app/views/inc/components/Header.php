@@ -5,7 +5,7 @@
       <ul>
         <li><a href="<?php echo URLROOT; ?>/LandingController/index">Home</a></li>
         <li><a href="<?php echo URLROOT; ?>/LandingController/Aboutus">About Us</a></li>
-        <li><a href="<?php echo URLROOT; ?>/LandingController/Products">Products</a></li>
+        <li><a href="<?php echo URLROOT; ?>/LandingController/Auction">Auction</a></li>
         <li><a href="mailto:CornCradle@gmail.com?subject=Contact%20Us&body=Hello,%20I%20would%20like%20to%20contact%20you.">Contact Us</a></li>
       </ul>
       <?php if (isset($_SESSION['user_id'])) : ?>
