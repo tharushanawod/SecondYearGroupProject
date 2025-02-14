@@ -165,7 +165,9 @@
 
   <script src="script.js"></script>
   <script>
-    // Sample data
+    const URLROOT = "<?php echo URLROOT; ?>";
+  </script>
+  <script>
     const bids = [
   { bidId: 1, yourBid: 99, highestBid: 102, status: "Active", remainingTime: "2h 15m", quantity: "150 kg" },
   { bidId: 2, yourBid: 101, highestBid: 105, status: "Active", remainingTime: "3h 30m", quantity: "200 kg" },
@@ -186,75 +188,88 @@
 
 
 
-// Pagination variables
-const rowsPerPage = 10;
-let currentPage = 1;
-
 // DOM elements
 const tableBody = document.querySelector("#orderTable tbody");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 const pageInfo = document.getElementById("pageInfo");
 
+// Pagination variables
+const rowsPerPage = 10;
+let currentPage = 1;
+
+// Function to fetch bid data from the server (PHP file)
+// async function fetchBids() {
+//     try {
+//         const response = await fetch(`${URLROOT}/BuyerController/getActivebids.php`);
+//         const data = await response.json();
+//         bids = data;
+//         renderTable();
+//     } catch (error) {
+//         console.error('Error fetching bids:', error);
+//     }
+// }
+
 // Function to render table rows for the current page
 function renderTable() {
-  const start = (currentPage - 1) * rowsPerPage;
-  const end = start + rowsPerPage;
-  const paginatedBids = bids.slice(start, end);
+    const start = (currentPage - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    const paginatedBids = bids.slice(start, end);
 
-  tableBody.innerHTML = "";
+    tableBody.innerHTML = "";
 
-  paginatedBids.forEach(bid => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td data-label="Bid ID">${bid.bidId}</td>
-      <td data-label="Your Bid (Rs)">${bid.yourBid}</td>
-      <td data-label="Current Highest Bid (Rs)">${bid.highestBid}</td>
-      <td data-label="Status">${bid.status}</td>
-      <td data-label="Remaining Time">${bid.remainingTime}</td>
-      <td data-label="Quantity">${bid.quantity}</td>
-      <td>
-            <button class="cancel-btn" onclick="cancelOrder(${bid.bidId})">Cancel Bid</button>
-            <button class="confirm-btn" onclick="confirmDelivery(${bid.bidId})">Adjust Bid</button>
-        </td>
-    `;
-    tableBody.appendChild(row);
-});
+    paginatedBids.forEach(bid => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${bid.bidId}</td>
+            <td>${bid.yourBid} Rs</td>
+            <td>${bid.highestBid} Rs</td>
+            <td>${bid.status}</td>
+            <td>${bid.remainingTime}</td>
+            <td>${bid.quantity}</td>
+            <td>
+                <button class="cancel-btn" onclick="cancelOrder(${bid.bidId})">Cancel Bid</button>
+                <button class="confirm-btn" onclick="confirmDelivery(${bid.bidId})">Adjust Bid</button>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
 
-
-  pageInfo.textContent = `Page ${currentPage} of ${Math.ceil(bids.length / rowsPerPage)}`;
-  prevBtn.disabled = currentPage === 1;
-  nextBtn.disabled = currentPage === Math.ceil(bids.length / rowsPerPage);
+    pageInfo.textContent = `Page ${currentPage} of ${Math.ceil(bids.length / rowsPerPage)}`;
+    prevBtn.disabled = currentPage === 1;
+    nextBtn.disabled = currentPage === Math.ceil(bids.length / rowsPerPage);
 }
+
 
 // Event listeners for pagination buttons
 prevBtn.addEventListener("click", () => {
-  if (currentPage > 1) {
-    currentPage--;
-    renderTable();
-  }
+    if (currentPage > 1) {
+        currentPage--;
+        renderTable();
+    }
 });
 
 nextBtn.addEventListener("click", () => {
-  if (currentPage < Math.ceil(bids.length / rowsPerPage)) {
-    currentPage++;
-    renderTable();
-  }
+    if (currentPage < Math.ceil(bids.length / rowsPerPage)) {
+        currentPage++;
+        renderTable();
+    }
 });
 
-// Initial render
+// Initial fetch
+// fetchBids();
+
 renderTable();
 
 // Add these new functions
 function confirmDelivery(orderId) {
-  // Add your confirmation logic here
-  console.log(`Confirming delivery for order ${orderId}`);
+    console.log(`Confirming delivery for order ${orderId}`);
 }
 
 function cancelOrder(orderId) {
-  // Add your cancellation logic here
-  console.log(`Cancelling order ${orderId}`);
+    console.log(`Cancelling order ${orderId}`);
 }
+
   </script>
 </body>
-</html>Z
+</html>Z</html>
