@@ -3,6 +3,7 @@
 class FarmerController extends Controller {
     
     private $farmerModel;
+    private $cartModel;
 
     public function __construct() {
         if (!$this->isloggedin()) {
@@ -13,6 +14,7 @@ class FarmerController extends Controller {
             Redirect('LandingController/login');
         }
         $this->farmerModel = $this->model('Farmer');
+        $this->cartModel = $this->model('Cart');
     }
 
     public function isloggedin() {
@@ -160,7 +162,6 @@ class FarmerController extends Controller {
             ini_set('display_startup_errors', 1);
             error_reporting(E_ALL);
             
-            
     
             // Check for no errors
             if (empty($data['price_err']) && empty($data['quantity_err']) && empty($data['type_err']) && empty($data['expiry_err'])) {
@@ -177,25 +178,25 @@ class FarmerController extends Controller {
                 $this->view('Farmer/AddProducts', $data); // Use edit product view
             }
         } 
-        // else {
+        else {
 
-        //     $product = $this->farmerModel->getProducts($id);
-        //     $products = $this->farmerModel->getProductsByFarmerId($_SESSION['user_id']);
+            $product = $this->farmerModel->getProducts($id);
+            $products = $this->farmerModel->getProductsByFarmerId($_SESSION['user_id']);
 
-        //     $data = [
-        //         'id' => $product->id,
-        //         'price' => $product->price,
-        //         'quantity' => $product->quantity,
-        //         'type' => $product->type,
-        //         'media' => $product->media,
-        //         'price_err' => '',
-        //         'quantity_err' => '',
-        //         'type_err' => '',
-        //         'product' => $products,
-        //         'show_popup' => true
-        //     ];
-        //     $this->view('Farmer/AddProducts', $data);
-        // }
+            $data = [
+                'id' => $product->id,
+                'price' => $product->price,
+                'quantity' => $product->quantity,
+                'type' => $product->type,
+                'media' => $product->media,
+                'price_err' => '',
+                'quantity_err' => '',
+                'type_err' => '',
+                'product' => $products,
+                'show_popup' => true
+            ];
+            $this->view('Farmer/AddProducts', $data);
+        }
     }
     
 
@@ -498,23 +499,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
             }
         }
 
-    }
-
-    public function GetIdea(){
-        $data = [];
-        $this->View('Farmer/GetIdea', $data);
-    }
-    
-    public function ViewCart() {
-        $data = [];
-        $this->View('Farmer/ViewCart', $data);
-    }
-
-    public function Checkout() {
-        $data = [];
-        $this->View('Farmer/Checkout', $data);
-    }
-
+    }   
+   
     public function CheckoutConfirmation() {
         $data = [];
         $this->View('Farmer/CheckoutConfirmation', $data);
@@ -527,6 +513,82 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
     public function inventory() {
         $data = [];
         $this->View('Farmer/inventory', $data);
+    }
+
+    public function addToCart() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Sanitize POST data
+            $_POST = custom_filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+            $data = [
+                'product_id' => trim($_POST['product_id']),
+                'quantity' => trim($_POST['quantity']),
+                'user_id' => $_SESSION['user_id']
+            ];
+
+            if ($this->cartModel->addCartItem($data)) {
+                redirect('FarmerController/viewCart');
+            } else {
+                die('Something went wrong');
+            }
+        } else {
+            redirect('FarmerController/buyIngredients');
+        }
+    }
+
+    public function viewCart() {
+        $customer_id = $_SESSION['user_id'];
+        $cartItems = $this->cartModel->getCartItems($customer_id);
+        $subTotal = $this->cartModel->calculateSubTotal($cartItems);
+        $total = $subTotal; // Add any additional calculations if needed
+
+        $data = [
+            'cartItems' => $cartItems,
+            'subTotal' => $subTotal,
+            'total' => $total
+        ];
+
+        $this->view('Farmer/CartItems', $data);
+    }
+
+    public function updateCartItem() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $cart_item_id = $_POST['id'];
+            $quantity = $_POST['quantity'];
+            
+            if ($this->cartModel->updateCartItem($cart_item_id, $quantity)) {
+                header('Location: ' . URLROOT . '/FarmerController/viewCart');
+            } else {
+                die('Something went wrong while updating the cart item.');
+            }
+        }
+    }
+
+    public function removeCartItem($id) {
+        if ($this->cartModel->removeCartItem($id)) {
+            header('Location: ' . URLROOT . '/FarmerController/viewCart');
+        } else {
+            die('Something went wrong while removing the cart item.');
+        }
+    }
+
+    public function clearCart() {
+        $customer_id = $_SESSION['user_id'];
+        if ($this->cartModel->clearCart($customer_id)) {
+            header('Location: ' . URLROOT . '/FarmerController/viewCart');
+        } else {
+            die('Something went wrong while clearing the cart.');
+        }
+    }
+
+    public function viewDetails($id){
+        $product = $this->farmerModel->getProducts($id);
+        $relatedProducts = $this->farmerModel->getRelatedProducts($product->category_id, $product->product_id);
+        $data = [
+            'product' => $product,
+            'relatedProducts' => $relatedProducts
+        ];
+        $this->view('Farmer/ViewDetails', $data);
     }
 
 }

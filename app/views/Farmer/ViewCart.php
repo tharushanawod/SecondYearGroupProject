@@ -19,24 +19,41 @@
                     <th></th>
                     <th></th>
                     <th>Product</th>
+                    <th>Category</th>  
                     <th>Price</th>
                     <th>Quantity</th>
                     <th>Subtotal</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><button class="remove-button">×</button></td>
-                    <td>
-                        <img src="<?php echo URLROOT;?>/images/images/img62.png" alt="Nitrogen rich fertilizer" class="product-image">                       
-                    </td>
-                    <td>Nitrogen Rich Fertilizer</td>
-                    <td>LKR 1500.00</td>
-                    <td>
-                        <input class="quantity-input" type="number" value="1" min="1" class="quantity-input">
-                    </td>
-                    <td>LKR 1500.00</td>
-                </tr>
+                <?php if(empty($data['cartItems'])): ?>
+                    <tr>
+                        <td colspan="7" class="empty-cart">Your cart is empty</td>
+                    </tr>
+                <?php else: ?>
+                    <?php foreach ($data['cartItems'] as $item): ?>
+                    <tr id="item_<?php echo htmlspecialchars($item->cart_item_id); ?>">
+                        <td>
+                            <form id="removeForm_<?php echo htmlspecialchars($item->cart_item_id); ?>" method="POST" action="<?php echo URLROOT; ?>/FarmerController/removeCartItem/<?php echo htmlspecialchars($item->cart_item_id); ?>">
+                                <button type="submit" class="remove-button">×</button>
+                            </form>
+                        </td>
+                        <td>
+                            <img src="<?php echo URLROOT; ?>/uploads/<?php echo htmlspecialchars($item->image); ?>" alt="<?php echo htmlspecialchars($item->product_name); ?>" class="product-image">
+                        </td>
+                        <td><?php echo htmlspecialchars($item->product_name); ?></td>
+                        <td><?php echo htmlspecialchars($item->category_name); ?></td>
+                        <td>LKR <?php echo number_format($item->price, 2); ?></td>
+                        <td>
+                            <form id="updateForm_<?php echo htmlspecialchars($item->cart_item_id); ?>" method="POST" action="<?php echo URLROOT; ?>/FarmerController/updateCartItem">
+                                <input type="hidden" name="id" value="<?php echo htmlspecialchars($item->cart_item_id); ?>">
+                                <input class="quantity-input" type="number" name="quantity" value="<?php echo htmlspecialchars($item->quantity); ?>" min="1" onchange="document.getElementById('updateForm_<?php echo htmlspecialchars($item->cart_item_id); ?>').submit();">
+                            </form>
+                        </td>
+                        <td>LKR <span id="totalPrice_<?php echo htmlspecialchars($item->cart_item_id); ?>"><?php echo number_format($item->price * $item->quantity, 2); ?></span></td>
+                    </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </tbody>
         </table>
     </div>
@@ -45,11 +62,11 @@
             <h2>Cart totals</h2><hr>
             <div class="totals-row">
                 <span>Subtotal</span>
-                <span>LKR 1500.00</span>
+                <span>LKR <span id="subTotal"><?php echo number_format($data['subTotal'], 2); ?></span></span>
             </div><hr>
             <div class="totals-row">
                 <span>Total</span>
-                <span>LKR 1500.00</span>
+                <span>LKR <span id="finalPrice"><?php echo number_format($data['total'], 2); ?></span></span>
             </div>
             <hr>
             <a href="<?php echo URLROOT;?>/FarmerController/Checkout"><button class="checkout-button">PROCEED TO CHECKOUT</button></a>

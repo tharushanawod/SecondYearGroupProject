@@ -31,10 +31,17 @@ class Farmer {
     }
 
     public function getProducts($id){
-        $this->db->query('SELECT * FROM corn_products WHERE product_id = :id');
+        $this->db->query('SELECT * FROM supplier_products WHERE product_id = :id');
         $this->db->bind(':id', $id);
         $result = $this->db->single();
         return $result;
+    }
+
+    public function getRelatedProducts($category_id, $product_id) {
+        $this->db->query('SELECT * FROM supplier_products WHERE category_id = :category_id AND product_id != :product_id LIMIT 4');
+        $this->db->bind(':category_id', $category_id);
+        $this->db->bind(':product_id', $product_id);
+        return $this->db->resultSet();
     }
     
 
@@ -130,31 +137,31 @@ class Farmer {
        
     }
 
-    public function getFarmworkerById($id) {
-        $this->db->query('
-        SELECT 
-    users.*, 
-    farmworkers.*, 
-    profile_pictures.file_path, 
-    AVG(farmer_reviews_worker.rating) AS average_rating
-FROM users
-INNER JOIN farmworkers ON users.user_id = farmworkers.user_id
-LEFT JOIN profile_pictures ON farmworkers.user_id = profile_pictures.user_id
-LEFT JOIN farmer_reviews_worker ON users.user_id = farmer_reviews_worker.worker_id
-WHERE users.user_id = :id
-GROUP BY 
-    users.user_id, 
-    farmworkers.user_id, 
-    profile_pictures.user_id, 
-    profile_pictures.file_path;
-    ');
-    $this->db->bind(':id', $id);
-    $worker = $this->db->single();
-    return $worker;
-    
-       
+        public function getFarmworkerById($id) {
+            $this->db->query('
+            SELECT 
+        users.*, 
+        farmworkers.*, 
+        profile_pictures.file_path, 
+        AVG(farmer_reviews_worker.rating) AS average_rating
+    FROM users
+    INNER JOIN farmworkers ON users.user_id = farmworkers.user_id
+    LEFT JOIN profile_pictures ON farmworkers.user_id = profile_pictures.user_id
+    LEFT JOIN farmer_reviews_worker ON users.user_id = farmer_reviews_worker.worker_id
+    WHERE users.user_id = :id
+    GROUP BY 
+        users.user_id, 
+        farmworkers.user_id, 
+        profile_pictures.user_id, 
+        profile_pictures.file_path;
+        ');
+        $this->db->bind(':id', $id);
+        $worker = $this->db->single();
+        return $worker;
+        
+        
 
-    }
+        }
 
 
     public function UpdateProfile($data) {

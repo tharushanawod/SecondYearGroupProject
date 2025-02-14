@@ -114,5 +114,14 @@ class Product {
         $this->db->bind(':supplier_id', $supplier_id);
         return $this->db->resultSet();
     }
+
+    public function getProductsByIds($ids) {
+        if (empty($ids)) {
+            return [];
+        }
+        $ids = implode(',', array_map('intval', $ids));
+        $this->db->query("SELECT * FROM products WHERE id IN ($ids)");
+        return $this->db->resultSet();
+    }
 }
 ?>
