@@ -167,7 +167,7 @@
           <th>Buyer</th>
           <th>Unit Price (Rs)</th>
           <th>Quantity (kg)</th>
-          <th>Status</th>
+          <th>Payment Status</th>
         </tr>
       </thead>
       <tbody>

@@ -74,7 +74,7 @@ class BuyerController extends Controller {
     
 
     public function BidControl() {
-        $data = [];
+        $data =[];
         $this->View('Buyer/BidControl', $data);
     }
 
