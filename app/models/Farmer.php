@@ -37,12 +37,47 @@ class Farmer {
         return $result;
     }
 
+    public function getCornProductDetails($id){
+        $this->db->query('SELECT * FROM corn_products WHERE product_id = :id');
+        $this->db->bind(':id', $id);
+        $result = $this->db->single();
+        return $result;
+    }
+
     public function getRelatedProducts($category_id, $product_id) {
         $this->db->query('SELECT * FROM supplier_products WHERE category_id = :category_id AND product_id != :product_id LIMIT 4');
         $this->db->bind(':category_id', $category_id);
         $this->db->bind(':product_id', $product_id);
         return $this->db->resultSet();
     }
+
+    public function UpdateCornProducts($data) {
+        try {
+            $this->db->query('
+                UPDATE corn_products 
+                SET starting_price = :starting_price, 
+                    quantity = :quantity, 
+                    media = :media, 
+                    closing_date = :closing_date, 
+                    user_id = :user_id
+                WHERE product_id = :id
+            ');
+            
+            $this->db->bind(':starting_price', $data['starting_price']);
+            $this->db->bind(':quantity', $data['quantity']);
+            $this->db->bind(':media', $data['media']);
+            $this->db->bind(':closing_date', $data['closing_date']);
+            $this->db->bind(':user_id', $data['user_id']); // Bind user_id
+            $this->db->bind(':id', $data['id']); // Bind product_id
+    
+            return $this->db->execute();
+            
+        } catch (Exception $e) {
+            error_log($e->getMessage()); // Log errors
+            return false;
+        }
+    }
+    
     
 
     public function editProduct($data) {

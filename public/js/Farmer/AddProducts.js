@@ -3,19 +3,11 @@ function openPricesPopup() {
     document.body.classList.add("blurred-background"); // Add the blur effect to the body
 }
 
-console.log('Hello');
 // Function to close the popup
 function closePricesPopup() {
     document.getElementById("pricesPopupMessage").style.display = "none";
     document.body.classList.remove("blurred-background"); // Remove the blur effect from the body
 }
-
-
-//  document.addEventListener('DOMContentLoaded', function () {
-// <?php if (!empty($data['show_popup']) && $data['show_popup'] === true): ?>
-//     openPopup(); // Call your JavaScript function to show the popup
-// <?php endif; ?>
-// });
 
 
 function openPopup(productId) {
@@ -41,8 +33,8 @@ updatebutton.textContent='Update';
 // Example:
 fetchProductData(productId);  // Function to fetch and fill the form (you'll need to implement it)
 } else {
-
-    
+    const updatebutton=document.querySelector('.btn-primary');
+    updatebutton.textContent='Add Your Product';
 // Set the form action for the create (AddProduct)
 form.action = `${URLROOT}/FarmerController/AddProduct`;
 
@@ -56,6 +48,8 @@ form.action = `${URLROOT}/FarmerController/AddProduct`;
 
 
 }
+
+
 function fetchProductData(productId) {
 fetch(`${URLROOT}/FarmerController/getProductDetails/${productId}`)
 .then(response => response.json())
@@ -87,6 +81,8 @@ function closePopup() {
 
 document.addEventListener('DOMContentLoaded', function () {
 const timers = document.querySelectorAll('.countdown-timer');
+const input = document.getElementById("closing_date");
+
 timers.forEach(timer => {
     const expiryDate = new Date(timer.getAttribute('data-expiry-date'));
     const countdownElement = timer.querySelector('span');
@@ -112,5 +108,21 @@ timers.forEach(timer => {
     setInterval(updateCountdown, 1000);
     updateCountdown(); // Initial call
 });
+
+
+// Get today's date
+const today = new Date();
+const futureDate = new Date();
+futureDate.setDate(today.getDate() + 7); // Set max to 7 days from today
+
+// Format date to YYYY-MM-DDTHH:MM
+const formatDateTime = (date) => {
+    const pad = (num) => num.toString().padStart(2, '0'); // Add leading zero if needed
+
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+};
+
+input.min = formatDateTime(today);
+input.max = formatDateTime(futureDate);
 });
 
