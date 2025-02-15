@@ -1,178 +1,150 @@
 @import url(../components/sidebar.css);
- /** {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: sans-serif;
 
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  background-color: #f4f4f4;
 
-}
+.table-container {
+  max-width: 1200px;
+  margin-left: 250px;
+  padding: 30px;
+  background-color: white;
+  border-radius: 10px;
 
-.container {
-  margin-left: 300px;
-  gap: 20px; 
-  height: 100vh;
-  padding: 40px;
-}
-
-h1 {
-  text-align: center;
-  font-size: 40px;
-}
-
-.filter-options {
-  margin-bottom: 20px;
-}
-
-label {
-  margin-right: 10px;
-}
-
-select {
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid #ddd;
 }
 
 table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   margin-bottom: 20px;
-
+  border-radius: 8px;
+  overflow: hidden;
 }
 
+thead {
+  background-color: #1f6146;
+  color: white;
+}
 
-
-th,
-td {
-  padding: 15px;
+th, td {
+  padding: 15px 20px;
   text-align: left;
-
-}
-
-table tbody tr {
-  transition: all 0.3s ease; 
-}
-
-tr:hover {
-  background-color: #74dbb2;
-  transform: scale(
-    1.02
-  ); 
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  border: none;
+  border-bottom: 1px solid #eee;
 }
 
 th {
-  background-color: #daeed6;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 0.5px;
 }
 
-tr {
-  background-color: #eafaf6;
+td {
+  font-size: 14px;
+  color: #333;
 }
 
-
-.actions button {
-  padding: 5px 10px;
-  margin-right: 5px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 150px;
+tbody tr {
+  transition: all 0.3s ease;
 }
 
-
-.actions button.accept {
-  background-color: #28a745;
-  color: white;
+tbody tr:hover {
+  background-color: #f5f8ff;
+  transform: scale(1.003);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
 }
 
-.actions button.send-code {
-  background-color: #007bff;
-  color: white;
+tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
 }
 
-.actions button:hover {
-  opacity: 0.8;
-}
-
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding-top: 60px;
-}
-
-.modal-content {
-  background-color: #fff;
-  margin: 5% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  max-width: 500px;
-  border-radius: 8px;
-}
-
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.close:hover,
-.close:focus {
-  color: black;
-}
-
-.modal-actions {
+.pagination {
   display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 30px;
 }
 
-.modal-actions button {
+button {
   padding: 10px 20px;
+  background-color: #1f6146;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+button:hover:not(:disabled) {
+  background-color: #34495e;
+  transform: translateY(-2px);
+}
+
+button:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+}
+
+#pageInfo {
+  font-size: 14px;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+h1 {
+  text-align: center;
+  color: #2c3e50;
+  font-size: 28px;
+  font-weight: 600;
+  font-size:2rem;
+}
+
+.action-btn {
+  padding: 8px 12px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 13px;
+  margin: 2px;
+  transition: all 0.3s ease;
 }
 
-#acceptOrderBtn {
-  background-color: #28a745;
+.action-btn.confirm {
+  background-color: #27ae60;
   color: white;
 }
 
-#acceptOrderBtn:hover {
-  background-color: #218838;
-}
-
-#sendCodeBtn {
-  background-color: #007bff;
+.action-btn.cancel {
+  background-color: #e74c3c;
   color: white;
 }
 
-#sendCodeBtn:hover {
-  background-color: #0056b3;
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-#closeBtn {
-  background-color: #6c757d;
-  color: white;
+.action-btn.confirm:hover {
+  background-color: #219a52;
 }
 
-#closeBtn:hover {
-  background-color: #5a6268;
+.action-btn.cancel:hover {
+  background-color: #c0392b;
+}
+
+@media screen and (max-width: 768px) {
+  .action-btn {
+      width: 100%;
+      margin: 5px 0;
+      padding: 10px;
+  }
 }

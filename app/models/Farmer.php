@@ -44,6 +44,11 @@ class Farmer {
         return $result;
     }
 
+    public function getAllOrders() {
+        $this->db->query("SELECT * FROM orders_from_buyers");
+        return $this->db->resultSet();  // Returns an array of orders
+    }
+
     public function getRelatedProducts($category_id, $product_id) {
         $this->db->query('SELECT * FROM supplier_products WHERE category_id = :category_id AND product_id != :product_id LIMIT 4');
         $this->db->bind(':category_id', $category_id);
@@ -107,11 +112,11 @@ class Farmer {
     
    
 
-    public function getOrders(){
-        $this->db->query('SELECT * FROM orders');
-        $results = $this->db->resultSet();
-        return $results;
-    }
+    // public function getOrders(){
+    //     $this->db->query('SELECT * FROM orders');
+    //     $results = $this->db->resultSet();
+    //     return $results;
+    // }
 
     public function getWorkers(){
         $this->db->query('SELECT * FROM workers');

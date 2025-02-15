@@ -57,6 +57,13 @@ class FarmerController extends Controller {
         $this->View('Farmer/OrdersManagement', $data);
     }
 
+    public function getAllOrders() {
+        $orders = $this->farmerModel->getAllOrders();
+        
+        // Send all orders to the frontend
+        echo json_encode($orders);
+    }
+
     public function hireWorkers() {
         $data = [];
         $this->View('Farmer/Hire Workers', $data);
