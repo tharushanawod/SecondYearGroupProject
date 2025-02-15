@@ -33,18 +33,18 @@ class AdminController extends Controller {
 
         // Pass the user data to the view
         $data = ['users' => $users];
-  
+
         // Render the view
         $this->View('Admin/LandingDashboard', $data);
 
-       
-
-        echo '<pre>';
-        print_r($users);
-        echo '</pre>';
         
-
     }
+
+    public function getProfileImage($user_id) {
+        $imagePath = $this->pagesModel->getProfileImage($_SESSION['user_id']);
+        return $imagePath ? URLROOT .'/'.$imagePath : URLROOT . '/images/default.jpg';
+    }
+
 
     public function RemoveUsers(){
      

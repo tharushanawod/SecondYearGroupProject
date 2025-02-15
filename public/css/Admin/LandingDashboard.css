@@ -1,4 +1,4 @@
-@import url(./sidebar.css);
+@import url(../components/sidebar2.css);
 * {
   margin: 0;
   padding: 0;
@@ -14,7 +14,7 @@ body {
 .main-content {
   margin-left: 250px;
   padding: 40px;
-  width: calc(100% - 250px);
+
 }
 
 .overview {

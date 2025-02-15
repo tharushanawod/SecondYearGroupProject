@@ -1,121 +1,190 @@
-
 .sidebar {
   width: 250px;
-  padding: 20px;
-  border-right: 1px solid #ddd;
-  height: 100%;
+  background: rgb(26, 82, 59);
+  background: linear-gradient(90deg, rgba(5,4,48,1) 0%, rgba(12,10,124,1) 84%);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: width 0.3s;
   position: fixed;
-  border: none;
-  overflow: hidden;
-  transition: width 0.3s ease;
-  box-sizing: border-box;
-  animation: slideIn 0.5s ease;
-  background: rgb(26,82,59);
-background: linear-gradient(90deg, rgba(26,82,59,1) 0%, rgba(46,143,104,1) 84%);
-
-
+  height: 100%;
 }
 
-.sidebar .profile {
+.sidebar .logo {
   text-align: center;
-  margin-bottom: 20px;
-  color: white;
+  padding: 20px;
 }
 
-.sidebar .profile img {
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
+.sidebar .logo img {
+  width: 130px;
 }
 
-.sidebar .profile p {
-  margin: 5px 0;
-  font-size: 16px;
-
+.sidebar .menu {
+  flex-grow: 1;
 }
 
-.sidebar .profile a {
-  text-decoration: none;
-  font-size: 14px;
-}
-
-.sidebar ul {
+.sidebar .menu ul {
   list-style: none;
   padding: 0;
 }
 
-.sidebar ul li {
-  margin-bottom: 10px;
+.sidebar .menu ul li {
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
 
-.sidebar ul li a {
+.sidebar .menu ul li i {
+  margin-right: 10px;
+}
+
+.sidebar .menu ul li a {
   text-decoration: none;
   color: white;
   display: block;
-  padding: 10px;
-  
-  font-size: 16px;
-  transition: all 0.3s ease;
-  border-bottom: 1px solid white;
+  width: 100%;
+  height: 100%;
 }
 
-.sidebar ul li a:hover {
-  background-color: #32b684;
-  border-radius: 10px;
-  transform: scale(1.04);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.active {
+  background-color: #5865f2;
+  border-radius: 5px;
 }
 
-svg {
-  height: 20px;
-  width: 20px;
- 
-  fill: white;
-}
-
-.links {
+.sidebar .profile {
+  padding: 20px;
   display: flex;
   align-items: center;
-  gap: 10px;
 }
 
+.sidebar .profile img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
 
+.sidebar .profile .profile-info {
+  flex-grow: 1;
+}
+
+.sidebar .profile .profile-info .name {
+  font-weight: bold;
+}
+
+.sidebar .profile .profile-info .view-profile {
+  font-size: 12px;
+
+  text-decoration: none;
+}
+
+.view-profile a {
+  text-decoration: none;
+  color: white;
+}
+
+.sidebar .profile .settings {
+  cursor: pointer;
+}
+
+/*css for sidebar toggle button*/
+
+.settings-menu {
+  display: none;
+  position: absolute;
+  background-color: white;
+  color: black;
+  border: none; /* Remove border */
+  border-radius: 5px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  right: 20px;
+  bottom: 60px;
+  z-index: 1000;
+  width: 150px;
+  padding: 10px;
+}
+
+.settings-menu::after {
+  content: "";
+  position: absolute;
+  bottom: -10px; /* Position the point below the menu */
+  right: 2px; /* Align the point slightly inward for better alignment */
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid white; /* Match the menu background color */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Match shadow */
+}
+
+.settings-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.settings-menu ul li {
+  display: flex;
+  align-items: center;
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.settings-menu ul li i {
+  margin-right: 10px;
+  font-size: 16px;
+  color: #555;
+}
+
+.settings-menu ul li a {
+  text-decoration: none;
+  color: black;
+}
+
+.settings-menu ul li:hover {
+  background-color: #f5f5f5;
+  border-radius: 3px;
+}
+
+.settings-menu ul li:last-child {
+  border-bottom: none;
+}
 
 @media (max-width: 768px) {
   .sidebar {
-      width: 100px;
-      padding: 10px;
+    width: 80px;
+  }
+
+  .sidebar .logo img {
+    width: 50px;
+  }
+
+  .sidebar .menu ul li {
+    justify-content: center;
+  }
+
+  .sidebar .menu ul li i {
+    margin-right: 0;
+  }
+
+  .menu-text {
+    display: none;
+  }
+
+  .sidebar .profile {
+    flex-direction: column;
+    align-items: center;
   }
 
   .sidebar .profile img {
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    margin-right: 0;
+    margin-bottom: 10px;
   }
- 
-  .sidebar .profile p {
+
+  .sidebar .profile .profile-info {
     display: none;
   }
-  .sidebar ul li a {
-      padding: 10px;
-      text-align: center;
-  }
-
-  .links {
-      justify-content: center;
-  }
-
-  svg {
-    height: 25px;
-    width: 25px;
-  }
-  .links p {
-      display: none;
-  }
-  .links img{
-    width: 25px;
-    height: 25px;
-  }
-
 }

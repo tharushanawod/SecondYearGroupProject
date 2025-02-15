@@ -3,7 +3,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, sans-serif;
+      Ubuntu, Cantarell, sans-serif;
 }
 
 body {
@@ -19,6 +19,7 @@ body {
   width: 100%;
   margin: auto;
   max-width: 1000px;
+  flex-direction: row; /* Default for desktop */
 }
 
 .Home {
@@ -140,19 +141,74 @@ button:hover {
   width: 50%;
 }
 
-
 .forgot-password{
-  text-align: right;
-  margin-top: 10px;
+ display: flex;
+ justify-content: space-between;
+ padding:0.5rem;
 }
 @media (min-width: 768px) {
   .form-section {
-    margin: 0;
+      margin: 0;
   }
 }
 
 @media (max-width: 767px) {
   .image-section {
-    font-size: 2rem;
+      font-size: 2rem;
+  }
+}
+
+/* Updated responsive styles */
+@media (max-width: 768px) {
+  .container {
+      flex-direction: column-reverse;
+      padding: 1rem;
+  }
+
+  .form-section {
+      margin: 0 !important;
+      max-width: 100% !important;
+      border-radius: 1rem !important;
+  }
+
+  .image-section {
+      border-radius: 1rem !important;
+      padding: 2rem 1rem !important;
+      font-size: 2rem !important;
+      min-height: 300px;
+  }
+
+  .login-link button {
+      width: 100% !important;
+  }
+
+  input, button {
+      padding: 12px !important;
+  }
+
+  .Home {
+      margin-bottom: 1rem;
+  }
+
+  .heading h2 {
+      font-size: 1.5rem;
+  }
+
+  .form-group {
+      margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+      padding: 0.5rem;
+  }
+
+  .form-section {
+      padding: 1rem;
+  }
+
+  .image-section {
+      min-height: 200px;
   }
 }

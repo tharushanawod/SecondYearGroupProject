@@ -49,14 +49,23 @@
               <li><a href="<?php echo URLROOT;?>/WorkerController/RequestHelp"><i class="fa-solid fa-comment"></i><span class="menu-text">Chat</span></a></li>
               
               
-              <?php else: ?>
+              <?php elseif ($user_role === 'supplier'): ?>
                 <li><a href="<?php echo URLROOT;?>/SupplierController/dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/SupplierController/shop"><i class="fa-solid fa-gauge"></i><span class="menu-text">Products</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/SupplierController/productManagement"><i class="fa-solid fa-gauge"></i><span class="menu-text">Product Control</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/SupplierController/viewOrders"><i class="fa-solid fa-gauge"></i><span class="menu-text">View Orders</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/SupplierController/RequestHelp"><i class="fa-solid fa-gauge"></i><span class="menu-text">Chat</span></a></li>
                 
-              <?php endif; ?>
+                <?php else: ?>
+                <li><a href="<?php echo URLROOT;?>/AdminController/Dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>
+                <li><a href="<?php echo URLROOT;?>/AdminController/Manageprofile"><i class="fa-solid fa-user"></i><span class="menu-text">Profile</span></a></li>
+                <li><a href="<?php echo URLROOT;?>/AdminController/RemoveUsers"><i class="fa-solid fa-users"></i><span class="menu-text">Users</span></a></li>
+                <li><a href="<?php echo URLROOT;?>/AdminController/UpdateUsers"><i class="fa-solid fa-refresh"></i><span class="menu-text">Update Users</span></a></li>
+                <li><a href="<?php echo URLROOT;?>/AdminController/AddModerators"><i class="fa-solid fa-user-tie"></i><span class="menu-text">Moderators</span></a></li>
+                <li><a href="<?php echo URLROOT;?>/AdminController/getManufacturers"><i class="fa-solid fa-check"></i><span class="menu-text">Verify Users</span></a></li>
+                <li><a href="<?php echo URLROOT;?>/AdminController/Report"><i class="fa-solid fa-chart-bar"></i><span class="menu-text">Reports</span></a></li>  
+              
+                <?php endif; ?>
        
 
       
@@ -92,8 +101,11 @@
         echo URLROOT.'/FarmerController/ManageProfile';
       }elseif($_SESSION['user_role'] == 'farmworker'){
         echo URLROOT.'/WorkerController/ManageProfile';
-      }else{
+      }elseif($_SESSION['user_role'] == 'supplier'){
         echo URLROOT.'/SupplierController/ManageProfile';
+      }
+      else{
+        echo URLROOT.'/AdminController/ManageProfile';
       }
       
       ?>
