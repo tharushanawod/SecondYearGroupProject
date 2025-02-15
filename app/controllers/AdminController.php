@@ -123,6 +123,17 @@ class AdminController extends Controller {
             }
         }
     }
+
+    public function UserControl(){
+       $data = [];
+
+        $this->View('Admin/UserControl',$data);
+    }
+
+    public function getAllUsers(){
+        $users = $this->AdminModel->getAllUsers();
+        echo json_encode($users);
+    }
     
 
 

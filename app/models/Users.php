@@ -179,7 +179,7 @@ class Users {
     }
 
 
-    public function getUsers() {
+    public function getAllUsers() {
         // Prepare a query to fetch all users except those with the title 'admin'
         $this->db->query("SELECT * FROM users WHERE user_type != 'admin'");
         
