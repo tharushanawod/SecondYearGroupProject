@@ -58,7 +58,6 @@
                 
                 <?php else: ?>
                 <li><a href="<?php echo URLROOT;?>/AdminController/Dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>
-                <li><a href="<?php echo URLROOT;?>/AdminController/Manageprofile"><i class="fa-solid fa-user"></i><span class="menu-text">Profile</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/AdminController/RemoveUsers"><i class="fa-solid fa-users"></i><span class="menu-text">Users</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/AdminController/UpdateUsers"><i class="fa-solid fa-refresh"></i><span class="menu-text">Update Users</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/AdminController/AddModerators"><i class="fa-solid fa-user-tie"></i><span class="menu-text">Moderators</span></a></li>
