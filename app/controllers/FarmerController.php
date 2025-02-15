@@ -93,30 +93,27 @@ class FarmerController extends Controller {
     }
 
     public function UpdateProducts($id) {
-        
-        
     
-        // $_POST = custom_filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-    
-        $products = $this->farmerModel->getProductsByFarmerId($_SESSION['user_id']);
+        $product = $this->farmerModel->getCornProductDetails($id);
       
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
     
-            $expiryPeriod = trim($_POST['closing_date']); // Example: "2025-03-10T14:30"
-            $expiryDate = new DateTime($expiryPeriod); 
-            $formattedExpiryDate = $expiryDate->format('Y-m-d H:i:s'); // Convert to SQL format
+            // $expiryPeriod = trim($_POST['closing_date']); // Example: "2025-03-10T14:30"
+            // $expiryDate = new DateTime($expiryPeriod); 
+            // $formattedExpiryDate = $expiryDate->format('Y-m-d H:i:s'); // Convert to SQL format
 
     
             $data = [
                 'id' => $id,
                 'starting_price' => trim($_POST['price']),
                 'quantity' => trim($_POST['quantity']),
-                'closing_date' => $formattedExpiryDate,
+                'closing_date' => trim($_POST['closing_date']),
                 'media' => '',
                 'price_err' => '',
                 'quantity_err' => '',
                 'expiry_err' => '',
-                'product' => $products,
+                'product' => $product,
                 'userid' => $_SESSION['user_id']
             ];
            
@@ -153,7 +150,7 @@ class FarmerController extends Controller {
                     $data['type_err'] = 'Invalid file type';
                 }
             } else {
-                $data['media'] = $products->media; // Keep existing media if no data file is uploaded
+                $data['media'] = $product->media; // Keep existing media if no data file is uploaded
             }
 
             // ini_set('display_errors', 1);

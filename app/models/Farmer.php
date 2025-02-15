@@ -58,8 +58,7 @@ class Farmer {
                 SET starting_price = :starting_price, 
                     quantity = :quantity, 
                     media = :media, 
-                    closing_date = :closing_date, 
-                    user_id = :user_id
+                    closing_date = :closing_date
                 WHERE product_id = :id
             ');
             
@@ -67,13 +66,12 @@ class Farmer {
             $this->db->bind(':quantity', $data['quantity']);
             $this->db->bind(':media', $data['media']);
             $this->db->bind(':closing_date', $data['closing_date']);
-            $this->db->bind(':user_id', $data['user_id']); // Bind user_id
             $this->db->bind(':id', $data['id']); // Bind product_id
     
             return $this->db->execute();
             
         } catch (Exception $e) {
-            error_log($e->getMessage()); // Log errors
+            echo "<b>Error:</b> " . $e->getMessage();
             return false;
         }
     }
