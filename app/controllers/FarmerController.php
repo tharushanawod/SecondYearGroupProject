@@ -302,9 +302,22 @@ class FarmerController extends Controller {
     }
     
 
-    public function BuyIngredients() {
-        $products = $this->farmerModel->getSupplierProducts();
-        $data = ['products' => $products];
+    public function BuyIngredients($category_id = null) {
+        $this->productModel = $this->model('Product');
+        
+        if ($category_id !== null) {
+            $products = $this->productModel->getProductsByCategory($category_id);
+        } else {
+            $products = $this->productModel->getSupplierProducts();
+        }
+        
+        $categories = $this->productModel->getAllCategories();
+        
+        $data = [
+            'products' => $products,
+            'categories' => $categories
+        ];
+        
         $this->View('Farmer/BuyIngredients', $data);
     }
 
