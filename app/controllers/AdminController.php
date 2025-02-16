@@ -188,13 +188,7 @@ class AdminController extends Controller {
     }
     
 
-    public function UpdateUsers(){
-        $users = $this->pagesModel->getUsers();
-        $data = ['users' => $users];
 
-        $this->View('Admin/UpdateUsers',$data);
-     
-    }
 
 
     public function UserCount($title){
@@ -202,50 +196,50 @@ class AdminController extends Controller {
         return $count;
     }
 
-    public function edituser($id){
-       
+    public function UpdateUserDetails($id){
+      
 
-        $user = $this->pagesModel->getUserById($id);
+        $user = $this->AdminModel->getUserById($id);
         $data = [
-            'id' => $user->id,
+            'user_id' => $user->user_id,
             'name' => $user->name,
             'email' => $user->email,
             'phone' => $user->phone,
-            'title' => $user->title,
+            'user_type' => $user->user_type,
             'password' => '',
             'confirm_password' => '',
             'name_err' => '',
             'email_err' => '',
             'phone_err' => '',
-            'title_err' => '',
+            'user_type_err' => '',
             'password_err' => '',
             'confirm_password_err' => ''
         ];
 
-        $this->View('Admin/SubmitUpdateUser',$data);
+        $this->View('Admin/UpdateUserDetails',$data);
     }
 
-    public function SubmitUpdateUser($id){
+    public function SubmitUserDetails($user_id){
         
 
-      $user = $this->pagesModel->getUserById($id);
+      $user = $this->AdminModel->getUserById($user_id);
+       
       
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
             $data = [
-                'id' => trim($_POST['id']),
+                'user_id' => trim($_POST['user_id']),
                 'name' => trim($_POST['name']),
                 'email' => trim($_POST['email']),
                 'phone' => trim($_POST['phone']),
-                'title' => trim($_POST['title']),
+                'user_type' => trim($_POST['user_type']),
                 'password' => trim($_POST['password']),
                 'name_err' => '',
                 'email_err' => '',
                 'phone_err' => '',
-                'title_err' => '',
+                'user_type_err' => '',
                 'password_err' => ''
             ];
-
             if(empty($data['name'])){
                 $data['name_err'] = 'Please enter a username';
             }
@@ -254,7 +248,7 @@ class AdminController extends Controller {
                 $data['email_err'] = 'Please enter an email';
             }
             else{
-                if($this->pagesModel->findUserByEmail($data['email'])){
+                if($this->AdminModel->findUserByEmail($data['email'])){
 
                     if($data['email'] !== $user->email){
                         $data['email_err'] = 'Email is already taken';
@@ -267,24 +261,20 @@ class AdminController extends Controller {
                 $data['phone_err'] = 'Please enter a contact number';
             }
 
-            if(empty($data['title'])){
-                $data['title_err'] = 'Please select a title';
-            }
-
            
 
-            if(empty($data['name_err']) && empty($data['email_err']) && empty($data['phone_err']) && empty($data['title_err']) ){
+            if(empty($data['name_err']) && empty($data['email_err']) && empty($data['phone_err']) ){
                 if(!empty($data['password'])){
                 $data['password'] = password_hash($data['password'],PASSWORD_DEFAULT);
                 }
 
-                if($this->pagesModel->updateUser($data)){
-                    Redirect('AdminController/UpdateUsers');
+                if($this->AdminModel->updateUser($data)){
+                    Redirect('AdminController/UserControl');
                 }else{
                     die('Something went wrong');
                 }
             }else{
-                $this->View('Admin/SubmitUpdateUser',$data);
+                $this->View('Admin/UpdateUserDetails',$data);
             }
     }
     

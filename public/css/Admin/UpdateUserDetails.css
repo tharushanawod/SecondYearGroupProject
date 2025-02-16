@@ -1,4 +1,4 @@
-@import url(./sidebar.css);
+@import url(../components/sidebar2.css);
 * {
   margin: 0;
   padding: 0;
@@ -61,7 +61,7 @@ body {
 .moderator-creation button {
   width: 100%;
   padding: 12px 20px;
-  background-color: #6c5ce7;
+  background-color: #264681;
   color: white;
   border: none;
   border-radius: 8px;

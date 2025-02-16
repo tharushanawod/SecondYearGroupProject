@@ -240,19 +240,19 @@ class Users {
     public function updateUser($data) {
         if (!empty($data['password'])) {
             // Include password in the update query
-            $this->db->query('UPDATE users SET name = :name, email = :email, phone = :phone, title = :title, password = :password WHERE id = :id');
+            $this->db->query('UPDATE users SET name = :name, email = :email, phone = :phone, user_type = :user_type, password = :password WHERE user_id = :user_id');
             $this->db->bind(':password', $data['password']);
         } else {
             // Exclude password from the update query
-            $this->db->query('UPDATE users SET name = :name, email = :email, phone = :phone, title = :title WHERE id = :id');
+            $this->db->query('UPDATE users SET name = :name, email = :email, phone = :phone, user_type = :user_type WHERE user_id = :user_id');
         }
     
      
-        $this->db->bind(':id', $data['id']);
+        $this->db->bind(':user_id', $data['user_id']);
         $this->db->bind(':name', $data['name']);
         $this->db->bind(':email', $data['email']);
         $this->db->bind(':phone', $data['phone']);
-        $this->db->bind(':title', $data['title']);
+        $this->db->bind(':user_type', $data['user_type']);
     
 
         if ($this->db->execute()) {

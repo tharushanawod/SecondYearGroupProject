@@ -25,7 +25,7 @@ table {
     overflow: hidden;
 }
 thead {
-    background-color: #0c0a7c;
+    background-color: #264681;
     color: white;
 }
 th, td {
@@ -64,7 +64,7 @@ tbody tr:nth-child(even) {
 }
 button {
     padding: 10px 20px;
-    background-color: #0c0a7c;
+    background-color: #264681;
     color: white;
     border: none;
     cursor: pointer;
@@ -99,7 +99,7 @@ h1 {
     font-size: 12px;
 }
 .confirm-btn {
-    background-color: rgb(62, 60, 202);
+    background-color: #264681;
 }
 .cancel-btn {
     background-color: #B17E00;

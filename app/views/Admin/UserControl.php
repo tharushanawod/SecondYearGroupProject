@@ -77,7 +77,10 @@
                 <td data-label="OTP Status">${user.otp_status}</td>
                 <td data-label="Account Status">${user.user_status}</td>
                 <td data-label="Actions">
+                    <a href="${URLROOT}/AdminController/UpdateUserDetails/${user.user_id}">
                     <button class="confirm-btn" onclick="updateUser(${user.id})">Update User</button>
+                    </a>
+                    
                     <button class="cancel-btn" onclick="restrictUser(${user.id})">Restrict User</button>
                 </td>
             `;
