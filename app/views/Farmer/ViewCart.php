@@ -28,49 +28,74 @@
             <tbody>
                 <?php if(empty($data['cartItems'])): ?>
                     <tr>
-                        <td colspan="7" class="empty-cart">Your cart is empty</td>
+                        <td colspan="7" class="empty-cart">
+                            <div class="empty-cart-message">
+                                <i class="fas fa-shopping-cart"></i>
+                                <p>Your cart is empty</p>
+                                <a href="<?php echo URLROOT; ?>/FarmerController/BuyIngredients" class="continue-shopping">Continue Shopping</a>
+                            </div>
+                        </td>
                     </tr>
                 <?php else: ?>
                     <?php foreach ($data['cartItems'] as $item): ?>
-                    <tr id="item_<?php echo htmlspecialchars($item->cart_item_id); ?>">
+                    <tr id="cart_item_<?php echo htmlspecialchars($item->cart_item_id); ?>">
                         <td>
-                            <form id="removeForm_<?php echo htmlspecialchars($item->cart_item_id); ?>" method="POST" action="<?php echo URLROOT; ?>/FarmerController/removeCartItem/<?php echo htmlspecialchars($item->cart_item_id); ?>">
-                                <button type="submit" class="remove-button">×</button>
-                            </form>
+                            <a href="<?php echo URLROOT; ?>/CartController/removeFromCart/<?php echo $item->product_id; ?>" 
+                               class="remove-item" 
+                               onclick="return confirm('Are you sure you want to remove this item?');">
+                                <i class="fas fa-times"></i>
+                            </a>
                         </td>
                         <td>
-                            <img src="<?php echo URLROOT; ?>/uploads/<?php echo htmlspecialchars($item->image); ?>" alt="<?php echo htmlspecialchars($item->product_name); ?>" class="product-image">
+                            <img src="<?php echo URLROOT; ?>/uploads/<?php echo htmlspecialchars($item->image); ?>" 
+                                 alt="<?php echo htmlspecialchars($item->product_name); ?>" 
+                                 class="product-image">
                         </td>
-                        <td><?php echo htmlspecialchars($item->product_name); ?></td>
+                        <td>
+                            <a href="<?php echo URLROOT; ?>/FarmerController/viewDetails/<?php echo $item->product_id; ?>">
+                                <?php echo htmlspecialchars($item->product_name); ?>
+                            </a>
+                        </td>
                         <td><?php echo htmlspecialchars($item->category_name); ?></td>
-                        <td>LKR <?php echo number_format($item->price, 2); ?></td>
-                        <td>
-                            <form id="updateForm_<?php echo htmlspecialchars($item->cart_item_id); ?>" method="POST" action="<?php echo URLROOT; ?>/FarmerController/updateCartItem">
-                                <input type="hidden" name="id" value="<?php echo htmlspecialchars($item->cart_item_id); ?>">
-                                <input class="quantity-input" type="number" name="quantity" value="<?php echo htmlspecialchars($item->quantity); ?>" min="1" onchange="document.getElementById('updateForm_<?php echo htmlspecialchars($item->cart_item_id); ?>').submit();">
-                            </form>
+                        <td class="price">LKR <?php echo number_format($item->price, 2); ?></td>
+                        <td class="quantity">
+                            <input type="number" 
+                                   value="<?php echo $item->quantity; ?>" 
+                                   min="1" 
+                                   class="quantity-input"
+                                   data-item-id="<?php echo $item->cart_item_id; ?>"
+                                   onchange="updateQuantity(this)">
                         </td>
-                        <td>LKR <span id="totalPrice_<?php echo htmlspecialchars($item->cart_item_id); ?>"><?php echo number_format($item->price * $item->quantity, 2); ?></span></td>
+                        <td class="subtotal">LKR <?php echo number_format($item->totalAmount, 2); ?></td>
                     </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </tbody>
         </table>
-    </div>
-      
+        
+        <?php if(!empty($data['cartItems'])): ?>
         <div class="cart-totals">
-            <h2>Cart totals</h2><hr>
-            <div class="totals-row">
-                <span>Subtotal</span>
-                <span>LKR <span id="subTotal"><?php echo number_format($data['subTotal'], 2); ?></span></span>
-            </div><hr>
-            <div class="totals-row">
-                <span>Total</span>
-                <span>LKR <span id="finalPrice"><?php echo number_format($data['total'], 2); ?></span></span>
+            <h2>Cart Summary</h2>
+            <div class="totals-content">
+                <div class="totals-row">
+                    <span>Subtotal:</span>
+                    <span>LKR <?php echo number_format($data['subTotal'], 2); ?></span>
+                </div>
+                <div class="totals-row total">
+                    <span>Total:</span>
+                    <span>LKR <?php echo number_format($data['total'], 2); ?></span>
+                </div>
+                <div class="cart-actions">
+                    <a href="<?php echo URLROOT; ?>/FarmerController/BuyIngredients" class="continue-shopping">
+                        Continue Shopping
+                    </a>
+                    <a href="<?php echo URLROOT; ?>/FarmerController/Checkout" class="checkout-button">
+                        Proceed to Checkout
+                    </a>
+                </div>
             </div>
-            <hr>
-            <a href="<?php echo URLROOT;?>/FarmerController/Checkout"><button class="checkout-button">PROCEED TO CHECKOUT</button></a>
         </div>
+        <?php endif; ?>
     </div>
 </body>
 </html>

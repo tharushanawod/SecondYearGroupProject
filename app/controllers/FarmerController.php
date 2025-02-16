@@ -3,7 +3,8 @@
 class FarmerController extends Controller {
     
     private $farmerModel;
-    private $cartModel;
+    private $productModel;
+    
 
     public function __construct() {
         if (!$this->isloggedin()) {
@@ -14,7 +15,7 @@ class FarmerController extends Controller {
             Redirect('LandingController/login');
         }
         $this->farmerModel = $this->model('Farmer');
-        $this->cartModel = $this->model('Cart');
+        
     }
 
     public function isloggedin() {
@@ -429,7 +430,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
             if ($data['rating'] < 1 || $data['rating'] > 5) {
                 $data['rating_err'] = 'Please select a rating between 1 and 5';
             }
-            
+
     
             // If no errors, add the review
             if (empty($data['reviewText_err']) && empty($data['rating_err'])) {
@@ -540,79 +541,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
         $this->View('Farmer/inventory', $data);
     }
 
-    public function addToCart() {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Sanitize POST data
-            $_POST = custom_filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+  
 
-            $data = [
-                'product_id' => trim($_POST['product_id']),
-                'quantity' => trim($_POST['quantity']),
-                'user_id' => $_SESSION['user_id']
-            ];
-
-            if ($this->cartModel->addCartItem($data)) {
-                redirect('FarmerController/viewCart');
-            } else {
-                die('Something went wrong');
-            }
-        } else {
-            redirect('FarmerController/buyIngredients');
-        }
-    }
-
-    public function viewCart() {
-        $customer_id = $_SESSION['user_id'];
-        $cartItems = $this->cartModel->getCartItems($customer_id);
-        $subTotal = $this->cartModel->calculateSubTotal($cartItems);
-        $total = $subTotal; // Add any additional calculations if needed
-
-        $data = [
-            'cartItems' => $cartItems,
-            'subTotal' => $subTotal,
-            'total' => $total
-        ];
-
-        $this->view('Farmer/CartItems', $data);
-    }
-
-    public function updateCartItem() {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $cart_item_id = $_POST['id'];
-            $quantity = $_POST['quantity'];
-            
-            if ($this->cartModel->updateCartItem($cart_item_id, $quantity)) {
-                header('Location: ' . URLROOT . '/FarmerController/viewCart');
-            } else {
-                die('Something went wrong while updating the cart item.');
-            }
-        }
-    }
-
-    public function removeCartItem($id) {
-        if ($this->cartModel->removeCartItem($id)) {
-            header('Location: ' . URLROOT . '/FarmerController/viewCart');
-        } else {
-            die('Something went wrong while removing the cart item.');
-        }
-    }
-
-    public function clearCart() {
-        $customer_id = $_SESSION['user_id'];
-        if ($this->cartModel->clearCart($customer_id)) {
-            header('Location: ' . URLROOT . '/FarmerController/viewCart');
-        } else {
-            die('Something went wrong while clearing the cart.');
-        }
-    }
-
-    public function viewDetails($id){
-        $product = $this->farmerModel->getProducts($id);
-        $relatedProducts = $this->farmerModel->getRelatedProducts($product->category_id, $product->product_id);
+    public function viewDetails($id) {
+        $this->productModel = $this->model('Product');
+        $product = $this->productModel->getProductDetails($id);
+        $relatedProducts = $this->productModel->getProductsByCategory($product->category_id);
+        
         $data = [
             'product' => $product,
             'relatedProducts' => $relatedProducts
         ];
+        
         $this->view('Farmer/ViewDetails', $data);
     }
 

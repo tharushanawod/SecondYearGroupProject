@@ -18,12 +18,15 @@
                     <span>▼</span>
                 </button>
                 <div class="filter-menu">
-                    <a href="#">All</a>
-                    <a href="#">Category</a>
-                    <a href="#">Price</a>
+                    <a href="<?php echo URLROOT; ?>/FarmerController/BuyIngredients">All</a>
+                    <?php foreach ($data['categories'] as $category): ?>
+                        <a href="<?php echo URLROOT; ?>/FarmerController/BuyIngredients/<?php echo $category->category_id; ?>">
+                            <?php echo htmlspecialchars($category->category_name); ?>
+                        </a>
+                    <?php endforeach; ?>
                 </div>
                 <div class="cart-icon">
-                    <a href="<?php echo URLROOT; ?>/FarmerController/viewCart">
+                    <a href="<?php echo URLROOT; ?>/CartController/viewCart">
                         <i class="fas fa-shopping-cart"></i>
                         <span class="cart-count"><?php echo isset($_SESSION['cart_count']) ? $_SESSION['cart_count'] : 0; ?></span>
                     </a>
@@ -45,6 +48,9 @@
                         </span>
                         <h3 class="product-name"><?php echo $product->product_name; ?></h3>
                         <div class="product-price">Rs. <?php echo number_format($product->price, 2); ?></div>
+                        <input type="hidden" id="productId" value="<?php echo $product->product_id; ?>">
+                        <input type="hidden" id="maxStock" value="<?php echo $product->stock; ?>">
+                        <input type="hidden" id="quantity" value="1">                        
                     </div>
                 </a>
             <?php endforeach; ?>

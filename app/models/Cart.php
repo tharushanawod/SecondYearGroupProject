@@ -6,76 +6,64 @@ class Cart {
         $this->db = new Database;
     }
 
-    public function addToCart($customer_id, $product_id, $quantity) {
-        $this->db->query('SELECT price, category_id FROM supplier_products WHERE product_id = :product_id');
-        $this->db->bind(':product_id', $product_id);
-        $product = $this->db->single();
+    public function addToCart($data) {
+        try {
+            // Get product details first
+            $this->db->query('SELECT price, category_id FROM supplier_products WHERE product_id = :product_id');
+            $this->db->bind(':product_id', $data['product_id']);
+            $product = $this->db->single();
 
-        $totalAmount = $product->price * $quantity;
+            if (!$product) {
+                throw new Exception("Product not found");
+            }
 
-        // Insert into cart table if not exists
-        $this->db->query('INSERT INTO cart (customer_id) VALUES (:customer_id) ON DUPLICATE KEY UPDATE customer_id = customer_id');
-        $this->db->bind(':customer_id', $customer_id);
-        $this->db->execute();
+            $total_amount = $product->price * $data['quantity'];
 
-        // Get the cart_id
-        $this->db->query('SELECT cart_id FROM cart WHERE customer_id = :customer_id');
-        $this->db->bind(':customer_id', $customer_id);
-        $cart = $this->db->single();
-        $cart_id = $cart->cart_id;
+            // Check if item already exists in cart
+            $this->db->query('SELECT cart_id, quantity FROM cart 
+                             WHERE customer_id = :customer_id AND product_id = :product_id');
+            $this->db->bind(':customer_id', $data['user_id']);
+            $this->db->bind(':product_id', $data['product_id']);
+            $existing_item = $this->db->single();
 
-        // Insert into cart_items table
-        $this->db->query('INSERT INTO cart_items (cart_id, product_id, quantity, totalAmount) 
-                         VALUES (:cart_id, :product_id, :quantity, :totalAmount)');
-        
-        $this->db->bind(':cart_id', $cart_id);
-        $this->db->bind(':product_id', $product_id);
-        $this->db->bind(':quantity', $quantity);
-        $this->db->bind(':totalAmount', $totalAmount);
+            if ($existing_item) {
+                // Update existing cart item
+                $this->db->query('UPDATE cart 
+                                 SET quantity = quantity + :quantity,
+                                     totalAmount = totalAmount + :total_amount 
+                                 WHERE customer_id = :customer_id 
+                                 AND product_id = :product_id');
+            } else {
+                // Insert new cart item
+                $this->db->query('INSERT INTO cart 
+                                (customer_id, product_id, category_id, quantity, totalAmount) 
+                                VALUES 
+                                (:customer_id, :product_id, :category_id, :quantity, :total_amount)');
+                $this->db->bind(':category_id', $product->category_id);
+            }
 
-        return $this->db->execute();
-    }
+            $this->db->bind(':customer_id', $data['user_id']);
+            $this->db->bind(':product_id', $data['product_id']);
+            $this->db->bind(':quantity', $data['quantity']);
+            $this->db->bind(':total_amount', $total_amount);
 
-    public function addCartItem($data) {
-        // Calculate total amount
-        $this->db->query('SELECT price FROM supplier_products WHERE product_id = :product_id');
-        $this->db->bind(':product_id', $data['product_id']);
-        $product = $this->db->single();
-        $totalAmount = $product->price * $data['quantity'];
+            return $this->db->execute();
 
-        // Create/update cart
-        $this->db->query('INSERT INTO cart (customer_id) VALUES (:customer_id) 
-                         ON DUPLICATE KEY UPDATE customer_id = customer_id');
-        $this->db->bind(':customer_id', $data['user_id']);
-        $this->db->execute();
-
-        // Get the cart_id
-        $this->db->query('SELECT cart_id FROM cart WHERE customer_id = :customer_id');
-        $this->db->bind(':customer_id', $data['user_id']);
-        $cart = $this->db->single();
-        $cart_id = $cart->cart_id;
-
-        // Add cart item
-        $this->db->query('INSERT INTO cart_items (cart_id, product_id, quantity, totalAmount) 
-                         VALUES (:cart_id, :product_id, :quantity, :totalAmount)');
-        
-        $this->db->bind(':cart_id', $cart_id);
-        $this->db->bind(':product_id', $data['product_id']);
-        $this->db->bind(':quantity', $data['quantity']);
-        $this->db->bind(':totalAmount', $totalAmount);
-
-        return $this->db->execute();
+        } catch (Exception $e) {
+            error_log("Error in addToCart: " . $e->getMessage());
+            throw $e;
+        }
     }
 
     public function getCartItems($customer_id) {
-        // Fetch cart items with product details
-        $this->db->query('SELECT ci.*, p.name as product_name, p.image, p.price, 
-                         cat.name as category_name 
-                         FROM cart_items ci 
-                         JOIN supplier_products p ON ci.product_id = p.product_id 
-                         JOIN categories cat ON p.category_id = cat.category_id 
-                         JOIN cart c ON ci.cart_id = c.cart_id 
-                         WHERE c.customer_id = :customer_id');
+        $this->db->query(
+            'SELECT c.*, sp.product_name, sp.price, sp.image, sp.stock,
+                    cat.category_name 
+             FROM cart c
+             JOIN supplier_products sp ON c.product_id = sp.product_id
+             JOIN categories cat ON c.category_id = cat.category_id
+             WHERE c.customer_id = :customer_id'
+        );
         $this->db->bind(':customer_id', $customer_id);
         return $this->db->resultSet();
     }
