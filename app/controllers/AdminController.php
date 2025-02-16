@@ -168,19 +168,34 @@ class AdminController extends Controller {
  
   
 
-    public function RestrictUser($id) {
+    public function RestrictUser($user_id) {
       
         // Sanitize the ID
-        $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
+        $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
 
-        if($_SESSION['user_id'] == $id){
-            die('You cannot delete yourself');
+        if($_SESSION['user_id'] == $user_id){
+            die('You cannot Restrict yourself');
         }
     
         // Call the model function to delete the user
-        if ($this->pagesModel->RestrictUser($id)) {
+        if ($this->AdminModel->RestrictUser($user_id)) {
             // Redirect after successful deletion
-            header('Location: ' . URLROOT . '/AdminController/RemoveUsers');
+            Redirect('AdminController/UserControl');
+        } else {
+            // Handle error if deletion fails
+            die('Something went wrong while deleting the user.');
+        }
+    }
+
+    public function ActivateUser($user_id) {
+      
+        // Sanitize the ID
+        $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
+    
+        // Call the model function to delete the user
+        if ($this->AdminModel->ActivateUser($user_id)) {
+            // Redirect after successful deletion
+            Redirect('AdminController/UserControl');
         } else {
             // Handle error if deletion fails
             die('Something went wrong while deleting the user.');

@@ -304,10 +304,21 @@ class Users {
         return $this->db->resultSet();
     }
 
-    public function RestrictUser($id){
-        $this->db->query('UPDATE users SET status = :status WHERE id = :id');
+    public function RestrictUser($user_id){
+        $this->db->query('UPDATE users SET user_status = :status WHERE user_id = :user_id');
         $this->db->bind(':status','restricted');
-        $this->db->bind(':id',$id);
+        $this->db->bind(':user_id',$user_id);
+        if($this->db->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function ActivateUser($user_id){
+        $this->db->query('UPDATE users SET user_status = :status WHERE user_id = :user_id');
+        $this->db->bind(':status','verified');
+        $this->db->bind(':user_id',$user_id);
         if($this->db->execute()){
             return true;
         }else{
