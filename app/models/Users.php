@@ -191,10 +191,10 @@ class Users {
     }
     
 
-    public function FindModerators(){
+    public function getAllModerators(){
 
-        $this->db->query('SELECT * FROM users WHERE title = :title');
-        $this->db->bind(':title', 'moderator');
+        $this->db->query('SELECT * FROM users WHERE user_type = :user_type');
+        $this->db->bind(':user_type', 'moderator');
         $this->db->execute(); // Executes the query
         return $this->db->resultSet(); // Returns the result set
     }
@@ -263,12 +263,12 @@ class Users {
     }
     
 
-    public function AddModerators($data){
-        $this->db->query('INSERT INTO users (name,email,phone,title,password) VALUES (:name,:email,:phone,:title,:password)');
+    public function AddModerator($data){
+        $this->db->query('INSERT INTO users (name,email,phone,user_type,password) VALUES (:name,:email,:phone,:user_type,:password)');
         $this->db->bind(':name',$data['name']);
         $this->db->bind(':email',$data['email']);
         $this->db->bind(':phone',$data['phone']);
-        $this->db->bind(':title','moderator');
+        $this->db->bind(':user_type','moderator');
         $this->db->bind(':password',$data['password']);
         if($this->db->execute()){
             return true;

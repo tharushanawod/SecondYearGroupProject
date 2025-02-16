@@ -1,7 +1,6 @@
 <?php 
 
 class AdminController extends Controller {
-    private $pagesModel;
     private $AdminModel;
 
     public function __construct() {
@@ -15,7 +14,7 @@ class AdminController extends Controller {
         }
        
    
-        $this->pagesModel = $this->model('Users');
+        $this->AdminModel = $this->model('Users');
         $this->AdminModel = $this->model('Users');
     }
 
@@ -31,7 +30,7 @@ class AdminController extends Controller {
     public function Dashboard() {
        
         // Retrieve users from the model
-        $users = $this->pagesModel->getUsers();
+        $users = $this->AdminModel->getUsers();
 
         // Pass the user data to the view
         $data = ['users' => $users];
@@ -140,7 +139,7 @@ class AdminController extends Controller {
     public function RemoveUsers(){
      
         // Retrieve users from the model
-        $users = $this->pagesModel->getUnrestrictedtUsers();
+        $users = $this->AdminModel->getUnrestrictedtUsers();
 
         // Pass the user data to the view
         $data = ['users' => $users];
@@ -150,7 +149,7 @@ class AdminController extends Controller {
     }
 
     public function getManufacturers(){
-        $users = $this->pagesModel->getManufacturers();
+        $users = $this->AdminModel->getManufacturers();
 
         $data = ['users' => $users];
 
@@ -158,7 +157,7 @@ class AdminController extends Controller {
     }
 
     public function verifyUser($id){
-        if($this->pagesModel->verifyUser($id)){
+        if($this->AdminModel->verifyUser($id)){
             Redirect('AdminController/getManufacturers');
         }else{  
             die('Something went wrong');
@@ -207,7 +206,7 @@ class AdminController extends Controller {
 
 
     public function UserCount($title){
-        $count = $this->pagesModel->getUserCount($title);
+        $count = $this->AdminModel->getUserCount($title);
         return $count;
     }
 
@@ -296,17 +295,18 @@ class AdminController extends Controller {
     
 }
 
-    public function AddModerators(){
-       
+    public function ModeratorControl(){
 
-        $users=$this->pagesModel->FindModerators();
-
-        $data = ['users' => $users];
-
-        $this->view('Admin/AddModerators',$data);
+        $data = [];
+        $this->view('Admin/ModeratorControl',$data);
     }
 
-    public function SubmitModerator(){
+    public function getAllModerators(){
+        $moderators = $this->AdminModel->getAllModerators();
+        echo json_encode($moderators);
+    }
+
+    public function AddModerator(){
       
         
         $_POST = filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING);
@@ -322,7 +322,6 @@ class AdminController extends Controller {
                 'name_err' => '',
                 'email_err' => '',
                 'phone_err' => '',
-                'title_err' => '',
                 'password_err' => ''
             ];
 
@@ -334,7 +333,7 @@ class AdminController extends Controller {
                 $data['email_err'] = 'Please enter an email';
             }
             else{
-                if($this->pagesModel->findUserByEmail($data['email'])){
+                if($this->AdminModel->findUserByEmail($data['email'])){
                     $data['email_err'] = 'Email is already taken';
                 }
             }
@@ -350,13 +349,13 @@ class AdminController extends Controller {
 
             if(empty($data['name_err']) && empty($data['email_err']) && empty($data['phone_err']) && empty($data['password_err'])){
                 $data['password'] = password_hash($data['password'],PASSWORD_DEFAULT);
-                if($this->pagesModel->AddModerators($data)){
-                    Redirect('AdminController/AddModerators');
+                if($this->AdminModel->AddModerator($data)){
+                    Redirect('AdminController/ModeratorControl');
                 }else{
                     die('Something went wrong');
                 }
             }else{
-                $this->view('Admin/SubmitModerator',$data);
+                $this->view('Admin/AddModerator',$data);
             }
 
 
@@ -367,44 +366,26 @@ class AdminController extends Controller {
                 'name' => '',
                 'email' => '',
                 'phone' => '',
-                'title' => '',
                 'password' => '',
                 'name_err' => '',
                 'email_err' => '',
                 'phone_err' => '',
-                'title_err' => '',
                 'password_err' => ''
             ];
 
-            $this->view('Admin/SubmitModerator',$data);
+            $this->view('Admin/AddModerator',$data);
 
         }
 
        
     }
 
-  
-    public function test (){
-
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
-            $_POST = filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING);
-            $search = trim($_POST['search']);
-            $users = $this->pagesModel->searchUsers($search);
-           
-            $data = ['users' => $users];
-
-        $this->view('Admin/RemoveUsers',$data);
-        }
-      
-    
-
-    }
 
     public function Report() {
       
     
         // Get all users from the model
-        $users = $this->pagesModel->getUsers();
+        $users = $this->AdminModel->getUsers();
     
         // If the user requested a CSV report
        
@@ -450,7 +431,7 @@ class AdminController extends Controller {
  
     
     public function AllowUser($id){
-        if($this->pagesModel->AllowUser($id)){
+        if($this->AdminModel->AllowUser($id)){
             Redirect('AdminController/Dashboard');
         }else{
             die('Something went wrong');
