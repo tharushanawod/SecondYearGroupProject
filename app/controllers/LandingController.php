@@ -23,10 +23,10 @@ class LandingController extends Controller{
         $this->View('Landing/aboutus',$data);
     }
 
-    public function products()
+    public function Auction()
     {
         $data = [];
-        $this->View('Landing/products',$data);
+        $this->View('Landing/Auction',$data);
     }
 
     public function Register(){
@@ -170,7 +170,6 @@ class LandingController extends Controller{
     }
 
     public function OTP(){
-        echo $_SESSION['user_email'];
         
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         

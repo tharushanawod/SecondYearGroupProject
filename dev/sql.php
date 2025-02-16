@@ -93,3 +93,29 @@ CREATE TABLE bids (
     FOREIGN KEY (product_id) REFERENCES corn_products(product_id) ON DELETE CASCADE,
     FOREIGN KEY (buyer_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
+
+CREATE TABLE buyer_reviews_farmer (
+    id INT AUTO_INCREMENT PRIMARY KEY,         -- Unique ID for each review
+    review_text TEXT NOT NULL,                 -- Stores the review text
+    rating INT NOT NULL,                       -- Stores the star rating (1 to 5)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    buyer_id INT NOT NULL,                    -- Farmer's ID (foreign key)
+    farmer_id INT NOT NULL,                    -- Worker's ID (foreign key)
+    FOREIGN KEY (buyer_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (farmer_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+CREATE TABLE orders_from_buyers (
+    order_id INT AUTO_INCREMENT PRIMARY KEY,
+    farmer_id INT NOT NULL,
+    buyer_id INT NOT NULL,
+    product_id INT NOT NULL,  -- Added product_id
+    bid_price DECIMAL(10,2) NOT NULL,
+    quantity INT NOT NULL,
+    payment_status ENUM('pending', 'paid', 'failed') DEFAULT 'pending',
+    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (farmer_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (buyer_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES corn_products(product_id) ON DELETE CASCADE -- Added foreign key for product_id
+);
+

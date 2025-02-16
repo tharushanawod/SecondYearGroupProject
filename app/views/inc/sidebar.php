@@ -24,8 +24,8 @@
         <?php elseif ($user_role === 'buyer'): ?>
           <li><a href="<?php echo URLROOT;?>/BuyerController/Dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>
           <li><a href="<?php echo URLROOT;?>/BuyerController/LandingPage"><i class="fa-solid fa-chess-bishop"></i><span class="menu-text">Place Bids</span></a></li>
-          <li><a href="<?php echo URLROOT;?>/BuyerController/cancelBid"><i class="fa-solid fa-hand"></i><span class="menu-text">Bid Control</span></a></li>
-          <li><a href="<?php echo URLROOT;?>/BuyerController/payment"><i class="fa-solid fa-clock"></i><span class="menu-text">Pending Payments</span></a></li>
+          <li><a href="<?php echo URLROOT;?>/BuyerController/BidControl"><i class="fa-solid fa-hand"></i><span class="menu-text">Bid Control</span></a></li>
+          <li><a href="<?php echo URLROOT;?>/BuyerController/PendingPayment"><i class="fa-solid fa-clock"></i><span class="menu-text">Pending Payments</span></a></li>
           <li><a href="<?php echo URLROOT;?>/BuyerController/purchaseHistory"><i class="fas fa-comments"></i><span class="menu-text">Orders</span></a></li>
           <li><a href="<?php echo URLROOT;?>/BuyerController/RequestHelp"><i class="fa-solid fa-comment"></i><span class="menu-text">Chat</span></a></li>
           
@@ -49,14 +49,21 @@
               <li><a href="<?php echo URLROOT;?>/WorkerController/RequestHelp"><i class="fa-solid fa-comment"></i><span class="menu-text">Chat</span></a></li>
               
               
-              <?php else: ?>
+              <?php elseif ($user_role === 'supplier'): ?>
                 <li><a href="<?php echo URLROOT;?>/SupplierController/dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/SupplierController/shop"><i class="fa-solid fa-gauge"></i><span class="menu-text">Products</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/SupplierController/productManagement"><i class="fa-solid fa-gauge"></i><span class="menu-text">Product Control</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/SupplierController/viewOrders"><i class="fa-solid fa-gauge"></i><span class="menu-text">View Orders</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/SupplierController/RequestHelp"><i class="fa-solid fa-gauge"></i><span class="menu-text">Chat</span></a></li>
                 
-              <?php endif; ?>
+                <?php else: ?>
+                <li><a href="<?php echo URLROOT;?>/AdminController/Dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>
+                <li><a href="<?php echo URLROOT;?>/AdminController/UserControl"><i class="fa-solid fa-users"></i><span class="menu-text">User Control</span></a></li>
+                <li><a href="<?php echo URLROOT;?>/AdminController/AddModerators"><i class="fa-solid fa-user-tie"></i><span class="menu-text">Moderators</span></a></li>
+                <li><a href="<?php echo URLROOT;?>/AdminController/getManufacturers"><i class="fa-solid fa-check"></i><span class="menu-text">Verify Users</span></a></li>
+                <li><a href="<?php echo URLROOT;?>/AdminController/Report"><i class="fa-solid fa-chart-bar"></i><span class="menu-text">Reports</span></a></li>  
+              
+                <?php endif; ?>
        
 
       
@@ -92,8 +99,11 @@
         echo URLROOT.'/FarmerController/ManageProfile';
       }elseif($_SESSION['user_role'] == 'farmworker'){
         echo URLROOT.'/WorkerController/ManageProfile';
-      }else{
+      }elseif($_SESSION['user_role'] == 'supplier'){
         echo URLROOT.'/SupplierController/ManageProfile';
+      }
+      else{
+        echo URLROOT.'/AdminController/ManageProfile';
       }
       
       ?>

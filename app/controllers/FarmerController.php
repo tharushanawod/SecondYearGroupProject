@@ -104,7 +104,7 @@ class FarmerController extends Controller {
         $product = $this->farmerModel->getCornProductDetails($id);
       
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $_POST = custom_filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
     
             // $expiryPeriod = trim($_POST['closing_date']); // Example: "2025-03-10T14:30"
             // $expiryDate = new DateTime($expiryPeriod); 
@@ -215,7 +215,7 @@ class FarmerController extends Controller {
        
     
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $_POST = custom_filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
 
             $data = [
                 'price' => trim($_POST['price']),

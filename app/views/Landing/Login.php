@@ -48,8 +48,8 @@
                 <?php $_SESSION['user_email'] = $data['email']; ?>
 
                 <div class="forgot-password" >
-                    <p>For</p>
-                <a href="<?php echo URLROOT;?>/LandingController/ForgotPassword">Forgot password?</a>
+                    <p>Forgot Your Password</p>
+                <a href="<?php echo URLROOT;?>/LandingController/ForgotPassword">Reset Password From Here</a>
             </div>
 
 
