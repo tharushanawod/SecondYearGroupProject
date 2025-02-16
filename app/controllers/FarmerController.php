@@ -57,6 +57,13 @@ class FarmerController extends Controller {
         $this->View('Farmer/OrdersManagement', $data);
     }
 
+    public function getAllOrders() {
+        $orders = $this->farmerModel->getAllOrders();
+        
+        // Send all orders to the frontend
+        echo json_encode($orders);
+    }
+
     public function hireWorkers() {
         $data = [];
         $this->View('Farmer/Hire Workers', $data);
@@ -93,38 +100,33 @@ class FarmerController extends Controller {
     }
 
     public function UpdateProducts($id) {
-        echo $id;
-       
-        if ($_SESSION['user_role'] !== 'farmer') {
-            Redirect('LandingController/index'); // Redirect if not authorized
-        }
     
-        $_POST = custom_filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-        $products = $this->farmerModel->getProductsByFarmerId($_SESSION['user_id']);
-    
+        $product = $this->farmerModel->getCornProductDetails($id);
+      
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $_POST = custom_filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
     
-            $expiryPeriod = trim($_POST['expiry_period']);
-            $expiryDate = new DateTime('now');
-            $expiryDate->modify("+$expiryPeriod days");
-            $formattedExpiryDate = $expiryDate->format('Y-m-d H:i:s');
+            // $expiryPeriod = trim($_POST['closing_date']); // Example: "2025-03-10T14:30"
+            // $expiryDate = new DateTime($expiryPeriod); 
+            // $formattedExpiryDate = $expiryDate->format('Y-m-d H:i:s'); // Convert to SQL format
+
     
             $data = [
                 'id' => $id,
-                'price' => trim($_POST['price']),
+                'starting_price' => trim($_POST['price']),
                 'quantity' => trim($_POST['quantity']),
-                'type' => trim($_POST['type']),
-                'expiry_date' => $formattedExpiryDate,
+                'closing_date' => trim($_POST['closing_date']),
                 'media' => '',
                 'price_err' => '',
                 'quantity_err' => '',
-                'type_err' => '',
-                'product' => $products,
+                'expiry_err' => '',
+                'product' => $product,
                 'userid' => $_SESSION['user_id']
             ];
+           
     
             // Validate fields
-            if (empty($data['price'])) {
+            if (empty($data['starting_price'])) {
                 $data['price_err'] = 'Please enter a price';
             }
     
@@ -132,7 +134,7 @@ class FarmerController extends Controller {
                 $data['quantity_err'] = 'Please enter quantity';
             }
     
-            if (empty($data['expiry_date'])) {
+            if (empty($data['closing_date'])) {
                 $data['expiry_err'] = 'Please select an expiry period';
             }
     
@@ -155,19 +157,21 @@ class FarmerController extends Controller {
                     $data['type_err'] = 'Invalid file type';
                 }
             } else {
-                $data['media'] = $products->media; // Keep existing media if no data file is uploaded
+                $data['media'] = $product->media; // Keep existing media if no data file is uploaded
             }
 
-            ini_set('display_errors', 1);
-            ini_set('display_startup_errors', 1);
-            error_reporting(E_ALL);
+            // ini_set('display_errors', 1);
+            // ini_set('display_startup_errors', 1);
+            // error_reporting(E_ALL);
             
     
             // Check for no errors
-            if (empty($data['price_err']) && empty($data['quantity_err']) && empty($data['type_err']) && empty($data['expiry_err'])) {
+            if (empty($data['price_err']) && empty($data['quantity_err'])  && empty($data['expiry_err'])) {
               
-                
-                if ($this->farmerModel->editProduct($data)) { // Call update function
+                var_dump($data);
+                if ($this->farmerModel->UpdateCornProducts($data)) {
+                    
+                     // Call update function
                     Redirect('FarmerController/AddProduct'); // Redirect to products list
                   
                 } else {
@@ -198,15 +202,21 @@ class FarmerController extends Controller {
             $this->view('Farmer/AddProducts', $data);
         }
     }
+
+    public function GetIdea(){
+        $data=[];
+        $this->view('Farmer/GetIdea',$data);
+    }
     
 
     public function AddProduct() {
-       
+      
         $products = $this->farmerModel->getProductsByFarmerId($_SESSION['user_id']);
+       
     
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $_POST = custom_filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-            
+            $_POST = custom_filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
+
             $data = [
                 'price' => trim($_POST['price']),
                 'quantity' => trim($_POST['quantity']),
@@ -218,9 +228,11 @@ class FarmerController extends Controller {
             ];
     
            
-    
+            
             // Validate and upload file
             if (isset($_FILES['media']) && $_FILES['media']['error'] == 0) {
+                var_dump($_FILES);
+
                 $targetDir = "uploads/Farmer/Products/"; // Folder to store uploads
                 $fileName = basename($_FILES['media']['name']);
                 $targetFilePath = $targetDir . $fileName;
@@ -283,7 +295,7 @@ class FarmerController extends Controller {
     }
 
     public function getProductDetails($id) {
-        $product = $this->farmerModel->getProducts($id);
+        $product = $this->farmerModel->getCornProductDetails($id);
         
         // Assuming $product is an associative array or object
         echo json_encode($product);

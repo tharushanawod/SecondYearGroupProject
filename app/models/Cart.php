@@ -37,14 +37,15 @@ class Cart {
     }
 
     public function addCartItem($data) {
+        // Calculate total amount
         $this->db->query('SELECT price FROM supplier_products WHERE product_id = :product_id');
         $this->db->bind(':product_id', $data['product_id']);
         $product = $this->db->single();
-
         $totalAmount = $product->price * $data['quantity'];
 
-        // Insert into cart table if not exists
-        $this->db->query('INSERT INTO cart (customer_id) VALUES (:customer_id) ON DUPLICATE KEY UPDATE customer_id = customer_id');
+        // Create/update cart
+        $this->db->query('INSERT INTO cart (customer_id) VALUES (:customer_id) 
+                         ON DUPLICATE KEY UPDATE customer_id = customer_id');
         $this->db->bind(':customer_id', $data['user_id']);
         $this->db->execute();
 
@@ -54,7 +55,7 @@ class Cart {
         $cart = $this->db->single();
         $cart_id = $cart->cart_id;
 
-        // Insert into cart_items table
+        // Add cart item
         $this->db->query('INSERT INTO cart_items (cart_id, product_id, quantity, totalAmount) 
                          VALUES (:cart_id, :product_id, :quantity, :totalAmount)');
         
@@ -67,6 +68,7 @@ class Cart {
     }
 
     public function getCartItems($customer_id) {
+        // Fetch cart items with product details
         $this->db->query('SELECT ci.*, p.name as product_name, p.image, p.price, 
                          cat.name as category_name 
                          FROM cart_items ci 
