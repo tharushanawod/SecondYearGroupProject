@@ -148,13 +148,7 @@ class AdminController extends Controller {
         $this->View('Admin/RemoveUsers',$data);
     }
 
-    public function getManufacturers(){
-        $users = $this->AdminModel->getManufacturers();
 
-        $data = ['users' => $users];
-
-        $this->View('Admin/getManufacturers',$data);
-    }
 
     public function verifyUser($id){
         if($this->AdminModel->verifyUser($id)){
@@ -341,6 +335,13 @@ class AdminController extends Controller {
             if(empty($data['phone'])){
                 $data['phone_err'] = 'Please enter a contact number';
             }
+            else{
+                if($this->AdminModel->FindUserByPhone($data['phone'])){
+                    $data['phone_err'] = 'Contact number is already taken';
+                }
+            }
+
+
 
 
             if(empty($data['password'])){
@@ -378,6 +379,16 @@ class AdminController extends Controller {
         }
 
        
+    }
+
+    public function getPendingUsers(){
+        $users = $this->AdminModel->getPendingUsers();
+        echo json_encode($users);
+    }
+
+    public function VerifyUsers(){
+        $data = [];
+        $this->view('Admin/VerifyUsers',$data);
     }
 
 
@@ -430,13 +441,7 @@ class AdminController extends Controller {
 
  
     
-    public function AllowUser($id){
-        if($this->AdminModel->AllowUser($id)){
-            Redirect('AdminController/Dashboard');
-        }else{
-            die('Something went wrong');
-        }
-    }
+
 
 }
 
