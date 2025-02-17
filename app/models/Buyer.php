@@ -177,6 +177,28 @@ GROUP BY corn_products.product_id
         return $results;
     }
 
+    public function getAllActiveBidsForBuyer($user_id) {
+        $this->db->query('
+       SELECT 
+    bids.bid_id,
+    bids.bid_amount,
+    bids.product_id,
+    corn_products.quantity, 
+    corn_products.closing_date,
+    (SELECT MAX(bids_inner.bid_amount) 
+     FROM bids AS bids_inner 
+     WHERE bids_inner.product_id = bids.product_id) AS highest_bid
+FROM bids
+INNER JOIN corn_products ON bids.product_id = corn_products.product_id
+WHERE bids.buyer_id = :user_id
+AND corn_products.closing_date > NOW();
+
+        ');
+        $this->db->bind(':user_id', $user_id);
+        $bids = $this->db->resultSet();
+        return $bids;
+    }
+
     
 
   
