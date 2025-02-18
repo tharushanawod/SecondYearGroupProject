@@ -78,6 +78,11 @@ class BuyerController extends Controller {
         $this->View('Buyer/BidControl', $data);
     }
 
+    public function getAllActiveBidsForBuyer($user_id) {
+        $bids = $this->BuyerModel->getAllActiveBidsForBuyer($user_id);
+        echo json_encode($bids);
+    }
+
     public function PendingPayment() {
         $data = [];
         $this->View('Buyer/PendingPayment', $data);

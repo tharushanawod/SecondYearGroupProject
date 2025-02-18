@@ -1,10 +1,9 @@
-@import url(./sidebar.css);
-
+@import url(../components/sidebar2.css);
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: sans-serif;
+  font-family:  sans-serif;
 }
 
 body {
@@ -23,17 +22,13 @@ body {
   height: 100vh;
 }
 
-form {
-  width: 100%;
-}
-
 .moderator-creation {
   background-color: white;
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 450px;
+  min-width: 450px;
 }
 
 .moderator-creation h1 {
@@ -66,7 +61,7 @@ form {
 .moderator-creation button {
   width: 100%;
   padding: 12px 20px;
-  background-color: #211cb4;
+  background-color: #264681;
   color: white;
   border: none;
   border-radius: 8px;
@@ -78,4 +73,18 @@ form {
   background-color: #ddd;
   color: #666;
   margin-top: 12px;
+}
+
+.moderator-creation select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.moderator-creation option {
+  padding: 10px;
+  background-color: #fff;
+  color: #333;
 }

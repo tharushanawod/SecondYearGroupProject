@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Moderator Creation</title>
-    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Admin/SubmitModerator.css">
+    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Admin/AddModerator.css">
+    <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet"/>
 </head>
 <body>
- <?php require 'sidebar.php';?>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
 
     <div class="main-content">
         <div class="moderator-creation">
             <h1>Moderator Creation 👋</h1>
-            <form action="#" method="post">
+            <form action="<?php echo URLROOT;?>/AdminController/AddModerator" method="post">
     <div class="input-group">
         <label for="name">Name</label>
         <input type="text" id="name" name="name" placeholder="Enter Username"  value="<?php echo $data['name']?>" required />

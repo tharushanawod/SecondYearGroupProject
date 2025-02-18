@@ -1,7 +1,6 @@
 <?php 
 
 class AdminController extends Controller {
-    private $pagesModel;
     private $AdminModel;
 
     public function __construct() {
@@ -15,7 +14,7 @@ class AdminController extends Controller {
         }
        
    
-        $this->pagesModel = $this->model('Users');
+        $this->AdminModel = $this->model('Users');
         $this->AdminModel = $this->model('Users');
     }
 
@@ -31,7 +30,7 @@ class AdminController extends Controller {
     public function Dashboard() {
        
         // Retrieve users from the model
-        $users = $this->pagesModel->getUsers();
+        $users = $this->AdminModel->getUsers();
 
         // Pass the user data to the view
         $data = ['users' => $users];
@@ -140,7 +139,7 @@ class AdminController extends Controller {
     public function RemoveUsers(){
      
         // Retrieve users from the model
-        $users = $this->pagesModel->getUnrestrictedtUsers();
+        $users = $this->AdminModel->getUnrestrictedtUsers();
 
         // Pass the user data to the view
         $data = ['users' => $users];
@@ -149,16 +148,10 @@ class AdminController extends Controller {
         $this->View('Admin/RemoveUsers',$data);
     }
 
-    public function getManufacturers(){
-        $users = $this->pagesModel->getManufacturers();
 
-        $data = ['users' => $users];
-
-        $this->View('Admin/getManufacturers',$data);
-    }
 
     public function verifyUser($id){
-        if($this->pagesModel->verifyUser($id)){
+        if($this->AdminModel->verifyUser($id)){
             Redirect('AdminController/getManufacturers');
         }else{  
             die('Something went wrong');
@@ -168,19 +161,34 @@ class AdminController extends Controller {
  
   
 
-    public function RestrictUser($id) {
+    public function RestrictUser($user_id) {
       
         // Sanitize the ID
-        $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
+        $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
 
-        if($_SESSION['user_id'] == $id){
-            die('You cannot delete yourself');
+        if($_SESSION['user_id'] == $user_id){
+            die('You cannot Restrict yourself');
         }
     
         // Call the model function to delete the user
-        if ($this->pagesModel->RestrictUser($id)) {
+        if ($this->AdminModel->RestrictUser($user_id)) {
             // Redirect after successful deletion
-            header('Location: ' . URLROOT . '/AdminController/RemoveUsers');
+            Redirect('AdminController/UserControl');
+        } else {
+            // Handle error if deletion fails
+            die('Something went wrong while deleting the user.');
+        }
+    }
+
+    public function ActivateUser($user_id) {
+      
+        // Sanitize the ID
+        $user_id = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
+    
+        // Call the model function to delete the user
+        if ($this->AdminModel->ActivateUser($user_id)) {
+            // Redirect after successful deletion
+            Redirect('AdminController/UserControl');
         } else {
             // Handle error if deletion fails
             die('Something went wrong while deleting the user.');
@@ -188,64 +196,58 @@ class AdminController extends Controller {
     }
     
 
-    public function UpdateUsers(){
-        $users = $this->pagesModel->getUsers();
-        $data = ['users' => $users];
 
-        $this->View('Admin/UpdateUsers',$data);
-     
-    }
 
 
     public function UserCount($title){
-        $count = $this->pagesModel->getUserCount($title);
+        $count = $this->AdminModel->getUserCount($title);
         return $count;
     }
 
-    public function edituser($id){
-       
+    public function UpdateUserDetails($id){
+      
 
-        $user = $this->pagesModel->getUserById($id);
+        $user = $this->AdminModel->getUserById($id);
         $data = [
-            'id' => $user->id,
+            'user_id' => $user->user_id,
             'name' => $user->name,
             'email' => $user->email,
             'phone' => $user->phone,
-            'title' => $user->title,
+            'user_type' => $user->user_type,
             'password' => '',
             'confirm_password' => '',
             'name_err' => '',
             'email_err' => '',
             'phone_err' => '',
-            'title_err' => '',
+            'user_type_err' => '',
             'password_err' => '',
             'confirm_password_err' => ''
         ];
 
-        $this->View('Admin/SubmitUpdateUser',$data);
+        $this->View('Admin/UpdateUserDetails',$data);
     }
 
-    public function SubmitUpdateUser($id){
+    public function SubmitUserDetails($user_id){
         
 
-      $user = $this->pagesModel->getUserById($id);
+      $user = $this->AdminModel->getUserById($user_id);
+       
       
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
             $data = [
-                'id' => trim($_POST['id']),
+                'user_id' => trim($_POST['user_id']),
                 'name' => trim($_POST['name']),
                 'email' => trim($_POST['email']),
                 'phone' => trim($_POST['phone']),
-                'title' => trim($_POST['title']),
+                'user_type' => trim($_POST['user_type']),
                 'password' => trim($_POST['password']),
                 'name_err' => '',
                 'email_err' => '',
                 'phone_err' => '',
-                'title_err' => '',
+                'user_type_err' => '',
                 'password_err' => ''
             ];
-
             if(empty($data['name'])){
                 $data['name_err'] = 'Please enter a username';
             }
@@ -254,7 +256,7 @@ class AdminController extends Controller {
                 $data['email_err'] = 'Please enter an email';
             }
             else{
-                if($this->pagesModel->findUserByEmail($data['email'])){
+                if($this->AdminModel->findUserByEmail($data['email'])){
 
                     if($data['email'] !== $user->email){
                         $data['email_err'] = 'Email is already taken';
@@ -267,41 +269,38 @@ class AdminController extends Controller {
                 $data['phone_err'] = 'Please enter a contact number';
             }
 
-            if(empty($data['title'])){
-                $data['title_err'] = 'Please select a title';
-            }
-
            
 
-            if(empty($data['name_err']) && empty($data['email_err']) && empty($data['phone_err']) && empty($data['title_err']) ){
+            if(empty($data['name_err']) && empty($data['email_err']) && empty($data['phone_err']) ){
                 if(!empty($data['password'])){
                 $data['password'] = password_hash($data['password'],PASSWORD_DEFAULT);
                 }
 
-                if($this->pagesModel->updateUser($data)){
-                    Redirect('AdminController/UpdateUsers');
+                if($this->AdminModel->updateUser($data)){
+                    Redirect('AdminController/UserControl');
                 }else{
                     die('Something went wrong');
                 }
             }else{
-                $this->View('Admin/SubmitUpdateUser',$data);
+                $this->View('Admin/UpdateUserDetails',$data);
             }
     }
     
     
 }
 
-    public function AddModerators(){
-       
+    public function ModeratorControl(){
 
-        $users=$this->pagesModel->FindModerators();
-
-        $data = ['users' => $users];
-
-        $this->view('Admin/AddModerators',$data);
+        $data = [];
+        $this->view('Admin/ModeratorControl',$data);
     }
 
-    public function SubmitModerator(){
+    public function getAllModerators(){
+        $moderators = $this->AdminModel->getAllModerators();
+        echo json_encode($moderators);
+    }
+
+    public function AddModerator(){
       
         
         $_POST = filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING);
@@ -317,7 +316,6 @@ class AdminController extends Controller {
                 'name_err' => '',
                 'email_err' => '',
                 'phone_err' => '',
-                'title_err' => '',
                 'password_err' => ''
             ];
 
@@ -329,7 +327,7 @@ class AdminController extends Controller {
                 $data['email_err'] = 'Please enter an email';
             }
             else{
-                if($this->pagesModel->findUserByEmail($data['email'])){
+                if($this->AdminModel->findUserByEmail($data['email'])){
                     $data['email_err'] = 'Email is already taken';
                 }
             }
@@ -337,6 +335,13 @@ class AdminController extends Controller {
             if(empty($data['phone'])){
                 $data['phone_err'] = 'Please enter a contact number';
             }
+            else{
+                if($this->AdminModel->FindUserByPhone($data['phone'])){
+                    $data['phone_err'] = 'Contact number is already taken';
+                }
+            }
+
+
 
 
             if(empty($data['password'])){
@@ -345,13 +350,13 @@ class AdminController extends Controller {
 
             if(empty($data['name_err']) && empty($data['email_err']) && empty($data['phone_err']) && empty($data['password_err'])){
                 $data['password'] = password_hash($data['password'],PASSWORD_DEFAULT);
-                if($this->pagesModel->AddModerators($data)){
-                    Redirect('AdminController/AddModerators');
+                if($this->AdminModel->AddModerator($data)){
+                    Redirect('AdminController/ModeratorControl');
                 }else{
                     die('Something went wrong');
                 }
             }else{
-                $this->view('Admin/SubmitModerator',$data);
+                $this->view('Admin/AddModerator',$data);
             }
 
 
@@ -362,44 +367,36 @@ class AdminController extends Controller {
                 'name' => '',
                 'email' => '',
                 'phone' => '',
-                'title' => '',
                 'password' => '',
                 'name_err' => '',
                 'email_err' => '',
                 'phone_err' => '',
-                'title_err' => '',
                 'password_err' => ''
             ];
 
-            $this->view('Admin/SubmitModerator',$data);
+            $this->view('Admin/AddModerator',$data);
 
         }
 
        
     }
 
-  
-    public function test (){
-
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
-            $_POST = filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING);
-            $search = trim($_POST['search']);
-            $users = $this->pagesModel->searchUsers($search);
-           
-            $data = ['users' => $users];
-
-        $this->view('Admin/RemoveUsers',$data);
-        }
-      
-    
-
+    public function getPendingUsers(){
+        $users = $this->AdminModel->getPendingUsers();
+        echo json_encode($users);
     }
+
+    public function VerifyUsers(){
+        $data = [];
+        $this->view('Admin/VerifyUsers',$data);
+    }
+
 
     public function Report() {
       
     
         // Get all users from the model
-        $users = $this->pagesModel->getUsers();
+        $users = $this->AdminModel->getUsers();
     
         // If the user requested a CSV report
        
@@ -444,13 +441,7 @@ class AdminController extends Controller {
 
  
     
-    public function AllowUser($id){
-        if($this->pagesModel->AllowUser($id)){
-            Redirect('AdminController/Dashboard');
-        }else{
-            die('Something went wrong');
-        }
-    }
+
 
 }
 

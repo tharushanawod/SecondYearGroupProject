@@ -9,7 +9,7 @@
 </head>
 <body>
 <?php require APPROOT . '/views/inc/sidebar.php'; ?> 
-<h1>User Control</h1>
+<h1>Account Verfication</h1>
     <div class="table-container">
         <table id="userTable">
             <thead>
@@ -48,6 +48,6 @@
     <script>
     const URLROOT = "<?php echo URLROOT; ?>";
     </script>
-    <script src="<?php echo URLROOT;?>/js/Admin/UserControl.js"></script>
+    <script src="<?php echo URLROOT;?>/js/Admin/VerifyUsers.js"></script>
 </body>
 </html>

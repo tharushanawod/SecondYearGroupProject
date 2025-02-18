@@ -59,8 +59,8 @@
                 <?php else: ?>
                 <li><a href="<?php echo URLROOT;?>/AdminController/Dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/AdminController/UserControl"><i class="fa-solid fa-users"></i><span class="menu-text">User Control</span></a></li>
-                <li><a href="<?php echo URLROOT;?>/AdminController/AddModerators"><i class="fa-solid fa-user-tie"></i><span class="menu-text">Moderators</span></a></li>
-                <li><a href="<?php echo URLROOT;?>/AdminController/getManufacturers"><i class="fa-solid fa-check"></i><span class="menu-text">Verify Users</span></a></li>
+                <li><a href="<?php echo URLROOT;?>/AdminController/ModeratorControl"><i class="fa-solid fa-user-tie"></i><span class="menu-text">Moderators</span></a></li>
+                <li><a href="<?php echo URLROOT;?>/AdminController/VerifyUsers"><i class="fa-solid fa-check"></i><span class="menu-text">Verify Users</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/AdminController/Report"><i class="fa-solid fa-chart-bar"></i><span class="menu-text">Reports</span></a></li>  
               
                 <?php endif; ?>

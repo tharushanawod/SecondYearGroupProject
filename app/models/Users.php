@@ -82,6 +82,17 @@ class Users {
         }
     }
 
+    public function FindUserByPhone($phone){
+        $this->db->query('SELECT * FROM users WHERE phone = :phone');
+        $this->db->bind(':phone',$phone);
+        $row = $this->db->single();
+        if($this->db->rowCount() > 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public function getUserById ($id){
         $this->db->query('SELECT * FROM users WHERE user_id = :id');
         $this->db->bind(':id',$id);
@@ -191,10 +202,10 @@ class Users {
     }
     
 
-    public function FindModerators(){
+    public function getAllModerators(){
 
-        $this->db->query('SELECT * FROM users WHERE title = :title');
-        $this->db->bind(':title', 'moderator');
+        $this->db->query('SELECT * FROM users WHERE user_type = :user_type');
+        $this->db->bind(':user_type', 'moderator');
         $this->db->execute(); // Executes the query
         return $this->db->resultSet(); // Returns the result set
     }
@@ -240,19 +251,19 @@ class Users {
     public function updateUser($data) {
         if (!empty($data['password'])) {
             // Include password in the update query
-            $this->db->query('UPDATE users SET name = :name, email = :email, phone = :phone, title = :title, password = :password WHERE id = :id');
+            $this->db->query('UPDATE users SET name = :name, email = :email, phone = :phone, user_type = :user_type, password = :password WHERE user_id = :user_id');
             $this->db->bind(':password', $data['password']);
         } else {
             // Exclude password from the update query
-            $this->db->query('UPDATE users SET name = :name, email = :email, phone = :phone, title = :title WHERE id = :id');
+            $this->db->query('UPDATE users SET name = :name, email = :email, phone = :phone, user_type = :user_type WHERE user_id = :user_id');
         }
     
      
-        $this->db->bind(':id', $data['id']);
+        $this->db->bind(':user_id', $data['user_id']);
         $this->db->bind(':name', $data['name']);
         $this->db->bind(':email', $data['email']);
         $this->db->bind(':phone', $data['phone']);
-        $this->db->bind(':title', $data['title']);
+        $this->db->bind(':user_type', $data['user_type']);
     
 
         if ($this->db->execute()) {
@@ -263,13 +274,14 @@ class Users {
     }
     
 
-    public function AddModerators($data){
-        $this->db->query('INSERT INTO users (name,email,phone,title,password) VALUES (:name,:email,:phone,:title,:password)');
+    public function AddModerator($data){
+        $this->db->query('INSERT INTO users (name,email,phone,user_type,password,user_status) VALUES (:name,:email,:phone,:user_type,:password,:user_staus)');
         $this->db->bind(':name',$data['name']);
         $this->db->bind(':email',$data['email']);
         $this->db->bind(':phone',$data['phone']);
-        $this->db->bind(':title','moderator');
+        $this->db->bind(':user_type','moderator');
         $this->db->bind(':password',$data['password']);
+        $this->db->bind(':user_staus','verified');
         if($this->db->execute()){
             return true;
         }else{
@@ -285,13 +297,15 @@ class Users {
     }
 
 
-    public function getManufacturers(){
-        $this->db->query('SELECT * FROM users WHERE title = :title AND status = :status');
-        $this->db->bind(':title','manufacturer');
-        $this->db->bind(':status','unverified');
+    public function getPendingUsers(){
+        $this->db->query('SELECT * FROM users WHERE (user_type = :type1 OR user_type = :type2) AND user_status = :user_status');
+        $this->db->bind(':type1', 'manufacturer');
+        $this->db->bind(':type2', 'supplier'); // Corrected binding
+        $this->db->bind(':user_status', 'pending');
         $this->db->execute();
         return $this->db->resultSet();
     }
+    
 
     public function getUnrestrictedtUsers() {
         // Prepare a query to fetch all users except those with the title 'admin'
@@ -304,10 +318,21 @@ class Users {
         return $this->db->resultSet();
     }
 
-    public function RestrictUser($id){
-        $this->db->query('UPDATE users SET status = :status WHERE id = :id');
+    public function RestrictUser($user_id){
+        $this->db->query('UPDATE users SET user_status = :status WHERE user_id = :user_id');
         $this->db->bind(':status','restricted');
-        $this->db->bind(':id',$id);
+        $this->db->bind(':user_id',$user_id);
+        if($this->db->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function ActivateUser($user_id){
+        $this->db->query('UPDATE users SET user_status = :status WHERE user_id = :user_id');
+        $this->db->bind(':status','verified');
+        $this->db->bind(':user_id',$user_id);
         if($this->db->execute()){
             return true;
         }else{
