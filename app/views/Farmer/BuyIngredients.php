@@ -26,7 +26,7 @@
                     <?php endforeach; ?>
                 </div>
                 <div class="cart-icon">
-                    <a href="<?php echo URLROOT; ?>/CartController/viewCart">
+                    <a href="<?php echo URLROOT; ?>/FarmerController/viewCart">
                         <i class="fas fa-shopping-cart"></i>
                         <span class="cart-count"><?php echo isset($_SESSION['cart_count']) ? $_SESSION['cart_count'] : 0; ?></span>
                     </a>

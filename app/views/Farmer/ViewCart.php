@@ -6,7 +6,6 @@
     <title>Shopping Cart</title>
     <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Farmer/ViewCart.css">
-    <script src="<?php echo URLROOT; ?>/js/Farmer/Cart.js" defer></script>
 </head>
 <body>
     <?php require APPROOT . '/views/inc/sidebar.php'; ?>
@@ -39,70 +38,79 @@
                                 <div class="empty-cart-message">
                                     <i class="fas fa-shopping-cart"></i>
                                     <p>Your cart is empty</p>
-                                    <a href="<?php echo URLROOT; ?>/FarmerController/BuyIngredients" class="continue-shopping">Continue Shopping</a>
+                                    <a href="<?php echo URLROOT; ?>/FarmerController/BuyIngredients" 
+                                       class="continue-shopping-btn">Continue Shopping</a>
                                 </div>
                             </td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($data['cartItems'] as $item): ?>
-                            <tr id="cart-item-<?php echo $item->cart_id; ?>">
+                            <tr>
                                 <td>
-                                    <button onclick="removeCartItem(<?php echo $item->cart_id; ?>)" class="remove-item">
-                                        <i class="fas fa-times"></i>
-                                    </button>
+                                    <form action="<?php echo URLROOT; ?>/CartController/removeFromCart/<?php echo $item->cart_id; ?>" 
+                                          method="POST">
+                                        <button type="submit" class="remove-btn">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
                                 </td>
-                                <td>
+                                <td class="product-img">
                                     <img src="<?php echo URLROOT; ?>/uploads/<?php echo htmlspecialchars($item->image); ?>" 
-                                         alt="<?php echo htmlspecialchars($item->product_name); ?>" 
-                                         class="product-image">
+                                         alt="<?php echo htmlspecialchars($item->product_name); ?>">
                                 </td>
-                                <td>
-                                    <a href="<?php echo URLROOT; ?>/FarmerController/viewDetails/<?php echo $item->product_id; ?>">
-                                        <?php echo htmlspecialchars($item->product_name); ?>
-                                    </a>
+                                <td class="product-name">
+                                    <?php echo htmlspecialchars($item->product_name); ?>
                                 </td>
-                                <td><?php echo htmlspecialchars($item->category_name); ?></td>
-                                <td class="price">Rs. <?php echo number_format($item->price, 2); ?></td>
+                                <td class="category">
+                                    <?php echo htmlspecialchars($item->category_name); ?>
+                                </td>
+                                <td class="price">
+                                    Rs. <?php echo number_format($item->price, 2); ?>
+                                </td>
                                 <td class="quantity">
-                                    <input type="number" 
-                                           value="<?php echo $item->quantity; ?>" 
-                                           min="1" 
-                                           max="<?php echo $item->stock; ?>"
-                                           class="quantity-input"
-                                           data-cart-id="<?php echo $item->cart_id; ?>"
-                                           onchange="updateCartQuantity(this)">
+                                    <form action="<?php echo URLROOT; ?>/CartController/updateQuantity" 
+                                          method="POST" class="quantity-form">
+                                        <input type="hidden" name="cart_id" value="<?php echo $item->cart_id; ?>">
+                                        <input type="number" 
+                                               name="quantity" 
+                                               value="<?php echo $item->quantity; ?>" 
+                                               min="1" 
+                                               max="<?php echo $item->stock; ?>"
+                                               onchange="this.form.submit()"
+                                               class="quantity-input">
+                                    </form>
                                 </td>
-                                <td class="total">Rs. <?php echo number_format($item->totalAmount, 2); ?></td>
+                                <td class="total">
+                                    Rs. <?php echo number_format($item->totalAmount, 2); ?>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </tbody>
             </table>
-            
+
             <?php if(!empty($data['cartItems'])): ?>
                 <div class="cart-summary">
                     <h2>Cart Summary</h2>
                     <div class="summary-content">
-                        <div class="summary-row">
+                        <div class="subtotal">
                             <span>Subtotal:</span>
                             <span>Rs. <?php echo number_format($data['subTotal'], 2); ?></span>
                         </div>
                         <div class="cart-actions">
-                            <a href="<?php echo URLROOT; ?>/FarmerController/BuyIngredients" class="continue-shopping">
-                                Continue Shopping
-                            </a>
-                            <button onclick="clearCart()" class="clear-cart-btn">
-                                Clear Cart
-                            </button>
-                            <a href="<?php echo URLROOT; ?>/CheckoutController" class="checkout-btn">
-                                Proceed to Checkout
-                            </a>
+                            <a href="<?php echo URLROOT; ?>/FarmerController/BuyIngredients" 
+                               class="continue-shopping-btn">Continue Shopping</a>
+                            <form action="<?php echo URLROOT; ?>/CartController/clearCart" 
+                                  method="POST" style="display: inline;">
+                                <button type="submit" class="clear-cart-btn">Clear Cart</button>
+                            </form>
+                            <a href="<?php echo URLROOT; ?>/CheckoutController" 
+                               class="checkout-btn">Proceed to Checkout</a>
                         </div>
                     </div>
                 </div>
             <?php endif; ?>
         </div>
     </div>
-
 </body>
 </html>

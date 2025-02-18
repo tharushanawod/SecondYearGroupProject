@@ -140,11 +140,21 @@ class Product {
 
     public function getProductDetails($id) {
         $this->db->query('SELECT p.*, c.category_name 
-                         FROM supplier_products p 
-                         LEFT JOIN categories c ON p.category_id = c.category_id 
+                         FROM supplier_products p
+                         JOIN categories c ON p.category_id = c.category_id
                          WHERE p.product_id = :id');
         $this->db->bind(':id', $id);
         return $this->db->single();
+    }
+
+    public function getRelatedProducts($category_id) {
+        $this->db->query('SELECT p.*, c.category_name 
+                         FROM supplier_products p
+                         JOIN categories c ON p.category_id = c.category_id
+                         WHERE p.category_id = :category_id 
+                         LIMIT 4');
+        $this->db->bind(':category_id', $category_id);
+        return $this->db->resultSet();
     }
 }
 ?>

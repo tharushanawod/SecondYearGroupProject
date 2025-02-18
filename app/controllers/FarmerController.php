@@ -304,6 +304,12 @@ class FarmerController extends Controller {
     
 
     public function BuyIngredients($category_id = null) {
+        // Get cart count if not set
+        if (!isset($_SESSION['cart_count'])) {
+            $cartModel = $this->model('Cart');
+            $_SESSION['cart_count'] = $cartModel->getCartCount($_SESSION['user_id']);
+        }
+        
         $this->productModel = $this->model('Product');
         
         if ($category_id !== null) {
@@ -554,6 +560,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
         ];
         
         $this->view('Farmer/ViewDetails', $data);
+    }
+
+    public function viewCart() {
+        if (!isset($_SESSION['user_id'])) {
+            redirect('users/login');
+            return;
+        }
+    
+        try {
+            $cartModel = $this->model('Cart');
+            $cartItems = $cartModel->getCartItems($_SESSION['user_id']);
+            
+            $data = [
+                'cartItems' => $cartItems,
+                'subTotal' => $cartModel->calculateSubTotal($cartItems),
+                'title' => 'Shopping Cart'
+            ];
+            
+            $this->view('Farmer/ViewCart', $data);
+            
+        } catch (Exception $e) {
+            error_log("Error in viewCart: " . $e->getMessage());
+            $_SESSION['message'] = 'Error loading cart';
+            $_SESSION['message_type'] = 'error';
+            redirect('FarmerController/BuyIngredients');
+        }
     }
 
 }
