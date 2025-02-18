@@ -168,3 +168,71 @@ async function handleAddToCart(form, cartCount, addToCartBtn, messageDiv, maxSto
         setLoadingState(addToCartBtn, false);
     }
 }
+
+function updateCartQuantity(input) {
+    const cartId = input.getAttribute('data-cart-id');
+    const quantity = parseInt(input.value);
+
+    fetch(`${URLROOT}/CartController/updateCartItem`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            cart_id: cartId,
+            quantity: quantity
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload(); // Refresh to update totals
+        } else {
+            alert(data.message || 'Error updating quantity');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error updating quantity');
+    });
+}
+
+function removeCartItem(cartId) {
+    if (confirm('Are you sure you want to remove this item?')) {
+        fetch(`${URLROOT}/CartController/removeFromCart/${cartId}`, {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert(data.message || 'Error removing item');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error removing item');
+        });
+    }
+}
+
+function clearCart() {
+    if (confirm('Are you sure you want to clear your cart?')) {
+        fetch(`${URLROOT}/CartController/clearCart`, {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert(data.message || 'Error clearing cart');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error clearing cart');
+        });
+    }
+}

@@ -8,6 +8,8 @@ class Cart {
 
     public function addToCart($data) {
         try {
+            $this->db->beginTransaction();
+
             // Get product details first
             $this->db->query('SELECT price, category_id FROM supplier_products WHERE product_id = :product_id');
             $this->db->bind(':product_id', $data['product_id']);
@@ -30,7 +32,7 @@ class Cart {
                 // Update existing cart item
                 $this->db->query('UPDATE cart 
                                  SET quantity = quantity + :quantity,
-                                     totalAmount = totalAmount + :total_amount 
+                                     totalAmount = :total_amount 
                                  WHERE customer_id = :customer_id 
                                  AND product_id = :product_id');
             } else {
@@ -47,80 +49,137 @@ class Cart {
             $this->db->bind(':quantity', $data['quantity']);
             $this->db->bind(':total_amount', $total_amount);
 
-            return $this->db->execute();
+            $result = $this->db->execute();
+            $this->db->commit();
+            return $result;
 
         } catch (Exception $e) {
+            $this->db->rollBack();
             error_log("Error in addToCart: " . $e->getMessage());
             throw $e;
         }
     }
 
     public function getCartItems($customer_id) {
-        $this->db->query(
-            'SELECT c.*, sp.product_name, sp.price, sp.image, sp.stock,
-                    cat.category_name 
-             FROM cart c
-             JOIN supplier_products sp ON c.product_id = sp.product_id
-             JOIN categories cat ON c.category_id = cat.category_id
-             WHERE c.customer_id = :customer_id'
-        );
-        $this->db->bind(':customer_id', $customer_id);
-        return $this->db->resultSet();
+        try {
+            $this->db->query(
+                'SELECT c.*, 
+                        sp.product_name, 
+                        sp.price, 
+                        sp.image, 
+                        sp.stock,
+                        cat.category_name
+                 FROM cart c
+                 JOIN supplier_products sp ON c.product_id = sp.product_id
+                 JOIN categories cat ON c.category_id = cat.category_id
+                 WHERE c.customer_id = :customer_id
+                 ORDER BY c.createdOn DESC'
+            );
+            
+            $this->db->bind(':customer_id', $customer_id);
+            return $this->db->resultSet();
+        } catch (Exception $e) {
+            error_log("GetCartItems Error: " . $e->getMessage());
+            throw $e;
+        }
     }
 
-    public function updateCartItem($cart_item_id, $quantity) {
-        $this->db->query('SELECT p.price 
-                         FROM cart_items ci 
-                         JOIN supplier_products p ON ci.product_id = p.product_id 
-                         WHERE ci.cart_item_id = :cart_item_id');
-        $this->db->bind(':cart_item_id', $cart_item_id);
-        $product = $this->db->single();
+    public function updateCartItem($cart_id, $quantity) {
+        try {
+            $this->db->beginTransaction();
 
-        $totalAmount = $product->price * $quantity;
+            $this->db->query('SELECT sp.price 
+                             FROM cart c 
+                             JOIN supplier_products sp ON c.product_id = sp.product_id 
+                             WHERE c.cart_id = :cart_id');
+            $this->db->bind(':cart_id', $cart_id);
+            $product = $this->db->single();
 
-        $this->db->query('UPDATE cart_items 
-                         SET quantity = :quantity, 
-                             totalAmount = :totalAmount,
-                             updated_at = CURRENT_TIMESTAMP 
-                         WHERE cart_item_id = :cart_item_id');
-        
-        $this->db->bind(':cart_item_id', $cart_item_id);
-        $this->db->bind(':quantity', $quantity);
-        $this->db->bind(':totalAmount', $totalAmount);
+            if (!$product) {
+                throw new Exception("Cart item not found");
+            }
 
-        return $this->db->execute();
+            $totalAmount = $product->price * $quantity;
+
+            $this->db->query('UPDATE cart 
+                             SET quantity = :quantity, 
+                                 totalAmount = :totalAmount
+                             WHERE cart_id = :cart_id');
+            
+            $this->db->bind(':cart_id', $cart_id);
+            $this->db->bind(':quantity', $quantity);
+            $this->db->bind(':totalAmount', $totalAmount);
+
+            $result = $this->db->execute();
+            $this->db->commit();
+            return $result;
+
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            error_log("Error in updateCartItem: " . $e->getMessage());
+            throw $e;
+        }
     }
 
-    public function removeCartItem($cart_item_id) {
-        $this->db->query('DELETE FROM cart_items WHERE cart_item_id = :cart_item_id');
-        $this->db->bind(':cart_item_id', $cart_item_id);
-        return $this->db->execute();
+    public function removeCartItem($cart_id) {
+        try {
+            $this->db->query('DELETE FROM cart WHERE cart_id = :cart_id');
+            $this->db->bind(':cart_id', $cart_id);
+            return $this->db->execute();
+        } catch (Exception $e) {
+            error_log("Error in removeCartItem: " . $e->getMessage());
+            throw $e;
+        }
     }
 
     public function calculateSubTotal($cartItems) {
-        $subTotal = 0;
-        foreach ($cartItems as $item) {
-            $subTotal += $item->totalAmount;
-        }
-        return $subTotal;
+        return array_reduce($cartItems, function($total, $item) {
+            return $total + $item->totalAmount;
+        }, 0);
     }
 
     public function clearCart($customer_id) {
-        $this->db->query('DELETE ci FROM cart_items ci 
-                         JOIN cart c ON ci.cart_id = c.cart_id 
-                         WHERE c.customer_id = :customer_id');
-        $this->db->bind(':customer_id', $customer_id);
-        return $this->db->execute();
+        try {
+            $this->db->query('DELETE FROM cart WHERE customer_id = :customer_id');
+            $this->db->bind(':customer_id', $customer_id);
+            return $this->db->execute();
+        } catch (Exception $e) {
+            error_log("Error in clearCart: " . $e->getMessage());
+            throw $e;
+        }
+    }
+
+    public function viewCart($customer_id) {
+        try {
+            // Fetch cart items with all necessary details
+            $cartItems = $this->getCartItems($customer_id);
+            
+            // Validate cart items
+            if (!is_array($cartItems)) {
+                throw new Exception("Failed to fetch cart items");
+            }
+
+            // Calculate subtotal
+            $subTotal = $this->calculateSubTotal($cartItems);
+
+            // Format response
+            return [
+                'items' => $cartItems,
+                'subTotal' => $subTotal,
+                'itemCount' => count($cartItems),
+                'success' => true
+            ];
+
+        } catch (Exception $e) {
+            error_log("ViewCart Error: " . $e->getMessage());
+            return [
+                'items' => [],
+                'subTotal' => 0,
+                'itemCount' => 0,
+                'success' => false,
+                'error' => $e->getMessage()
+            ];
+        }
     }
 }
 ?>
-
-
-
-
-
-
-
-
-
-
