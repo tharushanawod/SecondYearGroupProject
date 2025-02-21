@@ -63,8 +63,13 @@ class CartController extends Controller {
             
             // Get product info to check stock and get category_id
             $product = $this->cartModel->getProductById($product_id);
-            if (!$product || $quantity < 1 || $quantity > $product->stock) {
-                throw new Exception('Invalid quantity or product not found');
+            if (!$product) {
+                throw new Exception('Product not found');
+            }
+            
+            // Check if requested quantity is valid
+            if ($quantity < 1 || $quantity > $product->stock) {
+                throw new Exception('Invalid quantity or insufficient stock');
             }
 
             $cartData = [
@@ -79,6 +84,8 @@ class CartController extends Controller {
                 $_SESSION['cart_count'] = $this->cartModel->getCartCount($_SESSION['user_id']);
                 $_SESSION['message'] = 'Item added to cart successfully';
                 $_SESSION['message_type'] = 'success';
+            } else {
+                throw new Exception('Failed to add item to cart');
             }
         } catch (Exception $e) {
             $_SESSION['message'] = $e->getMessage();

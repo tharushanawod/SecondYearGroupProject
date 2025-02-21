@@ -33,8 +33,24 @@ class Cart {
         return $this->db->resultSet();
     }
 
+    public function updateProductStock($product_id, $quantity) {
+        try {
+            $this->db->query('UPDATE supplier_products 
+                             SET stock = stock - :quantity 
+                             WHERE product_id = :product_id');
+            $this->db->bind(':product_id', $product_id);
+            $this->db->bind(':quantity', $quantity);
+            return $this->db->execute();
+        } catch (Exception $e) {
+            error_log("Error updating stock: " . $e->getMessage());
+            throw $e;
+        }
+    }
+
     public function addToCart($data) {
         try {
+            $this->db->beginTransaction();
+
             // First check if product already exists in cart
             $this->db->query('SELECT * FROM cart WHERE customer_id = :user_id AND product_id = :product_id');
             $this->db->bind(':user_id', $data['user_id']);
@@ -63,8 +79,23 @@ class Cart {
             $this->db->bind(':product_id', $data['product_id']);
             $this->db->bind(':quantity', $data['quantity']);
 
-            return $this->db->execute();
+            // Add to cart
+            $cartResult = $this->db->execute();
+
+            // Update product stock
+            if ($cartResult) {
+                $stockResult = $this->updateProductStock($data['product_id'], $data['quantity']);
+                if ($stockResult) {
+                    $this->db->commit();
+                    return true;
+                }
+            }
+
+            $this->db->rollBack();
+            return false;
+
         } catch (Exception $e) {
+            $this->db->rollBack();
             error_log("Error in addToCart: " . $e->getMessage());
             return false;
         }
