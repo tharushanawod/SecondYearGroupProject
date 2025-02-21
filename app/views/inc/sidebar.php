@@ -115,7 +115,21 @@
   <div class="settings-menu" id="settings-menu">
     <ul>
       <li><i class="fas fa-sign-out-alt"></i><a href="<?php echo URLROOT; ?>/LandingController/logout">Logout</a></li>
-      <li><i class="fas fa-bell"></i><a href="<?php echo URLROOT; ?>/NotificationController/index">Notifications</a></li>
+      <li><i class="fas fa-bell"></i><a href="<?php 
+        if($_SESSION['user_role'] == 'manufacturer'){
+          echo URLROOT.'/ManufacturerController/getUnreadNotifications';
+        }elseif($_SESSION['user_role'] == 'buyer'){
+          echo URLROOT.'/BuyerController/getUnreadNotifications';
+        }elseif($_SESSION['user_role'] == 'farmer'){
+          echo URLROOT.'/FarmerController/getUnreadNotifications';
+        }elseif($_SESSION['user_role'] == 'farmworker'){
+          echo URLROOT.'/WorkerController/getUnreadNotifications';
+        }elseif($_SESSION['user_role'] == 'supplier'){
+          echo URLROOT.'/SupplierController/getUnreadNotifications';
+        }else{
+          echo URLROOT.'/AdminController/getUnreadNotifications';
+        }
+      ?>">Notifications</a></li>
     </ul>
   </div>
 </div>
@@ -136,5 +150,7 @@ document.addEventListener("click", function (e) {
     menu.style.display = "none";
   }
 });
+
+
 
 </script>

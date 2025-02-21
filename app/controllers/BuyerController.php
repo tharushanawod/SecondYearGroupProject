@@ -2,6 +2,7 @@
 
 class BuyerController extends Controller {
     private $BuyerModel;
+    private $NotificationModel;
 
     public function __construct() {
         if (!$this->isloggedin()) {
@@ -12,6 +13,7 @@ class BuyerController extends Controller {
             Redirect('LandingController/login');
         }
         $this->BuyerModel = $this->model('Buyer');
+        $this->NotificationModel = $this->model('Notification');
     }
 
     public function index() {
@@ -300,6 +302,27 @@ public function GetBankAndCardDetails() {
         $data = [];
         $this->View('Buyer/pay', $data);
     }
+
+    public function getNotifications() {
+        $notifications = $this->NotificationModel->getNotifications();
+        echo json_encode($notifications);
+    }
+
+
+    public function getUnreadNotifications() {
+  
+       $this->View('inc/Notification',$data);
+    }
+
+    public function markNotificationAsRead($id) {
+        $result = $this->NotificationModel->markNotificationAsRead($id);
+        header('Content-Type: application/json');
+        echo json_encode(['success' => $result]);
+    }
+
 }
+
+
+
 ?>
     

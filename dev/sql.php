@@ -119,3 +119,27 @@ CREATE TABLE orders_from_buyers (
     FOREIGN KEY (product_id) REFERENCES corn_products(product_id) ON DELETE CASCADE -- Added foreign key for product_id
 );
 
+
+CREATE TABLE farmer_add_products_notifications (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,  -- Buyer or admin who should be notified
+    message TEXT NOT NULL,
+    is_read TINYINT(1) DEFAULT 0,  -- 0 = Unread, 1 = Read
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+DELIMITER $$
+
+CREATE TRIGGER after_product_insert
+AFTER INSERT ON corn_products 
+FOR EACH ROW
+BEGIN
+    -- Insert notification for all buyers (assuming all buyers get notified)
+    INSERT INTO farmer_add_products_notifications (user_id, message)
+    SELECT user_id, CONCAT('New Corn product added: ',' (', NEW.quantity, ' Kilograms)') 
+    FROM users WHERE user_type = 'farmer'; -- Assuming farmers are identified by 'role'
+
+END $$
+
+DELIMITER ;

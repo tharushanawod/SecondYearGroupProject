@@ -231,7 +231,6 @@ class FarmerController extends Controller {
             
             // Validate and upload file
             if (isset($_FILES['media']) && $_FILES['media']['error'] == 0) {
-                var_dump($_FILES);
 
                 $targetDir = "uploads/Farmer/Products/"; // Folder to store uploads
                 $fileName = basename($_FILES['media']['name']);
