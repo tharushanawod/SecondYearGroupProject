@@ -20,12 +20,12 @@
         .notification-container {
             background: white;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             padding: 24px;
-            width: 90%;
+            width: 80%;
             margin-left: 250px;
         }
         .notification-header {
+            padding:20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -41,6 +41,7 @@
         .notification-count {
             background: #2e8b57;
             color: white;
+            margin-top:14px;
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 14px;
@@ -125,13 +126,14 @@
     </div>
     <script>
     const URLROOT = '<?php echo URLROOT; ?>';
+    const buyer_id = <?php echo $_SESSION['user_id']; ?>;
     </script>
 
     <script>
 
 // Main functionality
 function fetchNotifications() {
-    fetch(`${URLROOT}/BuyerController/getNotifications`)
+    fetch(`${URLROOT}/BuyerController/getNotifications/${buyer_id}`)
         .then(response => response.json())
         .then(notifications => {
             displayNotifications(notifications);

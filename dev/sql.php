@@ -136,9 +136,29 @@ AFTER INSERT ON corn_products
 FOR EACH ROW
 BEGIN
     -- Insert notification for all buyers (assuming all buyers get notified)
-    INSERT INTO farmer_add_products_notifications (user_id, message)
-    SELECT user_id, CONCAT('New Corn product added: ',' (', NEW.quantity, ' Kilograms)') 
+    INSERT INTO notifications_for_buyers (farmer_id, message)
+    SELECT farmer_id, CONCAT('New Corn product added: ',' (', NEW.quantity, ' Kilograms)') 
     FROM users WHERE user_type = 'farmer'; -- Assuming farmers are identified by 'role'
+
+END $$
+
+DELIMITER ;
+
+
+DELIMITER $$
+
+CREATE TRIGGER after_buyer_wins_bid
+AFTER INSERT ON orders_from_buyers
+FOR EACH ROW
+BEGIN
+    -- Insert notification for the buyer who won the bid
+    INSERT INTO notifications_for_buyers (farmer_id,buyer_id, message)
+    SELECT NEW.farmer_id, NEW.buyer_id,
+           CONCAT('You Have Won quantity of ', NEW.quantity, 
+                  ' (', NEW.quantity, ' Kilograms) At RS: ', NEW.bid_price, 
+                  ' please pay within 24 hours to avoid your account getting restricted')
+    FROM users 
+    WHERE user_type = 'buyer' AND user_id = NEW.buyer_id;  -- Assuming buyer_id is in the new row
 
 END $$
 

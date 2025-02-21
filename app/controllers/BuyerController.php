@@ -303,8 +303,12 @@ public function GetBankAndCardDetails() {
         $this->View('Buyer/pay', $data);
     }
 
-    public function getNotifications() {
-        $notifications = $this->NotificationModel->getNotifications();
+    public function getNotifications($buyer_id) {
+        $productsnotifications = (array) $this->NotificationModel->getNotifications();
+$winningnotifications = (array) $this->NotificationModel->getWinningNotifications($buyer_id);
+$notifications = array_merge($productsnotifications, $winningnotifications);
+
+        header('Content-Type: application/json');
         echo json_encode($notifications);
     }
 
