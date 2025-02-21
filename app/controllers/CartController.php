@@ -1,13 +1,54 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 class CartController extends Controller {
     private $cartModel;
-    private $productModel;
 
-    
-    public function __construct() {            
+    public function __construct() {
+        if (!isset($_SESSION['user_id'])) {
+            redirect('users/login');
+        }
         $this->cartModel = $this->model('Cart');
-        $this->productModel = $this->model('Product');
+    }
+
+    public function browseProducts($categoryId = null) {
+        try {
+            $products = $this->cartModel->getProducts($categoryId);
+            $categories = $this->cartModel->getCategories();
+            
+            $data = [
+                'products' => $products,
+                'categories' => $categories
+            ];
+
+            $this->view('Cart/BuyIngredients', $data);
+        } catch (Exception $e) {
+            error_log("Error in browseProducts: " . $e->getMessage());
+            redirect('pages/error');
+        }
+    }
+
+    public function viewDetails($productId) {
+        try {
+            $product = $this->cartModel->getProductById($productId);
+            if ($product) {
+                // Get related products by category
+                $relatedProducts = $this->cartModel->getRelatedProducts($product->category_id, $productId);
+                
+                $data = [
+                    'product' => $product,
+                    'relatedProducts' => $relatedProducts
+                ];
+                // Update view path to Cart folder
+                $this->view('Cart/ViewDetails', $data);
+            } else {
+                redirect('CartController/browseProducts');
+            }
+        } catch (Exception $e) {
+            error_log("Error in viewDetails: " . $e->getMessage());
+            redirect('pages/error');
+        }
     }
 
     public function addToCart() {
@@ -17,44 +58,34 @@ class CartController extends Controller {
         }
 
         try {
-            if (!isset($_SESSION['user_id'])) {
-                throw new Exception('User not logged in');
-            }
-
             $product_id = $_POST['product_id'];
             $quantity = intval($_POST['quantity']);
-            $max_stock = intval($_POST['max_stock']);
-
-            // Server-side validation
-            if ($quantity < 1) {
-                throw new Exception('Quantity must be at least 1');
-            }
             
-            if ($quantity > $max_stock) {
-                throw new Exception('Quantity cannot exceed available stock');
+            // Get product info to check stock and get category_id
+            $product = $this->cartModel->getProductById($product_id);
+            if (!$product || $quantity < 1 || $quantity > $product->stock) {
+                throw new Exception('Invalid quantity or product not found');
             }
 
             $cartData = [
                 'user_id' => $_SESSION['user_id'],
                 'product_id' => $product_id,
-                'quantity' => $quantity
+                'category_id' => $product->category_id,
+                'quantity' => $quantity,
+                'totalAmount' => $product->price * $quantity
             ];
 
             if ($this->cartModel->addToCart($cartData)) {
+                $_SESSION['cart_count'] = $this->cartModel->getCartCount($_SESSION['user_id']);
                 $_SESSION['message'] = 'Item added to cart successfully';
                 $_SESSION['message_type'] = 'success';
-                $_SESSION['cart_count'] = $this->cartModel->getCartCount($_SESSION['user_id']);
-            } else {
-                throw new Exception('Failed to add item to cart');
             }
-
         } catch (Exception $e) {
             $_SESSION['message'] = $e->getMessage();
             $_SESSION['message_type'] = 'error';
-            error_log("Cart Error: " . $e->getMessage());
         }
 
-        redirect("FarmerController/viewDetails/$product_id");
+        redirect("CartController/viewDetails/$product_id");
     }
 
     public function updateQuantity() {
@@ -71,38 +102,20 @@ class CartController extends Controller {
     }
 
     public function viewCart() {
-        // Basic authentication check
-        if (!isset($_SESSION['user_id'])) {
-            redirect('users/login');
-            return;
-        }
-
         try {
-            // Get cart items with error logging
-            error_log("Fetching cart items for user: " . $_SESSION['user_id']);
-            
             $cartItems = $this->cartModel->getCartItems($_SESSION['user_id']);
-            error_log("Cart items retrieved: " . json_encode($cartItems));
-            
             $subTotal = $this->cartModel->calculateSubTotal($cartItems);
-            error_log("Subtotal calculated: " . $subTotal);
 
             $data = [
                 'cartItems' => $cartItems,
                 'subTotal' => $subTotal,
                 'title' => 'Shopping Cart'
             ];
-
-            // Debug view path
-            error_log("Attempting to load view: " . APPROOT . '/views/Farmer/ViewCart.php');
             
-            $this->view('Farmer/ViewCart', $data);
-            
+            $this->view('Cart/ViewCart', $data);
         } catch (Exception $e) {
             error_log("Error in viewCart: " . $e->getMessage());
-            $_SESSION['message'] = 'Error loading cart';
-            $_SESSION['message_type'] = 'error';
-            redirect('FarmerController/BuyIngredients');
+            redirect('pages/error');
         }
     }
 
@@ -112,7 +125,7 @@ class CartController extends Controller {
             $_SESSION['message_type'] = 'success';
             $_SESSION['cart_count'] = $this->cartModel->getCartCount($_SESSION['user_id']);
         }
-        redirect('FarmerController/viewCart');
+        redirect('CartController/viewCart');
     }
 
     public function clearCart() {
@@ -121,10 +134,14 @@ class CartController extends Controller {
             $_SESSION['message_type'] = 'success';
             $_SESSION['cart_count'] = 0;
         }
-        redirect('FarmerController/viewCart');
+        redirect('CartController/viewCart');
     }
 
     private function updateCartCount() {
         $_SESSION['cart_count'] = $this->cartModel->getCartCount($_SESSION['user_id']);
+    }
+
+    public function getProfileImage() {
+        return isset($_SESSION['profile_image']) ? $_SESSION['profile_image'] : 'default.jpg';
     }
 }

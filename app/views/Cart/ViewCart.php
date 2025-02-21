@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart</title>
     <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Farmer/ViewCart.css">
+    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Cart/ViewCart.css">
 </head>
 <body>
     <?php require APPROOT . '/views/inc/sidebar.php'; ?>
@@ -38,7 +38,7 @@
                                 <div class="empty-cart-message">
                                     <i class="fas fa-shopping-cart"></i>
                                     <p>Your cart is empty</p>
-                                    <a href="<?php echo URLROOT; ?>/FarmerController/BuyIngredients" 
+                                    <a href="<?php echo URLROOT; ?>/CartController/browseProducts" 
                                        class="continue-shopping-btn">Continue Shopping</a>
                                 </div>
                             </td>
@@ -62,7 +62,7 @@
                                     <?php echo htmlspecialchars($item->product_name); ?>
                                 </td>
                                 <td class="category">
-                                    <?php echo htmlspecialchars($item->category_name); ?>
+                                    <?php echo isset($item->category_name) ? htmlspecialchars($item->category_name) : 'No Category'; ?>
                                 </td>
                                 <td class="price">
                                     Rs. <?php echo number_format($item->price, 2); ?>

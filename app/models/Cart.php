@@ -6,96 +6,78 @@ class Cart {
         $this->db = new Database;
     }
 
+    public function getProducts($categoryId = null) {
+        try {
+            if ($categoryId) {
+                $this->db->query('SELECT p.*, c.category_name 
+                                FROM supplier_products p 
+                                LEFT JOIN categories c ON p.category_id = c.category_id 
+                                WHERE p.category_id = :category_id AND p.stock > 0');
+                $this->db->bind(':category_id', $categoryId);
+            } else {
+                $this->db->query('SELECT p.*, c.category_name 
+                                FROM supplier_products p 
+                                LEFT JOIN categories c ON p.category_id = c.category_id 
+                                WHERE p.stock > 0');
+            }
+            
+            return $this->db->resultSet();
+        } catch (Exception $e) {
+            error_log("Error in Cart Model getProducts: " . $e->getMessage());
+            throw $e;
+        }
+    }
+
+    public function getCategories() {
+        $this->db->query('SELECT * FROM categories ORDER BY category_name');
+        return $this->db->resultSet();
+    }
+
     public function addToCart($data) {
         try {
-            $this->db->beginTransaction();
-
-            // First verify product exists and get its details
-            $this->db->query('SELECT price, category_id, stock FROM supplier_products WHERE product_id = :product_id');
+            // First check if product already exists in cart
+            $this->db->query('SELECT * FROM cart WHERE customer_id = :user_id AND product_id = :product_id');
+            $this->db->bind(':user_id', $data['user_id']);
             $this->db->bind(':product_id', $data['product_id']);
-            $product = $this->db->single();
+            $existing = $this->db->single();
 
-            if (!$product) {
-                throw new Exception("Product not found");
-            }
-
-            // Verify stock availability
-            if ($product->stock < $data['quantity']) {
-                throw new Exception("Insufficient stock");
-            }
-
-            $totalAmount = $product->price * $data['quantity'];
-
-            // Check if item exists in cart
-            $this->db->query('SELECT cart_id, quantity FROM cart 
-                             WHERE customer_id = :customer_id 
-                             AND product_id = :product_id');
-            $this->db->bind(':customer_id', $data['user_id']);
-            $this->db->bind(':product_id', $data['product_id']);
-            $existingItem = $this->db->single();
-
-            if ($existingItem) {
-                // Verify total quantity doesn't exceed stock
-                $newQuantity = $existingItem->quantity + $data['quantity'];
-                if ($newQuantity > $product->stock) {
-                    throw new Exception("Cannot add more items than available stock");
-                }
-
-                // Update existing item
+            if ($existing) {
+                // Update existing cart item
                 $this->db->query('UPDATE cart 
-                                 SET quantity = :quantity,
-                                     totalAmount = :total_amount,
-                                     updated_at = CURRENT_TIMESTAMP
-                                 WHERE cart_id = :cart_id');
-                $this->db->bind(':cart_id', $existingItem->cart_id);
-                $this->db->bind(':quantity', $newQuantity);
-                $this->db->bind(':total_amount', $product->price * $newQuantity);
+                                 SET quantity = quantity + :quantity,
+                                     totalAmount = totalAmount + :total_amount
+                                 WHERE customer_id = :user_id 
+                                 AND product_id = :product_id');
+                
+                $this->db->bind(':total_amount', $data['totalAmount']);
             } else {
-                // Add new item
-                $this->db->query('INSERT INTO cart 
-                                 (customer_id, product_id, category_id, quantity, totalAmount) 
-                                 VALUES (:customer_id, :product_id, :category_id, :quantity, :total_amount)');
-                $this->db->bind(':customer_id', $data['user_id']);
-                $this->db->bind(':product_id', $data['product_id']);
-                $this->db->bind(':category_id', $product->category_id);
-                $this->db->bind(':quantity', $data['quantity']);
-                $this->db->bind(':total_amount', $totalAmount);
+                // Insert new cart item
+                $this->db->query('INSERT INTO cart (customer_id, product_id, category_id, quantity, totalAmount) 
+                                 VALUES (:user_id, :product_id, :category_id, :quantity, :total_amount)');
+                
+                $this->db->bind(':category_id', $data['category_id']);
+                $this->db->bind(':total_amount', $data['totalAmount']);
             }
 
-            $result = $this->db->execute();
-            
-            if (!$result) {
-                throw new Exception("Failed to execute cart operation");
-            }
-            
-            $this->db->commit();
-            return true;
+            $this->db->bind(':user_id', $data['user_id']);
+            $this->db->bind(':product_id', $data['product_id']);
+            $this->db->bind(':quantity', $data['quantity']);
 
+            return $this->db->execute();
         } catch (Exception $e) {
-            $this->db->rollBack();
             error_log("Error in addToCart: " . $e->getMessage());
             return false;
         }
     }
 
-    public function getCartItems($user_id) {
-        try {
-            $this->db->query('SELECT c.*, p.product_name, p.price, p.image, p.stock, cat.category_name
-                             FROM cart c 
-                             JOIN supplier_products p ON c.product_id = p.product_id 
-                             JOIN categories cat ON c.category_id = cat.category_id
-                             WHERE c.customer_id = :user_id');
-            $this->db->bind(':user_id', $user_id);
-            $result = $this->db->resultSet();
-            
-            // Debug output
-            error_log("Cart items query result: " . json_encode($result));
-            
-            return $result;
-        } catch (Exception $e) {
-            error_log("Error in getCartItems: " . $e->getMessage());
-            return [];
-        }
+    public function getCartItems($userId) {
+        $this->db->query('SELECT c.*, p.product_name, p.price, p.image, p.stock, cat.category_name 
+                         FROM cart c 
+                         JOIN supplier_products p ON c.product_id = p.product_id 
+                         LEFT JOIN categories cat ON c.category_id = cat.category_id
+                         WHERE c.customer_id = :user_id');
+        $this->db->bind(':user_id', $userId);
+        return $this->db->resultSet();
     }
 
     public function calculateSubTotal($cartItems) {
@@ -151,17 +133,24 @@ class Cart {
         }
     }
 
-    public function getProductDetails($product_id) {
+    public function getProductById($productId) {
         try {
             $this->db->query('SELECT p.*, c.category_name 
-                             FROM supplier_products p
-                             JOIN categories c ON p.category_id = c.category_id
+                             FROM supplier_products p 
+                             LEFT JOIN categories c ON p.category_id = c.category_id 
                              WHERE p.product_id = :product_id');
-            $this->db->bind(':product_id', $product_id);
-            return $this->db->single();
+            $this->db->bind(':product_id', $productId);
+            $result = $this->db->single();
+            
+            if (!$result) {
+                error_log("Product not found: " . $productId);
+                return null;
+            }
+            
+            return $result;
         } catch (Exception $e) {
-            error_log("Error in getProductDetails: " . $e->getMessage());
-            return false;
+            error_log("Error in getProductById: " . $e->getMessage());
+            return null;
         }
     }
 
@@ -169,13 +158,18 @@ class Cart {
         try {
             $this->db->query('SELECT p.*, c.category_name 
                              FROM supplier_products p
-                             JOIN categories c ON p.category_id = c.category_id
+                             LEFT JOIN categories c ON p.category_id = c.category_id
                              WHERE p.category_id = :category_id 
                              AND p.product_id != :current_product_id
+                             AND p.stock > 0
                              LIMIT 4');
+            
             $this->db->bind(':category_id', $category_id);
             $this->db->bind(':current_product_id', $current_product_id);
-            return $this->db->resultSet();
+            
+            $result = $this->db->resultSet();
+            return $result ? $result : [];
+            
         } catch (Exception $e) {
             error_log("Error in getRelatedProducts: " . $e->getMessage());
             return [];
