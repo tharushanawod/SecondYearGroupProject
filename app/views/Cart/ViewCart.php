@@ -98,7 +98,7 @@
                             <span>Rs. <?php echo number_format($data['subTotal'], 2); ?></span>
                         </div>
                         <div class="cart-actions">
-                            <a href="<?php echo URLROOT; ?>/FarmerController/BuyIngredients" 
+                            <a href="<?php echo URLROOT; ?>/CartController/browseProducts" 
                                class="continue-shopping-btn">Continue Shopping</a>
                             <form action="<?php echo URLROOT; ?>/CartController/clearCart" 
                                   method="POST" style="display: inline;">
