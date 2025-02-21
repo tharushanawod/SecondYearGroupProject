@@ -509,14 +509,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
 
     }   
    
-    public function CheckoutConfirmation() {
-        $data = [];
-        $this->View('Farmer/CheckoutConfirmation', $data);
-    }
-    public function pay(){
-        $data = [];
-        $this->View('Farmer/pay', $data);
-    }
 
     public function inventory() {
         $data = [];

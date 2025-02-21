@@ -104,7 +104,7 @@
                                   method="POST" style="display: inline;">
                                 <button type="submit" class="clear-cart-btn">Clear Cart</button>
                             </form>
-                            <a href="<?php echo URLROOT; ?>/CheckoutController" 
+                            <a href="<?php echo URLROOT; ?>/CartController/Checkout" 
                                class="checkout-btn">Proceed to Checkout</a>
                         </div>
                     </div>

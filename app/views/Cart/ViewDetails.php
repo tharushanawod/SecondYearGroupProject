@@ -41,6 +41,11 @@
                         <p><?php echo $data['product']->description; ?></p>
                     </div>
 
+                    <div class="stock-info">
+                        <h2>Available Stock</h2>
+                        <p><?php echo $data['product']->stock; ?> units</p>
+                    </div>
+
                     <!-- Add to Cart Form -->
                     <form action="<?php echo URLROOT; ?>/CartController/addToCart" method="POST" class="add-to-cart-form">
                         <input type="hidden" name="product_id" value="<?php echo $data['product']->product_id; ?>">

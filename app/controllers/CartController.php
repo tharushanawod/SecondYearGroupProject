@@ -144,4 +144,30 @@ class CartController extends Controller {
     public function getProfileImage() {
         return isset($_SESSION['profile_image']) ? $_SESSION['profile_image'] : 'default.jpg';
     }
+
+    public function checkout() {
+        try {
+            $cartItems = $this->cartModel->getCartItems($_SESSION['user_id']);
+            $subTotal = $this->cartModel->calculateSubTotal($cartItems);
+            
+            $data = [
+                'cart_items' => $cartItems,
+                'subTotal' => $subTotal
+            ];
+            
+            $this->view('Cart/Checkout', $data);
+        } catch (Exception $e) {
+            error_log("Error in checkout: " . $e->getMessage());
+            redirect('pages/error');
+        }
+    }
+    
+    public function CheckoutConfirmation() {
+        $data = [];
+        $this->View('Cart/CheckoutConfirmation', $data);
+    }
+    public function pay(){
+        $data = [];
+        $this->View('Cart/Pay', $data);
+    }
 }

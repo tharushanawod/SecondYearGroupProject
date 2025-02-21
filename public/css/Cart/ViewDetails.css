@@ -400,6 +400,24 @@ h1 {
     opacity: 0.7;
 }
 
+.stock-info {
+    margin: 20px 0;
+    padding: 10px 0;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+.stock-info h2 {
+    font-size:16px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.stock-info p {
+    font-size: 1em;
+    color: #666;
+}
+
 @media (max-width: 768px) {
     .product-separator {
         width: 90%;
