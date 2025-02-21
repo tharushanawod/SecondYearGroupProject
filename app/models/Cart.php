@@ -102,13 +102,18 @@ class Cart {
     }
 
     public function getCartItems($userId) {
-        $this->db->query('SELECT c.*, p.product_name, p.price, p.image, p.stock, cat.category_name 
-                         FROM cart c 
-                         JOIN supplier_products p ON c.product_id = p.product_id 
-                         LEFT JOIN categories cat ON c.category_id = cat.category_id
-                         WHERE c.customer_id = :user_id');
-        $this->db->bind(':user_id', $userId);
-        return $this->db->resultSet();
+        try {
+            $this->db->query('SELECT c.*, p.product_name, p.price, p.image, p.stock, cat.category_name 
+                             FROM cart c 
+                             JOIN supplier_products p ON c.product_id = p.product_id 
+                             LEFT JOIN categories cat ON c.category_id = cat.category_id
+                             WHERE c.customer_id = :user_id');
+            $this->db->bind(':user_id', $userId);
+            return $this->db->resultSet();
+        } catch (Exception $e) {
+            error_log("Error in getCartItems: " . $e->getMessage());
+            return [];
+        }
     }
 
     public function calculateSubTotal($cartItems) {
@@ -126,10 +131,11 @@ class Cart {
 
     public function updateQuantity($cart_id, $quantity) {
         try {
-            $this->db->query('UPDATE cart 
-                             SET quantity = :quantity,
-                                 totalAmount = (SELECT price FROM supplier_products WHERE product_id = cart.product_id) * :quantity 
-                             WHERE cart_id = :cart_id');
+            $this->db->query('UPDATE cart c
+                             INNER JOIN supplier_products sp ON c.product_id = sp.product_id
+                             SET c.quantity = :quantity,
+                                 c.totalAmount = sp.price * :quantity 
+                             WHERE c.cart_id = :cart_id');
             $this->db->bind(':cart_id', $cart_id);
             $this->db->bind(':quantity', $quantity);
             return $this->db->execute();
@@ -207,3 +213,4 @@ class Cart {
         }
     }
 }
+?>
