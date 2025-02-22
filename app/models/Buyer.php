@@ -183,6 +183,7 @@ GROUP BY corn_products.product_id
     bids.bid_id,
     bids.bid_amount,
     bids.product_id,
+    bids.payment_status,
     corn_products.quantity, 
     corn_products.closing_date,
     (SELECT MAX(bids_inner.bid_amount) 

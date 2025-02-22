@@ -12,6 +12,7 @@ function fetchBids() {
   fetch(`${URLROOT}/BuyerController/getAllActiveBidsForBuyer/${USERID}`)
     .then((response) => response.json())
     .then((data) => {
+      console.log(data);
       bids = data; // Store all bids in the array
       renderTable(); // Initial table render
       updatePagination();
@@ -30,15 +31,23 @@ function renderTable() {
   paginatedBids.forEach((bid) => {
     const row = document.createElement("tr");
     const targetDate = new Date(`${bid.closing_date}`); // Set the target date and time
- 
+
     row.innerHTML = `
       <td data-label="Bid ID">${bid.bid_id}</td>
       <td data-label="Product">${bid.bid_amount}</td>
       <td data-label="Buyer">${bid.highest_bid}</td>
-      <td data-label="Unit Price (Rs)">${startCountdown(targetDate)}</td>
+      <td data-label="Unit Price (Rs)">
+      <span id="countdown-${bid.bid_id}">${startCountdown(targetDate, bid.bid_id)}</span>
+      </td>
       <td data-label="Quantity">${bid.quantity}</td>
-      <td data-label="Status">${bid.payment_status}</td>
+      <td data-label="Actions">
+      ${bid.payment_status === 'Pending' ? `
+        <button onclick="cancelBid(${bid.bid_id})" class="action-btn cancel">Cancel Bid</button>
+        <button onclick="adjustBid(${bid.bid_id})" class="action-btn confirm">Adjust Bid</button>
+      ` : ''}
+      </td>
     `;
+
     bidsTable.appendChild(row);
   });
 }
@@ -74,6 +83,7 @@ nextBtn.addEventListener("click", () => {
 // Initial fetch and render
 fetchBids();
 
+// Calculate remaining time for the countdown
 function calculateRemainingTime(targetDate) {
   const now = new Date();
   const timeDifference = targetDate - now;
@@ -91,22 +101,20 @@ function calculateRemainingTime(targetDate) {
   return `${days}d ${hours}h ${minutes}m ${seconds}s`;
 }
 
-function startCountdown(targetDate) {
-  const countdownElement = document.getElementById('countdown'); // Element to display the time
+// Start countdown function for each bid
+function startCountdown(targetDate, bidId) {
+  const countdownElement = document.getElementById(`countdown-${bidId}`); // Unique countdown element for each row
 
   // Update the countdown every second
   const interval = setInterval(() => {
-      const remainingTime = calculateRemainingTime(targetDate);
+    const remainingTime = calculateRemainingTime(targetDate);
 
-      // Display the remaining time
-      countdownElement.innerHTML = remainingTime;
+    // Display the remaining time
+    countdownElement.innerHTML = remainingTime;
 
-      // Stop the countdown when time is up
-      if (remainingTime === "Time is up!") {
-          clearInterval(interval);
-      }
+    // Stop the countdown when time is up
+    if (remainingTime === "Time is up!") {
+      clearInterval(interval);
+    }
   }, 1000); // Update every second
 }
-
-// Example usage:
-
