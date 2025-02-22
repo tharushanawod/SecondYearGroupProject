@@ -28,10 +28,16 @@
                     <?php endif; ?>
                 </div>
                 <div class="cart-icon">
-                    <a href="<?php echo URLROOT; ?>/CartController/viewCart">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span class="cart-count"><?php echo isset($_SESSION['cart_count']) ? $_SESSION['cart_count'] : 0; ?></span>
-                    </a>
+                    <?php if(isset($_SESSION['user_id']) && $_SESSION['user_role'] === 'farmer'): ?>
+                        <a href="<?php echo URLROOT; ?>/CartController/viewCart" class="cart-link">
+                            <i class="fas fa-shopping-cart"></i>
+                            <?php
+                                $cartCount = isset($_SESSION['cart_count']) ? $_SESSION['cart_count'] : 0;
+                            ?>
+                            <span class="cart-count"><?php echo $cartCount; ?></span>
+                            
+                        </a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

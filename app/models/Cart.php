@@ -122,11 +122,16 @@ class Cart {
         }, 0);
     }
 
-    public function getCartCount($user_id) {
-        $this->db->query('SELECT COUNT(*) as count FROM cart WHERE customer_id = :user_id');
-        $this->db->bind(':user_id', $user_id);
-        $result = $this->db->single();
-        return $result->count;
+    public function getCartCount($farmer_id) {
+        try {
+            $this->db->query('SELECT COUNT(*) as count FROM cart WHERE customer_id = :farmer_id');
+            $this->db->bind(':farmer_id', $farmer_id);
+            $result = $this->db->single();
+            return $result->count;
+        } catch (Exception $e) {
+            error_log("Error getting cart count: " . $e->getMessage());
+            return 0;
+        }
     }
 
     public function updateQuantity($cart_id, $quantity) {

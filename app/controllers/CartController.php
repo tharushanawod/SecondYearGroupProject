@@ -30,6 +30,9 @@ class CartController extends Controller {
     }
 
     public function viewDetails($productId) {
+        // Update cart count before loading the page
+        $this->updateCartCount();
+        
         try {
             $product = $this->cartModel->getProductById($productId);
             if ($product) {
@@ -88,7 +91,9 @@ class CartController extends Controller {
             ];
 
             if ($this->cartModel->addToCart($cartData)) {
-                $_SESSION['cart_count'] = $this->cartModel->getCartCount($_SESSION['user_id']);
+                // Update cart count after adding item
+                $this->updateCartCount();
+                
                 $_SESSION['message'] = 'Item added to cart successfully';
                 $_SESSION['message_type'] = 'success';
             } else {
@@ -139,6 +144,10 @@ class CartController extends Controller {
             $_SESSION['message_type'] = 'success';
             $_SESSION['cart_count'] = $this->cartModel->getCartCount($_SESSION['user_id']);
         }
+        
+        // Update cart count after removing item
+        $this->updateCartCount();
+        
         redirect('CartController/viewCart');
     }
 
@@ -152,7 +161,9 @@ class CartController extends Controller {
     }
 
     private function updateCartCount() {
-        $_SESSION['cart_count'] = $this->cartModel->getCartCount($_SESSION['user_id']);
+        if (isset($_SESSION['user_id']) && $_SESSION['user_role'] === 'farmer') {
+            $_SESSION['cart_count'] = $this->cartModel->getCartCount($_SESSION['user_id']);
+        }
     }
 
     public function getProfileImage() {
