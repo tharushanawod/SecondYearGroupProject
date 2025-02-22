@@ -166,8 +166,10 @@ class CartController extends Controller {
         }
     }
 
-    public function getProfileImage() {
-        return isset($_SESSION['profile_image']) ? $_SESSION['profile_image'] : 'default.jpg';
+       // Get profile image URL
+       public function getProfileImage($user_id) {
+        $imagePath = $this->cartModel->getProfileImage($_SESSION['user_id']);
+        return $imagePath ? URLROOT .'/'.$imagePath : URLROOT . '/images/default.jpg';
     }
 
     public function checkout() {

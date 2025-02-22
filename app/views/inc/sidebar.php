@@ -63,24 +63,30 @@
                 <li><a href="<?php echo URLROOT;?>/AdminController/VerifyUsers"><i class="fa-solid fa-check"></i><span class="menu-text">Verify Users</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/AdminController/Report"><i class="fa-solid fa-chart-bar"></i><span class="menu-text">Reports</span></a></li>  
               
-                <?php endif; ?>       
-                
+                <?php endif; ?>
+       
+
+      
       
     </ul>
   </div>
 
   <div class="profile">
-    <img
-        alt="Profile Picture"
-        height="40"
-        width="40"
-        style="object-fit: cover;"
-        src="<?php echo URLROOT; ?>/uploads/ProfilePictures/<?php 
-            echo isset($_SESSION['profile_image']) ? $_SESSION['profile_image'] : 'default.jpg'; 
-        ?>" 
-    />
+  <img
+    alt="Profile Picture"
+    <?php $imagepath = $this->getProfileImage($_SESSION['user_id']); ?>
+    height="40"
+    width="40"
+    style="object-fit: cover;"
+    src="<?php echo $imagepath; ?>" />
+
+
+
+  
     <div class="profile-info">
      
+    
+      
       <div class="name"><?php echo $_SESSION['user_name'];?></div>
       <div class="view-profile"><a href="
       <?php 
