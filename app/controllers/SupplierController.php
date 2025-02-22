@@ -360,10 +360,45 @@ class SupplierController extends Controller {
         }
     }
 
-    public function notifications() {
-        $supplierId = $_SESSION['user_id'];
-        $notifications = $this->model('Notification')->getNotificationsByUserId($supplierId);
-        $this->view('Ingredient Supplier/Notifications', ['notifications' => $notifications]);
+public function notifications() {
+    $supplierId = $_SESSION['user_id'];
+    $notifications = $this->model('Notification')->getNotificationsByUserId($supplierId);
+    $this->view('Ingredient Supplier/Notifications', ['notifications' => $notifications]);
+}
+
+public function addRating() {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_SESSION['user_id'])) {
+        redirect('pages/error');
     }
+
+    $data = [
+        'supplier_id' => trim($_POST['supplier_id']),
+        'farmer_id' => $_SESSION['user_id'],
+        'rating' => trim($_POST['rating']),
+        'review' => trim($_POST['review'])
+    ];
+
+    if ($this->Supplier->addRating($data)) {
+        $_SESSION['message'] = 'Thank you for your review!';
+        $_SESSION['message_type'] = 'success';
+    } else {
+        $_SESSION['message'] = 'Unable to submit review';
+        $_SESSION['message_type'] = 'error';
+    }
+
+    redirect('CartController/viewDetails/' . $data['supplier_id']);
+}
+
+public function getRatings($supplier_id) {
+    $reviews = $this->Supplier->getSupplierRatings($supplier_id);
+    $averageRating = $this->Supplier->getAverageRating($supplier_id);
+    
+    return [
+        'reviews' => $reviews,
+        'averageRating' => $averageRating->avg_rating,
+        'totalRatings' => count($reviews)
+    ];
+}
+
 }
 ?>

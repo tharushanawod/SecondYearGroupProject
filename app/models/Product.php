@@ -74,13 +74,13 @@ class Product {
         return $this->db->execute();
     }
 
-    public function getProductsByCategory($category_id, $supplier_id) {
-        $this->db->query("SELECT p.*, c.category_name 
+    public function getProductsByCategory($category_id) {
+        $this->db->query('SELECT p.*, c.category_name 
                          FROM supplier_products p 
-                         LEFT JOIN categories c ON p.category_id = c.category_id 
-                         WHERE p.category_id = :category_id AND p.supplier_id = :supplier_id");
+                         JOIN categories c ON p.category_id = c.category_id 
+                         WHERE p.category_id = :category_id 
+                         ORDER BY p.product_name');
         $this->db->bind(':category_id', $category_id);
-        $this->db->bind(':supplier_id', $supplier_id);
         return $this->db->resultSet();
     }
 
@@ -88,6 +88,7 @@ class Product {
         $this->db->query('SELECT category_id, category_name FROM categories');
         return $this->db->resultSet();
     }
+
     public function getOrderById($order_id) {
         $this->db->query('SELECT o.*, p.product_name, u.name as customer_name 
                          FROM orders o 
@@ -121,6 +122,38 @@ class Product {
         }
         $ids = implode(',', array_map('intval', $ids));
         $this->db->query("SELECT * FROM products WHERE id IN ($ids)");
+        return $this->db->resultSet();
+    }
+
+    public function getAllCategories() {
+        $this->db->query('SELECT * FROM categories ORDER BY category_name');
+        return $this->db->resultSet();
+    }
+
+    public function getSupplierProducts() {
+        $this->db->query('SELECT p.*, c.category_name 
+                         FROM supplier_products p 
+                         LEFT JOIN categories c ON p.category_id = c.category_id 
+                         ORDER BY p.product_name');
+        return $this->db->resultSet();
+    }
+
+    public function getProductDetails($id) {
+        $this->db->query('SELECT p.*, c.category_name 
+                         FROM supplier_products p
+                         JOIN categories c ON p.category_id = c.category_id
+                         WHERE p.product_id = :id');
+        $this->db->bind(':id', $id);
+        return $this->db->single();
+    }
+
+    public function getRelatedProducts($category_id) {
+        $this->db->query('SELECT p.*, c.category_name 
+                         FROM supplier_products p
+                         JOIN categories c ON p.category_id = c.category_id
+                         WHERE p.category_id = :category_id 
+                         LIMIT 4');
+        $this->db->bind(':category_id', $category_id);
         return $this->db->resultSet();
     }
 }

@@ -35,7 +35,7 @@
             <li><a  href="<?php echo URLROOT;?>/FarmerController/GetIdea"><i class="fa-solid fa-store"></i><span class="menu-text">Products</span></a></li>
             <li><a href="<?php echo URLROOT;?>/FarmerController/orderManagement"><i class="fas fa-comments"></i><span class="menu-text">Orders</span></a></li>
             <li><a href="<?php echo URLROOT;?>/FarmerController/workerManagement"><i class="fa-solid fa-user"></i><span class="menu-text">Workers</span></a></li>
-            <li><a href="<?php echo URLROOT;?>/FarmerController/BuyIngredients"><i class="fa-solid fa-flask"></i><span class="menu-text">Ingredients</span></a></li>
+            <li><a href="<?php echo URLROOT;?>/CartController/browseProducts"><i class="fa-solid fa-flask"></i><span class="menu-text">Ingredients</span></a></li>
             <li><a href="<?php echo URLROOT;?>/FarmerController/inventory"><i class="fa-solid fa-business-time"></i><span class="menu-text">My Orders</span></a></li>
             <li><a href="<?php echo URLROOT;?>/FarmerController/requestHelp"><i class="fa-solid fa-comment"></i><span class="menu-text">Chat</span></a></li>
            
@@ -63,30 +63,24 @@
                 <li><a href="<?php echo URLROOT;?>/AdminController/VerifyUsers"><i class="fa-solid fa-check"></i><span class="menu-text">Verify Users</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/AdminController/Report"><i class="fa-solid fa-chart-bar"></i><span class="menu-text">Reports</span></a></li>  
               
-                <?php endif; ?>
-       
-
-      
+                <?php endif; ?>       
+                
       
     </ul>
   </div>
 
   <div class="profile">
-  <img
-    alt="Profile Picture"
-    <?php $imagepath = $this->getProfileImage($_SESSION['user_id']); ?>
-    height="40"
-    width="40"
-    style="object-fit: cover;"
-    src="<?php echo $imagepath; ?>" />
-
-
-
-  
+    <img
+        alt="Profile Picture"
+        height="40"
+        width="40"
+        style="object-fit: cover;"
+        src="<?php echo URLROOT; ?>/uploads/ProfilePictures/<?php 
+            echo isset($_SESSION['profile_image']) ? $_SESSION['profile_image'] : 'default.jpg'; 
+        ?>" 
+    />
     <div class="profile-info">
      
-    
-      
       <div class="name"><?php echo $_SESSION['user_name'];?></div>
       <div class="view-profile"><a href="
       <?php 

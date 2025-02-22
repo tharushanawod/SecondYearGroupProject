@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Farmer/Checkout.css">
+    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Cart/Checkout.css">
     <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet"/>
     <title>Checkout</title>
 </head>
@@ -87,18 +87,26 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Nitrogen Rich Fertilizer × 1</td>
-                        <td>LKR 1500.00</td>
-                    </tr>
-                    <tr>
-                        <td>Subtotal</td>
-                        <td>LKR 1500.00</td>
-                    </tr>
-                    <tr>
-                        <td>Total</td>
-                        <td>LKR 1500.00</td>
-                    </tr>
+                    <?php if (!empty($data['cart_items'])): ?>
+                        <?php foreach ($data['cart_items'] as $item): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($item->product_name) . ' × ' . $item->quantity; ?></td>
+                                <td>LKR <?php echo number_format($item->price * $item->quantity, 2); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        <tr>
+                            <td>Subtotal</td>
+                            <td>LKR <?php echo number_format($data['subTotal'], 2); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Total</td>
+                            <td>LKR <?php echo number_format($data['subTotal'], 2); ?></td>
+                        </tr>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="2">Your cart is empty</td>
+                        </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
 
@@ -109,7 +117,7 @@
                
             </div>
 
-            <a href="<?php echo URLROOT;?>/FarmerController/pay"><button class="place-order">PLACE ORDER</button></a>
+            <a href="<?php echo URLROOT;?>/CartController/pay"><button class="place-order">PLACE ORDER</button></a>
         </div> 
     </div>   
 </body>
