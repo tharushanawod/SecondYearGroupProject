@@ -137,8 +137,7 @@ FOR EACH ROW
 BEGIN
     -- Insert notification for all buyers (assuming all buyers get notified)
     INSERT INTO notifications_for_buyers (farmer_id, message)
-    SELECT farmer_id, CONCAT('New Corn product added: ',' (', NEW.quantity, ' Kilograms)') 
-    FROM users WHERE user_type = 'farmer'; -- Assuming farmers are identified by 'role'
+    SELECT NEW.user_id, CONCAT('New Corn product added: ',' (', NEW.quantity, ' Kilograms)') 
 
 END $$
 
