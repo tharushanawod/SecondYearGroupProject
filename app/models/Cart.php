@@ -147,13 +147,35 @@ class Cart {
 
     public function removeCartItem($cart_id, $user_id) {
         try {
+            $this->db->beginTransaction();
+
+            // Get cart item details before removal
+            $cartItem = $this->getCartItemDetails($cart_id);
+            
+            if (!$cartItem) {
+                throw new Exception("Cart item not found");
+            }
+
+            // Remove item from cart
             $this->db->query('DELETE FROM cart 
                              WHERE cart_id = :cart_id 
                              AND customer_id = :user_id');
             $this->db->bind(':cart_id', $cart_id);
             $this->db->bind(':user_id', $user_id);
-            return $this->db->execute();
+            
+            if ($this->db->execute()) {
+                // Restore product stock
+                if ($this->restoreProductStock($cartItem->product_id, $cartItem->quantity)) {
+                    $this->db->commit();
+                    return true;
+                }
+            }
+
+            $this->db->rollBack();
+            return false;
+
         } catch (Exception $e) {
+            $this->db->rollBack();
             error_log("Error in removeCartItem: " . $e->getMessage());
             return false;
         }
@@ -161,10 +183,34 @@ class Cart {
 
     public function clearCart($user_id) {
         try {
+            $this->db->beginTransaction();
+
+            // Get all cart items before clearing
+            $this->db->query('SELECT product_id, quantity FROM cart WHERE customer_id = :user_id');
+            $this->db->bind(':user_id', $user_id);
+            $cartItems = $this->db->resultSet();
+
+            // Clear the cart
             $this->db->query('DELETE FROM cart WHERE customer_id = :user_id');
             $this->db->bind(':user_id', $user_id);
-            return $this->db->execute();
+            
+            if ($this->db->execute()) {
+                // Restore stock for each item
+                foreach ($cartItems as $item) {
+                    if (!$this->restoreProductStock($item->product_id, $item->quantity)) {
+                        throw new Exception("Failed to restore stock for product " . $item->product_id);
+                    }
+                }
+                
+                $this->db->commit();
+                return true;
+            }
+
+            $this->db->rollBack();
+            return false;
+
         } catch (Exception $e) {
+            $this->db->rollBack();
             error_log("Error in clearCart: " . $e->getMessage());
             return false;
         }
@@ -225,6 +271,31 @@ class Cart {
         } catch (Exception $e) {
             error_log("Error in addRating: " . $e->getMessage());
             return false;
+        }
+    }
+
+    public function getCartItemDetails($cart_id) {
+        try {
+            $this->db->query('SELECT product_id, quantity FROM cart WHERE cart_id = :cart_id');
+            $this->db->bind(':cart_id', $cart_id);
+            return $this->db->single();
+        } catch (Exception $e) {
+            error_log("Error in getCartItemDetails: " . $e->getMessage());
+            return null;
+        }
+    }
+
+    public function restoreProductStock($product_id, $quantity) {
+        try {
+            $this->db->query('UPDATE supplier_products 
+                             SET stock = stock + :quantity 
+                             WHERE product_id = :product_id');
+            $this->db->bind(':product_id', $product_id);
+            $this->db->bind(':quantity', $quantity);
+            return $this->db->execute();
+        } catch (Exception $e) {
+            error_log("Error restoring stock: " . $e->getMessage());
+            throw $e;
         }
     }
 }
