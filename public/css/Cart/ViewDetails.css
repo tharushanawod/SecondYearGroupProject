@@ -232,8 +232,8 @@ h1 {
 
 .related-product-info {
     padding: 16px;
-    background-color: rgb(216, 247, 236);
-    border-top: 4px solid #e1feeb; 
+    background-color: rgb(255, 255, 255);
+    /* border-top: 4px solid #e1feeb;  */
 }
 
 .related-product-info h3 {
@@ -254,7 +254,7 @@ h1 {
     display: block;
     text-align: center;
     padding: 8px 16px;
-    background-color: #e5f7e5;
+    background-color: #ffffff;
     color: #0c79e7;
     border-radius: 6px;
     text-decoration: none;
@@ -416,6 +416,169 @@ h1 {
 .stock-info p {
     font-size: 1em;
     color: #666;
+}
+
+/* Rating Section Container */
+.supplier-rating-section {
+    padding: 2rem;
+    background: #fff;
+    border-radius: 8px;
+    margin: 2rem 0;
+    margin-left: 220px;
+    max-width: 800px;
+}
+
+/* Rating Summary */
+.rating-summary {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.average-rating {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    gap: 1rem;
+}
+
+.rating-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+/* Star Styling */
+.stars, .star-rating label {
+    color: #ddd;
+    font-size: 1.2rem;
+}
+
+.stars .fas.fa-star,
+.star-rating input:checked ~ label,
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: #ffc107;
+}
+
+.total-ratings {
+    color: #666;
+}
+
+/* Star Rating Input */
+.star-rating {
+    display: inline-flex;
+    flex-direction: row-reverse;
+    gap: 0.25rem;
+    margin: 1rem 0;
+}
+
+.star-rating input {
+    display: none;
+}
+
+.star-rating label {
+    cursor: pointer;
+    font-size: 2rem;
+    transition: color 0.2s;
+    padding: 0 0.2rem;
+}
+
+.star-rating label:before {
+    content: '\2605';
+    position: absolute;
+}
+
+/* Review Form */
+.add-rating-form {
+    max-width: 600px;
+    margin: 2rem 0;
+    margin-left: 260px;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Review Input */
+.review-input,
+textarea[name="review"] {
+    width: 100%;
+    min-height: 100px;
+    padding: 0.75rem;
+    margin: 1rem 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+/* Reviews List */
+.reviews-list {
+    margin-top: 2rem;
+}
+
+.review-card {
+    border-bottom: 1px solid #eee;
+    padding: 1rem 0;
+}
+
+.review-card:last-child {
+    border-bottom: none;
+}
+
+/* Review Header */
+.review-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.reviewer-image {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.reviewer-info {
+    flex: 1;
+}
+
+.reviewer-info h4 {
+    margin: 0;
+}
+
+.review-date {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Review Text */
+.review-text {
+    margin-top: 0.5rem;
+    color: #333;
+    line-height: 1.6;
+}
+
+.no-reviews {
+    text-align: left;
+    color: #666;
+    font-style: italic;
+}
+
+/* Submit Button */
+.submit-rating-btn {
+    background: #2e8f68;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s;
+}
+
+.submit-rating-btn:hover {
+    background: #267756;
 }
 
 @media (max-width: 768px) {

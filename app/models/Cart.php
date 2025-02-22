@@ -212,5 +212,20 @@ class Cart {
             return [];
         }
     }
+
+    public function addRating($data) {
+        try {
+            $this->db->query('INSERT INTO product_ratings (product_id, customer_id, rating, review) 
+                             VALUES (:product_id, :customer_id, :rating, :review)');
+            $this->db->bind(':product_id', $data['product_id']);
+            $this->db->bind(':customer_id', $data['customer_id']);
+            $this->db->bind(':rating', $data['rating']);
+            $this->db->bind(':review', $data['review']);
+            return $this->db->execute();
+        } catch (Exception $e) {
+            error_log("Error in addRating: " . $e->getMessage());
+            return false;
+        }
+    }
 }
 ?>

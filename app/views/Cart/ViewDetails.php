@@ -77,6 +77,79 @@
             </div>
 
             <div class="product-separator"></div>
+            
+
+            <!-- Add this after product details section -->
+           <div class="supplier-rating-section">
+           <h2>Supplier Ratings & Reviews</h2>
+    
+            <!-- Average Rating Display -->
+            <div class="rating-summary">
+                <div class="average-rating">
+                    <span class="rating-number"><?php echo number_format($data['averageRating'] ?? 0, 1); ?></span>
+                    <div class="stars">
+                        <?php
+                        $avgRating = isset($data['averageRating']) ? floatval($data['averageRating']) : 0;
+                        for ($i = 1; $i <= 5; $i++) {
+                            if ($i <= $avgRating) {
+                                echo '<i class="fas fa-star"></i>';
+                            } else {
+                                echo '<i class="far fa-star"></i>';
+                            }
+                        }
+                        ?>
+                    </div>
+                    <span class="total-ratings">(<?php echo $data['totalRatings'] ?? 0; ?> reviews)</span>
+                </div>
+            </div>
+
+            <!-- Reviews List -->
+            <div class="reviews-list">
+                <?php if(!empty($data['reviews'])): ?>
+                    <?php foreach($data['reviews'] as $review): ?>
+                        <div class="review-card">
+                            <div class="review-header">
+                                <img src="<?php echo URLROOT; ?>/img/profile/<?php echo $review->profile_image ?? 'default.jpg'; ?>" 
+                                    alt="Reviewer" class="reviewer-image">
+                                <div class="reviewer-info">
+                                    <h4><?php echo htmlspecialchars($review->farmer_name); ?></h4>
+                                    <div class="stars">
+                                        <?php for($i = 1; $i <= 5; $i++): ?>
+                                            <i class="fa<?php echo ($i <= $review->rating) ? 's' : 'r'; ?> fa-star"></i>
+                                        <?php endfor; ?>
+                                    </div>
+                                    <span class="review-date"><?php echo date('M d, Y', strtotime($review->created_at)); ?></span>
+                                </div>
+                            </div>
+                            <p class="review-text"><?php echo htmlspecialchars($review->review_text); ?></p>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p class="no-reviews">No reviews yet</p>
+                <?php endif; ?>
+            </div>
+            </div>
+            
+            <!-- Rating Form -->
+            <?php if(isset($_SESSION['user_id']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'farmer'): ?>
+                <div class="add-rating-form">
+                    <h3>Rate this Supplier</h3>
+                    <form action="<?php echo URLROOT; ?>/SupplierController/addRating" method="POST" id="ratingForm">
+                        <input type="hidden" name="supplier_id" value="<?php echo $data['product']->supplier_id; ?>">
+                        <input type="hidden" name="redirect_url" value="<?php echo URLROOT; ?>/CartController/viewDetails/<?php echo $data['product']->product_id; ?>">
+                        <div class="star-rating">
+                            <?php for($i = 5; $i >= 1; $i--): ?>
+                                <label for="star<?php echo $i; ?>">☆</label>
+                            <?php endfor; ?>
+                        </div>
+                        <textarea name="review" class="review-input" placeholder="Write your review here..." required></textarea>
+                        <button type="submit" class="submit-rating-btn">Submit Review</button>
+                    </form>
+                </div>
+            <?php endif; ?>   
+            
+            <div class="product-separator"></div>
+
 
             <!-- Related Products Section -->
             <?php if (!empty($data['relatedProducts'])): ?>
@@ -87,14 +160,14 @@
                         <?php if ($related->product_id != $data['product']->product_id): ?>
                         <div class="related-product-card">
                             <img src="<?php echo URLROOT; ?>/uploads/<?php echo $related->image; ?>" 
-                             alt="<?php echo $related->product_name; ?>">
+                                alt="<?php echo $related->product_name; ?>">
                             <div class="related-product-info">
                             <h3><?php echo $related->product_name; ?></h3>
                             <div class="related-product-price">
                                 Rs. <?php echo number_format($related->price, 2); ?>
                             </div>
                             <a href="<?php echo URLROOT; ?>/CartController/viewDetails/<?php echo $related->product_id; ?>" 
-                               class="view-product-btn">View Product</a>
+                                class="view-product-btn">View Product</a>
                             </div>
                         </div>
                         <?php endif; ?>
@@ -102,14 +175,14 @@
                     </div>
                 </div>
             <?php endif; ?>
-        <?php else: ?>
-            <div class="error-message">
-                <p>Product not found</p>
-                <a href="<?php echo URLROOT; ?>/CartController/browseProducts" class="back-btn">
-                    <i class="fas fa-arrow-left"></i> Back to Products
-                </a>
+            <?php else: ?>
+                <div class="error-message">
+                    <p>Product not found</p>
+                    <a href="<?php echo URLROOT; ?>/CartController/browseProducts" class="back-btn">
+                        <i class="fas fa-arrow-left"></i> Back to Products
+                    </a>
+                </div>
+            <?php endif; ?>
             </div>
-        <?php endif; ?>
-    </div>
 </body>
 </html>

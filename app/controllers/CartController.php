@@ -1,15 +1,15 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
 class CartController extends Controller {
     private $cartModel;
+    private $supplierModel;
 
     public function __construct() {
         if (!isset($_SESSION['user_id'])) {
             redirect('users/login');
         }
         $this->cartModel = $this->model('Cart');
+        $this->supplierModel = $this->model('Supplier');
     }
 
     public function browseProducts($categoryId = null) {
@@ -36,11 +36,18 @@ class CartController extends Controller {
                 // Get related products by category
                 $relatedProducts = $this->cartModel->getRelatedProducts($product->category_id, $productId);
                 
+                // Get supplier ratings
+                $supplierRatings = $this->supplierModel->getSupplierRatings($product->supplier_id);
+                $averageRating = $this->supplierModel->getAverageRating($product->supplier_id);
+
                 $data = [
                     'product' => $product,
-                    'relatedProducts' => $relatedProducts
+                    'relatedProducts' => $relatedProducts,
+                    'reviews' => $supplierRatings,
+                    'averageRating' => $averageRating,
+                    'totalRatings' => count($supplierRatings)
                 ];
-                // Update view path to Cart folder
+                
                 $this->view('Cart/ViewDetails', $data);
             } else {
                 redirect('CartController/browseProducts');
@@ -176,5 +183,22 @@ class CartController extends Controller {
     public function pay(){
         $data = [];
         $this->View('Cart/Pay', $data);
+    }
+    
+    public function rateProduct() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $product_id = $_POST['product_id'];
+            $rating = $_POST['rating'];
+            $user_id = $_SESSION['user_id'];
+            
+            if ($this->cartModel->rateProduct($product_id, $user_id, $rating)) {
+                $_SESSION['message'] = 'Product rated successfully';
+                $_SESSION['message_type'] = 'success';
+            } else {
+                $_SESSION['message'] = 'Failed to rate product';
+                $_SESSION['message_type'] = 'error';
+            }
+        }
+        redirect("CartController/viewDetails/$product_id");
     }
 }
