@@ -25,7 +25,7 @@
           <li><a href="<?php echo URLROOT;?>/BuyerController/Dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>
           <li><a href="<?php echo URLROOT;?>/BuyerController/LandingPage"><i class="fa-solid fa-chess-bishop"></i><span class="menu-text">Place Bids</span></a></li>
           <li><a href="<?php echo URLROOT;?>/BuyerController/BidControl"><i class="fa-solid fa-hand"></i><span class="menu-text">Bid Control</span></a></li>
-          <li><a href="<?php echo URLROOT;?>/BuyerController/PendingPayment"><i class="fa-solid fa-clock"></i><span class="menu-text">Pending Payments</span></a></li>
+          <li><a href="<?php echo URLROOT;?>/BuyerController/PendingPayments"><i class="fa-solid fa-clock"></i><span class="menu-text">Pending Payments</span></a></li>
           <li><a href="<?php echo URLROOT;?>/BuyerController/purchaseHistory"><i class="fas fa-comments"></i><span class="menu-text">Orders</span></a></li>
           <li><a href="<?php echo URLROOT;?>/BuyerController/RequestHelp"><i class="fa-solid fa-comment"></i><span class="menu-text">Chat</span></a></li>
           

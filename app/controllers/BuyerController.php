@@ -85,9 +85,9 @@ class BuyerController extends Controller {
         echo json_encode($bids);
     }
 
-    public function PendingPayment() {
+    public function PendingPayments() {
         $data = [];
-        $this->View('Buyer/PendingPayment', $data);
+        $this->View('Buyer/PendingPayments', $data);
     }
 
     public function purchaseHistory() {
@@ -328,6 +328,12 @@ $notifications = array_merge($productsnotifications, $winningnotifications);
         $result = $this->BuyerModel->cancelBid($bid_id);
         header('Content-Type: application/json');
         echo json_encode(['success' => $result]);
+    }
+
+    public function AdjustBid($bid_id){
+        $data=$this->BuyerModel->getProductById($bid_id);
+        var_dump($data);
+        $this->View('Buyer/AdjustBid',$data);
     }
 
 }

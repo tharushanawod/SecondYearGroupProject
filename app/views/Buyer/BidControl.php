@@ -4,53 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Order Table with Pagination</title>
-  <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Farmer/OrdersManagement.css">
+  <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Buyer/BidControl.css">
   <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet"/>
-  <style>
-    /* Popup styles */
-    .popup-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-
-    .popup {
-      background: white;
-      padding: 20px;
-      border-radius: 5px;
-      width: 300px;
-      text-align: center;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .popup button {
-      margin: 10px;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .popup button.cancel {
-      background-color: #e74c3c;
-      color: white;
-    }
-
-    .popup button.confirm {
-      background-color: #2ecc71;
-      color: white;
-    }
-  </style>
 </head>
 <body>
-<?php require APPROOT . '/views/inc/sidebar.php'; ?> 
-
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
   <div class="table-container">
   <h1>Orders</h1>
     <table id="bidsTable">
@@ -119,35 +77,52 @@
 
   // Render table rows for bids based on current page
   function renderTable() {
-    const start = (currentPage - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
-    const paginatedBids = bids.slice(start, end);
+  const start = (currentPage - 1) * rowsPerPage;
+  const end = start + rowsPerPage;
+  const paginatedBids = bids.slice(start, end);
 
-    bidsTable.innerHTML = ""; // Clear the existing table
+  bidsTable.innerHTML = ""; // Clear the existing table
 
-    paginatedBids.forEach((bid) => {
-      const row = document.createElement("tr");
-      const targetDate = new Date(`${bid.closing_date}`); // Set the target date and time
+  paginatedBids.forEach((bid) => {
+    const targetDate = new Date(bid.closing_date); // Closing date of the bid
+    const currentDate = new Date(); // Current date and time
 
-      row.innerHTML = `
-        <td data-label="Bid ID">${bid.bid_id}</td>
-        <td data-label="Product">${bid.bid_amount}</td>
-        <td data-label="Buyer">${bid.highest_bid}</td>
-        <td data-label="Unit Price (Rs)">
-        <span id="countdown">${startCountdown(targetDate, bid.bid_id)}</span>
-        </td>
-        <td data-label="Quantity">${bid.quantity}</td>
-        <td data-label="Actions">
+    // Calculate the remaining time in milliseconds
+    const remainingTime = targetDate - currentDate;
+
+    // If the remaining time is less than or equal to zero, the auction has ended
+    let remainingTimeText = 'Auction Ended';
+    if (remainingTime > 0) {
+      // Calculate days, hours, minutes, and seconds
+      const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+      remainingTimeText = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td data-label="Bid ID">${bid.bid_id}</td>
+      <td data-label="Your Bid">${bid.bid_amount}</td>
+      <td data-label="Current Highest Bid">${bid.highest_bid}</td>
+      <td data-label="Remaining Time">
+        <span>${remainingTimeText}</span>
+      </td>
+      <td data-label="Quantity (kg)">${bid.quantity}</td>
+      <td data-label="Actions">
         ${bid.payment_status === 'Pending' ? `
           <button onclick="cancelBid(${bid.bid_id})" class="action-btn cancel">Cancel Bid</button>
-          <button onclick="adjustBid(${bid.bid_id})" class="action-btn confirm">Adjust Bid</button>
+          <button onclick="adjustBid(${bid.product_id})" class="action-btn confirm">Adjust Bid</button>
         ` : ''}
-        </td>
-      `;
+      </td>
+    `;
 
-      bidsTable.appendChild(row);
-    });
-  }
+    bidsTable.appendChild(row);
+  });
+}
+
 
   // Update pagination info (current page and total pages)
   function updatePagination() {
@@ -180,53 +155,14 @@
   // Initial fetch and render
   fetchBids();
 
-  // Calculate remaining time for the countdown
-  function calculateRemainingTime(targetDate) {
-    const now = new Date();
-    const timeDifference = targetDate - now;
-
-    // If the target date is in the past, return "Time is up!"
-    if (timeDifference <= 0) {
-        return "Time is up!";
-    }
-
-    const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24)); // Days
-    const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); // Hours
-    const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60)); // Minutes
-    const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000); // Seconds
-
-    return `${days}d ${hours}h ${minutes}m ${seconds}s`;
-  }
-
-  // Start countdown function for each bid
-  function startCountdown(targetDate, bidId) {
-    console.log("Starting countdown for bid ID:", bidId);
-  const countdownElement = document.getElementById("countdown"); // Unique countdown element for each row
-  console.log(countdownElement);
-
-  if (countdownElement) { // Ensure the element exists before updating
-    // Update the countdown every second
-    const interval = setInterval(() => {
-      const remainingTime = calculateRemainingTime(targetDate);
-
-      // Display the remaining time
-      countdownElement.innerHTML = remainingTime;
-
-      // Stop the countdown when time is up
-      if (remainingTime === "Time is up!") {
-        clearInterval(interval);
-      }
-    }, 1000); // Update every second
-  } else {
-    console.log(`Countdown element for bid ID ${bidId} not found.`);
-  }
-}
-
-
   // Show confirmation popup when cancel bid button is clicked
   function cancelBid(bidId) {
     cancelBidId = bidId;
     popupOverlay.style.display = "flex"; // Show the popup
+  }
+
+  function adjustBid(product_id) {
+    window.location.href = `${URLROOT}/BuyerController/PlaceBid/${product_id}`;
   }
 
   // Close the popup without canceling the bid
