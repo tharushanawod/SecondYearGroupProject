@@ -82,12 +82,16 @@ class Buyer {
     //function to display available corn products
     public function getAvailableProducts() {
         $this->db->query("SELECT corn_products.*, 
-       COALESCE(AVG(buyer_reviews_farmer.rating), 0) AS avg_rating
-FROM corn_products
-LEFT JOIN buyer_reviews_farmer 
-ON corn_products.user_id = buyer_reviews_farmer.farmer_id
-WHERE closing_date > NOW()
-GROUP BY corn_products.product_id
+            MAX(bids.bid_amount) AS highest_bid, 
+            COALESCE(AVG(buyer_reviews_farmer.rating), 0) AS avg_rating
+            FROM corn_products
+            LEFT JOIN buyer_reviews_farmer 
+            ON corn_products.user_id = buyer_reviews_farmer.farmer_id
+            LEFT JOIN bids 
+            ON corn_products.product_id = bids.product_id
+            WHERE closing_date > NOW()
+            GROUP BY corn_products.product_id;
+
 ");
         $rows = $this->db->resultSet();
         return $rows;
@@ -95,11 +99,20 @@ GROUP BY corn_products.product_id
 
     public function getProductById($id) {
         $this->db->query("
-        SELECT corn_products.*,users.name,farmers.district 
-        FROM corn_products
-        INNER JOIN users ON corn_products.user_id = users.user_id
-        LEFT JOIN farmers ON corn_products.user_id = farmers.user_id
-         WHERE product_id = :id
+        SELECT corn_products.*, 
+       users.name, 
+       farmers.district, 
+       MAX(bids.bid_amount) AS highest_bid
+FROM corn_products
+INNER JOIN users 
+ON corn_products.user_id = users.user_id
+LEFT JOIN farmers 
+ON corn_products.user_id = farmers.user_id
+LEFT JOIN bids  
+ON corn_products.product_id = bids.product_id
+WHERE corn_products.product_id = :id
+GROUP BY corn_products.product_id, users.name, farmers.district;
+
         ");
         $this->db->bind(':id', $id);
         $row = $this->db->single();
@@ -133,10 +146,11 @@ GROUP BY corn_products.product_id
     }
 
     public function SubmitBid($data) {
-        $this->db->query("INSERT INTO bids (product_id, buyer_id, bid_amount) VALUES (:product_id, :buyer_id, :bid_amount)");
+        $this->db->query("INSERT INTO bids (product_id, buyer_id, bid_amount,payment_status) VALUES (:product_id, :buyer_id, :bid_amount,:payment_status)");
         $this->db->bind(':product_id', $data['product_id']);
         $this->db->bind(':buyer_id', $data['buyer_id']);
         $this->db->bind(':bid_amount', $data['bid_amount']);
+        $this->db->bind(':payment_status', 'Pending');
 
         if ($this->db->execute()) {
             return true;
@@ -198,6 +212,17 @@ AND corn_products.closing_date > NOW();
         $this->db->bind(':user_id', $user_id);
         $bids = $this->db->resultSet();
         return $bids;
+    }
+
+    public function CancelBid($bid_id) {
+        $this->db->query('DELETE FROM bids WHERE bid_id = :bid_id');
+        $this->db->bind(':bid_id', $bid_id);
+    
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     

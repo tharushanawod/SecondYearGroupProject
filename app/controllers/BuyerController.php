@@ -45,6 +45,7 @@ class BuyerController extends Controller {
     }
 
     public function PlaceBid($product_id) {
+       
         $data= $this->BuyerModel->getProductById($product_id);
         $this->View('Buyer/PlaceBid', $data);
     }
@@ -58,7 +59,6 @@ class BuyerController extends Controller {
                 'buyer_id' => trim($_POST['buyer_id']),
                 'bid_amount' => trim($_POST['bid_amount']),
             ];
-    
             // Process the bid submission
             $result = $this->BuyerModel->submitBid($data);
             
@@ -320,6 +320,12 @@ $notifications = array_merge($productsnotifications, $winningnotifications);
 
     public function markNotificationAsRead($id) {
         $result = $this->NotificationModel->markNotificationAsRead($id);
+        header('Content-Type: application/json');
+        echo json_encode(['success' => $result]);
+    }
+
+    public function CancelBid($bid_id) {
+        $result = $this->BuyerModel->cancelBid($bid_id);
         header('Content-Type: application/json');
         echo json_encode(['success' => $result]);
     }

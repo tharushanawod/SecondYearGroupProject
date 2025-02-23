@@ -236,10 +236,13 @@
 
   // Confirm canceling the bid
   confirmCancel.addEventListener("click", () => {
-    // Logic for canceling the bid (e.g., send a request to the server)
-    alert("Canceling bid with ID:", cancelBidId);
-
-    // Hide the popup
+    fetch(`${URLROOT}/BuyerController/CancelBid/${cancelBidId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        fetchBids(); // Fetch bids again to update the table
+      })
+      .catch((error) => console.log("Error canceling bid:", error));
     popupOverlay.style.display = "none";
   });
 </script>
