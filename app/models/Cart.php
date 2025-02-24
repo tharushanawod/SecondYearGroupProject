@@ -236,19 +236,14 @@ class Cart {
 
     public function getProductById($productId) {
         try {
-            $this->db->query('SELECT p.*, c.category_name 
+            $this->db->query('SELECT p.*, c.category_name, u.name as supplier_name
                              FROM supplier_products p 
                              LEFT JOIN categories c ON p.category_id = c.category_id 
+                             LEFT JOIN users u ON p.supplier_id = u.user_id
                              WHERE p.product_id = :product_id');
+            
             $this->db->bind(':product_id', $productId);
-            $result = $this->db->single();
-            
-            if (!$result) {
-                error_log("Product not found: " . $productId);
-                return null;
-            }
-            
-            return $result;
+            return $this->db->single();
         } catch (Exception $e) {
             error_log("Error in getProductById: " . $e->getMessage());
             return null;
