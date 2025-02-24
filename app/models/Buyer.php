@@ -225,6 +225,17 @@ AND corn_products.closing_date > NOW();
         }
     }
 
+    public function getPendingPayments($user_id) {
+        $this->db->query('
+        SELECT * FROM orders_from_buyers
+        WHERE buyer_id = :user_id
+        AND payment_status = "Pending";');
+        $this->db->bind(':user_id', $user_id);
+        $pendingpayments = $this->db->resultSet();
+
+        return $pendingpayments;
+    }
+
     
 
   

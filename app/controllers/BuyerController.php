@@ -90,6 +90,11 @@ class BuyerController extends Controller {
         $this->View('Buyer/PendingPayments', $data);
     }
 
+    public function getPendingPayments($user_id){
+        $pendingpayments = $this->BuyerModel->getPendingPayments($user_id);
+        echo json_encode($pendingpayments);
+    }
+
     public function purchaseHistory() {
         $data = [];
         $this->View('Buyer/purchase history', $data);

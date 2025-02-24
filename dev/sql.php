@@ -162,3 +162,48 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+
+DELIMITER //
+
+CREATE EVENT insert_winners_every_minute
+ON SCHEDULE EVERY 1 MINUTE
+DO 
+BEGIN
+    -- Insert winners into the orders_from_buyers table
+    INSERT INTO orders_from_buyers (
+        farmer_id, buyer_id, bid_price, quantity, payment_status, order_date, order_closing_date, product_id
+    )
+    SELECT 
+        p.user_id AS farmer_id, 
+        b.buyer_id, 
+        b.bid_amount AS bid_price, 
+        p.quantity, 
+        'pending', 
+        CURRENT_TIMESTAMP, 
+        CURRENT_TIMESTAMP + INTERVAL 1 DAY,  -- Adding 1 day to order_date
+        p.product_id
+    FROM 
+        bids b
+    JOIN (
+        -- Find the maximum bid for each product
+        SELECT product_id, MAX(bid_amount) AS max_bid
+        FROM bids
+        GROUP BY product_id
+    ) max_bids 
+        ON b.product_id = max_bids.product_id AND b.bid_amount = max_bids.max_bid
+    JOIN corn_products p 
+        ON b.product_id = p.product_id
+    WHERE 
+        p.closing_date <= NOW() -- Check if the auction has ended
+        AND NOT EXISTS (
+            -- Ensure no duplicate orders for the same product
+            SELECT 1 
+            FROM orders_from_buyers o 
+            WHERE o.product_id = p.product_id
+        );
+END;
+
+//
+
+DELIMITER ;

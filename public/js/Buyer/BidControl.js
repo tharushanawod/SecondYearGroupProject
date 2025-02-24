@@ -7,11 +7,19 @@ let currentPage = 1;
 const rowsPerPage = 10;
 let bids = []; // This will store all the fetched bids
 
+// Popup elements
+const popupOverlay = document.getElementById("popupOverlay");
+const closePopup = document.getElementById("closePopup");
+const confirmCancel = document.getElementById("confirmCancel");
+
+let cancelBidId = null; // Store the bid ID to be canceled
+
 // Fetch all bids from the controller
 function fetchBids() {
   fetch(`${URLROOT}/BuyerController/getAllActiveBidsForBuyer/${USERID}`)
     .then((response) => response.json())
     .then((data) => {
+      console.log(data);
       bids = data; // Store all bids in the array
       renderTable(); // Initial table render
       updatePagination();
@@ -21,27 +29,52 @@ function fetchBids() {
 
 // Render table rows for bids based on current page
 function renderTable() {
-  const start = (currentPage - 1) * rowsPerPage;
-  const end = start + rowsPerPage;
-  const paginatedBids = bids.slice(start, end);
+const start = (currentPage - 1) * rowsPerPage;
+const end = start + rowsPerPage;
+const paginatedBids = bids.slice(start, end);
 
-  bidsTable.innerHTML = ""; // Clear the existing table
+bidsTable.innerHTML = ""; // Clear the existing table
 
-  paginatedBids.forEach((bid) => {
-    const row = document.createElement("tr");
-    const targetDate = new Date(`${bid.closing_date}`); // Set the target date and time
- 
-    row.innerHTML = `
-      <td data-label="Bid ID">${bid.bid_id}</td>
-      <td data-label="Product">${bid.bid_amount}</td>
-      <td data-label="Buyer">${bid.highest_bid}</td>
-      <td data-label="Unit Price (Rs)">${startCountdown(targetDate)}</td>
-      <td data-label="Quantity">${bid.quantity}</td>
-      <td data-label="Status">${bid.payment_status}</td>
-    `;
-    bidsTable.appendChild(row);
-  });
+paginatedBids.forEach((bid) => {
+  const targetDate = new Date(bid.closing_date); // Closing date of the bid
+  const currentDate = new Date(); // Current date and time
+
+  // Calculate the remaining time in milliseconds
+  const remainingTime = targetDate - currentDate;
+
+  // If the remaining time is less than or equal to zero, the auction has ended
+  let remainingTimeText = 'Auction Ended';
+  if (remainingTime > 0) {
+    // Calculate days, hours, minutes, and seconds
+    const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+    remainingTimeText = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  }
+
+  const row = document.createElement("tr");
+  row.innerHTML = `
+    <td data-label="Bid ID">${bid.bid_id}</td>
+    <td data-label="Your Bid">${bid.bid_amount}</td>
+    <td data-label="Current Highest Bid">${bid.highest_bid}</td>
+    <td data-label="Remaining Time">
+      <span>${remainingTimeText}</span>
+    </td>
+    <td data-label="Quantity (kg)">${bid.quantity}</td>
+    <td data-label="Actions">
+      ${bid.payment_status === 'Pending' ? `
+        <button onclick="cancelBid(${bid.bid_id})" class="action-btn cancel">Cancel Bid</button>
+        <button onclick="adjustBid(${bid.product_id})" class="action-btn confirm">Adjust Bid</button>
+      ` : ''}
+    </td>
+  `;
+
+  bidsTable.appendChild(row);
+});
 }
+
 
 // Update pagination info (current page and total pages)
 function updatePagination() {
@@ -74,39 +107,29 @@ nextBtn.addEventListener("click", () => {
 // Initial fetch and render
 fetchBids();
 
-function calculateRemainingTime(targetDate) {
-  const now = new Date();
-  const timeDifference = targetDate - now;
-
-  // If the target date is in the past, return "Time is up!"
-  if (timeDifference <= 0) {
-      return "Time is up!";
-  }
-
-  const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24)); // Days
-  const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); // Hours
-  const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60)); // Minutes
-  const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000); // Seconds
-
-  return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+// Show confirmation popup when cancel bid button is clicked
+function cancelBid(bidId) {
+  cancelBidId = bidId;
+  popupOverlay.style.display = "flex"; // Show the popup
 }
 
-function startCountdown(targetDate) {
-  const countdownElement = document.getElementById('countdown'); // Element to display the time
-
-  // Update the countdown every second
-  const interval = setInterval(() => {
-      const remainingTime = calculateRemainingTime(targetDate);
-
-      // Display the remaining time
-      countdownElement.innerHTML = remainingTime;
-
-      // Stop the countdown when time is up
-      if (remainingTime === "Time is up!") {
-          clearInterval(interval);
-      }
-  }, 1000); // Update every second
+function adjustBid(product_id) {
+  window.location.href = `${URLROOT}/BuyerController/PlaceBid/${product_id}`;
 }
 
-// Example usage:
+// Close the popup without canceling the bid
+closePopup.addEventListener("click", () => {
+  popupOverlay.style.display = "none"; // Hide the popup
+});
 
+// Confirm canceling the bid
+confirmCancel.addEventListener("click", () => {
+  fetch(`${URLROOT}/BuyerController/CancelBid/${cancelBidId}`)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      fetchBids(); // Fetch bids again to update the table
+    })
+    .catch((error) => console.log("Error canceling bid:", error));
+  popupOverlay.style.display = "none";
+});
