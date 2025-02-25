@@ -112,12 +112,21 @@ class CartController extends Controller {
 
     public function updateQuantity() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $cart_id = $_POST['cart_id'];
-            $quantity = $_POST['quantity'];
-            
-            if ($this->cartModel->updateQuantity($cart_id, $quantity)) {
+            try {
+                $cart_id = $_POST['cart_id'];
+                $quantity = intval($_POST['quantity']);
+
+                if ($quantity < 1) {
+                    throw new Exception('Invalid quantity');
+                }
+
+                $this->cartModel->updateQuantity($cart_id, $quantity);
                 $_SESSION['message'] = 'Cart updated successfully';
                 $_SESSION['message_type'] = 'success';
+
+            } catch (Exception $e) {
+                $_SESSION['message'] = $e->getMessage();
+                $_SESSION['message_type'] = 'error';
             }
         }
         redirect('CartController/viewCart');
