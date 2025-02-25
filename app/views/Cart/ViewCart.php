@@ -17,7 +17,7 @@
             </div>
         <?php endif; ?>
 
-        <h1>Shopping Cart</h1>
+        <h1>Cart</h1>
         <div class="cart">
             <table class="cart-table">
                 <thead>
@@ -90,23 +90,29 @@
             </table>
 
             <?php if(!empty($data['cartItems'])): ?>
+
+                <div class="cart-navigation">
+                    <a href="<?php echo URLROOT; ?>/CartController/browseProducts" 
+                        class="continue-shopping-btn">Continue Shopping</a>
+                    <form action="<?php echo URLROOT; ?>/CartController/clearCart" 
+                            method="POST" style="display: inline;">
+                        <button type="submit" class="clear-cart-btn">Clear Cart</button>
+                    </form>
+                </div>
                 <div class="cart-summary">
-                    <h2>Cart Summary</h2>
+                    <h2>Cart Totals</h2>
+                    <hr>
                     <div class="summary-content">
                         <div class="subtotal">
                             <span>Subtotal:</span>
                             <span>Rs. <?php echo number_format($data['subTotal'], 2); ?></span>
-                        </div>
-                        <div class="cart-actions">
-                            <a href="<?php echo URLROOT; ?>/CartController/browseProducts" 
-                               class="continue-shopping-btn">Continue Shopping</a>
-                            <form action="<?php echo URLROOT; ?>/CartController/clearCart" 
-                                  method="POST" style="display: inline;">
-                                <button type="submit" class="clear-cart-btn">Clear Cart</button>
-                            </form>
-                            <a href="<?php echo URLROOT; ?>/CartController/Checkout" 
-                               class="checkout-btn">Proceed to Checkout</a>
-                        </div>
+                    </div>
+                    <hr>
+                    <div class="cart-actions">
+                        
+                        <a href="<?php echo URLROOT; ?>/CartController/Checkout" 
+                            class="checkout-btn">Proceed to Checkout</a>
+                    </div>
                     </div>
                 </div>
             <?php endif; ?>
