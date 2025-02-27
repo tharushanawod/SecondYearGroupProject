@@ -236,6 +236,16 @@ AND corn_products.closing_date > NOW();
         return $pendingpayments;
     }
 
+    public function getPaymentDetailsForOrder($order_id) {
+        $this->db->query('
+        SELECT * FROM orders_from_buyers
+        WHERE order_id = :order_id;');
+        $this->db->bind(':order_id', $order_id);
+        $paymentdetails = $this->db->single();
+
+        return $paymentdetails;
+    }
+
     
 
   

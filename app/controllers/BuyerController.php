@@ -341,6 +341,27 @@ $notifications = array_merge($productsnotifications, $winningnotifications);
         $this->View('Buyer/AdjustBid',$data);
     }
 
+    public function getPaymentDetailsForOrder($order_id) {
+        $paymentDetails = $this->BuyerModel->getPaymentDetailsForOrder($order_id);
+    
+        if (!$paymentDetails) {
+            die("Payment details not found.");
+        }
+    
+        $quantity = $paymentDetails->quantity; // Ensure quantity is defined
+    
+        $data = [
+            'paymentDetails' => $paymentDetails,
+            'total_amount' => $paymentDetails->bid_price * $quantity,
+            'advance_payment' => $paymentDetails->bid_price * $quantity * 0.2,
+            'service_charge' => $paymentDetails->bid_price * $quantity * 0.02,
+            'total_advance' => $paymentDetails->bid_price * $quantity * 0.22,
+        ];
+    
+        $this->View('Buyer/Pay', $data);
+    }
+    
+
 }
 
 

@@ -42,7 +42,7 @@ function renderTable() {
       <td data-label="Total">${totalpayment.toFixed(2)}</td>
       <td data-label="Advance">${advancepayment.toFixed(2)}</td>
       <td data-label="Action">
-        <button onclick="adjustBid(${PendingPayment.product_id})" class="action-btn confirm">Pay</button>
+        <button onclick="Payment(${PendingPayment.order_id})" class="action-btn confirm">Pays</button>
       </td>
     `;
     bidsTable.appendChild(row);
@@ -146,3 +146,6 @@ function startCountdown(targetDate) {
   }, 1000); // Update every second
 }
 
+function Payment(order_id){
+  window.location.href = `${URLROOT}/BuyerController/getPaymentDetailsForOrder/${order_id}`;
+}
