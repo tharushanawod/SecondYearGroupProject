@@ -34,7 +34,7 @@
             </select>
             </div>
             <div class="input-group">
-            <a href="<?php echo URLROOT . '/FarmerController/PendingRequests'; ?>">
+            <a href="<?php echo URLROOT . '/FarmerController/ViewPendingJobRequests'; ?>">
             <button class="pending-requests-button">Pending Requests</button>
             </a>
         </div>

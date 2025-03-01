@@ -82,10 +82,15 @@ class FarmerController extends Controller {
 
     }
 
-    public function PendingRequests() {
-        $data = $this->farmerModel->getPendingRequests($_SESSION['user_id']);
+    public function ViewPendingJobRequests() {
+        $data = [];
         $this->View('Farmer/PendingRequests', $data);
-       
+    }
+
+    public function getPendingJobRequests() {
+        $data = $this->farmerModel->getPendingJobRequests($_SESSION['user_id']);
+
+        echo json_encode($data);
 
     }
 

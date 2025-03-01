@@ -347,7 +347,7 @@ class Farmer {
         }
     }
 
-    public function getPendingRequests($id) {
+    public function getPendingJobRequests($id) {
         try {
             // Updated query to get worker's name from the same users table
             $this->db->query('SELECT workers.name AS worker_name, job_requests.* 
@@ -356,7 +356,7 @@ class Farmer {
                               ON farmers.user_id = job_requests.farmer_id 
                               INNER JOIN users AS workers 
                               ON workers.user_id = job_requests.worker_id 
-                              WHERE job_requests.farmer_id = :id');
+                              WHERE job_requests.farmer_id = :id AND job_requests.status = "Pending"');
             
             $this->db->bind(':id', $id);
             
