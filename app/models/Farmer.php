@@ -305,6 +305,27 @@ class Farmer {
         return $results;
     }
 
+    public function getWorkerConfirmedDates($workerId) {
+        $this->db->query("SELECT start_date, end_date FROM job_requests 
+                          WHERE worker_id = :worker_id AND status = 'Confirmed'");
+        $this->db->bind(':worker_id', $workerId);
+        $results = $this->db->resultSet();
+        
+        $bookedDates = [];
+        foreach ($results as $row) {
+            $startDate = new DateTime($row->start_date);
+            $endDate = new DateTime($row->end_date);
+            
+            $currentDate = clone $startDate;
+            while ($currentDate <= $endDate) {
+                $bookedDates[] = $currentDate->format('Y-m-d');
+                $currentDate->modify('+1 day');
+            }
+        }
+        
+        return $bookedDates;
+    }
+
     public function HireWorker($data) {
         $this->db->query('INSERT INTO job_requests (farmer_id,worker_id, job_type, work_duration, start_date, end_date, skills, location, accommodation, food) 
                           VALUES (:farmer_id,:worker_id, :job_type, :work_duration, :start_date, :end_date, :skills, :location, :accommodation, :food)');

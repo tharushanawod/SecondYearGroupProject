@@ -4,23 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Worker Hiring Form</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Farmer/HireWorker.css">
-    <style>
-        .popup-message {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            z-index: 1000;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
 <?php require APPROOT . '/views/inc/sidebar.php'; ?>
@@ -58,17 +43,18 @@
             <!-- Start Date -->
             <div class="form-group">
             <label for="start_date">Start Date:</label>
-            <input type="date" id="start_date" name="start_date" required>
+            <input type="text" id="start_date" name="start_date" placeholder="Select start date" required>
             <span class="error"><?php echo $data['start_date_err']; ?></span>
             </div>
 
             <!-- End Date -->
             <div class="form-group">
             <label for="end_date">End Date:</label>
-            <input type="date" id="end_date" name="end_date" required>
+            <input type="text" id="end_date" name="end_date" placeholder="Select end date" required>
             <span class="error"><?php echo $data['end_date_err']; ?></span>
             </div>
 
+            <!-- Rest of the form remains unchanged -->
             <!-- Required Skills -->
             <div class="form-group checkbox-group">
             <label>Required Skills:</label>
@@ -127,16 +113,11 @@
 
     <div class="popup-message" id="popupMessage">Your request has been successfully sent.</div>
 
+    <!-- Add Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
-        document.getElementById('hireWorkerForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            var popupMessage = document.getElementById('popupMessage');
-            popupMessage.style.display = 'block';
-            setTimeout(function() {
-                popupMessage.style.display = 'none';
-                event.target.submit();
-            }, 3000);
-        });
+        const bookedDates = <?php echo json_encode($data['confirmedDates'] ?? []); ?>;
     </script>
+    <script src="<?php echo URLROOT;?>/js/Farmer/HireWorker.js"></script>
 </body>
 </html>

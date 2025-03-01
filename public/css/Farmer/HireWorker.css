@@ -76,6 +76,35 @@ input[type="checkbox"] {
     background-color: #218838;
 }
 
+.popup-message {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    z-index: 1000;
+}
+
+/* Style for the date inputs to match your form */
+.flatpickr-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Style for disabled dates */
+.flatpickr-day.flatpickr-disabled {
+    background-color: #ffdddd !important;
+    text-decoration: line-through;
+}
+
 @media (max-width: 768px) {
     .container {
         width: 95%;

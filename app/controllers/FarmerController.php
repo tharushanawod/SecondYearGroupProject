@@ -442,19 +442,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
     }
 
     public function HireWorker($workerid){
-        $data=[
-            'workerid'=>$workerid
+        // Get the worker's confirmed job dates from model
+        $confirmedDates = $this->farmerModel->getWorkerConfirmedDates($workerid);
+        
+        $data = [
+            'workerid' => $workerid,
+            'confirmedDates' => $confirmedDates
         ];
-
-        $this->view('Farmer/HireWorker',$data);
-
-
+    
+        $this->view('Farmer/HireWorker', $data);
     }
 
     public function HireWorkerConfirmation($workerid){
+        error_reporting(E_ALL);
+        var_dump($_POST);
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $_POST = custom_filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
             $data = [
                 'farmerid' => $_SESSION['user_id'],
                 'workerid' => $workerid,
