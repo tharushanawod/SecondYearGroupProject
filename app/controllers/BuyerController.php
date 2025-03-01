@@ -351,6 +351,9 @@ $notifications = array_merge($productsnotifications, $winningnotifications);
         $quantity = $paymentDetails->quantity; // Ensure quantity is defined
     
         $data = [
+            'order_id' => $order_id,
+            'buyer_id' => $_SESSION['user_id'],
+            'product_id' => $paymentDetails->product_id,
             'paymentDetails' => $paymentDetails,
             'total_amount' => $paymentDetails->bid_price * $quantity,
             'advance_payment' => $paymentDetails->bid_price * $quantity * 0.2,
@@ -359,6 +362,50 @@ $notifications = array_merge($productsnotifications, $winningnotifications);
         ];
     
         $this->View('Buyer/Pay', $data);
+    }
+
+    public function Notify() {
+        file_put_contents("payment_log.txt", "Received data: " . print_r($_POST, true) . "\n", FILE_APPEND);
+        
+        $merchant_id         = $_POST['merchant_id'];
+        $order_id            = $_POST['order_id'];
+        $payhere_amount      = $_POST['payhere_amount'];
+        $payhere_currency    = $_POST['payhere_currency'];
+        $status_code         = $_POST['status_code'];
+        $md5sig              = $_POST['md5sig'];
+    
+        $merchant_secret = "MzY1NjEwNjkxODQ0ODUyODA0Nzc2MDk0MzMwMzM2MDA0NDcxMg==";
+        
+        $local_md5sig = strtoupper(
+            md5(
+                $merchant_id . 
+                $order_id . 
+                $payhere_amount . 
+                $payhere_currency . 
+                $status_code . 
+                strtoupper(md5($merchant_secret)) 
+            ) 
+        );
+        
+        file_put_contents("payment_log.txt", "Generated hash: " . $local_md5sig . "\n", FILE_APPEND);
+        file_put_contents("payment_log.txt", "Received hash: " . $md5sig . "\n", FILE_APPEND);
+        
+        if (($local_md5sig === $md5sig) && ($status_code == 2)) {
+            // Payment Success - Update your database here
+            file_put_contents("payment_log.txt", "Payment Success: " . $order_id . "\n", FILE_APPEND);
+        } else {
+            // Payment Failed or Invalid
+            file_put_contents("payment_log.txt", "Payment Failed: " . $order_id . "\n", FILE_APPEND);
+        }
+    }
+    
+
+    public function Return() {
+        echo "Payment was successful!";
+    }
+
+    public function Cancel() {
+        echo "Payment was cancelled!";
     }
     
 

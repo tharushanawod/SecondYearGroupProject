@@ -1,3 +1,21 @@
+<?php
+$merchant_id = "1229660";
+$merchant_secret = "ODE5MTYxNzEwODgzMzQ3NDkxNTI5MDMzODIzMzA4Nzg3MTI5MA==";
+$order_id = "ItemNo12345"; // Dynamic order ID
+$amount = "1000"; // Dynamic amount
+$currency = "LKR"; // Or USD
+
+// Generate hash
+$hash = strtoupper(md5(
+    $merchant_id . 
+    $order_id . 
+    number_format($amount, 2, '.', '') . 
+    $currency .  
+    strtoupper(md5($merchant_secret)) 
+));
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,12 +79,26 @@
             <p>The advance payment is required to confirm your bid. This amount includes a 20% advance of the total bid amount plus a 2% service charge. The remaining balance will be due upon delivery.</p>
         </div>
 
-        <form action="<?php echo URLROOT; ?>/BuyerController/processPayment" method="POST">
-            <input type="hidden" name="bid_id" value="<?php echo $data['bid_id']; ?>">
-            <input type="hidden" name="amount" value="<?php echo $data['total_advance']; ?>">
-            <button type="submit" class="pay-button">
-                Proceed to Payment
-            </button>
+        <form method="POST" action="https://sandbox.payhere.lk/pay/checkout" >
+            <input type="hidden" name="merchant_id" value="1229660">    <!-- Replace your Merchant ID -->
+    <input type="hidden" name="return_url" value="http://sample.com/return">
+    <input type="hidden" name="cancel_url" value="http://sample.com/cancel">
+    <input type="hidden" name="notify_url" value="http://sample.com/notify">  
+    </br></br>Item Details</br>
+    <input type="text" name="order_id" value="ItemNo12345">
+    <input type="text" name="items" value="Door bell wireless">
+    <input type="text" name="currency" value="LKR">
+    <input type="text" name="amount" value="1000">  
+    </br></br>Customer Details</br>
+    <input type="text" name="first_name" value="Saman">
+    <input type="text" name="last_name" value="Perera">
+    <input type="text" name="email" value="samanp@gmail.com">
+    <input type="text" name="phone" value="0771234567">
+    <input type="text" name="address" value="No.1, Galle Road">
+    <input type="text" name="city" value="Colombo">
+    <input type="hidden" name="country" value="Sri Lanka">
+    <input type="hidden" name="hash" value="<?php echo $hash;?>">    <!-- Replace with generated hash -->
+    <input type="submit" value="Buy Now">   
         </form>
     </div>
 </body>
