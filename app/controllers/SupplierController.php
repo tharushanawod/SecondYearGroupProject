@@ -400,5 +400,24 @@ public function getRatings($supplier_id) {
     ];
 }
 
+public function fetchReviews($supplier_id) {
+    $reviews = $this->Supplier->getSupplierRatings($supplier_id);
+    header('Content-Type: application/json');
+    echo json_encode($reviews);
+}
+
+public function viewReviews($supplier_id) {
+    $reviews = $this->Supplier->getSupplierRatings($supplier_id);
+    $averageRating = $this->Supplier->getAverageRating($supplier_id);
+    
+    $data = [
+        'reviews' => $reviews,
+        'averageRating' => $averageRating->avg_rating,
+        'totalRatings' => count($reviews)
+    ];
+    
+    $this->view('Ingredient Supplier/Reviews', $data);
+}
+
 }
 ?>

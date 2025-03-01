@@ -30,34 +30,37 @@ class CartController extends Controller {
     }
 
     public function viewDetails($productId) {
-        // Update cart count before loading the page
-        $this->updateCartCount();
-        
         try {
+            // Update cart count before loading the page
+            $this->updateCartCount();
+            
             $product = $this->cartModel->getProductById($productId);
-            if ($product) {
-                // Get related products by category
-                $relatedProducts = $this->cartModel->getRelatedProducts($product->category_id, $productId);
-                
-                // Get supplier ratings
-                $supplierRatings = $this->supplierModel->getSupplierRatings($product->supplier_id);
-                $averageRating = $this->supplierModel->getAverageRating($product->supplier_id);
-
-                $data = [
-                    'product' => $product,
-                    'relatedProducts' => $relatedProducts,
-                    'reviews' => $supplierRatings,
-                    'averageRating' => $averageRating,
-                    'totalRatings' => count($supplierRatings)
-                ];
-                
-                $this->view('Cart/ViewDetails', $data);
-            } else {
-                redirect('CartController/browseProducts');
+            if (!$product) {
+                throw new Exception('Product not found');
             }
+
+            // Get related products by category
+            $relatedProducts = $this->cartModel->getRelatedProducts($product->category_id, $productId);
+            
+            // Get supplier ratings
+            $ratingData = $this->supplierModel->getAverageRating($product->supplier_id);
+            $supplierRatings = $this->supplierModel->getSupplierRatings($product->supplier_id);
+
+            $data = [
+                'product' => $product,
+                'relatedProducts' => $relatedProducts,
+                'reviews' => $supplierRatings,
+                'averageRating' => $ratingData->avg_rating ?? 0,
+                'totalRatings' => $ratingData->total_ratings ?? 0
+            ];
+            
+            $this->view('Cart/ViewDetails', $data);
+            
         } catch (Exception $e) {
             error_log("Error in viewDetails: " . $e->getMessage());
-            redirect('pages/error');
+            $_SESSION['message'] = 'Error loading product details';
+            $_SESSION['message_type'] = 'error';
+            redirect('CartController/browseProducts');
         }
     }
 
@@ -109,12 +112,21 @@ class CartController extends Controller {
 
     public function updateQuantity() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $cart_id = $_POST['cart_id'];
-            $quantity = $_POST['quantity'];
-            
-            if ($this->cartModel->updateQuantity($cart_id, $quantity)) {
+            try {
+                $cart_id = $_POST['cart_id'];
+                $quantity = intval($_POST['quantity']);
+
+                if ($quantity < 1) {
+                    throw new Exception('Invalid quantity');
+                }
+
+                $this->cartModel->updateQuantity($cart_id, $quantity);
                 $_SESSION['message'] = 'Cart updated successfully';
                 $_SESSION['message_type'] = 'success';
+
+            } catch (Exception $e) {
+                $_SESSION['message'] = $e->getMessage();
+                $_SESSION['message_type'] = 'error';
             }
         }
         redirect('CartController/viewCart');
@@ -213,5 +225,29 @@ class CartController extends Controller {
             }
         }
         redirect("CartController/viewDetails/$product_id");
+    }
+
+    public function submitReview() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_SESSION['user_id'])) {
+            redirect('pages/error');
+        }
+
+        $data = [
+            'supplier_id' => trim($_POST['supplier_id']),
+            'farmer_id' => $_SESSION['user_id'],
+            'rating' => trim($_POST['rating']),
+            'review_text' => trim($_POST['review_text'])
+        ];
+
+        if ($this->supplierModel->addRating($data)) {
+            $_SESSION['message'] = 'Thank you for your review!';
+            $_SESSION['message_type'] = 'success';
+        } else {
+            $_SESSION['message'] = 'Unable to submit review';
+            $_SESSION['message_type'] = 'error';
+        }
+
+        // Redirect back to the product page
+        redirect('CartController/viewDetails/' . $data['supplier_id']);
     }
 }

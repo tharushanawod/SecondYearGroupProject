@@ -1,4 +1,3 @@
-<!-- FILE: views/Ingredient Supplier/shop.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>

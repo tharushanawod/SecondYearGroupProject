@@ -86,7 +86,7 @@
             <div class="supplier-rating-section">
                 <h2>Supplier Ratings & Reviews</h2>
                 
-                <!-- Average Rating Display -->
+                <!-- Average Rating Display
                 <div class="rating-summary">
                     <div class="average-rating">
                         <span class="rating-number"><?php echo $data['averageRating']; ?></span>
@@ -97,7 +97,7 @@
                         </div>
                         <span class="total-ratings">(<?php echo $data['totalRatings']; ?> reviews)</span>
                     </div>
-                </div>
+                </div> -->
             
                 <!-- Reviews List -->
                 <div class="reviews-list">
@@ -105,8 +105,13 @@
                         <?php foreach($data['reviews'] as $review): ?>
                             <div class="review-card">
                                 <div class="review-header">
-                                    <img src="<?php echo URLROOT; ?>/<?php echo $review->file_path ?? 'img/profile/default.jpg'; ?>" 
-                                         alt="Reviewer" class="reviewer-image">
+                                    <?php if($review->profile_picture): ?>
+                                        <img src="<?php echo URLROOT . '/' . $review->profile_picture; ?>" 
+                                             alt="Reviewer" class="reviewer-image">
+                                    <?php else: ?>
+                                        <img src="<?php echo URLROOT; ?>/images/default.jpg" 
+                                             alt="Default Profile" class="reviewer-image">
+                                    <?php endif; ?>
                                     <div class="reviewer-info">
                                         <h4><?php echo htmlspecialchars($review->farmer_name); ?></h4>
                                         <div class="stars">
@@ -133,9 +138,9 @@
                             <input type="hidden" name="supplier_id" value="<?php echo $data['product']->supplier_id; ?>">
                             <input type="hidden" name="product_id" value="<?php echo $data['product']->product_id; ?>">
                             <div class="star-rating">
-                                <input type="hidden" name="rating" id="ratingInput" value="0">
                                 <?php for($i = 5; $i >= 1; $i--): ?>
-                                    <span class="star" data-rating="<?php echo $i; ?>">★</span>
+                                    <input type="radio" id="star<?php echo $i; ?>" name="rating" value="<?php echo $i; ?>" />
+                                    <label for="star<?php echo $i; ?>"></i></label>                                    
                                 <?php endfor; ?>
                             </div>
                             <textarea name="review" class="review-input" placeholder="Write your review here..." required></textarea>
@@ -143,7 +148,7 @@
                         </form>
                     </div>
                 <?php endif; ?>
-            </div>
+                </div>
             
             <div class="product-separator"></div>
 

@@ -149,17 +149,59 @@ class Cart {
 
     public function updateQuantity($cart_id, $quantity) {
         try {
-            $this->db->query('UPDATE cart c
-                             INNER JOIN supplier_products sp ON c.product_id = sp.product_id
-                             SET c.quantity = :quantity,
-                                 c.totalAmount = sp.price * :quantity 
-                             WHERE c.cart_id = :cart_id');
+            $this->db->beginTransaction();
+
+            // Get current cart item details
+            $this->db->query('SELECT c.quantity as old_quantity, c.product_id, sp.price, sp.stock 
+                            FROM cart c
+                            INNER JOIN supplier_products sp ON c.product_id = sp.product_id
+                            WHERE c.cart_id = :cart_id');
+            $this->db->bind(':cart_id', $cart_id);
+            $currentItem = $this->db->single();
+
+            if (!$currentItem) {
+                throw new Exception("Cart item not found");
+            }
+
+            // Calculate quantity difference
+            $quantityDifference = $quantity - $currentItem->old_quantity;
+
+            // Check if new quantity is valid
+            if ($currentItem->stock + ($currentItem->old_quantity - $quantity) < 0) {
+                throw new Exception("Insufficient stock");
+            }
+
+            // Update cart quantity and total amount
+            $this->db->query('UPDATE cart 
+                            SET quantity = :quantity,
+                                totalAmount = :price * :quantity 
+                            WHERE cart_id = :cart_id');
             $this->db->bind(':cart_id', $cart_id);
             $this->db->bind(':quantity', $quantity);
-            return $this->db->execute();
+            $this->db->bind(':price', $currentItem->price);
+            
+            if (!$this->db->execute()) {
+                throw new Exception("Failed to update cart");
+            }
+
+            // Update product stock
+            $this->db->query('UPDATE supplier_products 
+                            SET stock = stock - :quantity_difference 
+                            WHERE product_id = :product_id');
+            $this->db->bind(':product_id', $currentItem->product_id);
+            $this->db->bind(':quantity_difference', $quantityDifference);
+            
+            if (!$this->db->execute()) {
+                throw new Exception("Failed to update stock");
+            }
+
+            $this->db->commit();
+            return true;
+
         } catch (Exception $e) {
+            $this->db->rollBack();
             error_log("Error in updateQuantity: " . $e->getMessage());
-            return false;
+            throw $e;
         }
     }
 
@@ -236,19 +278,14 @@ class Cart {
 
     public function getProductById($productId) {
         try {
-            $this->db->query('SELECT p.*, c.category_name 
+            $this->db->query('SELECT p.*, c.category_name, u.name as supplier_name
                              FROM supplier_products p 
                              LEFT JOIN categories c ON p.category_id = c.category_id 
+                             LEFT JOIN users u ON p.supplier_id = u.user_id
                              WHERE p.product_id = :product_id');
+            
             $this->db->bind(':product_id', $productId);
-            $result = $this->db->single();
-            
-            if (!$result) {
-                error_log("Product not found: " . $productId);
-                return null;
-            }
-            
-            return $result;
+            return $this->db->single();
         } catch (Exception $e) {
             error_log("Error in getProductById: " . $e->getMessage());
             return null;

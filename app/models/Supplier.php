@@ -227,14 +227,15 @@ class Supplier {
         $this->db->bind(':limit', $limit);
         return $this->db->resultSet();
     }
-public function addRating($data) {
+
+    public function addRating($data) {
         $this->db->query('INSERT INTO supplier_ratings (supplier_id, farmer_id, rating, review_text) 
-                        VALUES (:supplier_id, :farmer_id, :rating, :review_text)');
+                         VALUES (:supplier_id, :farmer_id, :rating, :review_text)');
         
         $this->db->bind(':supplier_id', $data['supplier_id']);
         $this->db->bind(':farmer_id', $data['farmer_id']);
         $this->db->bind(':rating', $data['rating']);
-        $this->db->bind(':review_text', $data['review']);
+        $this->db->bind(':review_text', $data['review_text']);
 
         return $this->db->execute();
     }
@@ -252,13 +253,12 @@ public function addRating($data) {
     }
 
     public function getAverageRating($supplier_id) {
-        $this->db->query('SELECT AVG(rating) as avg_rating 
+        $this->db->query('SELECT AVG(rating) as avg_rating, COUNT(*) as total_ratings 
                         FROM supplier_ratings 
                         WHERE supplier_id = :supplier_id');
         
         $this->db->bind(':supplier_id', $supplier_id);
-        $result = $this->db->single();
-        return $result->avg_rating ?? 0;
+        return $this->db->single();
     }
 }
 ?>
