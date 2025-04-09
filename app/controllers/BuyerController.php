@@ -17,12 +17,12 @@ class BuyerController extends Controller {
     }
 
     public function index() {
-        $data=[];
+        $data = [];
         $this->View('inc/404.php', $data);
     }
 
     public function isloggedin() {
-        if (isset($_SESSION['user_id']) && ($_SESSION['user_role']=='buyer')){
+        if (isset($_SESSION['user_id']) && ($_SESSION['user_role'] == 'buyer')) {
             return true;
         } else {
             return false;
@@ -45,26 +45,20 @@ class BuyerController extends Controller {
     }
 
     public function PlaceBid($product_id) {
-       
-        $data= $this->BuyerModel->getProductById($product_id);
+        $data = $this->BuyerModel->getProductById($product_id);
         $this->View('Buyer/PlaceBid', $data);
     }
 
     public function SubmitBid() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Sanitize input data
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
             $data = [
                 'product_id' => trim($_POST['product_id']),
                 'buyer_id' => trim($_POST['buyer_id']),
                 'bid_amount' => trim($_POST['bid_amount']),
             ];
-            // Process the bid submission
             $result = $this->BuyerModel->submitBid($data);
-            
-            // Return JSON response based on the result
             header('Content-Type: application/json');
-            
             if ($result) {
                 echo json_encode(['success' => true, 'message' => 'Bid submitted successfully!']);
             } else {
@@ -73,10 +67,9 @@ class BuyerController extends Controller {
             exit;
         }
     }
-    
 
     public function BidControl() {
-        $data =[];
+        $data = [];
         $this->View('Buyer/BidControl', $data);
     }
 
@@ -90,7 +83,7 @@ class BuyerController extends Controller {
         $this->View('Buyer/PendingPayments', $data);
     }
 
-    public function getPendingPayments($user_id){
+    public function getPendingPayments($user_id) {
         $pendingpayments = $this->BuyerModel->getPendingPayments($user_id);
         echo json_encode($pendingpayments);
     }
@@ -100,15 +93,9 @@ class BuyerController extends Controller {
         $this->View('Buyer/purchase history', $data);
     }
 
-    public function RequestHelp() {
-        $data = [];
-        $this->View('Buyer/RequestHelp', $data);
-    }
-
-    public function ManageProfile()
-    {
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){ 
-            $_POST = filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING);
+    public function ManageProfile() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') { 
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
             $data = [
                 'user_id' => $_SESSION['user_id'],
                 'name' => trim($_POST['name']),
@@ -121,85 +108,66 @@ class BuyerController extends Controller {
                 'email_err' => ''
             ];
 
-            if(empty($data['name'])){
+            if (empty($data['name'])) {
                 $data['name_err'] = 'Please input a name';
             }
-
-            if(empty($data['phone'])){
+            if (empty($data['phone'])) {
                 $data['contact_err'] = 'Please input a contact number';
             }
-           
-
-            if(empty($data['email'])){
+            if (empty($data['email'])) {
                 $data['email_err'] = 'Please input an email';
             }
 
-           
-            
-
-            if(empty($data['name_err']) && empty($data['phone_err'])  && empty($data['email_err'])){
+            if (empty($data['name_err']) && empty($data['phone_err']) && empty($data['email_err'])) {
                 echo 'Profile Updated';
-                if(!empty($data['password'])){
-                    $data['password'] = password_hash($data['password'],PASSWORD_DEFAULT);
-                    }
-                
+                if (!empty($data['password'])) {
+                    $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+                }
                 $result = $this->BuyerModel->UpdateProfile($data);
-              
-                if($result){
-                    // Redirect('BuyerController/ManageProfile');
+                if ($result) {
                     Redirect('LandingController/logout');
                 }
-            }else{
-                $this->view('Buyer/ManageProfile',$data);
+            } else {
+                $this->view('Buyer/ManageProfile', $data);
             }
-        
-            }
-            else{
-                $user=$this->BuyerModel->getUserById($_SESSION['user_id']);
-                $data = [
-                    'name' => $user->name,
-                    'phone' => $user->phone,
-                    'email' => $user->email,
-                    'password' => '',
-                    'name_err' => '',
-                    'phone_err' => '',
-                    'email_err' => '',
-                    'password_err' => ''
-                ];
-                $this->view('Buyer/ManageProfile',$data);
-                
-            }
+        } else {
+            $user = $this->BuyerModel->getUserById($_SESSION['user_id']);
+            $data = [
+                'name' => $user->name,
+                'phone' => $user->phone,
+                'email' => $user->email,
+                'password' => '',
+                'name_err' => '',
+                'phone_err' => '',
+                'email_err' => '',
+                'password_err' => ''
+            ];
+            $this->view('Buyer/ManageProfile', $data);
+        }
     }
 
-    // Get profile image URL
     public function getProfileImage($user_id) {
         $imagePath = $this->BuyerModel->getProfileImage($_SESSION['user_id']);
-        return $imagePath ? URLROOT .'/'.$imagePath : URLROOT . '/images/default.jpg';
+        return $imagePath ? URLROOT . '/' . $imagePath : URLROOT . '/images/default.jpg';
     }
 
     public function uploadProfileImage() {
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) {
-    $targetDir = "uploads/ProfilePictures/";
-    $fileName = basename($_FILES["profile_picture"]["name"]);
-    $targetFile = $targetDir . $fileName;
-
-    if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $targetFile)) {
-        $uploadResult = $this->BuyerModel->updateProfileImage($_SESSION['user_id'], $targetFile);
-       Redirect('BuyerController/ManageProfile');
-        // Update user's profile picture in the database here
-    } else {
-        echo "Error uploading file.";
-    }
-}
-
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) {
+            $targetDir = "uploads/ProfilePictures/";
+            $fileName = basename($_FILES["profile_picture"]["name"]);
+            $targetFile = $targetDir . $fileName;
+            if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $targetFile)) {
+                $uploadResult = $this->BuyerModel->updateProfileImage($_SESSION['user_id'], $targetFile);
+                Redirect('BuyerController/ManageProfile');
+            } else {
+                echo "Error uploading file.";
+            }
+        }
     }
 
     public function FarmerProfile($id) {
         $data = $this->BuyerModel->getFarmersById($id);
-       
         $this->View('Buyer/FarmerProfile', $data);
-
     }
 
     public function AddReview($farmer_id) {
@@ -212,17 +180,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
                 'reviewText_err' => '',
                 'rating_err' => ''
             ];
-    
-            // Validation
             if (empty($data['review_text'])) {
                 $data['reviewText_err'] = 'Please enter a review';
             }
             if ($data['rating'] < 1 || $data['rating'] > 5) {
                 $data['rating_err'] = 'Please select a rating between 1 and 5';
             }
-            
-    
-            // If no errors, add the review
             if (empty($data['reviewText_err']) && empty($data['rating_err'])) {
                 if ($this->BuyerModel->AddReview($data)) {
                     Redirect('BuyerController/FarmerProfile/' . $farmer_id);
@@ -230,7 +193,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
                     die('Something went wrong while saving the review.');
                 }
             } else {
-                // Reload the form with errors
                 $this->view('Buyer/FarmerProfile', $data);
             }
         } else {
@@ -238,20 +200,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
             $this->view('Buyer/FarmerProfile', $data);
         }
     }
-    
+
     public function fetchReviews($id) {
         $reviews = $this->BuyerModel->fetchReviews($id);
         header('Content-Type: application/json');
         echo json_encode($reviews);
-       
     }
 
-
-
-    public function AddBankAccount(){
-
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){ 
-            $_POST = filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING);
+    public function AddBankAccount() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') { 
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
             $data = [
                 'user_id' => $_SESSION['user_id'],
                 'bank_name' => trim($_POST['bank_name']),
@@ -261,47 +219,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
                 'expiry_date' => trim($_POST['expiry_date']),
                 'cvv' => trim($_POST['cvv'])
             ];
-        
-
-            
-                $result = $this->BuyerModel->AddBankAccount($data);
-              
-                if($result){
-                    Redirect('BuyerController/ManageProfile');
-                }
-        
+            $result = $this->BuyerModel->AddBankAccount($data);
+            if ($result) {
+                Redirect('BuyerController/ManageProfile');
             }
-            else{
+        } else {
+            $user = $this->BuyerModel->GetBankAndCardDetails($_SESSION['user_id']);
+            $data = [
+                'bank_name' => $user->bank_name,
+                'account_number' => $user->account_number,
+                'account_name' => $user->account_name,
+                'bank_name_err' => '',
+                'account_number_err' => '',
+                'account_name_err' => ''
+            ];
+            $this->view('Buyer/ManageProfile', $data);
+        }
+    }
 
-               
-              
-                $user=$this->BuyerModel->GetBankAndCardDetails($_SESSION['user_id']);
-              
-                $data = [
-                    'bank_name' => $user->bank_name,
-                    'account_number' => $user->account_number,
-                    'account_name' => $user->account_name,
-                    'bank_name_err' => '',
-                    'account_number_err' => '',
-                    'account_name_err' => ''
-                ];
-                $this->view('Buyer/ManageProfile',$data);
-                
-            }
-    
-
-           }
-
-// In BuyerController.php
-
-public function GetBankAndCardDetails() {
-    // Fetch existing data from the database
-    $existingData = $this->BuyerModel->getBankAccountData($_SESSION['user_id']); // Example function to fetch data
-     var_dump($existingData);
-    // Return the data as JSON
-    echo json_encode($existingData);
-}
-
+    public function GetBankAndCardDetails() {
+        $existingData = $this->BuyerModel->getBankAccountData($_SESSION['user_id']);
+        echo json_encode($existingData);
+    }
 
     public function pay() {
         $data = [];
@@ -310,18 +249,16 @@ public function GetBankAndCardDetails() {
 
     public function getNotifications($buyer_id) {
         $productsnotifications = (array) $this->NotificationModel->getNotifications();
-$winningnotifications = (array) $this->NotificationModel->getWinningNotifications($buyer_id);
-$notifications = array_merge($productsnotifications, $winningnotifications);
-
+        $winningnotifications = (array) $this->NotificationModel->getWinningNotifications($buyer_id);
+        $notifications = array_merge($productsnotifications, $winningnotifications);
         header('Content-Type: application/json');
         echo json_encode($notifications);
     }
 
-
-public function getUnreadNotifications() {
-    $data = [];
-    $this->View('inc/Notification',$data);
-}
+    public function getUnreadNotifications() {
+        $data = [];
+        $this->View('inc/Notification', $data);
+    }
 
     public function markNotificationAsRead($id) {
         $result = $this->NotificationModel->markNotificationAsRead($id);
@@ -335,21 +272,18 @@ public function getUnreadNotifications() {
         echo json_encode(['success' => $result]);
     }
 
-    public function AdjustBid($bid_id){
-        $data=$this->BuyerModel->getProductById($bid_id);
+    public function AdjustBid($bid_id) {
+        $data = $this->BuyerModel->getProductById($bid_id);
         var_dump($data);
-        $this->View('Buyer/AdjustBid',$data);
+        $this->View('Buyer/AdjustBid', $data);
     }
 
     public function getPaymentDetailsForOrder($order_id) {
         $paymentDetails = $this->BuyerModel->getPaymentDetailsForOrder($order_id);
-    
         if (!$paymentDetails) {
             die("Payment details not found.");
         }
-    
-        $quantity = $paymentDetails->quantity; // Ensure quantity is defined
-    
+        $quantity = $paymentDetails->quantity;
         $data = [
             'order_id' => $order_id,
             'buyer_id' => $_SESSION['user_id'],
@@ -360,45 +294,27 @@ public function getUnreadNotifications() {
             'service_charge' => $paymentDetails->bid_price * $quantity * 0.02,
             'total_advance' => $paymentDetails->bid_price * $quantity * 0.22,
         ];
-    
         $this->View('Buyer/Pay', $data);
     }
 
     public function Notify() {
         file_put_contents("payment_log.txt", "Received data: " . print_r($_POST, true) . "\n", FILE_APPEND);
-        
-        $merchant_id         = $_POST['merchant_id'];
-        $order_id            = $_POST['order_id'];
-        $payhere_amount      = $_POST['payhere_amount'];
-        $payhere_currency    = $_POST['payhere_currency'];
-        $status_code         = $_POST['status_code'];
-        $md5sig              = $_POST['md5sig'];
-    
+        $merchant_id = $_POST['merchant_id'];
+        $order_id = $_POST['order_id'];
+        $payhere_amount = $_POST['payhere_amount'];
+        $payhere_currency = $_POST['payhere_currency'];
+        $status_code = $_POST['status_code'];
+        $md5sig = $_POST['md5sig'];
         $merchant_secret = "MzY1NjEwNjkxODQ0ODUyODA0Nzc2MDk0MzMwMzM2MDA0NDcxMg==";
-        
-        $local_md5sig = strtoupper(
-            md5(
-                $merchant_id . 
-                $order_id . 
-                $payhere_amount . 
-                $payhere_currency . 
-                $status_code . 
-                strtoupper(md5($merchant_secret)) 
-            ) 
-        );
-        
+        $local_md5sig = strtoupper(md5($merchant_id . $order_id . $payhere_amount . $payhere_currency . $status_code . strtoupper(md5($merchant_secret))));
         file_put_contents("payment_log.txt", "Generated hash: " . $local_md5sig . "\n", FILE_APPEND);
         file_put_contents("payment_log.txt", "Received hash: " . $md5sig . "\n", FILE_APPEND);
-        
         if (($local_md5sig === $md5sig) && ($status_code == 2)) {
-            // Payment Success - Update your database here
             file_put_contents("payment_log.txt", "Payment Success: " . $order_id . "\n", FILE_APPEND);
         } else {
-            // Payment Failed or Invalid
             file_put_contents("payment_log.txt", "Payment Failed: " . $order_id . "\n", FILE_APPEND);
         }
     }
-    
 
     public function Return() {
         echo "Payment was successful!";
@@ -407,11 +323,59 @@ public function getUnreadNotifications() {
     public function Cancel() {
         echo "Payment was cancelled!";
     }
-    
+
+
+    public function RequestHelp() {
+        $data = [];
+        $this->View('Buyer/RequestHelp', $data);
+    }
+
+    public function showForm($category) {
+        $data = ['category' => $category];
+        $this->View('Buyer/RequestHelp', $data);
+    }
+
+    public function submitRequest() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            $data = [
+                'user_id' => $_SESSION['user_id'],
+                'user_role' => $_SESSION['user_role'],
+                'category' => trim($_POST['category']),
+                'subject' => trim($_POST['subject']),
+                'description' => trim($_POST['description']),
+                'attachment' => null,
+                'status' => 'pending',
+                'created_at' => date('Y-m-d H:i:s')
+            ];
+
+            // Handle file upload
+            if (isset($_FILES['attachment']) && $_FILES['attachment']['error'] == UPLOAD_ERR_OK) {
+                $uploadDir = 'public/uploads/help_requests/'; // Adjust to your public directory
+                if (!file_exists($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+                $attachmentName = basename($_FILES['attachment']['name']);
+                $uploadFile = $uploadDir . $attachmentName;
+                if (move_uploaded_file($_FILES['attachment']['tmp_name'], $uploadFile)) {
+                    $data['attachment'] = $uploadFile;
+                } else {
+                    error_log("Failed to upload attachment: " . $attachmentName);
+                }
+            }
+
+            // Save to database
+            if ($this->BuyerModel->saveHelpRequest($data)) {
+                $_SESSION['request_success'] = 'Your request has been submitted successfully!';
+                Redirect('BuyerController/RequestHelp');
+            } else {
+                error_log("Failed to save help request: " . json_encode($data));
+                $_SESSION['request_error'] = 'Failed to submit your request. Please try again.';
+                Redirect('BuyerController/RequestHelp');
+            }
+        }
+    }
 
 }
 
-
-
 ?>
-    
