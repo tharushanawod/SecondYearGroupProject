@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Moderator Dashboard</title>
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Moderator/Dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <?php require 'sidebar.php'; ?>
@@ -15,15 +16,15 @@
         <!-- Overview Stats -->
         <div class="stats-container">
             <div class="stat-box">
-                <h3>Total Requests</h3>
+                <h3><i class="fas fa-list-alt"></i> Total Requests</h3>
                 <p><?php echo $data['total_requests']; ?></p>
             </div>
             <div class="stat-box">
-                <h3>Pending</h3>
+                <h3><i class="fas fa-clock"></i> Pending</h3>
                 <p><?php echo $data['pending_requests']; ?></p>
             </div>
             <div class="stat-box">
-                <h3>Responded</h3>
+                <h3><i class="fas fa-reply"></i> Responded</h3>
                 <p><?php echo $data['responded_requests']; ?></p>
             </div>
         </div>
