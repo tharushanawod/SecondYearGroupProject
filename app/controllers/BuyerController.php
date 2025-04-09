@@ -309,7 +309,7 @@ public function GetBankAndCardDetails() {
     }
 
     public function getNotifications($buyer_id) {
-        $productsnotifications = (array) $this->NotificationModel->getNotifications();
+        $productsnotifications = (array) $this->NotificationModel->getNotifications($buyer_id);
 $winningnotifications = (array) $this->NotificationModel->getWinningNotifications($buyer_id);
 $notifications = array_merge($productsnotifications, $winningnotifications);
 
@@ -323,10 +323,17 @@ $notifications = array_merge($productsnotifications, $winningnotifications);
        $this->View('inc/Notification',$data);
     }
 
-    public function markNotificationAsRead($id) {
-        $result = $this->NotificationModel->markNotificationAsRead($id);
+    public function markNotificationAsRead($id, $buyer_id) {
+        $result = $this->NotificationModel->markNotificationAsRead($id, $buyer_id);
         header('Content-Type: application/json');
         echo json_encode(['success' => $result]);
+    }
+
+    public function getUnreadNotificationsCount($buyer_id) {
+       
+        $count = $this->NotificationModel->getUnreadNotificationsCount($buyer_id);
+        return $count->count;
+        
     }
 
     public function CancelBid($bid_id) {

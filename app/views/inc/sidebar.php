@@ -27,9 +27,13 @@
           <li><a href="<?php echo URLROOT;?>/BuyerController/BidControl"><i class="fa-solid fa-hand"></i><span class="menu-text">Bid Control</span></a></li>
           <li><a href="<?php echo URLROOT;?>/BuyerController/PendingPayments"><i class="fa-solid fa-clock"></i><span class="menu-text">Pending Payments</span></a></li>
           <li><a href="<?php echo URLROOT;?>/BuyerController/purchaseHistory"><i class="fas fa-comments"></i><span class="menu-text">Orders</span></a></li>
-          <li><a href="<?php echo URLROOT;?>/BuyerController/RequestHelp"><i class="fa-solid fa-comment"></i><span class="menu-text">Chat</span></a></li>
-          
-          
+            <li><a href="<?php echo URLROOT;?>/BuyerController/RequestHelp"><i class="fa-solid fa-comment"></i><span class="menu-text">Chat</span></a></li>
+            <li><a href="<?php echo URLROOT; ?>/BuyerController/getUnreadNotifications">
+            <i class="fa-solid fa-bell"></i>
+            <span class="menu-text">Notifications</span>
+            </a></li>
+            
+            
           <?php elseif ($user_role === 'farmer'): ?>
             <li><a href="<?php echo URLROOT;?>/FarmerController/Dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>
             <li><a  href="<?php echo URLROOT;?>/FarmerController/GetIdea"><i class="fa-solid fa-store"></i><span class="menu-text">Products</span></a></li>
@@ -38,13 +42,13 @@
             <li><a href="<?php echo URLROOT;?>/CartController/browseProducts"><i class="fa-solid fa-flask"></i><span class="menu-text">Ingredients</span></a></li>
             <li><a href="<?php echo URLROOT;?>/FarmerController/inventory"><i class="fa-solid fa-business-time"></i><span class="menu-text">My Orders</span></a></li>
             <li><a href="<?php echo URLROOT;?>/FarmerController/requestHelp"><i class="fa-solid fa-comment"></i><span class="menu-text">Chat</span></a></li>
+            <li ><a href="<?php echo URLROOT; ?>/FarmerController/getUnreadNotifications"><i class="fa-solid fa-bell"></i><span class="menu-text">Notifications</span></a></li>
            
            
             <?php elseif ($user_role === 'farmworker'): ?>
               <li><a href="<?php echo URLROOT;?>/WorkerController/dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>
               <li><a href="<?php echo URLROOT;?>/WorkerController/jobRequest"><i class="fa-solid fa-user-tie"></i><span class="menu-text">Jobs</span></a></li>
               <li><a href="<?php echo URLROOT;?>/WorkerController/DoList"><i class="fa-solid fa-list-check"></i><span class="menu-text">Do List</span></a></li>
-
               <li><a href="<?php echo URLROOT;?>/WorkerController/trainingSelection"><i class="fa-solid fa-truck-monster"></i><span class="menu-text">Training</span></a></li>
               <li><a href="<?php echo URLROOT;?>/WorkerController/RequestHelp"><i class="fa-solid fa-comment"></i><span class="menu-text">Chat</span></a></li>
               
@@ -65,7 +69,6 @@
               
                 <?php endif; ?>
        
-
       
       
     </ul>

@@ -6,98 +6,6 @@
     <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet"/>
     <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/components/Notification.css">
     <title>Notifications</title>
-    <style>
-        *{
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-          
-        }
-        .notification-container {
-            background: white;
-            border-radius: 12px;
-            padding: 24px;
-            width: 80%;
-            margin-left: 250px;
-        }
-        .notification-header {
-            padding:20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #e0e0e0;
-        }
-        .notification-header h2 {
-            color: #2e8b57;
-            font-size: 24px;
-            margin: 0;
-        }
-        .notification-count {
-            background: #2e8b57;
-            color: white;
-            margin-top:14px;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 14px;
-        }
-        .notification-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-        }
-        .notification-table th {
-            background-color: #f5f5f5;
-            color: #333;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 14px;
-            padding: 16px;
-            text-align: left;
-            border-bottom: 2px solid #e0e0e0;
-        }
-        .notification-table td {
-            padding: 16px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        .notification-table tr:hover {
-            background-color: #f8fff8;
-        }
-        .notification-row {
-            transition: background-color 0.2s ease;
-        }
-        .notification-row.unread {
-            background-color: #f0fff0;
-        }
-        .mark-read-btn {
-            background-color: #2e8b57;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.2s ease;
-        }
-        .mark-read-btn:hover {
-            background-color: #246c44;
-        }
-        .notification-time {
-            color: #666;
-            font-size: 14px;
-        }
-        .no-notifications {
-            text-align: center;
-            padding: 40px;
-            color: #666;
-            font-style: italic;
-        }
-    </style>
 </head>
 <body>
 <?php require APPROOT . '/views/inc/sidebar.php'; ?>
@@ -168,7 +76,7 @@ function displayNotifications(notifications) {
             <td class="notification-time">${formatDate(notification.created_at)}</td>
             <td>
                 ${notification.is_read ? '' : `
-                    <button class="mark-read-btn" onclick="markAsRead(${notification.id})">
+                 <button class="mark-read-btn" onclick="markAsRead(${notification.id}, ${buyer_id})">
                         Mark as Read
                     </button>
                 `}
@@ -177,15 +85,15 @@ function displayNotifications(notifications) {
     `).join('');
 }
 
-function markAsRead(id) {
-    fetch(`${URLROOT}/BuyerController/markNotificationAsRead/${id}`, {
+function markAsRead(id, buyer_id) {
+    fetch(`${URLROOT}/BuyerController/markNotificationAsRead/${id}/${buyer_id}`, {
         method: 'POST'
     })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) fetchNotifications();
-        })
-        .catch(error => console.error('Error:', error));
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) fetchNotifications();
+    })
+    .catch(error => console.error('Error:', error));
 }
 
 // Utility functions

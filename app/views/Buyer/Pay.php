@@ -51,7 +51,7 @@ $hash = strtoupper(md5(
 </span>
             </div>
         </div>
-
+<?php var_dump($data)?>
         <div class="payment-details">
             <div class="detail-row">
                 <span class="detail-label">Total Amount</span>
@@ -85,10 +85,10 @@ $hash = strtoupper(md5(
     <input type="hidden" name="cancel_url" value="http://sample.com/cancel">
     <input type="hidden" name="notify_url" value="http://sample.com/notify">  
     </br></br>Item Details</br>
-    <input type="text" name="order_id" value="ItemNo12345">
-    <input type="text" name="items" value="Door bell wireless">
+    <input type="text" name="order_id" value="<?php echo $data['order_id'];?>">
+    <input type="text" name="items" value="Corn">
     <input type="text" name="currency" value="LKR">
-    <input type="text" name="amount" value="1000">  
+    <input type="text" name="amount" value="<?php echo number_format($data['total_advance'], 2); ?>">  
     </br></br>Customer Details</br>
     <input type="text" name="first_name" value="Saman">
     <input type="text" name="last_name" value="Perera">

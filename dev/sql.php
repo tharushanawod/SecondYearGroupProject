@@ -131,20 +131,7 @@ CREATE TABLE farmer_add_products_notifications (
 
 DELIMITER $$
 
-CREATE TRIGGER after_product_insert
-AFTER INSERT ON corn_products 
-FOR EACH ROW
-BEGIN
-    -- Insert notification for all buyers (assuming all buyers get notified)
-    INSERT INTO notifications_for_buyers (farmer_id, message)
-    SELECT NEW.user_id, CONCAT('New Corn product added: ',' (', NEW.quantity, ' Kilograms)') 
 
-END $$
-
-DELIMITER ;
-
-
-DELIMITER $$
 
 CREATE TRIGGER after_buyer_wins_bid
 AFTER INSERT ON orders_from_buyers
