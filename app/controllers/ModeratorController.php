@@ -17,6 +17,23 @@ class ModeratorController extends Controller {
         return isset($_SESSION['user_id']) && $_SESSION['user_role'] === 'moderator';
     }
 
+    public function dashboard() {
+        // Fetch dashboard data
+        $allRequests = $this->notificationModel->getHelpRequests();
+        $data = [
+            'total_requests' => count($allRequests),
+            'pending_requests' => count(array_filter($allRequests, fn($r) => $r->status === 'pending')),
+            'in_progress_requests' => count(array_filter($allRequests, fn($r) => $r->status === 'in_progress')),
+            'responded_requests' => count(array_filter($allRequests, fn($r) => $r->status === 'responded')),
+            'resolved_requests' => count(array_filter($allRequests, fn($r) => $r->status === 'resolved')),
+            'closed_requests' => count(array_filter($allRequests, fn($r) => $r->status === 'closed')),
+            'categories' => $this->getCategoryPendingCounts($allRequests),
+            'recent_requests' => array_slice(array_filter($allRequests, fn($r) => $r->status === 'pending'), 0, 5) // Last 5 pending
+        ];
+
+        $this->view('Moderator/dashboard', $data);
+    }
+
     public function Help() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply'])) {
             $requestId = $_POST['request_id'];
@@ -72,6 +89,11 @@ class ModeratorController extends Controller {
         } else {
             die('File not found.');
         }
+    }
+
+    public function Manageprofile() {
+        $data = [];
+        $this->View('Moderator/ManageProfile', $data);
     }
 }
 ?>
