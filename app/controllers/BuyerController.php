@@ -318,10 +318,10 @@ $notifications = array_merge($productsnotifications, $winningnotifications);
     }
 
 
-    public function getUnreadNotifications() {
-  
-       $this->View('inc/Notification',$data);
-    }
+public function getUnreadNotifications() {
+    $data = [];
+    $this->View('inc/Notification',$data);
+}
 
     public function markNotificationAsRead($id) {
         $result = $this->NotificationModel->markNotificationAsRead($id);
