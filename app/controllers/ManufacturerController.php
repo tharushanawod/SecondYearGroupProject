@@ -203,14 +203,63 @@ public function UpdateLastPrice($priceid)
        }
     }
 
-    public function RequestHelp()
-    {
-        $this->view('inc/RequestHelp');
-    }
-    public function StockHolders()
+       public function StockHolders()
     {
         $this->view('Manufacturer/StockHolders');
     }
+
+    
+    public function RequestHelp() {
+        $data = [];
+        $this->View('Manufacturer/RequestHelp', $data);
+    }
+
+    public function showForm($category) {
+        $data = ['category' => $category];
+        $this->View('Manufacturer/RequestHelp', $data);
+    }
+
+    public function submitRequest() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            $data = [
+                'user_id' => $_SESSION['user_id'],
+                'user_role' => $_SESSION['user_role'],
+                'category' => trim($_POST['category']),
+                'subject' => trim($_POST['subject']),
+                'description' => trim($_POST['description']),
+                'attachment' => null,
+                'status' => 'pending',
+                'created_at' => date('Y-m-d H:i:s')
+            ];
+
+            // Handle file upload
+            if (isset($_FILES['attachment']) && $_FILES['attachment']['error'] == UPLOAD_ERR_OK) {
+                $uploadDir = 'public/uploads/help_requests/'; // Adjust to your public directory
+                if (!file_exists($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+                $attachmentName = basename($_FILES['attachment']['name']);
+                $uploadFile = $uploadDir . $attachmentName;
+                if (move_uploaded_file($_FILES['attachment']['tmp_name'], $uploadFile)) {
+                    $data['attachment'] = $uploadFile;
+                } else {
+                    error_log("Failed to upload attachment: " . $attachmentName);
+                }
+            }
+
+            // Save to database
+            if ($this->ManufacturerModel->saveHelpRequest($data)) {
+                $_SESSION['request_success'] = 'Your request has been submitted successfully!';
+                Redirect('ManufacturerController/RequestHelp');
+            } else {
+                error_log("Failed to save help request: " . json_encode($data));
+                $_SESSION['request_error'] = 'Failed to submit your request. Please try again.';
+                Redirect('ManufacturerController/RequestHelp');
+            }
+        }
+    }
+
 
 }
 
