@@ -375,45 +375,71 @@ $notifications = array_merge($productsnotifications, $winningnotifications);
         $this->View('Buyer/Pay', $data);
     }
 
+//function to update the payment status
     public function Notify() {
-        file_put_contents("payment_log.txt", "Received data: " . print_r($_POST, true) . "\n", FILE_APPEND);
-        
-        $merchant_id         = $_POST['merchant_id'];
-        $order_id            = $_POST['order_id'];
-        $payhere_amount      = $_POST['payhere_amount'];
-        $payhere_currency    = $_POST['payhere_currency'];
-        $status_code         = $_POST['status_code'];
-        $md5sig              = $_POST['md5sig'];
-    
-        $merchant_secret = "MzY1NjEwNjkxODQ0ODUyODA0Nzc2MDk0MzMwMzM2MDA0NDcxMg==";
-        
-        $local_md5sig = strtoupper(
-            md5(
-                $merchant_id . 
-                $order_id . 
-                $payhere_amount . 
-                $payhere_currency . 
-                $status_code . 
-                strtoupper(md5($merchant_secret)) 
-            ) 
-        );
-        
-        file_put_contents("payment_log.txt", "Generated hash: " . $local_md5sig . "\n", FILE_APPEND);
-        file_put_contents("payment_log.txt", "Received hash: " . $md5sig . "\n", FILE_APPEND);
-        
-        if (($local_md5sig === $md5sig) && ($status_code == 2)) {
-            // Payment Success - Update your database here
-            file_put_contents("payment_log.txt", "Payment Success: " . $order_id . "\n", FILE_APPEND);
-        } else {
-            // Payment Failed or Invalid
-            file_put_contents("payment_log.txt", "Payment Failed: " . $order_id . "\n", FILE_APPEND);
-        }
+        error_log("Notify function triggered");
+                        // Sample data from the POST request
+                    $merchant_id = $_POST['merchant_id'];
+                    $order_id = $_POST['order_id'];
+                    $payment_id = $_POST['payment_id'];
+                    $status = $_POST['status'];
+                    $currency = $_POST['currency'];
+                    $amount = $_POST['amount'];
+                    $hash = $_POST['hash'];
+
+                    // Your merchant secret key
+                    $merchant_secret = $_ENV['MERCHANT_SECRET'];
+
+                    // Verify the received hash
+                    $generated_hash = strtoupper(md5(
+                        $merchant_id .
+                        $order_id .
+                        number_format($amount, 2, '.', '') .
+                        $currency .
+                        strtoupper(md5($merchant_secret))
+                    ));
+
+                    if ($hash === $generated_hash) {
+                        // Hash matches, it's a valid notification
+                        if ($status == 1) {
+                            // Payment successful
+                            // Update your database, notify the user, etc.
+                            $payment_status = 'paid';
+                            $this->BuyerModel->updatePaymentStatus($order_id, $payment_status);
+                        } else {
+                            // Payment failed
+                            $payment_status = 'failed';
+                            $this->BuyerModel->updatePaymentStatus($order_id, $payment_status);
+                        }
+                    } else {
+                        // Invalid hash
+                        echo "Invalid payment notification.";
+                    }
     }
     
 
-    public function Return() {
-        echo "Payment was successful!";
+    public function Success() {
+        // Check if 'order_id' and 'amount' are set in the URL (GET request)
+        if (isset($_GET['order_id']) && isset($_GET['amount'])) {
+            // Sanitize the input to prevent malicious data
+            $order_id = htmlspecialchars($_GET['order_id']);
+            $amount = htmlspecialchars($_GET['amount']);
+            
+            // Prepare the data to pass to the view
+            $data = [
+                'order_id' => $order_id,
+                'amount' => $amount
+            ];
+    
+            // Pass the data to the view
+            $this->View('Buyer/PaymentSuccess', $data);
+        } else {
+            // Handle the case where 'order_id' or 'amount' are not present
+            // You can show an error message or redirect to another page
+            echo "Invalid payment data.";
+        }
     }
+    
 
     public function Cancel() {
         echo "Payment was cancelled!";

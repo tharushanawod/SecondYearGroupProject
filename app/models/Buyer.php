@@ -246,6 +246,18 @@ AND corn_products.closing_date > NOW();
         return $paymentdetails;
     }
 
+    public function updatePaymentStatus($order_id, $payment_status) {
+        $this->db->query('UPDATE orders_from_buyers SET payment_status = :payment_status WHERE order_id = :order_id');
+        $this->db->bind(':payment_status', $payment_status);
+        $this->db->bind(':order_id', (int)$order_id);
+
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     
 
   
