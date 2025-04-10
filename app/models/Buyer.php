@@ -261,6 +261,21 @@ AND corn_products.closing_date > NOW();
     
 
   
+    public function saveHelpRequest($data) {
+        $this->db->query("
+            INSERT INTO help_requests (user_id, user_role, category, subject, description, attachment, status, created_at)
+            VALUES (:user_id, :user_role, :category, :subject, :description, :attachment, :status, :created_at)
+        ");
+        $this->db->bind(':user_id', $data['user_id']);
+        $this->db->bind(':user_role', $data['user_role']);
+        $this->db->bind(':category', $data['category']);
+        $this->db->bind(':subject', $data['subject']);
+        $this->db->bind(':description', $data['description']);
+        $this->db->bind(':attachment', $data['attachment']);
+        $this->db->bind(':status', $data['status']);
+        $this->db->bind(':created_at', $data['created_at']);
+        return $this->db->execute();
+    } 
     
 
 }

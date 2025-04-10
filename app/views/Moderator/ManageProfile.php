@@ -1,7 +1,8 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
  <head>
   <title>
-   Settings
+   Profile
   </title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet"/>

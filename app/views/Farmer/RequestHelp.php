@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Need Support?</title>
-    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/FarmWorker/RequestHelp.css">
+    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Farmer/RequestHelp.css">
     <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet"/>
 </head>
 <body>
@@ -21,25 +21,25 @@
         <?php endif; ?>
 
         <div class="category-boxes">
-            <a href="<?php echo URLROOT;?>/WorkerController/showForm/payment" class="category-box">
+            <a href="<?php echo URLROOT;?>/FarmerController/showForm/payment" class="category-box">
                 <i class="fas fa-money-bill-wave"></i>
                 <h3>Payment Issues</h3>
                 <p>Problems with payments, refunds, or billing</p>
             </a>
             
-            <a href="<?php echo URLROOT;?>/WorkerController/showForm/system" class="category-box">
+            <a href="<?php echo URLROOT;?>/FarmerController/showForm/system" class="category-box">
                 <i class="fas fa-cogs"></i>
                 <h3>System Problems</h3>
                 <p>Technical issues, bugs, or errors</p>
             </a>
             
-            <a href="<?php echo URLROOT;?>/WorkerController/showForm/account" class="category-box">
+            <a href="<?php echo URLROOT;?>/FarmerController/showForm/account" class="category-box">
                 <i class="fas fa-user"></i>
                 <h3>Account Issues</h3>
                 <p>Login problems, profile updates, or account settings</p>
             </a>
             
-            <a href="<?php echo URLROOT;?>/WorkerController/showForm/other" class="category-box">
+            <a href="<?php echo URLROOT;?>/FarmerController/showForm/other" class="category-box">
                 <i class="fas fa-question-circle"></i>
                 <h3>Other Issues</h3>
                 <p>Any other questions or concerns</p>
@@ -52,7 +52,7 @@
             $category = $data['category'];
             echo '<div class="help-form">';
             echo '<h2>' . ucfirst($category) . ' Issue</h2>';
-            echo '<form action="' . URLROOT . '/WorkerController/submitRequest" method="POST" enctype="multipart/form-data">';
+            echo '<form action="' . URLROOT . '/FarmerController/submitRequest" method="POST" enctype="multipart/form-data">';
             echo '<input type="hidden" name="category" value="' . $category . '">';
             echo '<div class="form-group">';
             echo '<label for="' . $category . '-subject">Subject</label>';
@@ -68,7 +68,7 @@
             echo '</div>';
             echo '<div class="form-buttons">';
             echo '<button type="submit" class="submit-btn">Submit Request</button>';
-            echo '<button type="button" class="cancel-btn" onclick="window.location.href=\'' . URLROOT . '/WorkerController/requestHelp\'">Cancel</button>';
+            echo '<button type="button" class="cancel-btn" onclick="window.location.href=\'' . URLROOT . '/FarmerController/requestHelp\'">Cancel</button>';
             echo '</div>';
             echo '</form>';
             echo '</div>';
