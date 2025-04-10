@@ -350,6 +350,7 @@ $notifications = array_merge($productsnotifications, $winningnotifications);
 
     public function getPaymentDetailsForOrder($order_id) {
         $paymentDetails = $this->BuyerModel->getPaymentDetailsForOrder($order_id);
+        $userdetails = $this->BuyerModel->getUserById($_SESSION['user_id']);
     
         if (!$paymentDetails) {
             die("Payment details not found.");
@@ -366,6 +367,9 @@ $notifications = array_merge($productsnotifications, $winningnotifications);
             'advance_payment' => $paymentDetails->bid_price * $quantity * 0.2,
             'service_charge' => $paymentDetails->bid_price * $quantity * 0.02,
             'total_advance' => $paymentDetails->bid_price * $quantity * 0.22,
+            'name' => $userdetails->name,
+            'phone' => $userdetails->phone,
+            'email' => $userdetails->email,
         ];
     
         $this->View('Buyer/Pay', $data);

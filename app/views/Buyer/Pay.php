@@ -1,8 +1,8 @@
 <?php
-$merchant_id = "1229660";
-$merchant_secret = "ODE5MTYxNzEwODgzMzQ3NDkxNTI5MDMzODIzMzA4Nzg3MTI5MA==";
-$order_id = "ItemNo12345"; // Dynamic order ID
-$amount = "1000"; // Dynamic amount
+$merchant_id = $_ENV['MERCHANT_ID'];
+$merchant_secret = $_ENV['MERCHANT_SECRET'];;
+$order_id = $data['order_id']; // Dynamic order ID
+$amount = number_format((float)$data['total_advance'], 2, '.', ''); // Only format once
 $currency = "LKR"; // Or USD
 
 // Generate hash
@@ -51,7 +51,7 @@ $hash = strtoupper(md5(
 </span>
             </div>
         </div>
-<?php var_dump($data)?>
+
         <div class="payment-details">
             <div class="detail-row">
                 <span class="detail-label">Total Amount</span>
@@ -80,25 +80,25 @@ $hash = strtoupper(md5(
         </div>
 
         <form method="POST" action="https://sandbox.payhere.lk/pay/checkout" >
-            <input type="hidden" name="merchant_id" value="1229660">    <!-- Replace your Merchant ID -->
+            <input type="hidden" name="merchant_id" value="<?php echo $merchant_id;?>">    <!-- Replace your Merchant ID -->
     <input type="hidden" name="return_url" value="http://sample.com/return">
     <input type="hidden" name="cancel_url" value="http://sample.com/cancel">
     <input type="hidden" name="notify_url" value="http://sample.com/notify">  
-    </br></br>Item Details</br>
-    <input type="text" name="order_id" value="<?php echo $data['order_id'];?>">
-    <input type="text" name="items" value="Corn">
-    <input type="text" name="currency" value="LKR">
-    <input type="text" name="amount" value="<?php echo number_format($data['total_advance'], 2); ?>">  
-    </br></br>Customer Details</br>
-    <input type="text" name="first_name" value="Saman">
-    <input type="text" name="last_name" value="Perera">
-    <input type="text" name="email" value="samanp@gmail.com">
-    <input type="text" name="phone" value="0771234567">
-    <input type="text" name="address" value="No.1, Galle Road">
-    <input type="text" name="city" value="Colombo">
+  
+    <input type="hidden" name="order_id" value="<?php echo $data['order_id'];?>">
+    <input type="hidden" name="items" value="Corn">
+    <input type="hidden" name="currency" value="LKR">
+    <input type="hidden" name="amount" value="<?php echo number_format((float)$data['total_advance'], 2, '.', ''); ?>">  
+ 
+    <input type="hidden" name="first_name" value="<?php echo $data['name'];?>">
+    <input type="hidden" name="last_name" value="No">
+    <input type="hidden" name="email" value="<?php echo $data['email'];?>">
+    <input type="hidden" name="phone" value="<?php echo $data['phone'];?>">
+    <input type="hidden" name="address" value="No">
+    <input type="hidden" name="city" value="No">
     <input type="hidden" name="country" value="Sri Lanka">
     <input type="hidden" name="hash" value="<?php echo $hash;?>">    <!-- Replace with generated hash -->
-    <input type="submit" value="Buy Now">   
+    <input type="submit" value="Pay Now" class="pay-button">   
         </form>
     </div>
 </body>

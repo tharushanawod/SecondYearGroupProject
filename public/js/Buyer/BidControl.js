@@ -35,6 +35,13 @@ const paginatedBids = bids.slice(start, end);
 
 bidsTable.innerHTML = ""; // Clear the existing table
 
+if (paginatedBids.length === 0) {
+  const row = document.createElement("tr");
+  row.innerHTML = `<td colspan="6" style="text-align: center;">No data to show</td>`;
+  bidsTable.appendChild(row);
+  return; // Stop the function
+}
+
 paginatedBids.forEach((bid) => {
   const targetDate = new Date(bid.closing_date); // Closing date of the bid
   const currentDate = new Date(); // Current date and time
