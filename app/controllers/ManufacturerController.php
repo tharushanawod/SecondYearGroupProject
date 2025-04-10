@@ -235,7 +235,7 @@ public function UpdateLastPrice($priceid)
 
             // Handle file upload
             if (isset($_FILES['attachment']) && $_FILES['attachment']['error'] == UPLOAD_ERR_OK) {
-                $uploadDir = 'public/uploads/help_requests/'; // Adjust to your public directory
+                $uploadDir = 'uploads/help_requests/'; 
                 if (!file_exists($uploadDir)) {
                     mkdir($uploadDir, 0777, true);
                 }
