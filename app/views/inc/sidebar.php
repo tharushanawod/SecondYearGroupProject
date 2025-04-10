@@ -18,7 +18,7 @@
         <li><a href="<?php echo URLROOT;?>/ManufacturerController/Dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>
         <li><a href="<?php echo URLROOT;?>/ManufacturerController/AddPrices"><i class="fa-solid fa-money-check-dollar"></i><span class="menu-text">Prices</span></a></li>
         <li><a href="<?php echo URLROOT;?>/ManufacturerController/StockHolders"><i class="fa-solid fa-store"></i><span class="menu-text">Stock Holders</span></a></li>
-        <li><a href="<?php echo URLROOT;?>/ManufacturerController/requestHelp"><i class="fa-solid fa-comment"></i><span class="menu-text">Chat</span></a></li>
+        <li><a href="<?php echo URLROOT;?>/ManufacturerController/requestHelp"><i class="fa-solid fa-comment-dots"></i><span class="menu-text">Request Help</span></a></li>
         
         
         <?php elseif ($user_role === 'buyer'): ?>
@@ -26,8 +26,8 @@
           <li><a href="<?php echo URLROOT;?>/BuyerController/LandingPage"><i class="fa-solid fa-chess-bishop"></i><span class="menu-text">Place Bids</span></a></li>
           <li><a href="<?php echo URLROOT;?>/BuyerController/BidControl"><i class="fa-solid fa-hand"></i><span class="menu-text">Bid Control</span></a></li>
           <li><a href="<?php echo URLROOT;?>/BuyerController/PendingPayments"><i class="fa-solid fa-clock"></i><span class="menu-text">Pending Payments</span></a></li>
-          <li><a href="<?php echo URLROOT;?>/BuyerController/purchaseHistory"><i class="fas fa-comments"></i><span class="menu-text">Orders</span></a></li>
-          <li><a href="<?php echo URLROOT;?>/BuyerController/RequestHelp"><i class="fa-solid fa-comment"></i><span class="menu-text">Chat</span></a></li>
+          <li><a href="<?php echo URLROOT;?>/BuyerController/purchaseHistory"><i class="fa-solid fa-shopping-bag"></i><span class="menu-text">Orders</span></a></li>
+          <li><a href="<?php echo URLROOT;?>/BuyerController/RequestHelp"><i class="fa-solid fa-comment-dots"></i><span class="menu-text">Request Help</span></a></li>
           
           
           <?php elseif ($user_role === 'farmer'): ?>
@@ -37,7 +37,7 @@
             <li><a href="<?php echo URLROOT;?>/FarmerController/workerManagement"><i class="fa-solid fa-user"></i><span class="menu-text">Workers</span></a></li>
             <li><a href="<?php echo URLROOT;?>/CartController/browseProducts"><i class="fa-solid fa-flask"></i><span class="menu-text">Ingredients</span></a></li>
             <li><a href="<?php echo URLROOT;?>/FarmerController/inventory"><i class="fa-solid fa-business-time"></i><span class="menu-text">My Orders</span></a></li>
-            <li><a href="<?php echo URLROOT;?>/FarmerController/requestHelp"><i class="fa-solid fa-comment"></i><span class="menu-text">Chat</span></a></li>
+            <li><a href="<?php echo URLROOT;?>/FarmerController/requestHelp"><i class="fa-solid fa-comment-dots"></i><span class="menu-text">Request Help</span></a></li>
            
            
             <?php elseif ($user_role === 'farmworker'): ?>
@@ -46,7 +46,7 @@
               <li><a href="<?php echo URLROOT;?>/WorkerController/DoList"><i class="fa-solid fa-list-check"></i><span class="menu-text">Do List</span></a></li>
 
               <li><a href="<?php echo URLROOT;?>/WorkerController/trainingSelection"><i class="fa-solid fa-truck-monster"></i><span class="menu-text">Training</span></a></li>
-              <li><a href="<?php echo URLROOT;?>/WorkerController/RequestHelp"><i class="fa-solid fa-comment"></i><span class="menu-text">Chat</span></a></li>
+              <li><a href="<?php echo URLROOT;?>/WorkerController/RequestHelp"><i class="fa-solid fa-comment-dots"></i><span class="menu-text">Request Help</span></a></li>
               
               
               <?php elseif ($user_role === 'supplier'): ?>
@@ -54,7 +54,7 @@
                 <li><a href="<?php echo URLROOT;?>/SupplierController/shop"><i class="fa-solid fa-gauge"></i><span class="menu-text">Products</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/SupplierController/productManagement"><i class="fa-solid fa-gauge"></i><span class="menu-text">Product Control</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/SupplierController/viewOrders"><i class="fa-solid fa-gauge"></i><span class="menu-text">View Orders</span></a></li>
-                <li><a href="<?php echo URLROOT;?>/SupplierController/RequestHelp"><i class="fa-solid fa-gauge"></i><span class="menu-text">Chat</span></a></li>
+                <li><a href="<?php echo URLROOT;?>/SupplierController/RequestHelp"><i class="fa-solid fa-comment-dots"></i><span class="menu-text">Request Help</span></a></li>
                 
                 <?php else: ?>
                 <li><a href="<?php echo URLROOT;?>/AdminController/Dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>
