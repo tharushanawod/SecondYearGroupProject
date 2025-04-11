@@ -194,3 +194,15 @@ END;
 //
 
 DELIMITER ;
+
+
+CREATE TABLE withdrawals (
+    transaction_id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id int NOT NULL,
+    withdrawal_amount DECIMAL(10, 2) NOT NULL,
+    farmer_confirmed BOOLEAN DEFAULT FALSE,  -- Indicates if the farmer confirmed
+    buyer_confirmed BOOLEAN DEFAULT FALSE,  -- Indicates if the buyer confirmed
+    request_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    withdrawal_status ENUM('Pending', 'Confirmed', 'Rejected') DEFAULT 'Pending',
+    FOREIGN KEY (order_id) REFERENCES orders_from_buyers(order_id)
+);

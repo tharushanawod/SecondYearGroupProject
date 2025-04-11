@@ -276,6 +276,27 @@ AND corn_products.closing_date > NOW();
         $this->db->bind(':created_at', $data['created_at']);
         return $this->db->execute();
     } 
+    public function getPurchaseHistory($user_id) {
+        $this->db->query('
+            SELECT 
+                orders_from_buyers.quantity,
+                orders_from_buyers.bid_price,
+                buyer_payments.transaction_id,
+                buyer_payments.paid_amount,
+                buyer_payments.farmer_confirmed,
+                buyer_payments.buyer_confirmed
+            FROM 
+                orders_from_buyers
+            INNER JOIN 
+                buyer_payments ON orders_from_buyers.order_id = buyer_payments.order_id 
+            WHERE 
+                orders_from_buyers.buyer_id = :user_id AND buyer_payments.buyer_confirmed = 0
+        ');
+        
+        $this->db->bind(':user_id', $user_id);
+        return $this->db->resultSet();
+    }
+    
     
 
 }
