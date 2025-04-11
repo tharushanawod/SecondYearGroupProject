@@ -336,6 +336,12 @@ $notifications = array_merge($productsnotifications, $winningnotifications);
     public function Notify() {
 
                     $hash = $_POST['md5sig'];
+                    $order_id = $_POST['order_id'];
+                    $amount = $_POST['payhere_amount'];
+                    $payment_id = $_POST['payment_id'];
+                    $status_code = $_POST['status_code'];
+                    $currency = $_POST['payhere_currency'];
+
 
                     // Your merchant secret key
                     $merchant_secret = $_ENV['MERCHANT_SECRET'];
@@ -350,13 +356,14 @@ $notifications = array_merge($productsnotifications, $winningnotifications);
                         strtoupper(md5($merchant_secret))
                     ));
                     if ($hash === $generated_hash) {
-                      
+                      error_log("tharusha".var_export($_POST, true));
                         // Hash matches, it's a valid notification
                         if ($status_code == 2) {
                             // Payment successful
                             // Update your database, notify the user, etc.
                             $payment_status = 'paid';
                             $this->BuyerModel->updatePaymentStatus($order_id, $payment_status);
+                            $this->BuyerModel->TransactionComplete($order_id, $amount,$payment_id);
                         } else {
                             // Payment failed
                             $payment_status = 'failed';

@@ -276,6 +276,21 @@ AND corn_products.closing_date > NOW();
         $this->db->bind(':created_at', $data['created_at']);
         return $this->db->execute();
     } 
+
+
+    public function TransactionComplete($order_id, $amount, $payment_id) {
+        $this->db->query('
+            INSERT INTO buyer_payments (order_id, paid_amount, payment_id)
+            VALUES (:order_id, :paid_amount, :payment_id)
+        ');
+        $this->db->bind(':order_id', $order_id);
+        $this->db->bind(':paid_amount', $amount);
+        $this->db->bind(':payment_id', $payment_id);
+    
+        return $this->db->execute();
+    }
+    
+
     public function getPurchaseHistory($user_id) {
         $this->db->query('
             SELECT 
