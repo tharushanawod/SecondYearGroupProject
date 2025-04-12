@@ -350,7 +350,8 @@ $notifications = array_merge($productsnotifications, $winningnotifications);
 
 //function to update the payment status
     public function Notify() {
-
+        $this->BuyerModel = $this->model('Buyer');
+        
                     $hash = $_POST['md5sig'];
                     $order_id = $_POST['order_id'];
                     $amount = $_POST['payhere_amount'];
@@ -378,8 +379,13 @@ $notifications = array_merge($productsnotifications, $winningnotifications);
                             // Payment successful
                             // Update your database, notify the user, etc.
                             $payment_status = 'paid';
+                            // $details=$this->BuyerModel->getPaymentDetailsForOrder($_POST['order_id']);
+                            $paid_amount_for_buyer =$amount/22*20;
+                            $paid_service_charge = $amount/22*2;
+
+
                             $this->BuyerModel->updatePaymentStatus($order_id, $payment_status);
-                            $this->BuyerModel->TransactionComplete($order_id, $amount,$payment_id);
+                            $this->BuyerModel->TransactionComplete($order_id, $paid_amount_for_buyer,$paid_service_charge,$payment_id);
                         } else {
                             // Payment failed
                             $payment_status = 'failed';

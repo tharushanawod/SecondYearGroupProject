@@ -278,16 +278,38 @@ AND corn_products.closing_date > NOW();
     } 
 
 
-    public function TransactionComplete($order_id, $amount, $payment_id) {
-        $this->db->query('
-            INSERT INTO buyer_payments (order_id, paid_amount, payment_id)
-            VALUES (:order_id, :paid_amount, :payment_id)
-        ');
-        $this->db->bind(':order_id', $order_id);
-        $this->db->bind(':paid_amount', $amount);
-        $this->db->bind(':payment_id', $payment_id);
+    public function TransactionComplete($order_id, $amount, $serviceCharge, $payment_id) {
+        try {
+            $this->db->beginTransaction(); // Start transaction
     
-        return $this->db->execute();
+            // Insert payment
+            $this->db->query('
+                INSERT INTO buyer_payments (order_id, paid_amount, payment_id)
+                VALUES (:order_id, :paid_amount, :payment_id)
+            ');
+            $this->db->bind(':order_id', $order_id);
+            $this->db->bind(':paid_amount', $amount);
+            $this->db->bind(':payment_id', $payment_id);
+            $this->db->execute();
+    
+            // Update order status
+            $this->db->query('
+                            UPDATE wallets 
+                            SET balance = balance + :serviceCharge
+                            WHERE user_id = :admin_id
+                        ');
+                        $this->db->bind(':serviceCharge', $serviceCharge);
+                        $this->db->bind(':admin_id', 123); // Set this to the admin’s user ID
+                        $this->db->execute();
+
+    
+            $this->db->commit(); // Commit if all succeed
+            return true;
+    
+        } catch (Exception $e) {
+            $this->db->rollback(); // Rollback if any fails
+            return false;
+        }
     }
     
 
