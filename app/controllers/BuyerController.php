@@ -7,21 +7,37 @@ class BuyerController extends Controller {
     public function __construct() {
         // Get the current method from the URL
         $currentMethod = $this->getCurrentMethodFromURL();
-
+    
         // Bypass authentication if the current method is 'Notify'
         if ($currentMethod !== 'Notify') {
+            // Check if user is logged in
             if (!$this->isloggedin()) {
                 unset($_SESSION['user_id']);
                 unset($_SESSION['user_email']);
                 unset($_SESSION['user_name']);
                 session_destroy();
                 Redirect('LandingController/login');
-            }
-        }
+            } else {
 
-        // Load models
+                  // Load models
         $this->BuyerModel = $this->model('Buyer');
         $this->NotificationModel = $this->model('Notification');
+
+                // User is logged in, now check if they are restricted
+                $user_id = $_SESSION['user_id'];
+                $user = $this->BuyerModel->getUserStatus($user_id);  // Fetch user status from the database
+    
+                // If the user is restricted, prevent access to any page except "Manage Profile"
+                if ($user->user_status === 'restricted') {
+                    if ($currentMethod !== 'ManageProfile' && $currentMethod !== 'Resetricted') {
+                        Redirect('BuyerController/Resetricted/' . $user_id);
+                    }
+                }
+                
+            }
+        }
+    
+      
     }
 
     private function getCurrentMethodFromURL() {
@@ -476,6 +492,11 @@ $notifications = array_merge($productsnotifications, $winningnotifications);
         header('Content-Type: application/json');
         echo json_encode(['success' => $result]);
 
+    }
+
+    public function Resetricted($user_id){
+        $data = $this->BuyerModel->getrestrictedDetails($user_id);
+        $this->View('Buyer/Restricted', $data);
     }
 
 }
