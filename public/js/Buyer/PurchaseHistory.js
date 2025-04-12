@@ -1,89 +1,86 @@
-
-const bidsTable = document.querySelector("#orderTable tbody");
+const PaymentsTable = document.querySelector("#orderTable tbody");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 const pageInfo = document.getElementById("pageInfo");
 
 let currentPage = 1;
 const rowsPerPage = 10;
-let PendingPayments = []; // This will store all the fetched bids
+let PendingPayments = []; // This will store all the fetched payment history
 
-// Fetch all bids from the controller
-function fetchBids() {
+// Fetch all payment history from the controller
+function fetchpayments() {
   fetch(`${URLROOT}/BuyerController/getPurchaseHistory/${USERID}`)
     .then((response) => response.json())
     .then((data) => {
-        PendingPayments = data; // Store all bids in the array
+      Payments = data; // Store all payment history in the array
+      console.log(Payments);
       renderTable(); // Initial table render
       updatePagination();
     })
-    .catch((error) => console.log("Error fetching bids:", error));
+    .catch((error) => console.log("Error fetching payment history:", error));
 }
 
-// Render table rows for bids based on current page
+// Render table rows based on current page
 function renderTable() {
   const start = (currentPage - 1) * rowsPerPage;
   const end = start + rowsPerPage;
-  const paginatedPendingPayments = PendingPayments.slice(start, end);
+  const paginatedPayments = Payments.slice(start, end);
 
-  bidsTable.innerHTML = ""; // Clear the table
+  PaymentsTable.innerHTML = ""; // Clear the table
 
-  paginatedPendingPayments.forEach((PendingPayment) => {
+  paginatedPayments.forEach((payment) => {
     const row = document.createElement("tr");
-    const targetDate = new Date(PendingPayment.order_closing_date);
-    const totalpayment = PendingPayment.bid_price * PendingPayment.quantity;
-    const advancepayment = totalpayment * 0.3;
+    const totalAmount = payment.bid_price * payment.quantity;
+    const paidAmount = totalAmount * 0.3; // Assuming paid amount is 30% as advance payment
 
     row.innerHTML = `
-      <td data-label="Order ID">${PendingPayment.order_id}</td>
-      <td data-label="Product">${PendingPayment.bid_price}</td>
-      <td data-label="Quantity">${PendingPayment.quantity} kg</td>
-      <td data-label="Remaining Time" id="countdown-${PendingPayment.order_id}">Calculating...</td>
-      <td data-label="Total">${totalpayment.toFixed(2)}</td>
-      <td data-label="Advance">${advancepayment.toFixed(2)}</td>
-      <td data-label="Action">
-        <button onclick="Payment(${PendingPayment.order_id})" class="action-btn confirm">Pays</button>
-      </td>
-    `;
-    bidsTable.appendChild(row);
-
-    startCountdown(targetDate, `countdown-${PendingPayment.order_id}`);
+            <td data-label="Transaction ID">${payment.transaction_id}</td>
+            <td data-label="Quantity">${payment.quantity} kg</td>
+            <td data-label="Paid Amount">Rs. ${paidAmount.toFixed(2)}</td>
+            <td data-label="Total Amount">Rs. ${totalAmount.toFixed(2)}</td>
+            <td data-label="Farmer's Details">
+                <button onclick="viewFarmerDetails(${
+                  payment.farmer_id
+                })" class="details-btn">
+                    View Details
+                </button>
+            </td>
+            <td data-label="Farmer Confirmation">${getFarmerConfirmationStatus(
+              payment
+            )}</td>
+            <td data-label="Your Confirmation">${getBuyerConfirmationStatus(
+              payment
+            )}</td>
+        `;
+    PaymentsTable.appendChild(row);
   });
 }
 
-function calculateRemainingTime(targetDate) {
-  const now = new Date();
-  const timeDifference = targetDate - now;
-
-  if (timeDifference <= 0) return "Time is up!";
-
-  const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-
-  return `${days}d ${hours}h ${minutes}m ${seconds}s`;
-}
-
-function startCountdown(targetDate, elementId) {
-  function updateCountdown() {
-    const countdownElement = document.getElementById(elementId);
-    if (!countdownElement) return;
-
-    const remainingTime = calculateRemainingTime(targetDate);
-    countdownElement.innerHTML = remainingTime;
-
-    if (remainingTime === "Time is up!") clearInterval(interval);
+// Helper function to display farmer confirmation status
+function getFarmerConfirmationStatus(payment) {
+  // Replace with your actual data structure
+  if (payment.farmer_confirmed === true) {
+    return '<span class="confirmed"><i class="fa-solid fa-check"></i> Confirmed</span>';
+  } else if (payment.farmer_confirmed === false) {
+    return '<span class="rejected"><i class="fa-solid fa-xmark"></i> Rejected</span>';
+  } else {
+    return '<span class="pending"><i class="fa-solid fa-clock"></i> Pending</span>';
   }
-
-  updateCountdown();
-  const interval = setInterval(updateCountdown, 1000);
 }
 
+// Helper function to display buyer confirmation status
+function getBuyerConfirmationStatus(payment) {
+  // Replace with your actual data structure
+  if (payment.buyer_confirmed === 1) {
+    return '<span class="confirmed"><i class="fa-solid fa-check"></i> Confirmed</span>';
+  } else {
+    return `<button onclick="confirmOrder(${payment.order_id})" class="confirm-btn"><i class="fa-solid fa-square-check"></i>  Confirm</button>`;
+  }
+}
 
-// Update pagination info (current page and total pages)
+// Update pagination info
 function updatePagination() {
-  const totalPages = Math.ceil(bids.length / rowsPerPage);
+  const totalPages = Math.ceil(PendingPayments.length / rowsPerPage);
   pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
 
   prevBtn.disabled = currentPage === 1;
@@ -101,7 +98,7 @@ prevBtn.addEventListener("click", () => {
 
 // Handle next page button click
 nextBtn.addEventListener("click", () => {
-  const totalPages = Math.ceil(bids.length / rowsPerPage);
+  const totalPages = Math.ceil(PendingPayments.length / rowsPerPage);
   if (currentPage < totalPages) {
     currentPage++;
     renderTable();
@@ -109,43 +106,90 @@ nextBtn.addEventListener("click", () => {
   }
 });
 
-// Initial fetch and render
-fetchBids();
+// Function to confirm a payment
+function confirmOrder(orderId) {
+  fetch(`${URLROOT}/BuyerController/confirmOrder/${orderId}`, {
+    method: "POST",
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      fetchpayments(); // Refresh data after confirmation
+    })
+    .catch((error) => console.error("Error confirming payment:", error));
+}
 
-function calculateRemainingTime(targetDate) {
-  const now = new Date();
-  const timeDifference = targetDate - now;
+// Function to reject a payment
+function rejectPurchase(orderId) {
+  fetch(`${URLROOT}/BuyerController/rejectPurchase/${orderId}`, {
+    method: "POST",
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      fetchpayments(); // Refresh data after rejection
+    })
+    .catch((error) => console.error("Error rejecting payment:", error));
+}
 
-  // If the target date is in the past, return "Time is up!"
-  if (timeDifference <= 0) {
-      return "Time is up!";
+// Function to view farmer details
+function viewFarmerDetails(farmerId) {
+  fetch(`${URLROOT}/BuyerController/getFarmerDetails/${farmerId}`)
+    .then((response) => response.json())
+    .then((data) => {
+      const modal = document.getElementById("farmerModal");
+      const content = document.getElementById("farmerDetailsContent");
+
+      content.innerHTML = `
+                <div class="farmer-detail">
+                    <div class="detail-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="detail-content">
+                        <h4>Name</h4>
+                        <p>${data.name}</p>
+                    </div>
+                </div>
+                <div class="farmer-detail">
+                    <div class="detail-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div class="detail-content">
+                        <h4>Contact Number</h4>
+                        <p>${data.contact_number}</p>
+                    </div>
+                </div>
+                <div class="farmer-detail">
+                    <div class="detail-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="detail-content">
+                        <h4>Pickup Location</h4>
+                        <p>${data.pickup_location}</p>
+                    </div>
+                </div>
+                <div class="location-map">
+                    <!-- You can add a map here if you have the coordinates -->
+                </div>
+            `;
+
+      modal.style.display = "block";
+      document.body.style.overflow = "hidden"; // Prevent scrolling when modal is open
+    })
+    .catch((error) => console.error("Error fetching farmer details:", error));
+}
+
+function closeFarmerModal() {
+  const modal = document.getElementById("farmerModal");
+  modal.style.display = "none";
+  document.body.style.overflow = "auto"; // Re-enable scrolling
+}
+
+// Close modal when clicking outside
+window.onclick = function (event) {
+  const modal = document.getElementById("farmerModal");
+  if (event.target == modal) {
+    closeFarmerModal();
   }
+};
 
-  const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24)); // Days
-  const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); // Hours
-  const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60)); // Minutes
-  const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000); // Seconds
-
-  return `${days}d ${hours}h ${minutes}m ${seconds}s`;
-}
-
-function startCountdown(targetDate) {
-  const countdownElement = document.getElementById('countdown'); // Element to display the time
-
-  // Update the countdown every second
-  const interval = setInterval(() => {
-      const remainingTime = calculateRemainingTime(targetDate);
-
-      // Display the remaining time
-      countdownElement.innerHTML = remainingTime;
-
-      // Stop the countdown when time is up
-      if (remainingTime === "Time is up!") {
-          clearInterval(interval);
-      }
-  }, 1000); // Update every second
-}
-
-function Payment(order_id){
-  window.location.href = `${URLROOT}/BuyerController/getPaymentDetailsForOrder/${order_id}`;
-}
+// Initial fetch and render
+fetchpayments();

@@ -460,6 +460,24 @@ $notifications = array_merge($productsnotifications, $winningnotifications);
         echo json_encode($purchaseHistory);
     }
 
+    public function getFarmerDetails($farmerId) {
+        $farmerDetails = $this->BuyerModel->getFarmersById($farmerId);
+        
+        header('Content-Type: application/json');
+        echo json_encode([
+            'name' => $farmerDetails->name,
+            'contact_number' => $farmerDetails->phone,
+            'pickup_location' => $farmerDetails->address
+        ]);
+    }
+
+    public function confirmOrder($order_id){
+        $result = $this->BuyerModel->confirmOrder($order_id);
+        header('Content-Type: application/json');
+        echo json_encode(['success' => $result]);
+
+    }
+
 }
 
 ?>

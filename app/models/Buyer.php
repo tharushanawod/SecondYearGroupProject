@@ -138,8 +138,8 @@ GROUP BY corn_products.product_id, users.name, farmers.district;
     profile_pictures.file_path;
     ');
     $this->db->bind(':id', $id);
-    $worker = $this->db->single();
-    return $worker;
+    $farmer = $this->db->single();
+    return $farmer;
     
        
 
@@ -296,8 +296,10 @@ AND corn_products.closing_date > NOW();
             SELECT 
                 orders_from_buyers.quantity,
                 orders_from_buyers.bid_price,
+                orders_from_buyers.farmer_id,
                 buyer_payments.transaction_id,
                 buyer_payments.paid_amount,
+                buyer_payments.order_id,
                 buyer_payments.farmer_confirmed,
                 buyer_payments.buyer_confirmed
             FROM 
@@ -305,11 +307,17 @@ AND corn_products.closing_date > NOW();
             INNER JOIN 
                 buyer_payments ON orders_from_buyers.order_id = buyer_payments.order_id 
             WHERE 
-                orders_from_buyers.buyer_id = :user_id AND buyer_payments.buyer_confirmed = 0
+                orders_from_buyers.buyer_id = :user_id 
         ');
         
         $this->db->bind(':user_id', $user_id);
         return $this->db->resultSet();
+    }
+
+    public function confirmOrder($order_id) {
+        $this->db->query('UPDATE buyer_payments SET buyer_confirmed = 1 WHERE order_id = :order_id');
+        $this->db->bind(':order_id', $order_id);
+        return $this->db->execute();
     }
     
     
