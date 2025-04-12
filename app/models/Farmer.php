@@ -44,8 +44,16 @@ class Farmer {
         return $result;
     }
 
-    public function getAllOrders() {
-        $this->db->query("SELECT * FROM orders_from_buyers");
+    public function getAllOrders($farmer_id) {
+        $this->db->query("SELECT 
+        orders_from_buyers.*,
+        buyer_payments.farmer_confirmed,
+        buyer_payments.buyer_confirmed
+        FROM orders_from_buyers
+        LEFT JOIN buyer_payments ON orders_from_buyers.order_id = buyer_payments.order_id
+        WHERE orders_from_buyers.farmer_id = :farmer_id
+        ");
+        $this->db->bind(':farmer_id', $farmer_id);
         return $this->db->resultSet();  // Returns an array of orders
     }
 
@@ -390,6 +398,21 @@ class Farmer {
         $this->db->bind(':created_at', $data['created_at']);
         return $this->db->execute();
     } 
+
+    public function getBuyerDetails($buyer_id){
+        $this->db->query('SELECT name,phone FROM users WHERE user_id = :buyer_id');
+        $this->db->bind(':buyer_id', $buyer_id);
+        $result = $this->db->single();
+        return $result;
+    }
+
+    public function confirmOrder($order_id){
+        $this->db->query('UPDATE buyer_payments SET farmer_confirmed = 1 WHERE order_id = :order_id');
+        $this->db->bind(':order_id', $order_id);
+        return $this->db->execute();
+    }
+    
+    
     
 
     

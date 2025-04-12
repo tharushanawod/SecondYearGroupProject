@@ -57,8 +57,8 @@ class FarmerController extends Controller {
         $this->View('Farmer/OrdersManagement', $data);
     }
 
-    public function getAllOrders() {
-        $orders = $this->farmerModel->getAllOrders();
+    public function getAllOrders($farmer_id) {
+        $orders = $this->farmerModel->getAllOrders($farmer_id);
         
         // Send all orders to the frontend
         echo json_encode($orders);
@@ -653,6 +653,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
                 $_SESSION['request_error'] = 'Failed to submit your request. Please try again.';
                 Redirect('FarmerController/RequestHelp');
             }
+        }
+    }
+
+    public function getBuyerDetails($buyer_id){
+        $buyerDetails = $this->farmerModel->getBuyerDetails($buyer_id);
+        if ($buyerDetails) {
+            echo json_encode($buyerDetails);
+        } else {
+            echo json_encode(['error' => 'No details found']);
+        }
+    }
+
+    public function confirmOrder($order_id) {
+      
+        $Results = $this->farmerModel->confirmOrder($order_id);
+        error_log("ERRor happened". $Results);
+        if ($Results) {
+            echo json_encode(["status" => "success"]);
+        } else {
+            echo json_encode(['error' => 'No details found']);
         }
     }
 
