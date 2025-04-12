@@ -361,6 +361,13 @@ a {
   background-color: #e53935;
 }
 
+.disabled-update {
+  color: black;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+
 @media (max-width:768px) {
   .container{
     margin-left: 110px;

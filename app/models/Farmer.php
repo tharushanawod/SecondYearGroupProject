@@ -146,7 +146,7 @@ class Farmer {
     }
 
     public function getProductsByFarmerId($farmerId) {
-        $this->db->query('SELECT * FROM corn_products WHERE user_id = :userid');
+        $this->db->query('SELECT * FROM corn_products WHERE user_id = :userid ORDER BY closing_date DESC');
         $this->db->bind(':userid', $farmerId);
         return $this->db->resultSet(); // Fetch all products
     }

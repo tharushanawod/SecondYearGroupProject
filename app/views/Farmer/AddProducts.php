@@ -51,11 +51,20 @@
                     <!-- Updated action buttons structure -->
                     <div class="action-buttons">
                         <div class="action-label">
+                        <?php if (strtotime($product->closing_date) > time()): ?>
                             <a href="<?php echo URLROOT; ?>/FarmerController/DeleteProducts/<?php echo $product->product_id; ?>"
                                 onclick="return confirm('Are you sure you want to delete this product?');">Delete</a>
+                                <?php else: ?>
+    <span class="disabled-update"> Delete</span>
+<?php endif; ?>
                         </div>
                         <div class="action-label">
-                            <a href="#" onclick="openPopup('<?php echo $product->product_id; ?>'); return false;">Update</a>
+                        <?php if (strtotime($product->closing_date) > time()): ?>
+    <a href="#" onclick="openPopup('<?php echo $product->product_id; ?>'); return false;">Update</a>
+<?php else: ?>
+    <span class="disabled-update"> Update</span>
+<?php endif; ?>
+
                         </div>
                     </div>
                 </div>

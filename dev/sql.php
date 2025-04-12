@@ -206,3 +206,43 @@ CREATE TABLE withdrawals (
     withdrawal_status ENUM('Pending', 'Confirmed', 'Rejected') DEFAULT 'Pending',
     FOREIGN KEY (order_id) REFERENCES orders_from_buyers(order_id)
 );
+
+
+CREATE TABLE restriction_logs (
+    log_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    reason VARCHAR(255) NOT NULL,
+    logged_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+
+DELIMITER //
+CREATE EVENT IF NOT EXISTS check_order_expiration
+ON SCHEDULE EVERY 1 MINUTE
+DO
+BEGIN
+    -- Update expired orders
+    UPDATE orders_from_buyers
+    SET payment_status = 'failed'
+    WHERE order_closing_date < NOW()
+      AND payment_status <> 'failed';
+
+    -- Insert logs for restricted users with order ID in reason
+    INSERT INTO restriction_logs (user_id, reason)
+    SELECT DISTINCT o.buyer_id,
+           CONCAT('Order ID ', o.order_id, ' expired without payment') AS reason
+    FROM orders_from_buyers o
+    JOIN users u ON u.user_id = o.buyer_id
+    WHERE o.order_closing_date < NOW()
+      AND o.payment_status = 'failed'
+      AND u.user_status <> 'restricted';
+
+    -- Restrict those users
+    UPDATE users u
+    JOIN orders_from_buyers o ON u.user_id = o.buyer_id
+    SET u.user_status = 'restricted'
+    WHERE o.order_closing_date < NOW()
+      AND o.payment_status = 'failed';
+END //
+DELIMITER ;
+
