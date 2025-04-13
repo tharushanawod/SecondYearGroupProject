@@ -254,3 +254,29 @@ CREATE TABLE wallets (
     last_updated DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
+
+
+DELIMITER //
+
+CREATE TRIGGER after_buyer_payment_insert
+AFTER INSERT ON buyer_payments
+FOR EACH ROW
+BEGIN
+    -- Get the farmer_id from the orders table
+    DECLARE farmerId INT;
+    DECLARE amount DECIMAL(10,2);
+
+    SELECT farmer_id INTO farmerId
+    FROM orders_from_buyers
+    WHERE order_id = NEW.order_id;
+
+    SET amount = NEW.paid_amount;
+
+    -- Update the farmer's wallet
+    UPDATE wallets
+    SET balance = balance + amount
+    WHERE user_id = farmerId;
+END;
+//
+
+DELIMITER ;

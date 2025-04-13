@@ -42,7 +42,7 @@
                 </div>
 
                  <span class="form-invalid">
-                 <?php echo $data['verified_err'];?>
+                 <?php if (isset($data['verified_err'])) echo $data['verified_err']; ?>
                  </span>
 
                 <?php $_SESSION['user_email'] = $data['email']; ?>
@@ -55,9 +55,6 @@
 
 
                 <button type="submit">Log in</button>
-                <?php
-                echo $_SESSION['user_email'];
-                ?>
             </form>
 
             <?php if (isset($data['verified_err']) && !empty($data['verified_err'])): ?>
