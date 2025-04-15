@@ -26,7 +26,21 @@ class FarmerController extends Controller {
     }
 
     public function Dashboard() {
-        $data = [];
+    
+        $recent_orders=$this->farmerModel->getRecentOrders($_SESSION['user_id']);
+        $total_orders=$this->farmerModel->getTotalOrders($_SESSION['user_id']);
+        $total_earnings=$this->farmerModel->getTotalEarnings($_SESSION['user_id']);
+        $active_products=$this->farmerModel->getActiveProducts($_SESSION['user_id']);
+        $latest_bid=$this->farmerModel->getLatestBid($_SESSION['user_id']);
+        $data = [
+            'user_name' => $_SESSION['user_name'],
+            'recent_orders' => $recent_orders,
+            'total_orders' => $total_orders,
+            'total_earnings' => $total_earnings,
+            'active_products' => $active_products,
+            'bid_amount' => $latest_bid->bid_amount,
+            'qunatity' => $latest_bid->quantity,
+        ];
         $this->View('Farmer/FarmerDashboard', $data);
     }
 

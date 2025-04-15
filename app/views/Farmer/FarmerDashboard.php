@@ -42,12 +42,12 @@
                     <i class="fas fa-clock"></i>
                 </div>
                 <div class="stat-info">
-                    <h3>Active Auctions</h3>
+                    <h3>Latest Bids on My Products</h3>
                     <p>
-                        <?php echo $data['active_auctions']; ?>
+                        <?php echo $data['bid_amount']; ?>
                     </p>
-                    <div class="stat-date">Updated
-                        <?php echo date('M d, Y'); ?>
+                    <div class="stat-date">Quantity
+                    <?php echo $data['qunatity']; ?> Kg
                     </div>
                 </div>
             </div>
@@ -59,12 +59,11 @@
                     <i class="fas fa-wallet"></i>
                 </div>
                 <div class="stat-info">
-                    <h3>Total Earnings</h3>
+                    <h3>All-Time Earnings</h3>
                     <p>Rs.
                         <?php echo number_format($data['total_earnings'], 2); ?>
                     </p>
-                    <div class="stat-date">Since
-                        <?php echo date('M d, Y'); ?>
+                    <div class="stat-date">Up to Now
                     </div>
                 </div>
             </div>
@@ -100,7 +99,7 @@
             <thead>
                 <tr>
                     <th>Product</th>
-                    <th>Buyer</th>
+                    <th>Price</th>
                     <th>Amount</th>
                     <th>Date</th>
                     <th>Status</th>
@@ -110,20 +109,30 @@
                 <?php foreach($data['recent_orders'] as $order): ?>
                 <tr>
                     <td>
-                        <?php echo $order['product_name']; ?>
+                        Corn <?php echo $order->quantity; ?> Kg
                     </td>
                     <td>
-                        <?php echo $order['buyer_name']; ?>
+                        <?php echo $order->bid_price; ?>
                     </td>
                     <td>Rs.
-                        <?php echo number_format($order['amount'], 2); ?>
+                        <?php 
+                        $amount = $order->quantity * $order->bid_price;
+                        echo number_format($amount, 2); ?>
                     </td>
                     <td>
-                        <?php echo date('M d, Y', strtotime($order['date'])); ?>
+                        <?php echo date('M d, Y', strtotime($order->order_date)); ?>
                     </td>
                     <td>
-                        <span class="order-status status-<?php echo strtolower($order['status']); ?>">
-                            <?php echo $order['status']; ?>
+                        <span class="order-status status-<?php echo strtolower($order->payment_status); ?>">
+                        <?php 
+                            if ($order->payment_status == 'failed') {
+                                echo 'Failed';
+                            } elseif ($order->payment_status == 'paid') {
+                                echo 'Paid';
+                            } else {
+                                echo 'Pending';
+                            }
+                        ?>      
                         </span>
                     </td>
                 </tr>

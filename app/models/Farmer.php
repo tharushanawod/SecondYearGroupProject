@@ -453,6 +453,58 @@ class Farmer {
         }
     }
     
+    public function getRecentOrders($farmer_id) {
+        $this->db->query("SELECT * FROM orders_from_buyers
+        WHERE orders_from_buyers.farmer_id = :farmer_id
+        ORDER BY orders_from_buyers.order_date DESC
+        LIMIT 5");
+        $this->db->bind(':farmer_id', $farmer_id);
+        return $this->db->resultSet();  // Returns an array of recent orders
+    }
+    public function getTotalOrders($farmer_id) {
+        $this->db->query("SELECT COUNT(*) as total_orders FROM orders_from_buyers WHERE farmer_id = :farmer_id");
+        $this->db->bind(':farmer_id', $farmer_id);
+        $result = $this->db->single();
+        return $result->total_orders;  // Returns the total number of orders
+    }
+
+    public function getTotalEarnings($farmer_id){
+        $this->db->query("SELECT SUM(buyer_payments.paid_amount) as total_earnings FROM orders_from_buyers
+        INNER JOIN buyer_payments ON orders_from_buyers.order_id = buyer_payments.order_id
+        WHERE orders_from_buyers.farmer_id = :farmer_id AND buyer_payments.farmer_confirmed = 1 AND buyer_payments.buyer_confirmed = 1");
+        $this->db->bind(':farmer_id', $farmer_id);
+        $result = $this->db->single();
+        return $result->total_earnings;  // Returns the total earnings amount
+    }
+
+    public function getActiveProducts($farmer_id){
+        $this->db->query("SELECT COUNT(*) as total_active_products FROM corn_products
+        WHERE closing_date > Now() AND user_id = :farmer_id");
+        $this->db->bind(':farmer_id', $farmer_id);
+        $result = $this->db->single();
+        return $result->total_active_products; 
+    }
+
+    public function getActiveAuctions($farmer_id){
+        $this->db->query("SELECT COUNT(*) as total_active_auctions FROM corn_products
+        WHERE closing_date > Now() AND user_id = :farmer_id");
+        $this->db->bind(':farmer_id', $farmer_id);
+        $result = $this->db->single();
+        return $result->total_active_auctions; 
+    }
+
+    public function getLatestBid($farmer_id){
+        $this->db->query("SELECT bids.bid_amount,corn_products.quantity
+        FROM corn_products
+        INNER JOIN bids ON corn_products.product_id = bids.product_id
+        WHERE corn_products.user_id = :farmer_id AND corn_products.closing_date > Now() ORDER BY closing_date DESC LIMIT 1");
+        $this->db->bind(':farmer_id', $farmer_id);
+        $result = $this->db->single();
+        return $result; 
+    }
+
+
+
     
 
     
