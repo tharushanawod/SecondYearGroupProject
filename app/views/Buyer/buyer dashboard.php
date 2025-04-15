@@ -1,206 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buyer Dashboard</title>
+    <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet" />
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Buyer/buyer dashboard.css">
-    <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet"/>
 </head>
-<body>
 
-    <div class="dashboard-container">
-        
+<body>
     <?php require APPROOT . '/views/inc/sidebar.php'; ?>
 
-        <div class="main-content">
-            <div class="main-content-header">
-                <h1>Buyer Dashboard</h1>
-            </div>
+    <div class="dashboard-container">
+        <div class="welcome-section">
+            <h1>Welcome back,
+                <?php echo $data['user_name']; ?>!
+            </h1>
+            <p>Track your bids and auction activities</p>
+        </div>
 
-            <div class="cardBox">
-                <div class="card">
-                    <div class="icon"><img width="50" height="50" src="https://img.icons8.com/ios/50/approval--v1.png" alt="approval--v1"/></div>
-                    <div>
-                        <div class="numbers">20</div>
-                        <div class="cardName">Accepted Bids</div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon bids-icon">
+                        <i class="fas fa-gavel"></i>
                     </div>
-                </div>
-
-                <div class="card">
-                    <div class="icon"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/auction.png" alt="auction"/></div>
-                    <div>
-                        <div class="numbers">12</div>
-                        <div class="cardName">Active Bids</div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="icon"><img width="50" height="50" src="https://img.icons8.com/external-basicons-line-edtgraphics/50/external-Purchases-delivery-basicons-line-edtgraphics.png" alt="external-Purchases-delivery-basicons-line-edtgraphics"/></div>
-                    <div>
-                        <div class="numbers">12</div>
-                        <div class="cardName">Purchases</div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="icon"><img width="50" height="50" src="https://img.icons8.com/ios/50/us-dollar-circled--v2.png" alt="us-dollar-circled--v2"/></div>
-                    <div>
-                        <div class="numbers">LKR 77,842</div>
-                        <div class="cardName">Earning</div>
+                    <div class="stat-info">
+                        <h3>Total Bids</h3>
+                        <p>
+                            <?php echo $data['total_bids']; ?>
+                        </p>
                     </div>
                 </div>
             </div>
 
-           
-            <div class="details">
-                <div class="recentOrders">
-                    <div class="cardHeader">
-                        <h2>Recent Bids</h2>                        
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon active-icon">
+                        <i class="fas fa-clock"></i>
                     </div>
-
-                    <table>
-                        <thead>
-                            <tr>
-                                <td>Product Name</td>
-                                <td>Bid Amount</td>
-                                <td>Status</td>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr>
-                                <td>Dry Corn</td>
-                                <td>LKR 1200</td>
-                                <td><span class="accepted">Accepted</span></td>
-                            </tr>
-
-                            <tr>
-                                <td>Sweet Corn</td>
-                                <td>LKR 2500</td>
-                                <td><span class="pending">Pending</span></td>
-                            </tr>
-
-                            <tr>
-                                <td>Dry Corn</td>
-                                <td>LKR 1200</td>
-                                <td><span class="accepted">Accepted</span></td>
-                            </tr>
-
-                            <tr>
-                                <td>sweet Corn</td>
-                                <td>LKR 1700</td>
-                                <td><span class="accepted">Accepted</span></td>
-                            </tr>
-
-                            <tr>
-                                <td>Dry Corn</td>
-                                <td>LKR 1200</td>
-                                <td><span class="accepted">Accepted</span></td>
-                            </tr>
-
-                            <tr>
-                                <td>Sweet Corn</td>
-                                <td>LKR 2000</td>
-                                <td><span class="pending">Pending</span></td>
-                            </tr>
-
-                            <tr>
-                                <td>Dry Corn</td>
-                                <td>LKR 1500</td>
-                                <td><span class="accepted">Accepted</span></td>
-                            </tr>
-
-                            <tr>
-                                <td>Sweet Corn</td>
-                                <td>LKR 1000</td>
-                                <td><span class="pending">Pending</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="stat-info">
+                        <h3>Active Bids</h3>
+                        <p>
+                            <?php echo $data['active_bids']; ?>
+                        </p>
+                    </div>
                 </div>
+            </div>
 
-                <div class="recentCustomers">
-                    <div class="cardHeader">
-                        <h2>Recent Customers</h2>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon spent-icon">
+                        <i class="fas fa-wallet"></i>
                     </div>
+                    <div class="stat-info">
+                        <h3>Total Spent</h3>
+                        <p>Rs.
+                            <?php echo number_format($data['total_spent'], 2); ?>
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-                    <table>
-                        <tr>
-                            <td width="60px">
-                                <div class="imgBx"><img src="<?php echo URLROOT;?>/images/images/img2.jpg" alt=""></div>
-                            </td>
-                            <td>
-                                <h4> Sunil <br> <span> Anuradhapura</span></h4>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td width="60px">
-                                <div class="imgBx"><img src="<?php echo URLROOT;?>/images/images/img2.jpg" alt=""></div>
-                            </td>
-                            <td>
-                                <h4> Nimal<br> <span> Ampara</span></h4>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td width="60px">
-                                <div class="imgBx"><img src="<?php echo URLROOT;?>/images/images/img2.jpg" alt=""></div>
-                            </td>
-                            <td>
-                                <h4> Gamage<br> <span>Anuradhapura</span></h4>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td width="60px">
-                                <div class="imgBx"><img src="<?php echo URLROOT;?>/images/images/img2.jpg" alt=""></div>
-                            </td>
-                            <td>
-                                <h4> Siriwardhana<br> <span>Anuradhapura</span></h4>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td width="60px">
-                                <div class="imgBx"><img src="<?php echo URLROOT;?>/images/images/img2.jpg" alt=""></div>
-                            </td>
-                            <td>
-                                <h4>Dissanyaka <br> <span>Puttlam</span></h4>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td width="60px">
-                                <div class="imgBx"><img src="<?php echo URLROOT;?>/images/images/img2.jpg" alt=""></div>
-                            </td>
-                            <td>
-                                <h4>Ranathunga <br> <span>Kurunegala</span></h4>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td width="60px">
-                                <div class="imgBx"><img src="<?php echo URLROOT;?>/images/images/img2.jpg" alt=""></div>
-                            </td>
-                            <td>
-                                <h4>Somapala <br> <span>Ampara</span></h4>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td width="60px">
-                                <div class="imgBx"><img src="<?php echo URLROOT;?>/images/images/img2.jpg" alt=""></div>
-                            </td>
-                            <td>
-                                <h4>Sarath<br> <span>Anuradhapura</span></h4>
-                            </td>
-                        </tr>
-                    </table>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon win-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Auctions Won</h3>
+                        <p>
+                            <?php echo $data['auctions_won']; ?>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <div class="recent-section">
+            <div class="section-header">
+                <h2>Recent Bids</h2>
+                <a href="<?php echo URLROOT; ?>/BuyerController/bids" class="view-all">
+                    View All <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <table class="recent-bids">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Bid Amount</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($data['recent_bids'] as $bid): ?>
+                    <tr>
+                        <td>
+                            <?php echo $bid['product_name']; ?>
+                        </td>
+                        <td>Rs.
+                            <?php echo number_format($bid['amount'], 2); ?>
+                        </td>
+                        <td>
+                            <?php echo date('M d, Y', strtotime($bid['date'])); ?>
+                        </td>
+                        <td>
+                            <span class="bid-status status-<?php echo strtolower($bid['status']); ?>">
+                                <?php echo $bid['status']; ?>
+                            </span>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
+
 </html>

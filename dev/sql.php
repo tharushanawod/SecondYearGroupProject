@@ -284,3 +284,33 @@ END;
 
 DELIMITER ;
 
+DELIMITER //
+
+CREATE TRIGGER extend_closing_time_if_sniped
+AFTER INSERT ON bids
+FOR EACH ROW
+BEGIN
+    DECLARE bid_time DATETIME;
+    DECLARE closing_time DATETIME;
+
+    -- Get the time of the new bid
+    SET bid_time = NEW.bid_time;
+
+    -- Get the closing date of the product
+    SELECT closing_date INTO closing_time
+    FROM corn_products
+    WHERE product_id = NEW.product_id;
+
+    -- Check if the bid was placed in the last 5 minutes
+    IF TIMESTAMPDIFF(MINUTE, bid_time, closing_time) BETWEEN 0 AND 5 THEN
+        -- Extend closing time by 5 minutes
+        UPDATE corn_products
+        SET closing_date = DATE_ADD(closing_date, INTERVAL 5 MINUTE)
+        WHERE product_id = NEW.product_id;
+    END IF;
+END;
+//
+
+DELIMITER ;
+
+

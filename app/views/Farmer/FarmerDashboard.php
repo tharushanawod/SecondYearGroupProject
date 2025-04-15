@@ -1,352 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Farmer Dashboard</title>
-    <link
-      rel="stylesheet"
-      href="<?php echo URLROOT;?>/css/Farmer/FarmerDashboard.css"
-    />
-    <link
-      href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css"
-      rel="stylesheet"
-    />
-   
-  </head>
-  <body>
-  <?php require APPROOT . '/views/inc/sidebar.php'; ?>  
-   
-    <div class="main-content">
- 
+    <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Farmer/FarmerDashboard.css">
+</head>
+<body>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
 
+<div class="dashboard-container">
+    <div class="welcome-section">
+        <h1>Welcome back,
+            <?php echo $data['user_name']; ?>!
+        </h1>
+        <p>Manage your products and track your orders</p>
+    </div>
 
-    <div class="main-content-header">
-          <h1>Farmer Dashboard</h1>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon products-icon">
+                    <i class="fas fa-seedling"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Active Products</h3>
+                    <p>
+                        <?php echo $data['active_products']; ?>
+                    </p>
+                    <div class="stat-date">As of
+                        <?php echo date('M d, Y'); ?>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="cardBox">
-          <div class="card">
-            <div>
-              <img
-                width="50"
-                height="50"
-                src="https://img.icons8.com/ios/50/product--v1.png"
-                alt="product--v1"
-              />
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon active-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Active Auctions</h3>
+                    <p>
+                        <?php echo $data['active_auctions']; ?>
+                    </p>
+                    <div class="stat-date">Updated
+                        <?php echo date('M d, Y'); ?>
+                    </div>
+                </div>
             </div>
-            <div>
-              <div class="numbers">1,504</div>
-              <div class="cardName">Products</div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div>
-              <img
-                width="50"
-                height="50"
-                src="https://img.icons8.com/ios/50/farmer-male.png"
-                alt="farmer-male"
-              />
-            </div>
-            <div>
-              <div class="numbers">80</div>
-              <div class="cardName">Workers</div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div>
-              <img
-                width="50"
-                height="50"
-                src="https://img.icons8.com/ios/50/shopping-cart--v1.png"
-                alt="shopping-cart--v1"
-              />
-            </div>
-            <div>
-              <div class="numbers">284</div>
-              <div class="cardName">Purchases</div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div>
-              <img
-                width="50"
-                height="50"
-                src="https://img.icons8.com/ios/50/money--v1.png"
-                alt="money--v1"
-              />
-            </div>
-            <div>
-              <div class="test">LKR 77,842</div>
-              <div class="cardName">Earning</div>
-            </div>
-          </div>
         </div>
 
-        <div class="details">
-          <div class="recentOrders">
-            <div class="cardHeader">
-              <h2>Recent Orders</h2>
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon earnings-icon">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Total Earnings</h3>
+                    <p>Rs.
+                        <?php echo number_format($data['total_earnings'], 2); ?>
+                    </p>
+                    <div class="stat-date">Since
+                        <?php echo date('M d, Y'); ?>
+                    </div>
+                </div>
             </div>
+        </div>
 
-            <table>
-              <thead>
-                <tr>
-                  <td>Name</td>
-                  <td>Unit Price</td>
-                  <td>Quantity</td>
-                  <td>Status</td>
-                </tr>
-              </thead>
-
-              <tbody>
-                <tr>
-                  <td>Dry Corn</td>
-                  <td>LKR 98</td>
-                  <td>100Kg</td>
-                  <td><span class="status inProgress">Pending</span></td>
-                </tr>
-
-                <tr>
-                  <td>Sweet Corn</td>
-                  <td>LKR 108</td>
-                  <td>360Kg</td>
-                  <td><span class="status delivered">Paid</span></td>
-                </tr>
-
-                <tr>
-                  <td>Dry Corn</td>
-                  <td>LKR 78</td>
-                  <td>340Kg</td>
-                  <td><span class="status inProgress">Pending</span></td>
-                </tr>
-
-                <tr>
-                  <td>Dry Corn</td>
-                  <td>LKR 99</td>
-                  <td>560Kg</td>
-                  <td><span class="status delivered">Paid</span></td>
-                </tr>
-
-                <tr>
-                  <td>Sweet Corn</td>
-                  <td>LKR 106</td>
-                  <td>310Kg</td>
-                  <td><span class="status delivered">Paid</span></td>
-                </tr>
-
-                <tr>
-                  <td>Dry Corn</td>
-                  <td>LKR 98</td>
-                  <td>450Kg</td>
-                  <td><span class="status delivered">Paid</span></td>
-                </tr>
-
-                <tr>
-                  <td>Sweet Corn</td>
-                  <td>LKR 98</td>
-                  <td>390Kg</td>
-                  <td><span class="status inProgress">Pending</span></td>
-                </tr>
-
-                <tr>
-                  <td>Dry Corn</td>
-                  <td>LKR 98</td>
-                  <td>200Kg</td>
-                  <td><span class="status delivered">Paid</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="recentCustomers">
-            <div class="cardHeader">
-              <h2>Recent Hirings</h2>
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon orders-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Total Orders</h3>
+                    <p>
+                        <?php echo $data['total_orders']; ?>
+                    </p>
+                    <div class="stat-date">As of
+                        <?php echo date('M d, Y'); ?>
+                    </div>
+                </div>
             </div>
-
-            <table>
-              <tr>
-                <td width="60px">
-                  <div class="imgBx">
-                    <img
-                      src="<?php echo URLROOT;?>/images/images/img25.jpg"
-                      alt="John Doe"
-                    />
-                  </div>
-                </td>
-                <td>
-                  <h4>
-                    Sunil <br />
-                    <span> Anuradhapura</span>
-                  </h4>
-                </td>
-              </tr>
-
-              <tr>
-                <td width="60px">
-                  <div class="imgBx">
-                    <img
-                      src="<?php echo URLROOT;?>/images/images/img25.jpg"
-                      alt="John Doe"
-                    />
-                  </div>
-                </td>
-                <td>
-                  <h4>
-                    Nimal<br />
-                    <span> Ampara</span>
-                  </h4>
-                </td>
-              </tr>
-
-              <tr>
-                <td width="60px">
-                  <div class="imgBx">
-                    <img
-                      src="<?php echo URLROOT;?>/images/images/img25.jpg"
-                      alt="John Doe"
-                    />
-                  </div>
-                </td>
-                <td>
-                  <h4>
-                    Gamage<br />
-                    <span>Anuradhapura</span>
-                  </h4>
-                </td>
-              </tr>
-
-              <tr>
-                <td width="60px">
-                  <div class="imgBx">
-                    <img
-                      src="<?php echo URLROOT;?>/images/images/img25.jpg"
-                      alt="John Doe"
-                    />
-                  </div>
-                </td>
-                <td>
-                  <h4>
-                    Siriwardhana<br />
-                    <span>Anuradhapura</span>
-                  </h4>
-                </td>
-              </tr>
-
-              <tr>
-                <td width="60px">
-                  <div class="imgBx">
-                    <img
-                      src="<?php echo URLROOT;?>/images/images/img25.jpg"
-                      alt="John Doe"
-                    />
-                  </div>
-                </td>
-                <td>
-                  <h4>
-                    Dissanyaka <br />
-                    <span>Puttlam</span>
-                  </h4>
-                </td>
-              </tr>
-
-              <tr>
-                <td width="60px">
-                  <div class="imgBx">
-                    <img
-                      src="<?php echo URLROOT;?>/images/images/img25.jpg"
-                      alt="John Doe"
-                    />
-                  </div>
-                </td>
-                <td>
-                  <h4>
-                    Ranathunga <br />
-                    <span>Kurunegala</span>
-                  </h4>
-                </td>
-              </tr>
-
-              <tr>
-                <td width="60px">
-                  <div class="imgBx">
-                    <img
-                      src="<?php echo URLROOT;?>/images/images/img25.jpg"
-                      alt="John Doe"
-                    />
-                  </div>
-                </td>
-                <td>
-                  <h4>
-                    Somapala <br />
-                    <span>Ampara</span>
-                  </h4>
-                </td>
-              </tr>
-
-              <tr>
-                <td width="60px">
-                  <div class="imgBx">
-                    <img
-                      src="<?php echo URLROOT;?>/images/images/img25.jpg"
-                      alt="John Doe"
-                    />
-                  </div>
-                </td>
-                <td>
-                  <h4>
-                    Sarath<br />
-                    <span>Anuradhapura</span>
-                  </h4>
-                </td>
-              </tr>
-            </table>
-          </div>
         </div>
     </div>
 
+    <div class="recent-section">
+        <div class="section-header">
+            <h2>Recent Orders</h2>
+            <a href="<?php echo URLROOT; ?>/FarmerController/orders" class="view-all">
+                View All <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
 
-<script>
-// Get all the links
-const elements = document.querySelectorAll('.test');
-
-// When the page loads, check if any link should be "active"
-window.addEventListener('load', () => {
-  // Get the active link from localStorage
-  const activeLinkId = localStorage.getItem('activeLink');
-
-  if (activeLinkId) {
-    // If there's an active link, add the "active" class to it
-    const activeElement = document.getElementById(activeLinkId);
-    if (activeElement) {
-      activeElement.classList.add('active');
-    }
-  }
-});
-
-// When a link is clicked, mark it as active
-elements.forEach(element => {
-  element.addEventListener('click', (event) => {
-    event.preventDefault();  // Prevent the default link behavior
-
-    // Remove the "active" class from all elements
-    elements.forEach(el => el.classList.remove('active'));
-
-    // Add the "active" class to the clicked element
-    element.classList.add('active');
-
-    // Store the clicked link's ID in localStorage
-    localStorage.setItem('activeLink', element.id);
-
-    // Optionally navigate after class is added
-    window.location.href = element.href;
-  });
-});
-</script>
-
-  </body>
+        <table class="recent-orders">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Buyer</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach($data['recent_orders'] as $order): ?>
+                <tr>
+                    <td>
+                        <?php echo $order['product_name']; ?>
+                    </td>
+                    <td>
+                        <?php echo $order['buyer_name']; ?>
+                    </td>
+                    <td>Rs.
+                        <?php echo number_format($order['amount'], 2); ?>
+                    </td>
+                    <td>
+                        <?php echo date('M d, Y', strtotime($order['date'])); ?>
+                    </td>
+                    <td>
+                        <span class="order-status status-<?php echo strtolower($order['status']); ?>">
+                            <?php echo $order['status']; ?>
+                        </span>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
 </html>
