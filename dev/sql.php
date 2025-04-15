@@ -258,25 +258,29 @@ CREATE TABLE wallets (
 
 DELIMITER //
 
-CREATE TRIGGER after_buyer_payment_insert
-AFTER INSERT ON buyer_payments
-FOR EACH ROW
+CREATE EVENT add_to_wallet_every_minute
+ON SCHEDULE EVERY 1 MINUTE
+DO
 BEGIN
-    -- Get the farmer_id from the orders table
-    DECLARE farmerId INT;
-    DECLARE amount DECIMAL(10,2);
+    -- 1. Update wallet balances
+    UPDATE wallets w
+    JOIN (
+        SELECT o.farmer_id, SUM(b.paid_amount) AS total_amount
+        FROM buyer_payments b
+        JOIN orders_from_buyers o ON b.order_id = o.order_id
+        WHERE b.buyer_confirmed = 1
+          AND b.farmer_confirmed = 1
+          AND b.wallet_status = 'not_added'
+        GROUP BY o.farmer_id
+    ) AS t ON w.user_id = t.farmer_id
+    SET w.balance = w.balance + t.total_amount;
 
-    SELECT farmer_id INTO farmerId
-    FROM orders_from_buyers
-    WHERE order_id = NEW.order_id;
-
-    SET amount = NEW.paid_amount;
-
-    -- Update the farmer's wallet
-    UPDATE wallets
-    SET balance = balance + amount
-    WHERE user_id = farmerId;
+    -- 2. Mark those payments as 'added'
+    UPDATE buyer_payments
+    SET wallet_status = 'added'
+    WHERE buyer_confirmed = 1 AND farmer_confirmed = 1 AND wallet_status = 'not_added';
 END;
 //
 
 DELIMITER ;
+

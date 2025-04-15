@@ -412,6 +412,46 @@ class Farmer {
         return $this->db->execute();
     }
     
+    public function getWalletDetails($farmer_id) {
+        try {
+            // Start transaction
+            $this->db->beginTransaction();
+    
+            // Get wallet balance
+            $this->db->query("SELECT balance FROM wallets WHERE user_id = :farmer_id");
+            $this->db->bind(':farmer_id', $farmer_id);
+            $wallet = $this->db->single();
+    
+            // Get successful transactions
+            $this->db->query("
+                SELECT buyer_payments.order_id,buyer_payments.request_date,buyer_payments.paid_amount,buyer_payments.withdraw_status
+                FROM orders_from_buyers
+                INNER JOIN buyer_payments 
+                ON orders_from_buyers.order_id = buyer_payments.order_id
+                WHERE orders_from_buyers.farmer_id = :farmer_id 
+                AND buyer_payments.farmer_confirmed = 1
+                AND buyer_payments.buyer_confirmed = 1
+                AND buyer_payments.wallet_status = 'added'
+                AND buyer_payments.withdraw_status = 'not_withdrawn'
+            ");
+
+            $this->db->bind(':farmer_id', $farmer_id);
+            $transactions = $this->db->resultSet();
+    
+            // Commit transaction
+            $this->db->commit();
+    
+            // Return both
+            return [
+                'wallet' => $wallet,
+                'transactions' => $transactions
+            ];
+    
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            die('Failed: ' . $e->getMessage());
+        }
+    }
     
     
 

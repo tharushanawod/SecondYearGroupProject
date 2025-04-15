@@ -676,6 +676,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
         }
     }
 
+    public function Wallet(){
+        $data=$this->farmerModel->getWalletDetails($_SESSION['user_id']);
+        $this->View('Farmer/Wallet',$data);
+    }
+
 
 }
 ?>
