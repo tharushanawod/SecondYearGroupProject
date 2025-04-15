@@ -1,187 +1,349 @@
 @import url(../components/sidebar.css);
 
 * {
-  font-family: sans-serif;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    font-family: "Ubuntu", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  font-family: sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f4f4f4;
-  background-size: cover;
-  background-position: center;
+    font-family: "Ubuntu", sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    background-size: cover;
+    background-position: center;
 }
 
 .dashboard-container {
-  display: flex;
-  padding-top: 50px;
+    display: flex;
+    min-height: 100vh;
 }
 
 .main-content {
-  margin-left: 250px;
-  padding: 20px;
-  flex-grow: 1;
+    margin-left: 270px;
+    padding: 30px;
+    flex-grow: 1;
 }
 
 .main-content-header h1 {
-  font-size: 45px;
-  font-weight: bold;
-  color: #1a523b;
-  text-align: center;
-  margin-top: 20px;
-  margin-bottom: 20px;
+    font-size: 48px;
+    font-weight: 700;
+    color: #032b03;
+    text-align: center;
+    margin-bottom: 30px;
+    letter-spacing: 2px;
 }
 
-.cardBox {
-  position: relative;
-  width: 100%;
-  padding: 20px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 10px;
+/* New top section with pricing info and history side by side */
+.top-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 30px;
+    margin-bottom: 30px;
 }
 
-.cardBox .card {
-  position: relative;
-  background-color: #ddf6ed;
-  padding: 30px;
-  border-radius: 10px;
-  display: flex;
-  justify-content: space-between;
-  cursor: pointer;
-  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+.price-info {
+    background: #d5f7eb;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    /* border-left: 6px solid #41cc94; */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.cardBox .card .numbers {
-  position: relative;
-  font-weight: 500;
-  font-size: 25px;
-  color: #032b03;
+.price-info:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
 }
 
-.cardBox .card .cardName {
-  color: #032b03;
-  font-size: 20px;
-  margin-top: 5px;
+.price-info h3 {
+    color: #032b03;
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: left;
 }
 
-.cardBox .card:hover {
-  background-color: #d2e9d7;
+.price-item {
+    margin: 15px 0;
+    padding: 15px;
+    background: #f0faf6;
+    border-radius: 10px;
+    transition: background 0.3s ease, transform 0.2s ease;
 }
 
-.cardBox .card:hover .numbers,
-.cardBox .card:hover .cardName {
-  color: #032b03;
+.price-item p {
+    font-size: 18px;
+    color: #032b03;
+    margin: 0;
+    font-weight: 500;
 }
 
-.details .recentOrders {
-  background-color: #ddf6ed;
-  padding: 20px;
-  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
-  border-radius: 20px;
+.price-item:hover {
+    background: #d4f1e4;
+    transform: scale(1.02);
+}
+
+.price-item .warning {
+    color: #f39c12;
+    font-size: 14px;
+    font-style: italic;
+    margin-left: 10px;
+}
+
+.price-history {
+    padding: 25px;
+    background: #d5f7eb;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.price-history h2 {
+    color: #032b03;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.price-history table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.price-history table thead td {
+    font-weight: 600;
+    color: #032b03;
+    padding: 15px;
+    background: #e8f3ec;
+    font-size: 14px;
+}
+
+.price-history table tr {
+    color: #032b03;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.price-history table tr:last-child {
+    border-bottom: none;
+}
+
+.price-history table tr:hover {
+    background-color: #e0f7e9;
+}
+
+.price-history table tr td {
+    padding: 15px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.price-history table tr td:first-child {
+    text-align: left;
 }
 
 .details {
-  width: 100%;
-  padding: 20px;
-  display: grid;
-
-  grid-gap: 30px;
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    grid-gap: 30px;
+    margin-bottom: 30px;
 }
 
-.details .cardHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+.details .recentOrders,
+.details .recentCustomers {
+    background: #d5f7eb;
+    padding: 25px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.details .recentOrders:hover,
+.details .recentCustomers:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
 .cardHeader h2 {
-  font-weight: 600;
-  color: #032b03;
+    font-size: 24px;
+    font-weight: 600;
+    color: #032b03;
 }
 
 .cardHeader .btn {
-  position: relative;
-  padding: 5px 10px;
-  background-color: #74dbb2;
-  text-decoration: none;
-  color: #032b03;
-  border-radius: 6px;
+    padding: 10px 20px;
+    background: linear-gradient(90deg, #41cc94 0%, #74dbb2 100%);
+    text-decoration: none;
+    color: #ffffff;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: background 0.3s ease;
+}
+
+.cardHeader .btn:hover {
+    background: linear-gradient(90deg, #74dbb2 0%, #41cc94 100%);
 }
 
 .details table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
 }
 
 .details table thead td {
-  font-weight: 600;
+    font-weight: 600;
+    color: #032b03;
+    padding: 15px;
+    background: #e8f3ec;
+    font-size: 14px;
 }
+
 .details .recentOrders table tr {
-  color: #032b03;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+    color: #032b03;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
+
 .details .recentOrders table tr:last-child {
-  border-bottom: none;
+    border-bottom: none;
 }
+
 .details .recentOrders table tbody tr:hover {
-  background-color: #74dbb2;
-  color: #032b03;
+    background-color: #e0f7e9;
 }
+
 .details .recentOrders table tr td {
-  padding: 10px;
-}
-.details .recentOrders table tr td:first-child {
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
+    padding: 15px;
+    text-align: left;
+    font-size: 16px;
 }
 
 .details .recentOrders table tr td:last-child {
-  text-align: center;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
+    text-align: center;
 }
+
 .details .recentOrders table tr td:nth-child(2) {
-  text-align: center;
-}
-.details .recentOrders table tr td:nth-child(3) {
-  text-align: center;
+    text-align: center;
 }
 
-.action-button {
-  border: none;
-  padding: 8px;
-  background-color: #41cc94;
-  border-radius: 8px;
+.accepted, .pending {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    border-radius: 20px;
+    font-size: 14px;
+    width: 100px;
+    height: 30px;
+    padding: 0;
+    text-align: center;
 }
 
-.action-button:hover {
-  background-color: #32b684;
-  cursor: pointer;
+.accepted {
+    background: #41cc94;
 }
 
-table tbody tr {
-  transition: all 0.3s ease; /* Smooth transition for better effect */
+.pending {
+    background: #f39c12;
 }
 
-table tbody tr:hover {
-  border-radius: 10px; /* Add border radius */
-  background-color: #f0f0f0; /* Optional: Add a background color for better visibility */
-  transform: scale(
-    1.02
-  ); /* Optional: Slightly scale the row for a nice effect */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for more emphasis */
+.details .recentCustomers table tr {
+    color: #032b03;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.details .recentCustomers table tr:last-child {
+    border-bottom: none;
+}
+
+.details .recentCustomers table tr:hover {
+    background-color: #e0f7e9;
+}
+
+.details .recentCustomers table tr td {
+    padding: 15px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.details .recentCustomers table tr td:first-child {
+    text-align: left;
+}
+
+.error {
+    color: #ff0000;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.success {
+    color: #41cc94;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+@media (max-width: 1200px) {
+    .main-content {
+        margin-left: 220px;
+    }
+    
+    .top-section,
+    .details {
+        grid-template-columns: 1fr;
+    }
+
+    .details .recentOrders,
+    .details .recentCustomers {
+        min-height: auto;
+    }
+}
+
+@media (max-width: 991px) {
+    .main-content {
+        margin-left: 100px;
+    }
+
+    .main-content-header h1 {
+        font-size: 36px;
+    }
+
+    .price-info h3,
+    .price-history h2,
+    .cardHeader h2 {
+        font-size: 22px;
+    }
 }
 
 @media (max-width: 768px) {
-  .main-content {
-    margin-left: 100px;
-  }
-  
+    .main-content {
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    .main-content-header h1 {
+        font-size: 28px;
+    }
+
+    .price-info,
+    .price-history,
+    .details .recentOrders,
+    .details .recentCustomers {
+        padding: 15px;
+    }
+
+    .price-item p,
+    .details table tr td {
+        font-size: 14px;
+    }
 }
