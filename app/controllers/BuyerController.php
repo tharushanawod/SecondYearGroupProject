@@ -68,7 +68,19 @@ class BuyerController extends Controller {
     }
 
     public function Dashboard() {
-        $data = [];
+        $total_bids= $this->BuyerModel->getTotalBids($_SESSION['user_id']);
+        $active_products = $this->BuyerModel->getActiveProducts();
+        $total_spent = $this->BuyerModel->getTotalSpent($_SESSION['user_id']);
+        $auction_won = $this->BuyerModel->getAuctionsWon($_SESSION['user_id']);
+        $recent_bids=($this->BuyerModel->getRecentBids($_SESSION['user_id']));
+        $data = [
+            'user_name' => $_SESSION['user_name'],
+            'total_bids' => $total_bids,
+            'active_products' => $active_products,
+            'total_spent' => $total_spent,
+            'auction_won' => $auction_won,
+            'recent_bids' => $recent_bids
+        ];
         $this->View('Buyer/buyer dashboard', $data);
     }
 
