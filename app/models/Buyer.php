@@ -138,8 +138,8 @@ GROUP BY corn_products.product_id, users.name, farmers.district;
     profile_pictures.file_path;
     ');
     $this->db->bind(':id', $id);
-    $worker = $this->db->single();
-    return $worker;
+    $farmer = $this->db->single();
+    return $farmer;
     
        
 
@@ -273,6 +273,85 @@ AND corn_products.closing_date > NOW();
         $this->db->bind(':created_at', $data['created_at']);
         return $this->db->execute();
     } 
+
+
+    public function TransactionComplete($order_id, $amount, $serviceCharge, $payment_id) {
+        try {
+            $this->db->beginTransaction(); // Start transaction
+    
+            // Insert payment
+            $this->db->query('
+                INSERT INTO buyer_payments (order_id, paid_amount, payment_id)
+                VALUES (:order_id, :paid_amount, :payment_id)
+            ');
+            $this->db->bind(':order_id', $order_id);
+            $this->db->bind(':paid_amount', $amount);
+            $this->db->bind(':payment_id', $payment_id);
+            $this->db->execute();
+    
+            // Update order status
+            $this->db->query('
+                            UPDATE wallets 
+                            SET balance = balance + :serviceCharge
+                            WHERE user_id = :admin_id
+                        ');
+                        $this->db->bind(':serviceCharge', $serviceCharge);
+                        $this->db->bind(':admin_id', 123); // Set this to the admin’s user ID
+                        $this->db->execute();
+
+    
+            $this->db->commit(); // Commit if all succeed
+            return true;
+    
+        } catch (Exception $e) {
+            $this->db->rollback(); // Rollback if any fails
+            return false;
+        }
+    }
+    
+
+    public function getPurchaseHistory($user_id) {
+        $this->db->query('
+            SELECT 
+                orders_from_buyers.quantity,
+                orders_from_buyers.bid_price,
+                orders_from_buyers.farmer_id,
+                buyer_payments.transaction_id,
+                buyer_payments.paid_amount,
+                buyer_payments.order_id,
+                buyer_payments.farmer_confirmed,
+                buyer_payments.buyer_confirmed
+            FROM 
+                orders_from_buyers
+            INNER JOIN 
+                buyer_payments ON orders_from_buyers.order_id = buyer_payments.order_id 
+            WHERE 
+                orders_from_buyers.buyer_id = :user_id 
+        ');
+        
+        $this->db->bind(':user_id', $user_id);
+        return $this->db->resultSet();
+    }
+
+    public function confirmOrder($order_id) {
+        $this->db->query('UPDATE buyer_payments SET buyer_confirmed = 1 WHERE order_id = :order_id');
+        $this->db->bind(':order_id', $order_id);
+        return $this->db->execute();
+    }
+
+    public function getUserStatus($user_id) {
+        $this->db->query('SELECT user_status FROM users WHERE user_id = :user_id');
+        $this->db->bind(':user_id', $user_id);
+        return $this->db->single();  // This will return the user's status (e.g., 'restricted')
+    }
+
+    public function getrestrictedDetails($user_id){
+        $this->db->query('SELECT * FROM restriction_logs WHERE user_id = :user_id');
+        $this->db->bind(':user_id', $user_id);
+        return $this->db->resultSet();  // This will return the user's status (e.g., 'restricted')
+    }
+    
+    
     
 
 }

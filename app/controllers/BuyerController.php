@@ -5,16 +5,54 @@ class BuyerController extends Controller {
     private $NotificationModel;
 
     public function __construct() {
-        if (!$this->isloggedin()) {
-            unset($_SESSION['user_id']);
-            unset($_SESSION['user_email']);
-            unset($_SESSION['user_name']);
-            session_destroy();
-            Redirect('LandingController/login');
-        }
+        // Get the current method from the URL
+        $currentMethod = $this->getCurrentMethodFromURL();
+    
+        // Bypass authentication if the current method is 'Notify'
+        if ($currentMethod !== 'Notify') {
+            // Check if user is logged in
+            if (!$this->isloggedin()) {
+                unset($_SESSION['user_id']);
+                unset($_SESSION['user_email']);
+                unset($_SESSION['user_name']);
+                session_destroy();
+                Redirect('LandingController/login');
+            } else {
+
+                  // Load models
         $this->BuyerModel = $this->model('Buyer');
         $this->NotificationModel = $this->model('Notification');
+
+                // User is logged in, now check if they are restricted
+                $user_id = $_SESSION['user_id'];
+                $user = $this->BuyerModel->getUserStatus($user_id);  // Fetch user status from the database
+    
+                // If the user is restricted, prevent access to any page except "Manage Profile"
+                if ($user->user_status === 'restricted') {
+                    if ($currentMethod !== 'ManageProfile' && $currentMethod !== 'Resetricted') {
+                        Redirect('BuyerController/Resetricted/' . $user_id);
+                    }
+                }
+                
+            }
+        }
+    
+      
     }
+
+    private function getCurrentMethodFromURL() {
+        // Parse the URL
+        if (isset($_GET['url'])) {
+            $url = rtrim($_GET['url'], '/');
+            $url = filter_var($url, FILTER_SANITIZE_URL);
+            $url = explode('/', $url);
+
+            // The second segment of the URL is the method name
+            return $url[1] ?? null;
+        }
+        return null;
+    }
+
 
     public function index() {
         $data = [];
@@ -88,9 +126,9 @@ class BuyerController extends Controller {
         echo json_encode($pendingpayments);
     }
 
-    public function purchaseHistory() {
+    public function PurchaseHistory() {
         $data = [];
-        $this->View('Buyer/purchase history', $data);
+        $this->View('Buyer/PurchaseHistory', $data);
     }
 
     public function ManageProfile() {
@@ -312,35 +350,42 @@ $notifications = array_merge($productsnotifications, $winningnotifications);
 
 //function to update the payment status
     public function Notify() {
-        error_log("Notify function triggered");
-                        // Sample data from the POST request
-                    $merchant_id = $_POST['merchant_id'];
+        $this->BuyerModel = $this->model('Buyer');
+        
+                    $hash = $_POST['md5sig'];
                     $order_id = $_POST['order_id'];
+                    $amount = $_POST['payhere_amount'];
                     $payment_id = $_POST['payment_id'];
-                    $status = $_POST['status'];
-                    $currency = $_POST['currency'];
-                    $amount = $_POST['amount'];
-                    $hash = $_POST['hash'];
+                    $status_code = $_POST['status_code'];
+                    $currency = $_POST['payhere_currency'];
+
 
                     // Your merchant secret key
                     $merchant_secret = $_ENV['MERCHANT_SECRET'];
 
                     // Verify the received hash
                     $generated_hash = strtoupper(md5(
-                        $merchant_id .
-                        $order_id .
-                        number_format($amount, 2, '.', '') .
-                        $currency .
+                        $_POST['merchant_id'] .
+                        $_POST['order_id'] .
+                        $_POST['payhere_amount'] .
+                        $_POST['payhere_currency'] .
+                        $_POST['status_code'] .
                         strtoupper(md5($merchant_secret))
                     ));
-
                     if ($hash === $generated_hash) {
+                      error_log("tharusha".var_export($_POST, true));
                         // Hash matches, it's a valid notification
-                        if ($status == 1) {
+                        if ($status_code == 2) {
                             // Payment successful
                             // Update your database, notify the user, etc.
                             $payment_status = 'paid';
+                            // $details=$this->BuyerModel->getPaymentDetailsForOrder($_POST['order_id']);
+                            $paid_amount_for_buyer =$amount/22*20;
+                            $paid_service_charge = $amount/22*2;
+
+
                             $this->BuyerModel->updatePaymentStatus($order_id, $payment_status);
+                            $this->BuyerModel->TransactionComplete($order_id, $paid_amount_for_buyer,$paid_service_charge,$payment_id);
                         } else {
                             // Payment failed
                             $payment_status = 'failed';
@@ -429,6 +474,35 @@ $notifications = array_merge($productsnotifications, $winningnotifications);
                 Redirect('BuyerController/RequestHelp');
             }
         }
+    }
+
+    public function getPurchaseHistory($user_id) {
+        $purchaseHistory = $this->BuyerModel->getPurchaseHistory($user_id);
+        header('Content-Type: application/json');
+        echo json_encode($purchaseHistory);
+    }
+
+    public function getFarmerDetails($farmerId) {
+        $farmerDetails = $this->BuyerModel->getFarmersById($farmerId);
+        
+        header('Content-Type: application/json');
+        echo json_encode([
+            'name' => $farmerDetails->name,
+            'contact_number' => $farmerDetails->phone,
+            'pickup_location' => $farmerDetails->address
+        ]);
+    }
+
+    public function confirmOrder($order_id){
+        $result = $this->BuyerModel->confirmOrder($order_id);
+        header('Content-Type: application/json');
+        echo json_encode(['success' => $result]);
+
+    }
+
+    public function Resetricted($user_id){
+        $data = $this->BuyerModel->getrestrictedDetails($user_id);
+        $this->View('Buyer/Restricted', $data);
     }
 
 }

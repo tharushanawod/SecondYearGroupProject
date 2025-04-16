@@ -14,6 +14,14 @@ $hash = strtoupper(md5(
     strtoupper(md5($merchant_secret)) 
 ));
 
+//logging the hash and all varibles  for debugging
+error_log("testing".var_export($merchant_id, true));
+error_log("testing".var_export($order_id, true));
+error_log("testing".var_export($amount, true));
+error_log("testing".var_export($currency, true));
+error_log("testing".var_export($merchant_secret, true));
+error_log("testing".var_export($hash, true));
+
 ?>
 
 <!DOCTYPE html>
@@ -83,7 +91,7 @@ $hash = strtoupper(md5(
             <input type="hidden" name="merchant_id" value="<?php echo $merchant_id;?>">    <!-- Replace your Merchant ID -->
             <input type="hidden" name="return_url" value="<?php echo URLROOT;?>/BuyerController/Success?amount=<?php echo $amount; ?>"> <!-- Correct URL -->
     <input type="hidden" name="cancel_url" value="http://sample.com/cancel">
-    <input type="hidden" name="notify_url" value="https://be29-209-38-92-166.ngrok-free.app/GroupProject/BuyerController/Notify">
+    <input type="hidden" name="notify_url" value="https://bc65-139-59-27-84.ngrok-free.app/GroupProject/BuyerController/Notify">
     <input type="hidden" name="order_id" value="<?php echo $data['order_id'];?>">
     <input type="hidden" name="items" value="Corn">
     <input type="hidden" name="currency" value="LKR">

@@ -32,7 +32,7 @@ function renderTable() {
     const row = document.createElement("tr");
     const targetDate = new Date(PendingPayment.order_closing_date);
     const totalpayment = PendingPayment.bid_price * PendingPayment.quantity;
-    const advancepayment = totalpayment * 0.3;
+    const advancepayment = totalpayment * 0.2;
 
     row.innerHTML = `
       <td data-label="Order ID">${PendingPayment.order_id}</td>

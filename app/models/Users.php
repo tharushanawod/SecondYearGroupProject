@@ -114,19 +114,18 @@ class Users {
             $this->db->bind(':user_type', $data['user_type']);
             $this->db->bind(':password', $data['password']);
             $this->db->bind(':user_status', 'pending');
-            $this->db->bind(':otp_status', 'unverified'); // Default status for users
+            $this->db->bind(':otp_status', 'unverified');
             $this->db->execute();
         
-            // Get the last inserted user_id
             $userId = $this->db->lastInsertId();
-        
-            // Insert into the corresponding table based on user_type
+    
+            // Insert into specific user table
             switch ($data['user_type']) {
                 case 'supplier':
                     $this->db->query('INSERT INTO suppliers (supplier_id, document_path) VALUES (:user_id, :document_path)');
                     $this->db->bind(':user_id', $userId);
                     $this->db->bind(':document_path', $data['document']);
-                    $this->db->execute(); // Execute the insert query
+                    $this->db->execute();
                     break;
     
                 case 'farmer':
@@ -135,7 +134,7 @@ class Users {
                     $this->db->bind(':user_id', $userId);
                     $this->db->bind(':address', $data['address']);
                     $this->db->bind(':district', $data['district']);
-                    $this->db->execute();  // Execute the insert query
+                    $this->db->execute();
                     break;
     
                 case 'farmworker':
@@ -145,7 +144,7 @@ class Users {
                     $this->db->bind(':working_area', $data['working_area']);
                     $this->db->bind(':skills', implode(',', $data['skills']));
                     $this->db->bind(':hourly_rate', $data['hourly_rate']);
-                    $this->db->execute();  // Execute the insert query
+                    $this->db->execute();
                     break;
     
                 case 'manufacturer':
@@ -154,12 +153,18 @@ class Users {
                     $this->db->bind(':user_id', $userId);
                     $this->db->bind(':company_name', $data['company_name']);
                     $this->db->bind(':document_path', $data['document']);
-                    $this->db->execute();  // Execute the insert query
+                    $this->db->execute();
                     break;
-                    
-                
             }
-
+    
+            // Create wallet for users who need it
+            if (in_array($data['user_type'], ['farmer', 'buyer', 'supplier', 'manufacturer'])) {
+                $this->db->query('INSERT INTO wallets (user_id, balance) VALUES (:user_id, 0.00)');
+                $this->db->bind(':user_id', $userId);
+                $this->db->execute();
+            }
+    
+            // Set verified status for some users
             if (in_array($data['user_type'], ['farmer', 'farmworker', 'buyer'])) {
                 $this->db->query('UPDATE users SET user_status = :user_status WHERE user_id = :id');
                 $this->db->bind(':user_status', 'verified');
@@ -167,16 +172,15 @@ class Users {
                 $this->db->execute();
             }
         
-            // Commit transaction
             $this->db->commit();
             return true;
-        
+    
         } catch (Exception $e) {
-            // Rollback if something goes wrong
             $this->db->rollBack();
             die('Registration failed: ' . $e->getMessage());
         }
     }
+    
 
     public function VerifyUsers($data){
         $this->db->query('UPDATE users SET otp_status = :status WHERE email = :email');

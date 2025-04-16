@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Table with Pagination</title>
-  <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Farmer/OrdersManagement.css">
-  <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet"/>
-  <style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Table with Pagination</title>
+    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Buyer/PendingPayments.css">
+    <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet"/>
+    <style>
     /* ... existing styles ... */
 
     .modal-overlay {
@@ -64,14 +64,14 @@
         padding: 25px;
     }
 
-    .buyer-detail {
+    .farmer-detail {
         display: flex;
         margin-bottom: 20px;
         padding-bottom: 15px;
         border-bottom: 1px solid #eef2f7;
     }
 
-    .buyer-detail:last-child {
+    .farmer-detail:last-child {
         border-bottom: none;
         margin-bottom: 0;
         padding-bottom: 0;
@@ -153,54 +153,55 @@
         transform: translateY(-1px);
     }
 </style>
+
 </head>
 <body>
 <?php require APPROOT . '/views/inc/sidebar.php'; ?> 
-
-  <div class="table-container">
-  <h1>Orders</h1>
-    <table id="orderTable">
-      <thead>
-        <tr>
-          <th>Order ID</th>
-          <th>Quantity (kg)</th>
-          <th>Unit Price (Rs)</th>
-          <th>Payment to Receive</th>
-          <th>Buyer Details</th>
-          <th>Payment Status</th>
-          <th>Buyer Confirmation</th>
-          <th>Your Confirmation</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Rows will be dynamically inserted here -->
-      </tbody>
-    </table>
-    <div class="pagination">
-      <button id="prevBtn">Previous</button>
-      <span id="pageInfo"></span>
-      <button id="nextBtn">Next</button>
+<h1>Orders</h1>
+    <div class="table-container">
+        <table id="orderTable">
+            <thead>
+                <tr>
+                    <th>Transaction ID</th>
+                    <th>Quantity</th>
+                    <th>Paid Amount</th>
+                    <th>Total Amount</th>
+                    <th>Farmer's Details</th>
+                    <th>Farmer Confirmation</th>
+                    <th>Your Confirmation</th>  
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Rows will be dynamically inserted here -->
+            </tbody>
+        </table>
+        <div class="pagination">
+            <button id="prevBtn">Previous</button>
+            <span id="pageInfo"></span>
+            <button id="nextBtn">Next</button>
+        </div>
     </div>
-  </div>
 
-  <div class="modal-overlay" id="buyerModal">
+    <!-- Add this modal HTML before the closing body tag -->
+<div class="modal-overlay" id="farmerModal">
     <div class="modal-content">
         <div class="modal-header">
-            <h3>Buyer Details</h3>
-            <button class="close-modal" onclick="closeBuyerModal()">&times;</button>
+            <h3>Farmer Details</h3>
+            <button class="close-modal" onclick="closeFarmerModal()">&times;</button>
         </div>
-        <div class="modal-body" id="buyerDetailsContent">
+        <div class="modal-body" id="farmerDetailsContent">
             <!-- Content will be dynamically inserted here -->
         </div>
         <div class="modal-footer">
-            <button class="modal-btn modal-btn-primary" onclick="closeBuyerModal()">Close</button>
+            <button class="modal-btn modal-btn-primary" onclick="closeFarmerModal()">Close</button>
         </div>
     </div>
 </div>
-<script>
-  const URLROOT = "<?php echo URLROOT; ?>";
-  const USERID = "<?php echo $_SESSION['user_id']; ?>";
-</script>
- <script src="<?php echo URLROOT;?>/js/Farmer/OrdersManagement.js"></script>
+
+    <script>
+        const URLROOT = "<?php echo URLROOT; ?>";
+        const USERID = "<?php echo $_SESSION['user_id']; ?>";
+    </script>
+    <script src="<?php echo URLROOT;?>/js/Buyer/PurchaseHistory.js"></script>
 </body>
 </html>

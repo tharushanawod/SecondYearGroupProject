@@ -194,3 +194,123 @@ END;
 //
 
 DELIMITER ;
+
+
+CREATE TABLE withdrawals (
+    transaction_id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id int NOT NULL,
+    withdrawal_amount DECIMAL(10, 2) NOT NULL,
+    farmer_confirmed BOOLEAN DEFAULT FALSE,  -- Indicates if the farmer confirmed
+    buyer_confirmed BOOLEAN DEFAULT FALSE,  -- Indicates if the buyer confirmed
+    request_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    withdrawal_status ENUM('Pending', 'Confirmed', 'Rejected') DEFAULT 'Pending',
+    FOREIGN KEY (order_id) REFERENCES orders_from_buyers(order_id)
+);
+
+
+CREATE TABLE restriction_logs (
+    log_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    reason VARCHAR(255) NOT NULL,
+    logged_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+
+DELIMITER //
+CREATE EVENT IF NOT EXISTS check_order_expiration
+ON SCHEDULE EVERY 1 MINUTE
+DO
+BEGIN
+    -- Update only pending orders that expired
+    UPDATE orders_from_buyers
+    SET payment_status = 'failed'
+    WHERE order_closing_date < NOW()
+      AND payment_status = 'pending';
+
+    -- Insert logs for restricted users (only for newly failed orders)
+    INSERT INTO restriction_logs (user_id, reason)
+    SELECT DISTINCT o.buyer_id,
+           CONCAT('Order ID ', o.order_id, ' expired without payment') AS reason
+    FROM orders_from_buyers o
+    JOIN users u ON u.user_id = o.buyer_id
+    WHERE o.order_closing_date < NOW()
+      AND o.payment_status = 'failed'
+      AND u.user_status <> 'restricted';
+
+    -- Restrict users who failed payment
+    UPDATE users u
+    JOIN orders_from_buyers o ON u.user_id = o.buyer_id
+    SET u.user_status = 'restricted'
+    WHERE o.order_closing_date < NOW()
+      AND o.payment_status = 'failed';
+END //
+DELIMITER ;
+
+
+CREATE TABLE wallets (
+    wallet_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    balance DECIMAL(10,2) DEFAULT 0.00,
+    last_updated DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+
+DELIMITER //
+
+CREATE EVENT add_to_wallet_every_minute
+ON SCHEDULE EVERY 1 MINUTE
+DO
+BEGIN
+    -- 1. Update wallet balances
+    UPDATE wallets w
+    JOIN (
+        SELECT o.farmer_id, SUM(b.paid_amount) AS total_amount
+        FROM buyer_payments b
+        JOIN orders_from_buyers o ON b.order_id = o.order_id
+        WHERE b.buyer_confirmed = 1
+          AND b.farmer_confirmed = 1
+          AND b.wallet_status = 'not_added'
+        GROUP BY o.farmer_id
+    ) AS t ON w.user_id = t.farmer_id
+    SET w.balance = w.balance + t.total_amount;
+
+    -- 2. Mark those payments as 'added'
+    UPDATE buyer_payments
+    SET wallet_status = 'added'
+    WHERE buyer_confirmed = 1 AND farmer_confirmed = 1 AND wallet_status = 'not_added';
+END;
+//
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE TRIGGER extend_closing_time_if_sniped
+AFTER INSERT ON bids
+FOR EACH ROW
+BEGIN
+    DECLARE bid_time DATETIME;
+    DECLARE closing_time DATETIME;
+
+    -- Get the time of the new bid
+    SET bid_time = NEW.bid_time;
+
+    -- Get the closing date of the product
+    SELECT closing_date INTO closing_time
+    FROM corn_products
+    WHERE product_id = NEW.product_id;
+
+    -- Check if the bid was placed in the last 5 minutes
+    IF TIMESTAMPDIFF(MINUTE, bid_time, closing_time) BETWEEN 0 AND 5 THEN
+        -- Extend closing time by 5 minutes
+        UPDATE corn_products
+        SET closing_date = DATE_ADD(closing_date, INTERVAL 5 MINUTE)
+        WHERE product_id = NEW.product_id;
+    END IF;
+END;
+//
+
+DELIMITER ;
+
+

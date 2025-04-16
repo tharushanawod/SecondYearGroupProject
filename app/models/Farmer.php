@@ -44,8 +44,16 @@ class Farmer {
         return $result;
     }
 
-    public function getAllOrders() {
-        $this->db->query("SELECT * FROM orders_from_buyers");
+    public function getAllOrders($farmer_id) {
+        $this->db->query("SELECT 
+        orders_from_buyers.*,
+        buyer_payments.farmer_confirmed,
+        buyer_payments.buyer_confirmed
+        FROM orders_from_buyers
+        LEFT JOIN buyer_payments ON orders_from_buyers.order_id = buyer_payments.order_id
+        WHERE orders_from_buyers.farmer_id = :farmer_id
+        ");
+        $this->db->bind(':farmer_id', $farmer_id);
         return $this->db->resultSet();  // Returns an array of orders
     }
 
@@ -138,7 +146,7 @@ class Farmer {
     }
 
     public function getProductsByFarmerId($farmerId) {
-        $this->db->query('SELECT * FROM corn_products WHERE user_id = :userid');
+        $this->db->query('SELECT * FROM corn_products WHERE user_id = :userid ORDER BY closing_date DESC');
         $this->db->bind(':userid', $farmerId);
         return $this->db->resultSet(); // Fetch all products
     }
@@ -390,6 +398,113 @@ class Farmer {
         $this->db->bind(':created_at', $data['created_at']);
         return $this->db->execute();
     } 
+
+    public function getBuyerDetails($buyer_id){
+        $this->db->query('SELECT name,phone FROM users WHERE user_id = :buyer_id');
+        $this->db->bind(':buyer_id', $buyer_id);
+        $result = $this->db->single();
+        return $result;
+    }
+
+    public function confirmOrder($order_id){
+        $this->db->query('UPDATE buyer_payments SET farmer_confirmed = 1 WHERE order_id = :order_id');
+        $this->db->bind(':order_id', $order_id);
+        return $this->db->execute();
+    }
+    
+    public function getWalletDetails($farmer_id) {
+        try {
+            // Start transaction
+            $this->db->beginTransaction();
+    
+            // Get wallet balance
+            $this->db->query("SELECT balance FROM wallets WHERE user_id = :farmer_id");
+            $this->db->bind(':farmer_id', $farmer_id);
+            $wallet = $this->db->single();
+    
+            // Get successful transactions
+            $this->db->query("
+                SELECT buyer_payments.order_id,buyer_payments.request_date,buyer_payments.paid_amount,buyer_payments.withdraw_status
+                FROM orders_from_buyers
+                INNER JOIN buyer_payments 
+                ON orders_from_buyers.order_id = buyer_payments.order_id
+                WHERE orders_from_buyers.farmer_id = :farmer_id 
+                AND buyer_payments.farmer_confirmed = 1
+                AND buyer_payments.buyer_confirmed = 1
+                AND buyer_payments.wallet_status = 'added'
+                AND buyer_payments.withdraw_status = 'not_withdrawn'
+            ");
+
+            $this->db->bind(':farmer_id', $farmer_id);
+            $transactions = $this->db->resultSet();
+    
+            // Commit transaction
+            $this->db->commit();
+    
+            // Return both
+            return [
+                'wallet' => $wallet,
+                'transactions' => $transactions
+            ];
+    
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            die('Failed: ' . $e->getMessage());
+        }
+    }
+    
+    public function getRecentOrders($farmer_id) {
+        $this->db->query("SELECT * FROM orders_from_buyers
+        WHERE orders_from_buyers.farmer_id = :farmer_id
+        ORDER BY orders_from_buyers.order_date DESC
+        LIMIT 5");
+        $this->db->bind(':farmer_id', $farmer_id);
+        return $this->db->resultSet();  // Returns an array of recent orders
+    }
+    public function getTotalOrders($farmer_id) {
+        $this->db->query("SELECT COUNT(*) as total_orders FROM orders_from_buyers WHERE farmer_id = :farmer_id");
+        $this->db->bind(':farmer_id', $farmer_id);
+        $result = $this->db->single();
+        return $result->total_orders;  // Returns the total number of orders
+    }
+
+    public function getTotalEarnings($farmer_id){
+        $this->db->query("SELECT SUM(buyer_payments.paid_amount) as total_earnings FROM orders_from_buyers
+        INNER JOIN buyer_payments ON orders_from_buyers.order_id = buyer_payments.order_id
+        WHERE orders_from_buyers.farmer_id = :farmer_id AND buyer_payments.farmer_confirmed = 1 AND buyer_payments.buyer_confirmed = 1");
+        $this->db->bind(':farmer_id', $farmer_id);
+        $result = $this->db->single();
+        return $result->total_earnings;  // Returns the total earnings amount
+    }
+
+    public function getActiveProducts($farmer_id){
+        $this->db->query("SELECT COUNT(*) as total_active_products FROM corn_products
+        WHERE closing_date > Now() AND user_id = :farmer_id");
+        $this->db->bind(':farmer_id', $farmer_id);
+        $result = $this->db->single();
+        return $result->total_active_products; 
+    }
+
+    public function getActiveAuctions($farmer_id){
+        $this->db->query("SELECT COUNT(*) as total_active_auctions FROM corn_products
+        WHERE closing_date > Now() AND user_id = :farmer_id");
+        $this->db->bind(':farmer_id', $farmer_id);
+        $result = $this->db->single();
+        return $result->total_active_auctions; 
+    }
+
+    public function getLatestBid($farmer_id){
+        $this->db->query("SELECT bids.bid_amount,corn_products.quantity
+        FROM corn_products
+        INNER JOIN bids ON corn_products.product_id = bids.product_id
+        WHERE corn_products.user_id = :farmer_id AND corn_products.closing_date > Now() ORDER BY closing_date DESC LIMIT 1");
+        $this->db->bind(':farmer_id', $farmer_id);
+        $result = $this->db->single();
+        return $result; 
+    }
+
+
+
     
 
     

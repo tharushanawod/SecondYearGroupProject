@@ -2,6 +2,8 @@
  use PHPMailer\PHPMailer\PHPMailer;
  use PHPMailer\PHPMailer\SMTP;
  use PHPMailer\PHPMailer\Exception;
+ ini_set('display_errors', 1);
+error_reporting(E_ALL);
  
 class LandingController extends Controller{
     private $userModel;
@@ -173,7 +175,7 @@ class LandingController extends Controller{
         
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
-        
+        echo "tharusha";
             // Generate a 6-digit OTP
             $otp = rand(100000, 999999); 
             $_SESSION['otp'] = $otp; // Store OTP in session
@@ -187,7 +189,7 @@ class LandingController extends Controller{
                 $mail->Host = 'smtp.gmail.com';
                 $mail->SMTPAuth = true;
                 $mail->Username = 'tharushanjayasinghe222@gmail.com';
-                $mail->Password = 'vzsuwxuiitfvakpl';
+                $mail->Password = 'cjvnnrstpmhzntvp';
                 $mail->SMTPSecure = 'tls';
                 $mail->Port = 587;
         
@@ -237,7 +239,7 @@ class LandingController extends Controller{
     public function Login(){
         if($_SERVER['REQUEST_METHOD'] == 'POST')
         {
-            $_POST = filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING);
+            $_POST = filter_input_array(INPUT_POST, FILTER_DEFAULT);
             $data = [
                 'email' => trim($_POST['email']),
                 'password' => trim($_POST['password']),
@@ -279,13 +281,6 @@ class LandingController extends Controller{
                         return;  // Stop further execution
                     }
 
-                    if($loggedInUser->otp_status == 'restricted'){
-                        $data['verified_err'] = 'Your account is restricted. Please contact the admin. ⬇️  CornCradleadmin@mail.com';
-                        $this->View('Landing/Login', $data);  // Show the error in the login page
-                        return;  // Stop further execution
-                    }
-               
-    
                     // If the user is verified, create session
                     $this->CreateUserSession($loggedInUser);
     
