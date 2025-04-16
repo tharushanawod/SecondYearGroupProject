@@ -299,12 +299,20 @@ class BuyerController extends Controller {
 
     public function getNotifications($buyer_id) {
         $productsnotifications = (array) $this->NotificationModel->getNotifications($buyer_id);
-$winningnotifications = (array) $this->NotificationModel->getWinningNotifications($buyer_id);
-$notifications = array_merge($productsnotifications, $winningnotifications);
-
+        $winningnotifications = (array) $this->NotificationModel->getWinningNotifications($buyer_id);
+        
+        $notifications = array_merge($productsnotifications, $winningnotifications);
+    
+        // Sort by date descending
+        usort($notifications, function($a, $b) {
+            return strtotime($b->created_at) - strtotime($a->created_at);
+        });
+    
+        // Output as JSON
         header('Content-Type: application/json');
         echo json_encode($notifications);
     }
+    
 
     public function getUnreadNotifications() {
         $data = [];
