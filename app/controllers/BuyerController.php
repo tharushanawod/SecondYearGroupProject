@@ -175,13 +175,15 @@ class BuyerController extends Controller {
                 }
                 $result = $this->BuyerModel->UpdateProfile($data);
                 if ($result) {
-                    Redirect('LandingController/logout');
+                    Redirect('BuyerController/ManageProfile');
                 }
             } else {
                 $this->view('Buyer/ManageProfile', $data);
             }
         } else {
             $user = $this->BuyerModel->getUserById($_SESSION['user_id']);
+            $_SESSION['user_name'] = $user->name;
+            $_SESSION['user_email'] = $user->email;
             $data = [
                 'name' => $user->name,
                 'phone' => $user->phone,

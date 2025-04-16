@@ -49,7 +49,6 @@
     <div class="popup-content">
       <span class="close-btn" onclick="closePopup()">&times;</span>
       <p>Your profile has been updated successfully!</p>
-      <p >Please Login To the System Again</p>
     </div>
   </div>
 

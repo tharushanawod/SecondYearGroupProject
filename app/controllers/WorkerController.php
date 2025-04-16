@@ -74,7 +74,7 @@ class WorkerController extends Controller {
                 $result = $this->WorkerModel->UpdateProfile($data);
               
                 if($result){
-                    Redirect('LandingController/logout');
+                    Redirect('WorkerController/ManageProfile');
                 }
             }else{
                 $this->view('FarmWorker/ManageProfile',$data);
@@ -83,6 +83,8 @@ class WorkerController extends Controller {
             }
             else{
                 $user=$this->WorkerModel->getUserById($_SESSION['user_id']);
+                $_SESSION['user_name'] = $user->name;
+                $_SESSION['user_email'] = $user->email;
                 $data = [
                     'name' => $user->name,
                     'phone' => $user->phone,

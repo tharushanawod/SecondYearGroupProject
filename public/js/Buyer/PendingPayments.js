@@ -28,6 +28,14 @@ function renderTable() {
 
   bidsTable.innerHTML = ""; // Clear the table
 
+    // 👉 Check if there is no data
+    if (paginatedPendingPayments.length === 0) {
+      const row = document.createElement("tr");
+      row.innerHTML = `<td colspan="7" style="text-align:center;">No data to show</td>`;
+      bidsTable.appendChild(row);
+      return; // Stop here, don't try to render
+    }
+
   paginatedPendingPayments.forEach((PendingPayment) => {
     const row = document.createElement("tr");
     const targetDate = new Date(PendingPayment.order_closing_date);

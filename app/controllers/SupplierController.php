@@ -314,13 +314,15 @@ class SupplierController extends Controller {
                 $result = $this->Supplier->updateProfile($data);
 
                 if ($result) {
-                    Redirect('LandingController/logout');
+                    Redirect('SupplierController/ManageProfile');
                 }
             } else {
                 $this->view('Ingredient Supplier/ManageProfile', $data);
             }
         } else {
             $user = $this->Supplier->getUserById($_SESSION['user_id']);
+            $_SESSION['user_name'] = $user->name;
+            $_SESSION['user_email'] = $user->email;
             $data = [
                 'name' => $user->name,
                 'phone' => $user->phone,

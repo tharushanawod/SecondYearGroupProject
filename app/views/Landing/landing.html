@@ -328,6 +328,70 @@
             color: white;
         }
 
+        .faq-section {
+            padding: 6rem 2rem;
+            background: white;
+        }
+
+        .faq-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            background: #f8f9fa;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: #f0fff4;
+        }
+
+        .faq-question h3 {
+            font-size: 1.1rem;
+            color: #1e293b;
+            margin: 0;
+        }
+
+        .faq-question i {
+            color: #2e8b57;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-answer {
+            padding: 1.5rem;
+            color: #64748b;
+            line-height: 1.6;
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .faq-item.active .faq-question {
+            background: #f0fff4;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
         @keyframes slideDown {
             from {
                 transform: translateY(-20px);
@@ -433,7 +497,7 @@
                 </div>
             </div>
             <div class="hero-image">
-                <img src="<?php echo URLROOT; ?>/public/images/corn-auction.jpg" alt="Corn Auction Platform">
+                <img src="../../../public/images/card-pic-1.jpg" alt="Corn Auction Platform">
             </div>
         </div>
     </section>
@@ -510,6 +574,74 @@
         </div>
     </section>
 
+    <section class="faq-section" id="faq">
+        <div class="faq-content">
+            <div class="section-header">
+                <h2>Frequently Asked Questions</h2>
+                <p>Find answers to common questions about Corn Cradle</p>
+            </div>
+            <div class="faq-items">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>How does the corn auction process work?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our auction process is simple and transparent. Farmers list their corn with detailed
+                            specifications, buyers place bids, and the highest bidder wins. All transactions are secured
+                            through our platform, and we provide real-time updates throughout the auction process.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>What are the fees for using Corn Cradle?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We charge a small commission fee on successful transactions. The exact fee structure varies
+                            based on the transaction amount and type. There are no hidden charges, and all fees are
+                            clearly displayed before you participate in any auction.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>How do I ensure the quality of the corn I'm buying?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>All corn listed on our platform undergoes a quality verification process. We require detailed
+                            specifications, including moisture content, grade, and other quality parameters.
+                            Additionally, we have a rating system where buyers can review their purchases, helping
+                            maintain quality standards.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>What payment methods are accepted?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We accept various secure payment methods including bank transfers, digital wallets, and other
+                            electronic payment systems. All transactions are protected by our secure payment gateway,
+                            ensuring safe and reliable transfers.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>How do I get started as a farmer or buyer?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Getting started is easy! Simply create an account, complete the verification process, and you
+                            can start participating in auctions. Farmers can list their corn immediately, while buyers
+                            can browse and bid on available lots. Our support team is available to guide you through the
+                            process.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-section">
@@ -532,6 +664,29 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const faqItems = document.querySelectorAll('.faq-item');
+
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+
+                    // Close all other items
+                    faqItems.forEach(otherItem => {
+                        otherItem.classList.remove('active');
+                    });
+
+                    // Toggle current item
+                    if (!isActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

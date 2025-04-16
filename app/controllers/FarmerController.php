@@ -362,8 +362,7 @@ class FarmerController extends Controller {
                 $result = $this->farmerModel->UpdateProfile($data);
               
                 if($result){
-                    // Redirect('BuyerController/ManageProfile');
-                    Redirect('LandingController/logout');
+                    Redirect('FarmerController/ManageProfile');
                 }
             }else{
                 $this->view('Farmer/ManageProfile',$data);
@@ -372,6 +371,8 @@ class FarmerController extends Controller {
             }
             else{
                 $user=$this->farmerModel->getUserById($_SESSION['user_id']);
+                $_SESSION['user_name'] = $user->name;
+                $_SESSION['user_email'] = $user->email;
                 $data = [
                     'name' => $user->name,
                     'phone' => $user->phone,

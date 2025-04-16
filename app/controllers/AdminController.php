@@ -76,7 +76,7 @@ class AdminController extends Controller {
                 $result = $this->AdminModel->UpdateProfile($data);
                 
                 if ($result) {
-                    Redirect('LandingController/logout');
+                    Redirect('AdminController/ManageProfile');
                 }
             } else {
                 $this->view('Admin/ManageProfile', $data);
@@ -85,6 +85,8 @@ class AdminController extends Controller {
         } else {
             
             $user = $this->AdminModel->getUserById($_SESSION['user_id']);
+            $_SESSION['user_name'] = $user->name;
+            $_SESSION['user_email'] = $user->email;
             $data = [
                 'name' => $user->name,
                 'phone' => $user->phone,

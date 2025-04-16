@@ -13,7 +13,6 @@ function fetchpayments() {
     .then((response) => response.json())
     .then((data) => {
       Payments = data; // Store all payment history in the array
-      console.log(Payments);
       renderTable(); // Initial table render
       updatePagination();
     })
