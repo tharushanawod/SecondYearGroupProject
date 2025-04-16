@@ -28,12 +28,7 @@ class AdminController extends Controller {
 
     // Fetch and display users on the dashboard
     public function Dashboard() {
-       
-        // Retrieve users from the model
-        $users = $this->AdminModel->getUsers();
-
-        // Pass the user data to the view
-        $data = ['users' => $users];
+        $data = [];
 
         // Render the view
         $this->View('Admin/LandingDashboard', $data);
@@ -439,6 +434,12 @@ class AdminController extends Controller {
         // Close output stream
         fclose($output);
         exit; // Stop further script execution after sending the file
+    }
+
+    public function Ratings(){
+        $data = [];
+
+        $this->View('Admin/Ratings',$data);
     }
 
  
