@@ -72,7 +72,8 @@
                 <li><a href="<?php echo URLROOT;?>/AdminController/ModeratorControl"><i class="fa-solid fa-user-tie"></i><span class="menu-text">Moderators</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/AdminController/VerifyUsers"><i class="fa-solid fa-check"></i><span class="menu-text">Verify Users</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/AdminController/Report"><i class="fa-solid fa-chart-bar"></i><span class="menu-text">Reports</span></a></li>  
-              
+                <li><a href="<?php echo URLROOT;?>/AdminController/Wallet"><i class="fa-solid fa-wallet"></i><span class="menu-text">Wallet</span></a></li>
+               
                 <?php endif; ?>
        
       

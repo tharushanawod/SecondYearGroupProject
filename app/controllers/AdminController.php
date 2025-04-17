@@ -484,6 +484,42 @@ class AdminController extends Controller {
             die('Something went wrong');
         }
     }
+
+    public function Wallet(){
+        // Fetch wallet balance from the model
+        $balance = $this->AdminModel->getWalletBalance($_SESSION['user_id']);
+        $transactions = $this->AdminModel->getTransactions($_SESSION['user_id']);
+        
+        // Pass the balance data to the view
+        $data = [
+            'balance' => $balance,
+            'transactions' => $transactions,
+    
+    ];
+
+        // Render the view
+        $this->View('Admin/Wallet', $data);
+    }
+
+    public function processWithdrawal() {
+        // Check if the request is a POST request
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Get the withdrawal amount from the request
+            $withdrawalAmount = $_POST['amount'];
+    
+            // Process the withdrawal using the model
+            if ($this->AdminModel->processWithdrawal($withdrawalAmount)) {
+                // Redirect to the wallet page after successful withdrawal
+                Redirect('AdminController/Wallet');
+            } else {
+                // Handle error if withdrawal fails
+                die('Something went wrong while processing the withdrawal.');
+            }
+        } else {
+            // If not a POST request, redirect to the wallet page
+            Redirect('AdminController/Wallet');
+        }
+    }
  
     
 

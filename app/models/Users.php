@@ -477,6 +477,54 @@ class Users {
         return $bidcount->bid_count;
     }
 
+    public function getWalletBalance(){
+        $this->db->query('SELECT SUM(balance) as total_balance FROM wallets WHERE user_id = :user_id');
+        $this->db->bind(':user_id', 123);
+        $walletbalance = $this->db->single();
+        return $walletbalance->total_balance;
+    }
+
+    public function getTransactions(){
+        $this->db->query('SELECT * FROM buyer_payments WHERE admin_withdraw_status = :admin_withdraw_status');
+        $this->db->bind(':admin_withdraw_status', 'not_withdrawn');
+        $transactions = $this->db->resultSet();
+        return $transactions;
+    }
+
+    public function processWithdrawal($withdrawalAmount){
+    
+
+
+        try {
+            // Start transaction
+            $this->db->beginTransaction();
+    
+           
+            $this->db->query('UPDATE wallets 
+            SET balance = balance - :withdrawalAmount 
+            WHERE user_id = 123;
+            ');
+            $this->db->bind(':withdrawalAmount', $withdrawalAmount);
+            $this->db->single();
+
+            $this->db->query('UPDATE buyer_payments SET admin_withdraw_status = :admin_withdraw_status WHERE admin_withdraw_status = :not_withdrawn');
+            $this->db->bind(':admin_withdraw_status', 'withdrawn');
+            $this->db->bind(':not_withdrawn', 'not_withdrawn');
+            $this->db->single();
+    
+            // Commit transaction
+            $this->db->commit();
+    
+            // Return both results as an array
+            return true;
+        } catch (Exception $e) {
+            // Rollback on error
+            $this->db->rollback(); // Rollback if any fails
+            return false;
+        }
+        
+    }
+
 
 }
 
