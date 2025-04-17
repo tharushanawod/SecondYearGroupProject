@@ -32,51 +32,53 @@
         </div>
 
         <div class="ratings-list">
-            <!-- Product Rating Example -->
-            <div class="rating-card">
+            <?php if (!empty($data['ratings'])) : ?>
+            <?php foreach ($data['ratings'] as $rating) : ?>
+                <div class="rating-card">
                 <div class="rating-header">
-                    <span class="rating-type product-rating">Product Rating</span>
-                    <span class="rating-meta">Submitted: 2 hours ago</span>
+                    <span class="rating-type 
+                    <?php if (is_null($rating->buyer_id)){
+                        echo 'worker-rating'; 
+                    } else { 
+                        echo 'product-rating'; 
+                    } ?>">
+                    <?php if (is_null($rating->buyer_id)){
+                        echo 'worker-rating'; 
+                    } else { 
+                        echo 'product-rating'; 
+                    } ?>
+                    </span>
+                    <span class="rating-meta">Submitted: <?php echo $rating->created_at; ?></span>
                 </div>
-                <h4>Organic Tomatoes</h4>
+                <h4><?php echo htmlspecialchars($rating->title); ?></h4>
                 <div class="rating-stars">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
+                    <?php for ($i = 1; $i <= 5; $i++) : ?>
+                    <?php if ($i <= $rating->rating) : ?>
+                        <i class="fas fa-star"></i>
+                    <?php elseif ($i - 0.5 <= $rating->rating) : ?>
+                        <i class="fas fa-star-half-alt"></i>
+                    <?php else : ?>
+                        <i class="far fa-star"></i>
+                    <?php endif; ?>
+                    <?php endfor; ?>
                 </div>
                 <p class="rating-content">
-                    "Excellent quality tomatoes, very fresh and flavorful. Would definitely buy again!"
+                    "<?php echo htmlspecialchars($rating->review_text); ?>"
                 </p>
                 <div class="rating-actions">
-                    <button class="btn btn-approve">Approve</button>
-                    <button class="btn btn-reject">Reject</button>
+                <a href="<?php echo is_null($rating->buyer_id) ? URLROOT . '/AdminController/ApproveWorkerReview/' . $rating->id : URLROOT . '/AdminController/ApproveProductReview/' . $rating->id; ?>">
+                <button class="btn btn-approve" >Approve</button>
+                </a>
+                <a href="<?php echo is_null($rating->buyer_id) ? URLROOT . '/AdminController/RejectWorkerReview/' . $rating->id : URLROOT . '/AdminController/RejectProductReview/' . $rating->id; ?>">
+                <button class="btn btn-reject" ?>Reject</button>
+                </a>
+                    
                 </div>
-            </div>
-
-            <!-- Farm Worker Rating Example -->
-            <div class="rating-card">
-                <div class="rating-header">
-                    <span class="rating-type worker-rating">Farm Worker Rating</span>
-                    <span class="rating-meta">Submitted: 4 hours ago</span>
                 </div>
-                <h4>John Smith - Farm Worker</h4>
-                <div class="rating-stars">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="far fa-star"></i>
-                </div>
-                <p class="rating-content">
-                    "Very professional and hardworking. Excellent knowledge of organic farming practices."
-                </p>
-                <div class="rating-actions">
-                    <button class="btn btn-approve">Approve</button>
-                    <button class="btn btn-reject">Reject</button>
-                </div>
-            </div>
+            <?php endforeach; ?>
+            <?php else : ?>
+            <p>No ratings found.</p>
+            <?php endif; ?>
         </div>
     </div>
 </body>

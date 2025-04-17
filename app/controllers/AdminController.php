@@ -12,9 +12,7 @@ class AdminController extends Controller {
             session_destroy();
             Redirect('LandingController/login');
         }
-       
-   
-        $this->AdminModel = $this->model('Users');
+        
         $this->AdminModel = $this->model('Users');
     }
 
@@ -437,11 +435,48 @@ class AdminController extends Controller {
     }
 
     public function Ratings(){
-        $data = [];
+
+        // Fetch ratings from the model
+        $ratings = $this->AdminModel->getRatings();
+        
+        $rating_merged = array_merge($ratings['farmer_reviews_worker'], $ratings['buyer_reviews_farmer']);
+        // Pass the ratings data to the view
+        $data = ['ratings' => $rating_merged];
 
         $this->View('Admin/Ratings',$data);
     }
 
+    public function ApproveWorkerReview($id){
+        if($this->AdminModel->ApproveWorkerReview($id)){
+            Redirect('AdminController/Ratings');
+        }else{
+            die('Something went wrong');
+        }
+    }
+   
+    public function ApproveProductReview($id){
+        if($this->AdminModel->ApproveProductReview($id)){
+            Redirect('AdminController/Ratings');
+        }else{
+            die('Something went wrong');
+        }
+    }
+
+    public function RejectWorkerReview($id){
+        if($this->AdminModel->RejectWorkerReview($id)){
+            Redirect('AdminController/Ratings');
+        }else{
+            die('Something went wrong');
+        }
+    }
+
+    public function RejectProductReview($id){
+        if($this->AdminModel->RejectProductReview($id)){
+            Redirect('AdminController/Ratings');
+        }else{
+            die('Something went wrong');
+        }
+    }
  
     
 
