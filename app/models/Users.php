@@ -428,9 +428,54 @@ class Users {
             return false;
         }
     }
+
+    public function getUserCountByType() {
+ 
+        try {
+            // Start transaction
+            $this->db->beginTransaction();
+    
+           
+            $this->db->query('SELECT COUNT(*) as farmer_count FROM users WHERE user_type = :user_type');
+            $this->db->bind(':user_type', 'farmer');
+            $farmercount = $this->db->single();
+    
+            $this->db->query('SELECT COUNT(*) as buyer_count FROM users WHERE user_type = :user_type');
+            $this->db->bind(':user_type', 'buyer');
+            $buyercount = $this->db->single();
+
+            $this->db->query('SELECT COUNT(*) as worker_count FROM users WHERE user_type = :user_type');
+            $this->db->bind(':user_type', 'farmworker');
+            $workercount = $this->db->single();
+    
+            // Commit transaction
+            $this->db->commit();
+    
+            // Return both results as an array
+            return [
+                'farmercount' => $farmercount->farmer_count,
+                'buyercount' => $buyercount->buyer_count,
+                'workercount' => $workercount->worker_count
+            ];
+        } catch (Exception $e) {
+            // Rollback on error
+            $this->db->rollback(); // Rollback if any fails
+            return false;
+        }
+    }
+
+    public function getProductCount(){
+        $this->db->query('SELECT COUNT(*) as product_count FROM corn_products');
+        $productcount = $this->db->single();
+        return $productcount->product_count;
+    }
     
 
-    
+    public function getBidCount(){
+        $this->db->query('SELECT COUNT(*) as bid_count FROM bids');
+        $bidcount = $this->db->single();
+        return $bidcount->bid_count;
+    }
 
 
 }

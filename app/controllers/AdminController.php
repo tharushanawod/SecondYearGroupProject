@@ -26,7 +26,14 @@ class AdminController extends Controller {
 
     // Fetch and display users on the dashboard
     public function Dashboard() {
-        $data = [];
+        $user_counts = $this->AdminModel->getUserCountByType();
+        $product_count = $this->AdminModel->getProductCount();
+        $bid_count = $this->AdminModel->getBidCount();
+        $data = [
+            'user_counts' => $user_counts,
+            'product_count' => $product_count,
+            'bid_count' => $bid_count,
+        ];
 
         // Render the view
         $this->View('Admin/LandingDashboard', $data);

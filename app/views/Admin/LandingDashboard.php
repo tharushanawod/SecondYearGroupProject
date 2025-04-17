@@ -19,7 +19,9 @@
                     <div class="card-body">
                         <div>
                             <h6 class="card-title">Total Farmers</h6>
-                            <h2 class="mb-0">1,234</h2>
+                            <h2 class="mb-0">
+                                <?php echo $data['user_counts']['farmercount']; ?>
+                            </h2>
                         </div>
                         <i class="fas fa-tractor"></i>
                     </div>
@@ -30,7 +32,9 @@
                     <div class="card-body">
                         <div>
                             <h6 class="card-title">Total Buyers</h6>
-                            <h2 class="mb-0">856</h2>
+                            <h2 class="mb-0">
+                            <?php echo $data['user_counts']['buyercount']; ?>
+                            </h2>
                         </div>
                         <i class="fas fa-shopping-basket"></i>
                     </div>
@@ -41,7 +45,9 @@
                     <div class="card-body">
                         <div>
                             <h6 class="card-title">Total Farm Workers</h6>
-                            <h2 class="mb-0">2,567</h2>
+                            <h2 class="mb-0">
+                            <?php echo $data['user_counts']['workercount']; ?>
+                            </h2>
                         </div>
                         <i class="fas fa-users"></i>
                     </div>
@@ -55,7 +61,9 @@
                     <div class="card-body">
                         <div>
                             <h6 class="card-title">Total Products Listed</h6>
-                            <h2 class="mb-0">3,456</h2>
+                            <h2 class="mb-0">
+                            <?php echo $data['product_count']; ?>
+                            </h2>
                         </div>
                         <i class="fas fa-seedling"></i>
                     </div>
@@ -66,7 +74,9 @@
                     <div class="card-body">
                         <div>
                             <h6 class="card-title">Total Bids Placed</h6>
-                            <h2 class="mb-0">1,789</h2>
+                            <h2 class="mb-0">
+                            <?php echo $data['bid_count']; ?>
+                            </h2>
                         </div>
                         <i class="fas fa-gavel"></i>
                     </div>
