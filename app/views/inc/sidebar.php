@@ -53,8 +53,8 @@
            
             <?php elseif ($user_role === 'farmworker'): ?>
               <li><a href="<?php echo URLROOT;?>/WorkerController/dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>
-              <li><a href="<?php echo URLROOT;?>/WorkerController/jobRequest"><i class="fa-solid fa-user-tie"></i><span class="menu-text">Jobs</span></a></li>
-              <li><a href="<?php echo URLROOT;?>/WorkerController/DoList"><i class="fa-solid fa-list-check"></i><span class="menu-text">Do List</span></a></li>
+              <li><a href="<?php echo URLROOT;?>/WorkerController/jobRequest"><i class="fa-solid fa-user-tie"></i><span class="menu-text">Pending Jobs</span></a></li>
+              <li><a href="<?php echo URLROOT;?>/WorkerController/DoList"><i class="fa-solid fa-list-check"></i><span class="menu-text">Active Jobs</span></a></li>
               <li><a href="<?php echo URLROOT;?>/WorkerController/trainingSelection"><i class="fa-solid fa-truck-monster"></i><span class="menu-text">Training</span></a></li>
               <li><a href="<?php echo URLROOT;?>/WorkerController/RequestHelp"><i class="fa-solid fa-comment-dots"></i><span class="menu-text">Request Help</span></a></li>
               

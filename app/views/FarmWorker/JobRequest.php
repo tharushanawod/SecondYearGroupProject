@@ -6,7 +6,6 @@
     <title>Farmworker - Job Requests</title>
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/FarmWorker/JobRequest.css">
     <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet"/>
-   
 </head>
 <body>
 <?php require APPROOT . '/views/inc/sidebar.php'; ?>
@@ -34,14 +33,20 @@
                 <td class="farmer-name"><?php echo $request->name; ?></td>
                 <td class="request-time"><?php echo $request->created_at; ?></td>
                 <td class="action-buttons">
-                    <a href="<?php echo URLROOT.'/WorkerController/ViewRequest/'.$request->job_id; ?>"><button class="btn btn-view">View</button></a>
+                    <a href="<?php echo URLROOT.'/WorkerController/ViewRequest/'.$request->job_id; ?>">
+                        <button class="btn btn-view">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                    </a>
                 
                 </td>
     </tr>
     <?php endforeach; ?>
     <?php else: ?>
     <tr>
-        <td colspan="4"><p>No job requests available.</p></td>
+        <td colspan="4" style="text-align: center; padding: 30px;">
+            <p style="color: #64748b;">No job requests available.</p>
+        </td>
     </tr>
     <?php endif; ?>
             </tbody>

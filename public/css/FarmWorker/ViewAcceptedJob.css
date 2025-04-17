@@ -11,28 +11,14 @@ body {
   min-height: 100vh;
 }
 
+a{
+  text-decoration: none;
+  color: inherit;
+}
+
 .container {
   margin-left: 250px;
   padding: 30px;
-}
-
-.header {
-  background: linear-gradient(135deg, #2e8b57 0%, #246c44 100%);
-  border-radius: 15px;
-  padding: 30px;
-  color: white;
-  margin-bottom: 30px;
-  animation: slideDown 0.5s ease-out;
-}
-
-.header h1 {
-  font-size: 28px;
-  margin-bottom: 10px;
-}
-
-.header p {
-  opacity: 0.9;
-  font-size: 16px;
 }
 
 .details-card {
@@ -76,7 +62,7 @@ body {
 .buttons {
   display: flex;
   gap: 15px;
-  margin-top: 30px;
+  margin-bottom: 20px;
 }
 
 .btn {
@@ -90,30 +76,31 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-
 }
 
-a{
-  text-decoration: none;
-}
-
-.accept-btn {
+.contact-btn {
   background: #2e8b57;
   color: white;
 }
 
-.accept-btn:hover {
+.contact-btn:hover {
   background: #246c44;
   transform: translateY(-2px);
 }
 
-.reject-btn {
-  background: #fee2e2;
-  color: #dc2626;
+.back-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 
-.reject-btn:hover {
-  background: #fecaca;
+.back-btn {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
+.back-btn:hover {
+  background: #cbd5e1;
   transform: translateY(-2px);
 }
 
@@ -128,17 +115,6 @@ a{
 
 .section-title i {
   color: #2e8b57;
-}
-
-@keyframes slideDown {
-  from {
-    transform: translateY(-20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
 }
 
 @keyframes slideUp {

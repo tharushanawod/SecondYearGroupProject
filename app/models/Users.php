@@ -525,6 +525,28 @@ class Users {
         
     }
 
+    public function getDocumentPathformanufacturer($user_id){
+        $this->db->query('SELECT document_path FROM manufacturers WHERE user_id = :user_id');
+        $this->db->bind(':user_id',$user_id);
+        $row = $this->db->single();
+        if($row){
+            return $row->document_path;
+        }else{
+            return false;
+        }
+    }
+
+    public function getDocumentPathforsupplier($user_id){
+        $this->db->query('SELECT document_path FROM suppliers WHERE supplier_id = :user_id');
+        $this->db->bind(':user_id',$user_id);
+        $row = $this->db->single();
+        if($row){
+            return $row->document_path;
+        }else{
+            return false;
+        }
+    }
+
 
 }
 

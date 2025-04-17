@@ -520,6 +520,50 @@ class AdminController extends Controller {
             Redirect('AdminController/Wallet');
         }
     }
+
+    function getMimeType($filename) {
+        $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+    
+        $mimeTypes = [
+            'jpg'  => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'png'  => 'image/png',
+            'gif'  => 'image/gif',
+            'pdf'  => 'application/pdf',
+            'doc'  => 'application/msword',
+            'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'xls'  => 'application/vnd.ms-excel',
+            'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'txt'  => 'text/plain',
+            // Add more if needed
+        ];
+    
+        return $mimeTypes[$extension] ?? 'application/octet-stream';
+    }
+
+    public function ViewDocument($user_id) {
+        $path = dirname(APPROOT) . '/public/';
+    
+        if ($_SESSION['user_role'] == 'manufacturer') {
+            $documentPath = $path . $this->AdminModel->getDocumentPathformanufacturer($user_id);
+        } else {
+            $documentPath = $path . $this->AdminModel->getDocumentPathforsupplier($user_id);
+        }
+        $documentPath = realpath($documentPath); // resolves weird paths or spaces
+
+    
+        if (file_exists($documentPath)) {
+           // Set headers to display the file in the browser
+           header('Content-Type: ' . $this->getMimeType($documentPath));
+           header('Content-Disposition: inline; filename="' . basename($documentPath) . '"');
+           readfile($documentPath);
+           exit;
+        } else {
+            echo "Document not found.";
+        }
+    }
+    
+    
  
     
 
