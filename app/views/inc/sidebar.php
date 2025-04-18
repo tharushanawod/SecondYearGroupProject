@@ -66,7 +66,11 @@
                 <li><a href="<?php echo URLROOT;?>/SupplierController/viewOrders"><i class="fa-solid fa-gauge"></i><span class="menu-text">View Orders</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/SupplierController/RequestHelp"><i class="fa-solid fa-comment-dots"></i><span class="menu-text">Request Help</span></a></li>
                 
-                <?php else: ?>
+                <?php elseif ($user_role === 'moderator'): ?>
+                  <li><a href="<?php echo URLROOT;?>/ModeratorController/Dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>
+                  <li><a href="<?php echo URLROOT;?>/ModeratorController/Report"><i class="fa-solid fa-chart-bar"></i><span class="menu-text">Reports</span></a></li>  
+                  <li><a href="<?php echo URLROOT;?>/ModeratorController/Help"><i class="fa-solid fa-comment-dots"></i><span class="menu-text">Help Center</span></a></li>
+                  <?php else: ?>
                 <li><a href="<?php echo URLROOT;?>/AdminController/Dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/AdminController/UserControl"><i class="fa-solid fa-users"></i><span class="menu-text">User Control</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/AdminController/ModeratorControl"><i class="fa-solid fa-user-tie"></i><span class="menu-text">Moderators</span></a></li>
@@ -111,6 +115,9 @@
         echo URLROOT.'/WorkerController/ManageProfile';
       }elseif($_SESSION['user_role'] == 'supplier'){
         echo URLROOT.'/SupplierController/ManageProfile';
+      }
+      elseif($_SESSION['user_role'] == 'moderator'){
+        echo URLROOT.'/ModeratorController/ManageProfile';
       }
       else{
         echo URLROOT.'/AdminController/ManageProfile';

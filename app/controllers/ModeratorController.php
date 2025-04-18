@@ -1,6 +1,7 @@
 <?php
 class ModeratorController extends Controller {
     private $notificationModel;
+    private $ModeratorModel;
 
     public function __construct() {
         if (!$this->isloggedin()) {
@@ -11,6 +12,7 @@ class ModeratorController extends Controller {
             Redirect('LandingController/login');
         }
         $this->notificationModel = $this->model('M_pages');
+        $this->ModeratorModel = $this->model('Moderator');
     }
 
     public function isloggedin() {
@@ -91,9 +93,64 @@ class ModeratorController extends Controller {
         }
     }
 
-    public function Manageprofile() {
-        $data = [];
-        $this->View('Moderator/ManageProfile', $data);
+    public function ManageProfile() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') { 
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            $data = [
+                'user_id' => $_SESSION['user_id'],
+                'name' => trim($_POST['name']),
+                'phone' => trim($_POST['phone']),
+                'email' => trim($_POST['email']),
+                'password' => trim($_POST['password']),
+                'name_err' => '',
+                'phone_err' => '',
+                'address_err' => '',
+                'email_err' => ''
+            ];
+
+            if (empty($data['name'])) {
+                $data['name_err'] = 'Please input a name';
+            }
+            if (empty($data['phone'])) {
+                $data['contact_err'] = 'Please input a contact number';
+            }
+            if (empty($data['email'])) {
+                $data['email_err'] = 'Please input an email';
+            }
+
+            if (empty($data['name_err']) && empty($data['phone_err']) && empty($data['email_err'])) {
+                echo 'Profile Updated';
+                if (!empty($data['password'])) {
+                    $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+                }
+                $result = $this->ModeratorModel->UpdateProfile($data);
+                if ($result) {
+                    Redirect('ModeratorController/ManageProfile');
+                }
+            } else {
+                $this->view('Moderator/ManageProfile', $data);
+            }
+        } else {
+            $user = $this->ModeratorModel->getUserById($_SESSION['user_id']);
+            $_SESSION['user_name'] = $user->name;
+            $_SESSION['user_email'] = $user->email;
+            $data = [
+                'name' => $user->name,
+                'phone' => $user->phone,
+                'email' => $user->email,
+                'password' => '',
+                'name_err' => '',
+                'phone_err' => '',
+                'email_err' => '',
+                'password_err' => ''
+            ];
+            $this->view('Moderator/ManageProfile', $data);
+        }
+    }
+
+    public function getProfileImage($user_id) {
+        $imagePath = $this->ModeratorModel->getProfileImage($_SESSION['user_id']);
+        return $imagePath ? URLROOT . '/' . $imagePath : URLROOT . '/images/default.jpg';
     }
 }
 ?>
