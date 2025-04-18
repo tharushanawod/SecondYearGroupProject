@@ -10,6 +10,8 @@ class CartController extends Controller {
         }
         $this->cartModel = $this->model('Cart');
         $this->supplierModel = $this->model('Supplier');
+
+        error_reporting(E_ALL);
     }
 
     public function browseProducts($categoryId = null) {
@@ -205,8 +207,15 @@ class CartController extends Controller {
         $data = [];
         $this->View('Cart/CheckoutConfirmation', $data);
     }
-    public function pay(){
-        $data = [];
+    public function pay($order_id){
+
+        $order_details = $this->cartModel->getOrderDetails($order_id);
+        $product_details = $this->cartModel->getProductDetails($order_id);
+     $data =[
+        'order_details' => $order_details,
+        'cart_items' => $product_details
+     ];
+      
         $this->View('Cart/Pay', $data);
     }
     
@@ -250,4 +259,48 @@ class CartController extends Controller {
         // Redirect back to the product page
         redirect('CartController/viewDetails/' . $data['supplier_id']);
     }
+
+    public function placeOrder() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            redirect('pages/error');
+        }
+    
+            $user_id = $_SESSION['user_id'];
+    
+            // Get cart items
+            $cartItems = $this->cartModel->getCartItems($user_id);
+            if (empty($cartItems)) {
+                throw new Exception('Your cart is empty');
+            }
+    
+            // Prepare order data
+            $orderData = [
+                'user_id' => $user_id,
+                'first_name' => trim($_POST['first-name']),
+                'last_name' => trim($_POST['last-name']),
+                'address' => trim($_POST['address']),
+                'city' => trim($_POST['city']),
+                'postcode' => trim($_POST['postcode']),
+                'phone' => trim($_POST['phone']),
+                'total_amount' => $this->cartModel->calculateSubTotal($cartItems)
+            ];
+           
+
+           
+    
+            // Create order with items
+            $order_id = $this->cartModel->createOrder($orderData, $cartItems);
+            if (!$order_id) {
+                throw new Exception('Failed to create order');
+            }
+    
+            // Update cart count
+            $this->updateCartCount();
+    
+            Redirect('CartController/Pay/' . $order_id);
+
+    
+        
+    }
+    
 }
