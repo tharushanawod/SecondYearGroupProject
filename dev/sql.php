@@ -314,3 +314,9 @@ END;
 DELIMITER ;
 
 
+CREATE EVENT auto_complete_jobs
+ON SCHEDULE EVERY 1 HOUR
+DO
+  UPDATE job_requests
+  SET status = 'Completed'
+  WHERE status = 'Confirmed' AND end_date < NOW();

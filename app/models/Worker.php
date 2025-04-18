@@ -198,7 +198,7 @@ class Worker {
 
     public function DoList($userId){
         try {
-            $this->db->query('SELECT users.name, profile_pictures.file_path, job_requests.updated_at,job_requests.job_id
+            $this->db->query('SELECT users.name, profile_pictures.file_path, job_requests.start_date,job_requests.job_id
                 FROM job_requests
                 INNER JOIN users ON job_requests.farmer_id = users.user_id
                 LEFT JOIN profile_pictures ON users.user_id = profile_pictures.user_id
@@ -258,6 +258,48 @@ class Worker {
         $this->db->bind(':created_at', $data['created_at']);
         return $this->db->execute();
     } 
+
+    public function getCompletedJobs($userId) {
+   
+            $this->db->query('SELECT COUNT(*) as completed_job_count
+                FROM job_requests
+                WHERE worker_id = :userId AND status = "Completed"');
+    
+            $this->db->bind(':userId', $userId);
+            return $this->db->single()->completed_job_count;
+          
+    }
+
+    public function getPendingJobs($userId) {
+        $this->db->query('SELECT COUNT(*) as pending_job_count
+            FROM job_requests
+            WHERE worker_id = :userId AND status = "Pending"');
+    
+        $this->db->bind(':userId', $userId);
+        return $this->db->single()->pending_job_count;
+    }
+
+    public function getRecentTasks($userId) {
+        $this->db->query('SELECT * FROM job_requests WHERE worker_id = :userId ORDER BY created_at DESC LIMIT 5');
+        $this->db->bind(':userId', $userId);
+        return $this->db->resultSet();
+    }
+    
+    public function getOverallRating($userId) {
+        $this->db->query('SELECT AVG(rating) as overall_rating FROM farmer_reviews_worker WHERE worker_id = :userId');
+        $this->db->bind(':userId', $userId);
+        $result= $this->db->single();
+        return $result->overall_rating ? $result->overall_rating : 0; // Return 0 if no rating found
+    }
+
+    public function getActiveJob($userId) {
+        $this->db->query('SELECT * 
+        FROM job_requests 
+        WHERE worker_id = :userId AND status = "Confirmed" AND (start_date < now() AND end_date > now())');
+        $this->db->bind(':userId', $userId);
+        return $this->db->resultSet();
+    }
+        
     
 }
 

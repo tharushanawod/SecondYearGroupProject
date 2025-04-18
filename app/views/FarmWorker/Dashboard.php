@@ -25,10 +25,19 @@
                     <i class="fas fa-tasks"></i>
                 </div>
                 <div class="stat-info">
-                    <h3>Active Tasks</h3>
+                    <h3>Active Job</h3>
                     <p>
-                        <?php echo $data['active_tasks']; ?>
+                    <?php 
+                        echo isset($data['active_job'][0]->job_type) 
+                            ? $data['active_job'][0]->job_type 
+                            : "No Active Jobs"; 
+                        ?>
+
+
                     </p>
+                    <div class="stat-date">
+                        Active Now
+                    </div>
                 </div>
             </div>
         </div>
@@ -39,10 +48,13 @@
                     <i class="fas fa-check-circle"></i>
                 </div>
                 <div class="stat-info">
-                    <h3>Completed Today</h3>
+                    <h3>Completed Jobs</h3>
                     <p>
-                        <?php echo $data['completed_today']; ?>
+                        <?php echo $data['completed_jobs']; ?>
                     </p>
+                    <div class="stat-date">As of
+                        <?php echo date('M d, Y'); ?>
+                    </div>
                 </div>
             </div>
         </div>
@@ -53,10 +65,13 @@
                     <i class="fas fa-clock"></i>
                 </div>
                 <div class="stat-info">
-                    <h3>Pending Tasks</h3>
+                    <h3>Pending Jobs</h3>
                     <p>
-                        <?php echo $data['pending_tasks']; ?>
+                        <?php echo $data['pending_jobs']; ?>
                     </p>
+                    <div class="stat-date">As of
+                        <?php echo date('M d, Y'); ?>
+                    </div>
                 </div>
             </div>
         </div>
@@ -69,8 +84,11 @@
                 <div class="stat-info">
                     <h3>Overall Rating</h3>
                     <p>
-                        <?php echo $data['overall_rating']; ?>/5
+                       <?php echo number_format($data['overall_rating'], 2); ?>
                     </p>
+                    <div class="stat-date">As of
+                        <?php echo date('M d, Y'); ?>
+                    </div>
                 </div>
             </div>
         </div>
@@ -88,8 +106,8 @@
             <thead>
                 <tr>
                     <th>Task</th>
-                    <th>Field</th>
-                    <th>Assigned By</th>
+                    <th>Duration</th>
+                    <th>location</th>
                     <th>Due Date</th>
                     <th>Status</th>
                 </tr>
@@ -98,20 +116,26 @@
                 <?php foreach($data['recent_tasks'] as $task): ?>
                 <tr>
                     <td>
-                        <?php echo $task['task_name']; ?>
+                        <?php echo $task->job_type; ?>
                     </td>
                     <td>
-                        <?php echo $task['field_location']; ?>
+                    <?php
+                        $start_date = strtotime($task->start_date);
+                        $end_date = strtotime($task->end_date);
+                        $duration = ($end_date - $start_date) / (60 * 60 * 24); // duration in days
+                        echo $duration . " days";
+                        ?>
+
                     </td>
                     <td>
-                        <?php echo $task['assigned_by']; ?>
+                        <?php echo $task->location; ?>
                     </td>
                     <td>
-                        <?php echo date('M d, Y', strtotime($task['due_date'])); ?>
+                        <?php echo date('M d, Y', strtotime($task->end_date)); ?>
                     </td>
                     <td>
-                        <span class="task-status status-<?php echo strtolower($task['status']); ?>">
-                            <?php echo $task['status']; ?>
+                        <span class="task-status status-<?php echo strtolower($task->status); ?>">
+                            <?php echo $task->status; ?>
                         </span>
                     </td>
                 </tr>

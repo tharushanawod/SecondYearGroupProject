@@ -76,6 +76,26 @@ body {
   background: #e1f8ff;
   color: #0891b2;
 }
+.stat-info h3 {
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.stat-info p {
+  color: #1e293b;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.stat-date {
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 400;
+  margin-top: 5px;
+}
+
 
 .completed-icon {
   background: #f0fff4;

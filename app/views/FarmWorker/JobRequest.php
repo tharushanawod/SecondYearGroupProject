@@ -10,7 +10,7 @@
 <body>
 <?php require APPROOT . '/views/inc/sidebar.php'; ?>
     <div class="main-content">
-        <h1>Job Requests</h1>
+        <h1>Pending Job Requests</h1>
 
         <table>
             <thead>
