@@ -1,26 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Management</title>
-    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Ingredient Supplier/ProductManagement.css">    
-    <script src="<?php echo URLROOT;?>/js/Ingredient Supplier/ProductManagement.js" defer></script>
     <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet" />
+    <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/Ingredient Supplier/ProductManagement.css">
+    <style>
+       
+    </style>
 </head>
+
 <body>
     <?php require APPROOT . '/views/inc/sidebar.php'; ?>
-    
-    <div class="maincontainer">
+
+    <div class="main-container">
         <div class="header-section">
             <div class="header-content">
                 <h1>Products Inventory</h1>
                 <div class="search-section">
                     <input type="text" class="search-box" placeholder="Search products..." oninput="filterProducts()">
                     <button class="add-product-btn" onclick="showModal('addProductModal')">
-                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                        </svg>
+                        <i class="fas fa-plus"></i>
                         Add Product
                     </button>
                 </div>
@@ -32,6 +34,7 @@
                 <thead>
                     <tr>
                         <th>Image</th>
+                        <th>Product ID</th>
                         <th>Product Name</th>
                         <th>Category</th>
                         <th>Price</th>
@@ -41,35 +44,45 @@
                 </thead>
                 <tbody>
                     <?php if (!empty($data['products'])) : ?>
-                        <?php foreach ($data['products'] as $product) : ?>
-                            <tr>
-                                <td>
-                                    <img src="<?php echo URLROOT; ?>/uploads/<?php echo htmlspecialchars($product->image); ?>" 
-                                        alt="<?php echo htmlspecialchars($product->product_name); ?>" 
-                                        class="product-thumb">
-                                </td>
-                                <td><?= htmlspecialchars($product->product_name) ?></td>
-                                <td><?= htmlspecialchars($product->category_name) ?></td>
-                                <td>LKR <?= htmlspecialchars(number_format($product->price, 2)) ?></td>
-                                <td><?= htmlspecialchars($product->stock) ?></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="edit-btn" onclick="showModal('updateProductModal', <?= htmlspecialchars(json_encode($product)) ?>, '<?php echo URLROOT; ?>')">
-                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                            </svg>
-                                        </button>
-                                        <button class="delete-btn" onclick="showModal('deleteProductModal', <?= htmlspecialchars(json_encode($product)) ?>, '<?php echo URLROOT; ?>')">
-                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
+                    <?php foreach ($data['products'] as $product) : ?>
+                    <tr>
+                        <td>
+                            <img src="<?php echo URLROOT; ?>/uploads/<?php echo htmlspecialchars($product->image); ?>"
+                                alt="<?php echo htmlspecialchars($product->product_name); ?>" class="product-thumb">
+                        </td>
+                        <td>
+                            <?= htmlspecialchars($product->product_id) ?>
+                        </td>
+                        <td>
+                            <?= htmlspecialchars($product->product_name) ?>
+                        </td>
+                        <td>
+                            <?= htmlspecialchars($product->category_name) ?>
+                        </td>
+                        <td>LKR
+                            <?= htmlspecialchars(number_format($product->price, 2)) ?>
+                        </td>
+                        <td>
+                            <?= htmlspecialchars($product->stock) ?>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="edit-btn"
+                                    onclick="showModal('updateProductModal', <?= htmlspecialchars(json_encode($product)) ?>, '<?php echo URLROOT; ?>')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="delete-btn"
+                                    onclick="showModal('deleteProductModal', <?= htmlspecialchars(json_encode($product)) ?>, '<?php echo URLROOT; ?>')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
                     <?php else : ?>
-                        <tr><td colspan="6">No products available.</td></tr>
+                    <tr>
+                        <td colspan="6" style="text-align: center;">No products available.</td>
+                    </tr>
                     <?php endif; ?>
                 </tbody>
             </table>
@@ -78,10 +91,10 @@
         <!-- Add Product Modal -->
         <div id="addProductModal" class="modal">
             <div class="modal-content">
-                <h2>Add New Product</h2>
-                <form action="<?php echo URLROOT; ?>/SupplierController/save" method="post" enctype="multipart/form-data">
+                <form action="<?php echo URLROOT; ?>/SupplierController/save" method="post"
+                    enctype="multipart/form-data">
                     <input type="hidden" name="supplier_id" value="<?= $_SESSION['supplier_id'] ?>">
-                    
+
                     <div class="form-group">
                         <label for="product_name">Product Name:</label>
                         <input type="text" name="product_name" required>
@@ -91,7 +104,9 @@
                         <label for="category_id">Category:</label>
                         <select name="category_id" required>
                             <?php foreach ($data['categories'] as $category) : ?>
-                                <option value="<?= $category->category_id ?>"><?= $category->category_name ?></option>
+                            <option value="<?= $category->category_id ?>">
+                                <?= $category->category_name ?>
+                            </option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -113,7 +128,8 @@
 
                     <div class="form-group">
                         <label for="image">Product Image:</label>
-                        <input type="file" name="image" accept="image/*" required onchange="previewImage(this, 'imagePreview')">
+                        <input type="file" name="image" accept="image/*" required
+                            onchange="previewImage(this, 'imagePreview')">
                         <img id="imagePreview" class="preview-image" src="" alt="">
                     </div>
 
@@ -129,10 +145,11 @@
         <div id="updateProductModal" class="modal">
             <div class="modal-content">
                 <h2>Update Product</h2>
-                <form action="<?php echo URLROOT; ?>/SupplierController/update" method="post" enctype="multipart/form-data">
+                <form action="<?php echo URLROOT; ?>/SupplierController/update" method="post"
+                    enctype="multipart/form-data">
                     <input type="hidden" name="product_id" id="updateProductId">
                     <input type="hidden" name="existing_image" id="updateProductExistingImage">
-                    
+
                     <div class="form-group">
                         <label for="product_name">Product Name:</label>
                         <input type="text" name="product_name" id="updateProductName" required>
@@ -142,7 +159,9 @@
                         <label for="category_id">Category:</label>
                         <select name="category_id" id="updateCategory" required>
                             <?php foreach ($data['categories'] as $category) : ?>
-                                <option value="<?= $category->category_id ?>"><?= $category->category_name ?></option>
+                            <option value="<?= $category->category_id ?>">
+                                <?= $category->category_name ?>
+                            </option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -164,13 +183,15 @@
 
                     <div class="form-group">
                         <label for="image">Product Image:</label>
-                        <input type="file" name="image" accept="image/*" onchange="previewImage(this, 'updateImagePreview')">
-                        <img id="updateImagePreview" class="preview-image" src="" alt="">
+                        <input type="file" name="image" accept="image/*"
+                            onchange="previewImage(this, 'updateImagePreview')">
+                        <!-- <img id="updateImagePreview" class="preview-image" src="" alt=""> -->
                     </div>
 
                     <div class="form-actions">
                         <button type="submit" class="submit-btn">Update Product</button>
-                        <button type="button" class="cancel-btn" onclick="closeModal('updateProductModal')">Cancel</button>
+                        <button type="button" class="cancel-btn"
+                            onclick="closeModal('updateProductModal')">Cancel</button>
                     </div>
                 </form>
             </div>
@@ -181,7 +202,7 @@
             <div class="modal-content">
                 <h2>Delete Product</h2>
                 <p>Are you sure you want to delete "<span id="deleteProductName"></span>"?</p>
-                
+
                 <div class="product-preview">
                     <img id="deleteProductImage" class="delete-preview-image" src="" alt="">
                     <p><strong>Category:</strong> <span id="deleteProductCategory"></span></p>
@@ -193,11 +214,74 @@
                     <input type="hidden" name="product_id" id="deleteProductId">
                     <div class="form-actions">
                         <button type="submit" class="delete-btn">Delete</button>
-                        <button type="button" class="cancel-btn" onclick="closeModal('deleteProductModal')">Cancel</button>
+                        <button type="button" class="cancel-btn"
+                            onclick="closeModal('deleteProductModal')">Cancel</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
+    <script>
+        function showModal(modalId, product = null, urlRoot = '') {
+            const modal = document.getElementById(modalId);
+            modal.style.display = 'block';
+
+            if (product) {
+                if (modalId === 'updateProductModal') {
+                    document.getElementById('updateProductId').value = product.product_id;
+                    document.getElementById('updateProductName').value = product.product_name;
+                    document.getElementById('updateCategory').value = product.category_id;
+                    document.getElementById('updatePrice').value = product.price;
+                    document.getElementById('updateStock').value = product.stock;
+                    document.getElementById('updateDescription').value = product.description;
+                    document.getElementById('updateProductExistingImage').value = product.image;
+                    document.getElementById('updateImagePreview').src = urlRoot + '/uploads/' + product.image;
+                } else if (modalId === 'deleteProductModal') {
+                    document.getElementById('deleteProductId').value = product.product_id;
+                    document.getElementById('deleteProductName').textContent = product.product_name;
+                    document.getElementById('deleteProductCategory').textContent = product.category_name;
+                    document.getElementById('deleteProductPrice').textContent = product.price;
+                    document.getElementById('deleteProductStock').textContent = product.stock;
+                    document.getElementById('deleteProductImage').src = urlRoot + '/uploads/' + product.image;
+                }
+            }
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function previewImage(input, previewId) {
+            const preview = document.getElementById(previewId);
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function filterProducts() {
+            const input = document.querySelector('.search-box');
+            const filter = input.value.toUpperCase();
+            const table = document.getElementById('productTable');
+            const tr = table.getElementsByTagName('tr');
+
+            for (let i = 1; i < tr.length; i++) {
+                const td = tr[i].getElementsByTagName('td')[1];
+                if (td) {
+                    const txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = '';
+                    } else {
+                        tr[i].style.display = 'none';
+                    }
+                }
+            }
+        }
+    </script>
 </body>
+
 </html>
