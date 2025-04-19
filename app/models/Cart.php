@@ -431,6 +431,32 @@ class Cart {
         return $this->db->resultSet();
     }
     
+    public function updatePaymentStatus($order_id, $status) {
+        $this->db->query('UPDATE orders SET status = :status WHERE order_id = :order_id');
+        $this->db->bind(':status', $status);
+        $this->db->bind(':order_id', $order_id);
+        return $this->db->execute();
+    }
+
+    public function TransactionComplete($order_id, $amount,$payment_id) {
+        $this->db->query('INSERT INTO transaction 
+        (order_id, amount_paid, payment_id)
+        VALUES (:order_id, :amount_paid, :payment_id)');
+        $this->db->bind(':order_id', $order_id);
+        $this->db->bind(':amount_paid', $amount);
+        $this->db->bind(':payment_id', $payment_id);
+        $this->db->execute();
+      
+    }
+
+    public function UpdateInventory($order_id) {
+        $this->db->query('UPDATE supplier_products sp
+        INNER JOIN order_items oi ON sp.product_id = oi.product_id
+        SET sp.stock = sp.stock - oi.quantity
+        WHERE oi.order_id = :order_id');
+        $this->db->bind(':order_id', $order_id);
+        return $this->db->execute();
+    }
     
 }
 ?>

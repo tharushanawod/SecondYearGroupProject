@@ -89,9 +89,9 @@ error_log("testing".var_export($hash, true));
 
             <form action="https://sandbox.payhere.lk/pay/checkout" method="POST">
                 <input type="hidden" name="merchant_id" value="<?php echo $_ENV['MERCHANT_ID']; ?>">
-                <input type="hidden" name="return_url" value="<?php echo URLROOT; ?>/CartController/paymentSuccess">
+                <input type="hidden" name="return_url" value="<?php echo URLROOT; ?>/CartController/paymentSuccess?amount=<?php echo $amount; ?>">
                 <input type="hidden" name="cancel_url" value="<?php echo URLROOT; ?>/CartController/paymentCancel">
-                <input type="hidden" name="notify_url" value="<?php echo URLROOT; ?>/CartController/paymentNotify">
+                <input type="hidden" name="notify_url" value="https://3539-139-59-27-84.ngrok-free.app/GroupProject/CartController/paymentNotify">
                 <input type="hidden" name="order_id" value="<?php echo $data['order_details']->order_id; ?>">
                 <input type="hidden" name="items" value="Order_Items">
                 <input type="hidden" name="currency" value="LKR">

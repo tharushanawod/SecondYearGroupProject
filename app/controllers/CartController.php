@@ -4,14 +4,63 @@ class CartController extends Controller {
     private $cartModel;
     private $supplierModel;
 
+
     public function __construct() {
-        if (!isset($_SESSION['user_id'])) {
-            redirect('users/login');
-        }
+        // Get the current method from the URL
+        $currentMethod = $this->getCurrentMethodFromURL();
+    
+        // Bypass authentication if the current method is 'Notify'
+        if ($currentMethod !== 'paymentNotify') {
+            // Check if user is logged in
+            if (!$this->isloggedin()) {
+                unset($_SESSION['user_id']);
+                unset($_SESSION['user_email']);
+                unset($_SESSION['user_name']);
+                session_destroy();
+                Redirect('LandingController/login');
+            } else {
+
+                  // Load models
         $this->cartModel = $this->model('Cart');
         $this->supplierModel = $this->model('Supplier');
 
-        error_reporting(E_ALL);
+                // // User is logged in, now check if they are restricted
+                // $user_id = $_SESSION['user_id'];
+                // $user = $this->BuyerModel->getUserStatus($user_id);  // Fetch user status from the database
+    
+                // // If the user is restricted, prevent access to any page except "Manage Profile"
+                // if ($user->user_status === 'restricted') {
+                //     if ($currentMethod !== 'ManageProfile' && $currentMethod !== 'Resetricted') {
+                //         Redirect('BuyerController/Resetricted/' . $user_id);
+                //     }
+                // }
+                
+            }
+        }
+    
+      
+    }
+
+    private function getCurrentMethodFromURL() {
+        // Parse the URL
+        if (isset($_GET['url'])) {
+            $url = rtrim($_GET['url'], '/');
+            $url = filter_var($url, FILTER_SANITIZE_URL);
+            $url = explode('/', $url);
+
+            // The second segment of the URL is the method name
+            return $url[1] ?? null;
+        }
+        return null;
+    }
+ 
+
+    public function isloggedin() {
+        if (isset($_SESSION['user_id']) && ($_SESSION['user_role'] == 'farmer')) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function browseProducts($categoryId = null) {
@@ -301,6 +350,83 @@ class CartController extends Controller {
 
     
         
+    }
+
+    public function paymentNotify() {
+        $this->cartModel = $this->model('Cart');
+        
+                    $hash = $_POST['md5sig'];
+                    $order_id = $_POST['order_id'];
+                    $amount = $_POST['payhere_amount'];
+                    $payment_id = $_POST['payment_id'];
+                    $status_code = $_POST['status_code'];
+                    $currency = $_POST['payhere_currency'];
+
+
+                    // Your merchant secret key
+                    $merchant_secret = $_ENV['MERCHANT_SECRET'];
+
+                    // Verify the received hash
+                    $generated_hash = strtoupper(md5(
+                        $_POST['merchant_id'] .
+                        $_POST['order_id'] .
+                        $_POST['payhere_amount'] .
+                        $_POST['payhere_currency'] .
+                        $_POST['status_code'] .
+                        strtoupper(md5($merchant_secret))
+                    ));
+                    if ($hash === $generated_hash) {
+                      error_log("tharusha".var_export($_POST, true));
+                        // Hash matches, it's a valid notification
+                        if ($status_code == 2) {
+                            // Payment successful
+                            // Update your database, notify the user, etc.
+                            $payment_status = 'paid';
+                      
+                           
+
+
+                            $this->cartModel->updatePaymentStatus($order_id, $payment_status);
+                            $this->cartModel->TransactionComplete($order_id, $amount,$payment_id);
+                            $this->cartModel->UpdateInventory($order_id);
+                            
+
+                        } else {
+                            // Payment failed
+                            $payment_status = 'failed';
+                            $this->cartModel->updatePaymentStatus($order_id, $payment_status);
+                        }
+                    } else {
+                        // Invalid hash
+                        echo "Invalid payment notification.";
+                    }
+    }
+
+    public function paymentSuccess() {
+        // Check if 'order_id' and 'amount' are set in the URL (GET request)
+        if (isset($_GET['order_id']) && isset($_GET['amount'])) {
+            // Sanitize the input to prevent malicious data
+            $order_id = htmlspecialchars($_GET['order_id']);
+            $amount = htmlspecialchars($_GET['amount']);
+            
+            // Prepare the data to pass to the view
+            $data = [
+                'order_id' => $order_id,
+                'amount' => $amount
+            ];
+    
+            // Pass the data to the view
+            $this->View('Cart/PaymentSuccess', $data);
+        } else {
+            // Handle the case where 'order_id' or 'amount' are not present
+            // You can show an error message or redirect to another page
+            echo "Invalid payment data.";
+        }
+    }
+    
+
+    public function Cancel() {
+        echo "Payment was cancelled!";
     }
     
 }
