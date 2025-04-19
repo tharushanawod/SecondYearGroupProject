@@ -65,7 +65,8 @@
                 <li><a href="<?php echo URLROOT;?>/SupplierController/productManagement"><i class="fa-solid fa-store"></i><span class="menu-text">Product Control</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/SupplierController/viewOrders"><i class="fa-solid fa-gauge"></i><span class="menu-text">View Orders</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/SupplierController/RequestHelp"><i class="fa-solid fa-comment-dots"></i><span class="menu-text">Request Help</span></a></li>
-                
+                <li><a href="<?php echo URLROOT;?>/SupplierController/Wallet"><i class="fa-solid fa-wallet"></i><span class="menu-text">Wallet</span></a></li>
+
                 <?php elseif ($user_role === 'moderator'): ?>
                   <li><a href="<?php echo URLROOT;?>/ModeratorController/Dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>
                   <li><a href="<?php echo URLROOT;?>/ModeratorController/Report"><i class="fa-solid fa-chart-bar"></i><span class="menu-text">Reports</span></a></li>  

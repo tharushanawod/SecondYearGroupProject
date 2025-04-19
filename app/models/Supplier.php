@@ -171,9 +171,10 @@ class Supplier {
 
     public function getAllOrders($supplierId) {
         $this->db->query('SELECT 
-        orders.*,transaction.transaction_id
+        orders.*,transaction.transaction_id,delivery_codes.code_id
         FROM orders
         LEFT JOIN transaction ON orders.order_id = transaction.order_id
+        LEFT JOIN delivery_codes ON orders.order_id = delivery_codes.order_id
         INNER JOIN order_items ON orders.order_id = order_items.order_id
         INNER JOIN supplier_products ON order_items.product_id = supplier_products.product_id
         WHERE supplier_products.supplier_id = :supplierId
@@ -329,6 +330,50 @@ LIMIT 5
         $this->db->bind(':tracking_number', $data['trackingNumber']);
 
         return $this->db->execute();
+    }
+
+
+    public function getWalletDetails($supplier_id) {
+        try {
+            // Start transaction
+            $this->db->beginTransaction();
+    
+            // Get wallet balance
+            $this->db->query("SELECT balance FROM wallets WHERE user_id = :supplier_id");
+            $this->db->bind(':supplier_id', $supplier_id);
+            $wallet = $this->db->single();
+    
+            // Get successful transactions
+            $this->db->query("
+                SELECT transaction.*
+                FROM transaction 
+                INNER JOIN orders
+                ON transaction.order_id = orders.order_id
+                INNER JOIN order_items
+                ON transaction.order_id = order_items.order_id
+                INNER JOIN supplier_products
+                ON order_items.product_id = supplier_products.product_id
+                WHERE supplier_products.supplier_id = :supplier_id
+                AND transaction.wallet_status = 'added'
+                AND transaction.withdraw_status = 'not_withdrawn'
+            ");
+
+            $this->db->bind(':supplier_id', $supplier_id);
+            $transactions = $this->db->resultSet();
+    
+            // Commit transaction
+            $this->db->commit();
+    
+            // Return both
+            return [
+                'wallet' => $wallet,
+                'transactions' => $transactions
+            ];
+    
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            die('Failed: ' . $e->getMessage());
+        }
     }
 }
 ?>

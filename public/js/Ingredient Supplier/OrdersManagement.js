@@ -35,15 +35,17 @@ async function renderTable() {
     row.innerHTML = `
       <td data-label="Order ID">${order.order_id}</td>
       <td data-label="Buyer's Details">
-        <button onclick="viewOrderDetails(${order.order_id})" class="details-btn">View Details</button>
+      <button onclick="viewOrderDetails(${order.order_id})" class="details-btn">View Details</button>
       </td>
       <td data-label="Buyer's Details">
-        <button onclick="viewBuyerDetails(${order.order_id})" class="details-btn">View Details</button>
+      <button onclick="viewBuyerDetails(${order.order_id})" class="details-btn">View Details</button>
       </td>
       <td data-label="Status">${order.status}</td>
       <td data-label="Farmer Confirmation">${statusHTML}</td>
       <td data-label="Send Code">
-      <a href="${URLROOT}/SupplierController/sendDeliveryCode/${order.order_id}" class="details-btn">Send Code</a>
+      ${order.code_id === null ? 
+        `<a href="${URLROOT}/SupplierController/sendDeliveryCode/${order.order_id}" class="details-btn">Send Code</a>` : 
+        `<span class="code-sent-text">Code Sent</span>`}
       </td>
     `;
 

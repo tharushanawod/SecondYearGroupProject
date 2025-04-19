@@ -527,5 +527,12 @@ public function sendDeliveryCode($orderId) {
 
 }
 
+
+
+        public function Wallet(){
+            $data=$this->Supplier->getWalletDetails($_SESSION['user_id']);
+            $this->View('Ingredient Supplier/Wallet',$data);
+        }
+
 }
 ?>
