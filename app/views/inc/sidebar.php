@@ -23,7 +23,10 @@
         <li><a href="<?php echo URLROOT;?>/ManufacturerController/PendingPayments"><i class="fa-solid fa-clock"></i><span class="menu-text">Pending Payments</span></a></li>
         <li><a href="<?php echo URLROOT;?>/ManufacturerController/purchaseHistory"><i class="fas fa-comments"></i><span class="menu-text">Orders</span></a></li>
         <li><a href="<?php echo URLROOT;?>/ManufacturerController/RequestHelp"><i class="fa-solid fa-comment-dots"></i><span class="menu-text">Request Help</span></a></li>
-                
+        <li><a href="<?php echo URLROOT; ?>/WorkerController/getUnreadNotifications">
+                <i class="fa-solid fa-bell"></i>
+                <span class="menu-text">Notifications</span>
+                </a></li>         
         
         
         <?php elseif ($user_role === 'buyer'): ?>
@@ -57,7 +60,10 @@
               <li><a href="<?php echo URLROOT;?>/WorkerController/DoList"><i class="fa-solid fa-list-check"></i><span class="menu-text">Do List</span></a></li>
               <li><a href="<?php echo URLROOT;?>/WorkerController/trainingSelection"><i class="fa-solid fa-truck-monster"></i><span class="menu-text">Training</span></a></li>
               <li><a href="<?php echo URLROOT;?>/WorkerController/RequestHelp"><i class="fa-solid fa-comment-dots"></i><span class="menu-text">Request Help</span></a></li>
-              
+              <li><a href="<?php echo URLROOT; ?>/WorkerController/getUnreadNotifications">
+                <i class="fa-solid fa-bell"></i>
+                <span class="menu-text">Notifications</span>
+                </a></li>
               
               <?php elseif ($user_role === 'supplier'): ?>
                 <li><a href="<?php echo URLROOT;?>/SupplierController/dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>
@@ -65,7 +71,10 @@
                 <li><a href="<?php echo URLROOT;?>/SupplierController/productManagement"><i class="fa-solid fa-gauge"></i><span class="menu-text">Product Control</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/SupplierController/viewOrders"><i class="fa-solid fa-gauge"></i><span class="menu-text">View Orders</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/SupplierController/RequestHelp"><i class="fa-solid fa-comment-dots"></i><span class="menu-text">Request Help</span></a></li>
-                
+                <li><a href="<?php echo URLROOT; ?>/SupplierController/getUnreadNotifications">
+                  <i class="fa-solid fa-bell"></i>
+                  <span class="menu-text">Notifications</span>
+                  </a></li>
                 <?php else: ?>
                 <li><a href="<?php echo URLROOT;?>/AdminController/Dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/AdminController/UserControl"><i class="fa-solid fa-users"></i><span class="menu-text">User Control</span></a></li>

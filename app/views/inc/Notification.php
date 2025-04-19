@@ -34,90 +34,174 @@
     </div>
     <script>
     const URLROOT = '<?php echo URLROOT; ?>';
-    const buyer_id = <?php echo $_SESSION['user_id']; ?>;
-    </script>
-
-    <script>
-
-// Main functionality
-function fetchNotifications() {
-    fetch(`${URLROOT}/BuyerController/getNotifications/${buyer_id}`)
-        .then(response => response.json())
-        .then(notifications => {
-            displayNotifications(notifications);
-        })
-        .catch(error => console.error('Error:', error));
-}
-
-function displayNotifications(notifications) {
-    const tbody = document.getElementById('notification-tbody');
-    const noNotifications = document.getElementById('no-notifications');
-    const countElement = document.getElementById('notification-count');
-    
-    // Count unread notifications
-    const unreadCount = notifications.filter(n => !n.is_read).length;
-    
-    // Update notification count
-    countElement.textContent = unreadCount ? `${unreadCount} unread` : '';
-    countElement.style.display = unreadCount ? 'inline-block' : 'none';
-
-    // Show message if no notifications
-    if (!notifications.length) {
-        tbody.innerHTML = '';
-        noNotifications.style.display = 'block';
-        return;
+    const user_id = <?php echo $_SESSION['user_id']; ?>;
+    const user_role = '<?php echo $_SESSION['user_role']; ?>';
+    // Determine the appropriate controller based on user role
+    let controller;
+    switch(user_role) {
+        case 'farmworker':
+            controller = 'WorkerController';
+            break;
+        case 'buyer':
+            controller = 'BuyerController';
+            break;
+        case 'farmer':
+            controller = 'FarmerController';
+            break;
+        case 'manufacturer':
+            controller = 'ManufacturerController';
+            break;
+        case 'supplier':
+            controller = 'SupplierController';
+            break;
     }
 
-    // Hide "no notifications" message and show notifications
-    noNotifications.style.display = 'none';
-    tbody.innerHTML = notifications.map(notification => `
-        <tr class="notification-row ${notification.is_read ? '' : 'unread'}">
-            <td>${safeHtml(notification.message)}</td>
-            <td class="notification-time">${formatDate(notification.created_at)}</td>
-            <td>
-                ${notification.is_read ? '' : `
-                 <button class="mark-read-btn" onclick="markAsRead(${notification.id}, ${buyer_id})">
-                        Mark as Read
-                    </button>
-                `}
-            </td>
-        </tr>
-    `).join('');
-}
+    // Fetch notifications
+    function fetchNotifications() {
+        fetch(`${URLROOT}/${controller}/getNotifications/${user_id}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(notifications => {
+                if (!Array.isArray(notifications)) {
+                    console.error('Invalid notifications data:', notifications);
+                    return;
+                }
+                displayNotifications(notifications);
+            })
+            .catch(error => {
+                console.error('Error fetching notifications:', error);
+                displayNotifications([]);
+            });
+    }
 
-function markAsRead(id, buyer_id) {
-    fetch(`${URLROOT}/BuyerController/markNotificationAsRead/${id}/${buyer_id}`, {
-        method: 'POST'
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) fetchNotifications();
-    })
-    .catch(error => console.error('Error:', error));
-}
+    // Display notifications
+    function displayNotifications(notifications) {
+        const tbody = document.getElementById('notification-tbody');
+        const noNotifications = document.getElementById('no-notifications');
+        const countElement = document.getElementById('notification-count');
+        
+        // Count unread notifications
+        const unreadCount = notifications.filter(n => !n.is_read).length;
+        
+        // Update notification count
+        countElement.textContent = unreadCount ? `${unreadCount} unread` : '';
+        countElement.style.display = unreadCount ? 'inline-block' : 'none';
 
-// Utility functions
-function safeHtml(str) {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-}
+        // Show message if no notifications
+        if (!notifications.length) {
+            tbody.innerHTML = '';
+            noNotifications.style.display = 'block';
+            return;
+        }
 
-function formatDate(dateString) {
-    return new Date(dateString).toLocaleString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: true
-    });
-}
+        // Hide "no notifications" message and show notifications
+        noNotifications.style.display = 'none';
+        tbody.innerHTML = notifications.map(notification => {
+            const isHelpNotification = 'related_id' in notification && notification.related_id !== null;
+            return `
+                <tr class="notification-row ${notification.is_read ? '' : 'unread'}">
+                    <td class="message-cell" 
+                        ${isHelpNotification ? `onclick="markAsReadAndRedirect(${notification.id}, ${user_id}, ${isHelpNotification})"` : ''}>
+                        ${safeHtml(notification.message)}
+                    </td>
+                    <td class="notification-time">${formatDate(notification.created_at)}</td>
+                    <td>
+                        ${notification.is_read ? '' : `
+                            <button class="mark-read-btn" onclick="markAsRead(${notification.id}, ${user_id}, ${isHelpNotification}, event)">
+                                Mark as Read
+                            </button>
+                        `}
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
 
-// Initialize
-fetchNotifications();
-setInterval(fetchNotifications, 2000);
+    // Mark notification as read without redirecting
+    function markAsRead(id, user_id, isHelpNotification, event) {
+        event.stopPropagation(); // Prevent event bubbling to parent elements
+        const endpoint = isHelpNotification 
+            ? `${URLROOT}/${controller}/markHelpNotificationAsRead/${id}/${user_id}`
+            : `${URLROOT}/${controller}/markNotificationAsRead/${id}/${user_id}`;
+        
+        fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                fetchNotifications();
+            } else {
+                console.error('Failed to mark notification as read:', data.error);
+                alert('Failed to mark notification as read. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error marking notification as read:', error);
+            alert('An error occurred. Please try again.');
+        });
+    }
 
+    // Mark notification as read and redirect to viewHelpResponse
+    function markAsReadAndRedirect(id, user_id, isHelpNotification) {
+        if (!isHelpNotification) return; 
+
+        const endpoint = `${URLROOT}/${controller}/markHelpNotificationAsRead/${id}/${user_id}`;
+        fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                window.location.href = `${URLROOT}/${controller}/requestHelp/${id}`;
+            } else {
+                console.error('Failed to mark notification as read:', data.error);
+                alert('Failed to mark notification as read. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error marking notification as read:', error);
+            alert('An error occurred. Please try again.');
+        });
+    }
+
+    // Utility functions
+    function safeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str || '';
+        return div.innerHTML;
+    }
+
+    function formatDate(dateString) {
+        return new Date(dateString).toLocaleString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true
+        });
+    }
+
+    // Initialize
+    fetchNotifications();
+    setInterval(fetchNotifications, 2000);
     </script>
 </body>
 </html>

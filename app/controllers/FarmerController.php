@@ -4,6 +4,7 @@ class FarmerController extends Controller {
     
     private $farmerModel;
     private $cartModel;
+    private $NotificationModel;
 
     public function __construct() {
         if (!$this->isloggedin()) {
@@ -15,6 +16,7 @@ class FarmerController extends Controller {
         }
         $this->farmerModel = $this->model('Farmer');
         $this->cartModel = $this->model('Cart');
+        $this->NotificationModel = $this->model('Notification');
     }
 
     public function isloggedin() {
@@ -619,57 +621,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
         $this->view('Farmer/ViewDetails', $data);
     }
 
-    public function RequestHelp() {
-        $data = [];
-        $this->View('Farmer/RequestHelp', $data);
-    }
-
-    public function showForm($category) {
-        $data = ['category' => $category];
-        $this->View('Farmer/RequestHelp', $data);
-    }
-
-    public function submitRequest() {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-            $data = [
-                'user_id' => $_SESSION['user_id'],
-                'user_role' => $_SESSION['user_role'],
-                'category' => trim($_POST['category']),
-                'subject' => trim($_POST['subject']),
-                'description' => trim($_POST['description']),
-                'attachment' => null,
-                'status' => 'pending',
-                'created_at' => date('Y-m-d H:i:s')
-            ];
-
-            // Handle file upload
-            if (isset($_FILES['attachment']) && $_FILES['attachment']['error'] == UPLOAD_ERR_OK) {
-                $uploadDir = 'uploads/help_requests/'; 
-                if (!file_exists($uploadDir)) {
-                    mkdir($uploadDir, 0777, true);
-                }
-                $attachmentName = basename($_FILES['attachment']['name']);
-                $uploadFile = $uploadDir . $attachmentName;
-                if (move_uploaded_file($_FILES['attachment']['tmp_name'], $uploadFile)) {
-                    $data['attachment'] = $uploadFile;
-                } else {
-                    error_log("Failed to upload attachment: " . $attachmentName);
-                }
-            }
-
-            // Save to database
-            if ($this->farmerModel->saveHelpRequest($data)) {
-                $_SESSION['request_success'] = 'Your request has been submitted successfully!';
-                Redirect('FarmerController/RequestHelp');
-            } else {
-                error_log("Failed to save help request: " . json_encode($data));
-                $_SESSION['request_error'] = 'Failed to submit your request. Please try again.';
-                Redirect('FarmerController/RequestHelp');
-            }
-        }
-    }
-
+    
     public function getBuyerDetails($buyer_id){
         $buyerDetails = $this->farmerModel->getBuyerDetails($buyer_id);
         if ($buyerDetails) {
@@ -693,6 +645,126 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
     public function Wallet(){
         $data=$this->farmerModel->getWalletDetails($_SESSION['user_id']);
         $this->View('Farmer/Wallet',$data);
+    }
+
+    public function RequestHelp() {
+        $data = [
+            'requests' => $this->NotificationModel->getHelpRequestsWithResponses($_SESSION['user_id'])
+        ];
+        $this->view('Farmer/RequestHelp', $data);
+    }
+
+    public function showForm($category) {
+        $data = ['category' => $category];
+        $this->view('Farmer/RequestHelp', $data);
+    }
+
+    public function submitRequest() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            $data = [
+                'user_id' => $_SESSION['user_id'],
+                'user_role' => $_SESSION['user_role'],
+                'category' => trim($_POST['category']),
+                'subject' => trim($_POST['subject']),
+                'description' => trim($_POST['description']),
+                'attachment' => null,
+                'status' => 'pending',
+                'created_at' => date('Y-m-d H:i:s')
+            ];
+
+            if (isset($_FILES['attachment']) && $_FILES['attachment']['error'] == UPLOAD_ERR_OK) {
+                $uploadDir = 'Uploads/help_requests/';
+                if (!file_exists($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+                $attachmentName = basename($_FILES['attachment']['name']);
+                $uploadFile = $uploadDir . $attachmentName;
+                if (move_uploaded_file($_FILES['attachment']['tmp_name'], $uploadFile)) {
+                    $data['attachment'] = $uploadFile;
+                } else {
+                    error_log("Failed to upload attachment: " . $attachmentName);
+                }
+            }
+
+            if ($this->farmerModel->saveHelpRequest($data)) {
+                $_SESSION['request_success'] = 'Your request has been submitted successfully!';
+                Redirect('FarmerController/RequestHelp');
+            } else {
+                error_log("Failed to save help request: " . json_encode($data));
+                $_SESSION['request_error'] = 'Failed to submit your request. Please try again.';
+                Redirect('FarmerController/RequestHelp');
+            }
+        }
+    }
+
+    public function getNotifications($user_id) {
+        $helpRequestNotifications = $this->NotificationModel->getHelpRequestNotificationsForUser($user_id);
+        $notifications = $helpRequestNotifications; 
+        header('Content-Type: application/json');
+        try {
+            echo json_encode($notifications);
+        } catch (Exception $e) {
+            error_log("Failed to encode notifications for user_id $user_id: " . $e->getMessage());
+            echo json_encode([]);
+        }
+    }
+
+    public function getUnreadNotifications() {
+        $data = [
+            'notifications' => $this->NotificationModel->getHelpRequestNotificationsForUser($_SESSION['user_id']),
+            'unread_count' => $this->NotificationModel->getUnreadHelpNotificationsCountForUser($_SESSION['user_id'])->count
+        ];
+        $this->view('inc/Notification', $data);
+    }
+
+    public function markHelpNotificationAsRead($notificationId, $userId) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Ensure the user is authorized
+            if ($userId != $_SESSION['user_id']) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'error' => 'Unauthorized']);
+                exit;
+            }
+
+            $notificationModel = $this->model('Notification');
+            $result = $notificationModel->markHelpNotificationAsRead($notificationId, $userId);
+
+            header('Content-Type: application/json');
+            echo json_encode(['success' => $result]);
+            exit;
+        } else {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'error' => 'Invalid request method']);
+            exit;
+        }
+    }
+
+    public function markNotificationAsRead($notificationId, $userId) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Ensure the user is authorized
+            if ($userId != $_SESSION['user_id']) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'error' => 'Unauthorized']);
+                exit;
+            }
+
+            $notificationModel = $this->model('Notification');
+            $result = $notificationModel->markNotificationAsRead($notificationId, $userId);
+
+            header('Content-Type: application/json');
+            echo json_encode(['success' => $result]);
+            exit;
+        } else {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'error' => 'Invalid request method']);
+            exit;
+        }
+    }    
+
+    public function getUnreadNotificationsCount($user_id) {
+        $count = $this->NotificationModel->getUnreadHelpNotificationsCountForUser($user_id)->count;
+        return $count;
     }
 
 

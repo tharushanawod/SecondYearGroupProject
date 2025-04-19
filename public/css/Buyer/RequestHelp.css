@@ -177,7 +177,109 @@ p {
     background-color: #b3b3b3;
 }
 
-/* Responsive Design */
+.requests-section {
+    border-top: 2px solid #086e32;
+    padding-top: 20px;
+    margin-top: 60px;
+}
+
+.requests-section h2 {
+    color: #228f0c;
+    margin-bottom: 20px;
+    font-size: 22px;
+}
+
+.requests-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.request-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.request-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.request-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.request-id {
+    font-size: 14px;
+    color: #666;
+}
+
+.request-status {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 12px;
+    text-transform: uppercase;
+}
+
+.request-status.pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.request-status.resolved {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.request-status.open {
+    background-color: #cce5ff;
+    color: #004085;
+}
+
+.request-body h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.request-body .category {
+    font-size: 14px;
+    color: #228f0c;
+    margin-bottom: 10px;
+}
+
+.request-body .response {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.5;
+}
+
+.request-footer {
+    margin-top: 15px;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.request-footer .submitted {
+    font-size: 12px;
+    color: #666;
+}
+
+.no-requests {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-size: 16px;
+}
+
 @media (max-width: 992px) {
     .category-box {
         width: calc(50% - 10px);
@@ -202,6 +304,10 @@ p {
     .submit-btn, .cancel-btn {
         width: 100%;
     }
+
+    .requests-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 480px) {
@@ -209,7 +315,7 @@ p {
         font-size: 24px;
     }
 
-    .help-form h2 {
+    .help-form h2, .requests-section h2 {
         font-size: 20px;
     }
 
@@ -220,5 +326,13 @@ p {
 
     .submit-btn, .cancel-btn {
         padding: 10px 20px;
+    }
+
+    .request-card {
+        padding: 15px;
+    }
+
+    .request-body h3 {
+        font-size: 16px;
     }
 }
