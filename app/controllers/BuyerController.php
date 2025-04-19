@@ -68,7 +68,19 @@ class BuyerController extends Controller {
     }
 
     public function Dashboard() {
-        $data = [];
+        $total_bids= $this->BuyerModel->getTotalBids($_SESSION['user_id']);
+        $active_products = $this->BuyerModel->getActiveProducts();
+        $total_spent = $this->BuyerModel->getTotalSpent($_SESSION['user_id']);
+        $auction_won = $this->BuyerModel->getAuctionsWon($_SESSION['user_id']);
+        $recent_bids=($this->BuyerModel->getRecentBids($_SESSION['user_id']));
+        $data = [
+            'user_name' => $_SESSION['user_name'],
+            'total_bids' => $total_bids,
+            'active_products' => $active_products,
+            'total_spent' => $total_spent,
+            'auction_won' => $auction_won,
+            'recent_bids' => $recent_bids
+        ];
         $this->View('Buyer/buyer dashboard', $data);
     }
 
@@ -163,13 +175,15 @@ class BuyerController extends Controller {
                 }
                 $result = $this->BuyerModel->UpdateProfile($data);
                 if ($result) {
-                    Redirect('LandingController/logout');
+                    Redirect('BuyerController/ManageProfile');
                 }
             } else {
                 $this->view('Buyer/ManageProfile', $data);
             }
         } else {
             $user = $this->BuyerModel->getUserById($_SESSION['user_id']);
+            $_SESSION['user_name'] = $user->name;
+            $_SESSION['user_email'] = $user->email;
             $data = [
                 'name' => $user->name,
                 'phone' => $user->phone,
@@ -285,14 +299,22 @@ class BuyerController extends Controller {
         $this->View('Buyer/pay', $data);
     }
 
-//     public function getNotifications($buyer_id) {
-//         $productsnotifications = (array) $this->NotificationModel->getNotifications($buyer_id);
-// $winningnotifications = (array) $this->NotificationModel->getWinningNotifications($buyer_id);
-// $notifications = array_merge($productsnotifications, $winningnotifications);
-
-//         header('Content-Type: application/json');
-//         echo json_encode($notifications);
-//     }
+    // public function getNotifications($buyer_id) {
+    //     $productsnotifications = (array) $this->NotificationModel->getNotifications($buyer_id);
+    //     $winningnotifications = (array) $this->NotificationModel->getWinningNotifications($buyer_id);
+        
+    //     $notifications = array_merge($productsnotifications, $winningnotifications);
+    
+    //     // Sort by date descending
+    //     usort($notifications, function($a, $b) {
+    //         return strtotime($b->created_at) - strtotime($a->created_at);
+    //     });
+    
+    //     // Output as JSON
+    //     header('Content-Type: application/json');
+    //     echo json_encode($notifications);
+    // }
+    
 
 //     public function getUnreadNotifications() {
 //         $data = [];

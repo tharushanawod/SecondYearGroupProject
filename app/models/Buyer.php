@@ -350,9 +350,50 @@ AND corn_products.closing_date > NOW();
         $this->db->bind(':user_id', $user_id);
         return $this->db->resultSet();  // This will return the user's status (e.g., 'restricted')
     }
-    
-    
-    
 
-}
+    public function getTotalBids($user_id) {
+        $this->db->query('SELECT COUNT(*) as total_bids FROM bids WHERE buyer_id = :user_id');
+        $this->db->bind(':user_id', $user_id);
+        $results=$this->db->single();  // This will return the user's status (e.g., 'restricted')
+        return $results->total_bids; // Return the total number of bids
+    }
+    public function getTotalSpent($user_id) {
+        $this->db->query('SELECT SUM(bid_price * quantity) as total_spent FROM orders_from_buyers WHERE buyer_id = :user_id');
+        $this->db->bind(':user_id', $user_id);
+        $results = $this->db->single();  // This will return the user's status (e.g., 'restricted')
+        return $results->total_spent; // Return the total amount spent
+    }
+    public function getAuctionsWon($user_id) {
+        $this->db->query('SELECT COUNT(*) as auctions_won FROM orders_from_buyers WHERE buyer_id = :user_id');
+        $this->db->bind(':user_id', $user_id);
+        $results = $this->db->single();  // This will return the user's status (e.g., 'restricted')
+        return $results->auctions_won; // Return the total number of auctions won
+    }
+    public function getRecentBids($user_id) {
+        $this->db->query('
+            SELECT corn_products.quantity, bids.bid_amount, bids.bid_time,orders_from_buyers.order_id,corn_products.closing_date
+            FROM bids
+            INNER JOIN corn_products ON bids.product_id = corn_products.product_id
+            LEFT JOIN orders_from_buyers ON corn_products.product_id = orders_from_buyers.product_id
+            WHERE bids.buyer_id = :user_id
+            ORDER BY bids.bid_time DESC
+            LIMIT 5
+        ');
+        $this->db->bind(':user_id', $user_id);
+        return $this->db->resultSet();  // This will return the user's statu
+
+
+        }
+    
+    public function getActiveProducts(){
+        $this->db->query('
+            SELECT COUNT(*) as active_products
+            FROM corn_products
+            WHERE corn_products.closing_date > NOW()
+        ');
+        $results = $this->db->single();  
+        return $results->active_products; 
+    }
+    
+    }
 ?>

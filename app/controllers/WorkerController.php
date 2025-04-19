@@ -20,7 +20,22 @@ class WorkerController extends Controller {
     }
 
     public function Dashboard() {
-        $data = [];
+        $active_job = $this->WorkerModel->getActiveJob($_SESSION['user_id']);
+        $completed_jobs = $this->WorkerModel->getCompletedJobs($_SESSION['user_id']);
+        $pending_jobs = $this->WorkerModel->getPendingJobs($_SESSION['user_id']);
+        $overall_rating = $this->WorkerModel->getOverallRating($_SESSION['user_id']);
+        $recent_tasks = $this->WorkerModel->getRecentTasks($_SESSION['user_id']);
+        
+
+        $data = [
+            'user_name' => $_SESSION['user_name'],
+            'active_job' => $active_job,
+            'completed_jobs' => $completed_jobs,
+            'pending_jobs' => $pending_jobs,
+            'overall_rating' => $overall_rating,
+            'recent_tasks' => $recent_tasks
+        ];
+      
         $this->view('FarmWorker/Dashboard', $data);
     }
 

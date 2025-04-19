@@ -353,5 +353,110 @@ class Cart {
             throw $e;
         }
     }
+
+    public function createOrder($orderData, $cartItems) {
+        try {
+            $this->db->beginTransaction();
+    
+            // 1. Insert main order
+            $this->db->query('INSERT INTO orders (user_id, first_name, last_name, address, city, postcode, phone, total_amount, order_date, status) 
+                              VALUES (:user_id, :first_name, :last_name, :address, :city, :postcode, :phone, :total_amount, NOW(), "pending")');
+    
+            $this->db->bind(':user_id', $orderData['user_id']);
+            $this->db->bind(':first_name', $orderData['first_name']);
+            $this->db->bind(':last_name', $orderData['last_name']);
+            $this->db->bind(':address', $orderData['address']);
+            $this->db->bind(':city', $orderData['city']);
+            $this->db->bind(':postcode', $orderData['postcode']);
+            $this->db->bind(':phone', $orderData['phone']);
+            $this->db->bind(':total_amount', $orderData['total_amount']);
+    
+            if (!$this->db->execute()) {
+                $this->db->rollBack();
+                return false;
+            }
+    
+            $order_id = $this->db->lastInsertId();
+
+             // 2. Insert each item
+             foreach ($cartItems as $item) {
+                $this->db->query('INSERT INTO order_items (order_id, product_id, quantity, price) 
+                                  VALUES (:order_id, :product_id, :quantity, :price)');
+                $this->db->bind(':order_id', $order_id);
+                $this->db->bind(':product_id', $item->product_id);
+                $this->db->bind(':quantity', $item->quantity);
+                $this->db->bind(':price', $item->price);
+    
+                if (!$this->db->execute()) {
+                    $this->db->rollBack();
+                    return false;
+                }
+            }
+
+    
+            // 3. Clear cart
+            if (!$this->clearCartAfterOrder($orderData['user_id'])) {
+                $this->db->rollBack();
+                return false;
+            }
+    
+            // 4. Commit all
+            $this->db->commit();
+            return $order_id;
+    
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            return false;
+        }
+    }
+
+    public function clearCartAfterOrder($user_id) {
+        $this->db->query("DELETE FROM cart WHERE customer_id = :user_id");
+        $this->db->bind(':user_id', $user_id);
+        return $this->db->execute();
+    }
+
+    public function getOrderDetails($order_id) {
+        $this->db->query('SELECT * FROM orders WHERE order_id = :order_id');
+        $this->db->bind(':order_id', $order_id);
+        return $this->db->single();
+    }
+
+    public function getProductDetails($order_id){
+        $this->db->query('SELECT order_items.*,supplier_products.product_name
+        FROM order_items 
+        LEFT JOIN supplier_products ON order_items.product_id = supplier_products.product_id
+        WHERE order_id = :order_id');
+        $this->db->bind(':order_id', $order_id);
+        return $this->db->resultSet();
+    }
+    
+    public function updatePaymentStatus($order_id, $status) {
+        $this->db->query('UPDATE orders SET status = :status WHERE order_id = :order_id');
+        $this->db->bind(':status', $status);
+        $this->db->bind(':order_id', $order_id);
+        return $this->db->execute();
+    }
+
+    public function TransactionComplete($order_id, $amount,$payment_id) {
+        $this->db->query('INSERT INTO transaction 
+        (order_id, amount_paid, payment_id)
+        VALUES (:order_id, :amount_paid, :payment_id)');
+        $this->db->bind(':order_id', $order_id);
+        $this->db->bind(':amount_paid', $amount);
+        $this->db->bind(':payment_id', $payment_id);
+        $this->db->execute();
+      
+    }
+
+    public function UpdateInventory($order_id) {
+        $this->db->query('UPDATE supplier_products sp
+        INNER JOIN order_items oi ON sp.product_id = oi.product_id
+        SET sp.stock = sp.stock - oi.quantity
+        WHERE oi.order_id = :order_id');
+        $this->db->bind(':order_id', $order_id);
+        return $this->db->execute();
+    }
+    
 }
 ?>

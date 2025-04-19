@@ -1,0 +1,134 @@
+@import url(../components/sidebar2.css);
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #e74c3c;
+}
+
+body {
+    background-color: #f5f6fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+}
+
+
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    margin-left: 250px;
+}
+
+.filter-section {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.filter-options {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.filter-select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: white;
+    min-width: 200px;
+    color: var(--primary-color);
+}
+
+.ratings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.rating-card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.rating-card:hover {
+    transform: translateY(-5px);
+}
+
+.rating-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.rating-type {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.product-rating {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.worker-rating {
+    background: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.rating-stars {
+    color: #ffc107;
+    margin: 10px 0;
+}
+
+.rating-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-approve {
+    background: #4caf50;
+    color: white;
+}
+
+.btn-reject {
+    background: #f44336;
+    color: white;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+.rating-content {
+    margin: 10px 0;
+    color: #666;
+}
+
+.rating-meta {
+    font-size: 0.8rem;
+    color: #999;
+}

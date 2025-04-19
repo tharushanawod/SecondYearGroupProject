@@ -2,6 +2,7 @@
 class ModeratorController extends Controller {
     private $notificationModel;
     private $notification;
+    private $ModeratorModel;
 
     public function __construct() {
         if (!$this->isloggedin()) {
@@ -13,6 +14,7 @@ class ModeratorController extends Controller {
         }
         $this->notificationModel = $this->model('M_pages');
         $this->notification = $this->model('Notification');
+        $this->ModeratorModel = $this->model('Moderator');
     }
 
     public function isloggedin() {
@@ -89,43 +91,6 @@ class ModeratorController extends Controller {
         return $categories;
     }
 
-    // private function handleReply($requestId, $moderatorId, $reply) {
-    //     try {
-    //         // Add reply
-    //         if (!$this->notificationModel->addReply($requestId, $moderatorId, $reply)) {
-    //             error_log("Failed to add reply for request_id $requestId by moderator $moderatorId");
-    //             $_SESSION['reply_error'] = 'Failed to send reply.';
-    //             $category = $this->notificationModel->getRequestById($requestId)->category ?? '';
-    //             Redirect('ModeratorController/Help?category=' . urlencode($category));
-    //         }
-
-    //         // Update request status
-    //         if (!$this->notificationModel->updateRequestStatus($requestId, $moderatorId, 'responded')) {
-    //             error_log("Failed to update status for request_id $requestId by moderator $moderatorId");
-    //             $_SESSION['reply_error'] = 'Failed to update request status.';
-    //             $category = $this->notificationModel->getRequestById($requestId)->category ?? '';
-    //             Redirect('ModeratorController/Help?category=' . urlencode($category));
-    //         }
-
-    //         // Send notification to the user
-    //         $user = $this->notificationModel->getUserByRequestId($requestId);
-    //         if ($user && $user->user_id && $user->user_role) {
-    //             if (!$this->notification->createHelpRequestNotification($user->user_id, $user->user_role, $requestId)) {
-    //                 error_log("Failed to send notification for user_id {$user->user_id}, request_id $requestId");
-    //             }
-    //         } else {
-    //             error_log("Invalid user data for request_id $requestId");
-    //         }
-
-    //         $_SESSION['reply_success'] = 'Reply sent successfully!';
-    //     } catch (Exception $e) {
-    //         error_log("Error in handleReply for request_id $requestId: " . $e->getMessage());
-    //         $_SESSION['reply_error'] = 'An unexpected error occurred.';
-    //     }
-
-    //     $category = $this->notificationModel->getRequestById($requestId)->category ?? '';
-    //     Redirect('ModeratorController/Help?category=' . urlencode($category));
-    // }
 
 
     private function handleReply($requestId, $moderatorId, $reply) {

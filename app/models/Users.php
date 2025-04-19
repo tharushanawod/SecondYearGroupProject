@@ -355,7 +355,197 @@ class Users {
         }
     }
 
+    public function getRatings() {
+        try {
+            // Start transaction
+            $this->db->beginTransaction();
     
+            // Query 1: Get data from farmer_reviews_worker
+            $this->db->query('SELECT * FROM farmer_reviews_worker
+            WHERE is_verified =0
+            ');
+            $farmerReviews = $this->db->resultSet();
+    
+            // Query 2: Get data from buyer_reviews_farmer
+            $this->db->query('SELECT * FROM buyer_reviews_farmer
+             WHERE is_verified =0
+             ');
+            $buyerReviews = $this->db->resultSet();
+    
+            // Commit transaction
+            $this->db->commit();
+    
+            // Return both results as an array
+            return [
+                'farmer_reviews_worker' => $farmerReviews,
+                'buyer_reviews_farmer' => $buyerReviews
+            ];
+        } catch (Exception $e) {
+            // Rollback on error
+            $this->db->rollback(); // Rollback if any fails
+            return false;
+        }
+    }
+
+    public function ApproveWorkerReview($id){
+        $this->db->query('UPDATE farmer_reviews_worker SET is_verified = :is_verified WHERE id = :id');
+        $this->db->bind(':is_verified',1);
+        $this->db->bind(':id',$id);
+        if($this->db->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function ApproveProductReview($id){
+        $this->db->query('UPDATE buyer_reviews_farmer SET is_verified = :is_verified WHERE id = :id');
+        $this->db->bind(':is_verified',1);
+        $this->db->bind(':id',$id);
+        if($this->db->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function RejectWorkerReview($id){
+        $this->db->query('DELETE from farmer_reviews_worker WHERE id = :id');
+        $this->db->bind(':id',$id);
+        if($this->db->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function RejectProductReview($id){
+        $this->db->query('DELETE FROM buyer_reviews_farmer  WHERE id = :id');
+        $this->db->bind(':id',$id);
+        if($this->db->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function getUserCountByType() {
+ 
+        try {
+            // Start transaction
+            $this->db->beginTransaction();
+    
+           
+            $this->db->query('SELECT COUNT(*) as farmer_count FROM users WHERE user_type = :user_type');
+            $this->db->bind(':user_type', 'farmer');
+            $farmercount = $this->db->single();
+    
+            $this->db->query('SELECT COUNT(*) as buyer_count FROM users WHERE user_type = :user_type');
+            $this->db->bind(':user_type', 'buyer');
+            $buyercount = $this->db->single();
+
+            $this->db->query('SELECT COUNT(*) as worker_count FROM users WHERE user_type = :user_type');
+            $this->db->bind(':user_type', 'farmworker');
+            $workercount = $this->db->single();
+    
+            // Commit transaction
+            $this->db->commit();
+    
+            // Return both results as an array
+            return [
+                'farmercount' => $farmercount->farmer_count,
+                'buyercount' => $buyercount->buyer_count,
+                'workercount' => $workercount->worker_count
+            ];
+        } catch (Exception $e) {
+            // Rollback on error
+            $this->db->rollback(); // Rollback if any fails
+            return false;
+        }
+    }
+
+    public function getProductCount(){
+        $this->db->query('SELECT COUNT(*) as product_count FROM corn_products');
+        $productcount = $this->db->single();
+        return $productcount->product_count;
+    }
+    
+
+    public function getBidCount(){
+        $this->db->query('SELECT COUNT(*) as bid_count FROM bids');
+        $bidcount = $this->db->single();
+        return $bidcount->bid_count;
+    }
+
+    public function getWalletBalance(){
+        $this->db->query('SELECT SUM(balance) as total_balance FROM wallets WHERE user_id = :user_id');
+        $this->db->bind(':user_id', 123);
+        $walletbalance = $this->db->single();
+        return $walletbalance->total_balance;
+    }
+
+    public function getTransactions(){
+        $this->db->query('SELECT * FROM buyer_payments WHERE admin_withdraw_status = :admin_withdraw_status');
+        $this->db->bind(':admin_withdraw_status', 'not_withdrawn');
+        $transactions = $this->db->resultSet();
+        return $transactions;
+    }
+
+    public function processWithdrawal($withdrawalAmount){
+    
+
+
+        try {
+            // Start transaction
+            $this->db->beginTransaction();
+    
+           
+            $this->db->query('UPDATE wallets 
+            SET balance = balance - :withdrawalAmount 
+            WHERE user_id = 123;
+            ');
+            $this->db->bind(':withdrawalAmount', $withdrawalAmount);
+            $this->db->single();
+
+            $this->db->query('UPDATE buyer_payments SET admin_withdraw_status = :admin_withdraw_status WHERE admin_withdraw_status = :not_withdrawn');
+            $this->db->bind(':admin_withdraw_status', 'withdrawn');
+            $this->db->bind(':not_withdrawn', 'not_withdrawn');
+            $this->db->single();
+    
+            // Commit transaction
+            $this->db->commit();
+    
+            // Return both results as an array
+            return true;
+        } catch (Exception $e) {
+            // Rollback on error
+            $this->db->rollback(); // Rollback if any fails
+            return false;
+        }
+        
+    }
+
+    public function getDocumentPathformanufacturer($user_id){
+        $this->db->query('SELECT document_path FROM manufacturers WHERE user_id = :user_id');
+        $this->db->bind(':user_id',$user_id);
+        $row = $this->db->single();
+        if($row){
+            return $row->document_path;
+        }else{
+            return false;
+        }
+    }
+
+    public function getDocumentPathforsupplier($user_id){
+        $this->db->query('SELECT document_path FROM suppliers WHERE supplier_id = :user_id');
+        $this->db->bind(':user_id',$user_id);
+        $row = $this->db->single();
+        if($row){
+            return $row->document_path;
+        }else{
+            return false;
+        }
+    }
 
 
 }

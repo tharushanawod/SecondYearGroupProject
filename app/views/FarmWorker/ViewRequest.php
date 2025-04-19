@@ -8,66 +8,107 @@
     <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet"/>
 </head>
 <body>
-<?php require APPROOT . '/views/inc/sidebar.php'; ?>
+    <?php require APPROOT . '/views/inc/sidebar.php'; ?>
   
-<div class="container">
-    <h1>Job Request Details</h1>
-    <table>
-        <tr>
-            <th>Job ID</th>
-            <td><?php echo $data->job_id; ?></td>
-        </tr>
-        <tr>
-            <th>Job Type</th>
-            <td><?php echo $data->job_type; ?></td>
-        </tr>
-        <tr>
-            <th>Work Duration</th>
-            <td><?php echo $data->work_duration; ?></td>
-        </tr>
-        <tr>
-            <th>Start Date</th>
-            <td><?php echo $data->start_date; ?></td>
-        </tr>
-        <tr>
-            <th>End Date</th>
-            <td><?php echo $data->end_date; ?></td>
-        </tr>
-        <tr>
-            <th>Skills</th>
-            <td><?php echo $data->skills; ?></td>
-        </tr>
-        <tr>
-            <th>Location</th>
-            <td><?php echo $data->location; ?></td>
-        </tr>
-        <tr>
-            <th>Accommodation</th>
-            <td><?php echo $data->accommodation; ?></td>
-        </tr>
-        <tr>
-            <th>Food</th>
-            <td><?php echo $data->food; ?></td>
-        </tr>
-    </table>
-    <div class="buttons">
-        <a href="<?php echo URLROOT.'/WorkerController/AcceptJob/'.$data->job_id ;?>"><button class="accept-btn" >Accept</button></a>
-        <a href="<?php echo URLROOT.'/WorkerController/RejectJob/'.$data->job_id ;?>"><button class="reject-btn" onclick="rejectRequest(<?php echo $data->job_id; ?>)">Reject</button></a>
-        
-        
+    <div class="container">
+        <div class="details-card">
+            <div class="section-title">
+                <i class="fas fa-info-circle"></i>
+                <span>Job Information</span>
+            </div>
+            <div class="details-grid">
+                <div class="detail-item">
+                    <span class="detail-label">Job ID</span>
+                    <span class="detail-value"><i class="fas fa-hashtag"></i><?php echo $data->job_id; ?></span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Job Type</span>
+                    <span class="detail-value"><i class="fas fa-briefcase"></i><?php echo $data->job_type; ?></span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Work Duration</span>
+                    <span class="detail-value"><i class="fas fa-clock"></i><?php echo $data->work_duration; ?></span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Start Date</span>
+                    <span class="detail-value"><i class="fas fa-calendar-alt"></i><?php echo $data->start_date; ?></span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">End Date</span>
+                    <span class="detail-value"><i class="fas fa-calendar-alt"></i><?php echo $data->end_date; ?></span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Location</span>
+                    <span class="detail-value"><i class="fas fa-map-marker-alt"></i><?php echo $data->location; ?></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="details-card">
+            <div class="section-title">
+                <i class="fas fa-tools"></i>
+                <span>Requirements</span>
+            </div>
+            <div class="details-grid">
+                <div class="detail-item">
+                    <span class="detail-label">Required Skills</span>
+                    <span class="detail-value"><i class="fas fa-check-circle"></i><?php echo $data->skills; ?></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="details-card">
+            <div class="section-title">
+                <i class="fas fa-home"></i>
+                <span>Facilities</span>
+            </div>
+            <div class="details-grid">
+                <div class="detail-item">
+                    <span class="detail-label">Accommodation</span>
+                    <span class="detail-value"><i class="fas fa-bed"></i><?php echo $data->accommodation; ?></span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Food</span>
+                    <span class="detail-value"><i class="fas fa-utensils"></i><?php echo $data->food; ?></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <a href="<?php echo URLROOT.'/WorkerController/AcceptJob/'.$data->job_id; ?>">
+                <button class="btn accept-btn">
+                    <i class="fas fa-check"></i> Accept Job
+                </button>
+            </a>
+            <a href="<?php echo URLROOT.'/WorkerController/RejectJob/'.$data->job_id; ?>">
+                <button class="btn reject-btn">
+                    <i class="fas fa-times"></i> Reject Job
+                </button>
+            </a>
+            <div class="back-button">
+            <a href="<?php echo URLROOT.'/WorkerController/JobRequest'; ?>">
+                <button class="btn back-btn">
+                    <i class="fas fa-arrow-left"></i> Back to Requests
+                </button>
+            </a>
+        </div>
+        </div>
+
+      
     </div>
-</div>
 
-<script>
-function acceptRequest(job_id) {
-    // Implement the accept request logic here
-    alert('Request accepted for job ID: ' + job_id);
-}
+    <script>
+        function acceptRequest(job_id) {
+            if(confirm('Are you sure you want to accept this job?')) {
+                window.location.href = '<?php echo URLROOT; ?>/WorkerController/AcceptJob/' + job_id;
+            }
+        }
 
-function rejectRequest(job_id) {
-    // Implement the reject request logic here
-    alert('Request rejected for job ID: ' + job_id);
-}
-</script>
+        function rejectRequest(job_id) {
+            if(confirm('Are you sure you want to reject this job?')) {
+                window.location.href = '<?php echo URLROOT; ?>/WorkerController/RejectJob/' + job_id;
+            }
+        }
+    </script>
 </body>
 </html>

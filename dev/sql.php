@@ -314,3 +314,25 @@ END;
 DELIMITER ;
 
 
+CREATE EVENT auto_complete_jobs
+ON SCHEDULE EVERY 1 HOUR
+DO
+  UPDATE job_requests
+  SET status = 'Completed'
+  WHERE status = 'Confirmed' AND end_date < NOW();
+
+
+
+
+  
+  CREATE TABLE transaction (
+    transaction_id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT,
+    payment_method VARCHAR(50),
+    amount_paid DECIMAL(10, 2),
+    payment_date DATETIME,
+    withdraw_status ENUM('not_withdrawn', 'withdrawn') DEFAULT 'not_withdrawn',
+    wallet_status ENUM('not_added', 'added') DEFAULT 'not_added',
+    delivery_confirmed BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (order_id) REFERENCES orders(order_id)
+);

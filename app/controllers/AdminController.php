@@ -12,9 +12,7 @@ class AdminController extends Controller {
             session_destroy();
             Redirect('LandingController/login');
         }
-       
-   
-        $this->AdminModel = $this->model('Users');
+        
         $this->AdminModel = $this->model('Users');
     }
 
@@ -28,12 +26,14 @@ class AdminController extends Controller {
 
     // Fetch and display users on the dashboard
     public function Dashboard() {
-       
-        // Retrieve users from the model
-        $users = $this->AdminModel->getUsers();
-
-        // Pass the user data to the view
-        $data = ['users' => $users];
+        $user_counts = $this->AdminModel->getUserCountByType();
+        $product_count = $this->AdminModel->getProductCount();
+        $bid_count = $this->AdminModel->getBidCount();
+        $data = [
+            'user_counts' => $user_counts,
+            'product_count' => $product_count,
+            'bid_count' => $bid_count,
+        ];
 
         // Render the view
         $this->View('Admin/LandingDashboard', $data);
@@ -76,7 +76,7 @@ class AdminController extends Controller {
                 $result = $this->AdminModel->UpdateProfile($data);
                 
                 if ($result) {
-                    Redirect('LandingController/logout');
+                    Redirect('AdminController/ManageProfile');
                 }
             } else {
                 $this->view('Admin/ManageProfile', $data);
@@ -85,6 +85,8 @@ class AdminController extends Controller {
         } else {
             
             $user = $this->AdminModel->getUserById($_SESSION['user_id']);
+            $_SESSION['user_name'] = $user->name;
+            $_SESSION['user_email'] = $user->email;
             $data = [
                 'name' => $user->name,
                 'phone' => $user->phone,
@@ -439,6 +441,129 @@ class AdminController extends Controller {
         exit; // Stop further script execution after sending the file
     }
 
+    public function Ratings(){
+
+        // Fetch ratings from the model
+        $ratings = $this->AdminModel->getRatings();
+        
+        $rating_merged = array_merge($ratings['farmer_reviews_worker'], $ratings['buyer_reviews_farmer']);
+        // Pass the ratings data to the view
+        $data = ['ratings' => $rating_merged];
+
+        $this->View('Admin/Ratings',$data);
+    }
+
+    public function ApproveWorkerReview($id){
+        if($this->AdminModel->ApproveWorkerReview($id)){
+            Redirect('AdminController/Ratings');
+        }else{
+            die('Something went wrong');
+        }
+    }
+   
+    public function ApproveProductReview($id){
+        if($this->AdminModel->ApproveProductReview($id)){
+            Redirect('AdminController/Ratings');
+        }else{
+            die('Something went wrong');
+        }
+    }
+
+    public function RejectWorkerReview($id){
+        if($this->AdminModel->RejectWorkerReview($id)){
+            Redirect('AdminController/Ratings');
+        }else{
+            die('Something went wrong');
+        }
+    }
+
+    public function RejectProductReview($id){
+        if($this->AdminModel->RejectProductReview($id)){
+            Redirect('AdminController/Ratings');
+        }else{
+            die('Something went wrong');
+        }
+    }
+
+    public function Wallet(){
+        // Fetch wallet balance from the model
+        $balance = $this->AdminModel->getWalletBalance($_SESSION['user_id']);
+        $transactions = $this->AdminModel->getTransactions($_SESSION['user_id']);
+        
+        // Pass the balance data to the view
+        $data = [
+            'balance' => $balance,
+            'transactions' => $transactions,
+    
+    ];
+
+        // Render the view
+        $this->View('Admin/Wallet', $data);
+    }
+
+    public function processWithdrawal() {
+        // Check if the request is a POST request
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Get the withdrawal amount from the request
+            $withdrawalAmount = $_POST['amount'];
+    
+            // Process the withdrawal using the model
+            if ($this->AdminModel->processWithdrawal($withdrawalAmount)) {
+                // Redirect to the wallet page after successful withdrawal
+                Redirect('AdminController/Wallet');
+            } else {
+                // Handle error if withdrawal fails
+                die('Something went wrong while processing the withdrawal.');
+            }
+        } else {
+            // If not a POST request, redirect to the wallet page
+            Redirect('AdminController/Wallet');
+        }
+    }
+
+    function getMimeType($filename) {
+        $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+    
+        $mimeTypes = [
+            'jpg'  => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'png'  => 'image/png',
+            'gif'  => 'image/gif',
+            'pdf'  => 'application/pdf',
+            'doc'  => 'application/msword',
+            'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'xls'  => 'application/vnd.ms-excel',
+            'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'txt'  => 'text/plain',
+            // Add more if needed
+        ];
+    
+        return $mimeTypes[$extension] ?? 'application/octet-stream';
+    }
+
+    public function ViewDocument($user_id) {
+        $path = dirname(APPROOT) . '/public/';
+    
+        if ($_SESSION['user_role'] == 'manufacturer') {
+            $documentPath = $path . $this->AdminModel->getDocumentPathformanufacturer($user_id);
+        } else {
+            $documentPath = $path . $this->AdminModel->getDocumentPathforsupplier($user_id);
+        }
+        $documentPath = realpath($documentPath); // resolves weird paths or spaces
+
+    
+        if (file_exists($documentPath)) {
+           // Set headers to display the file in the browser
+           header('Content-Type: ' . $this->getMimeType($documentPath));
+           header('Content-Disposition: inline; filename="' . basename($documentPath) . '"');
+           readfile($documentPath);
+           exit;
+        } else {
+            echo "Document not found.";
+        }
+    }
+    
+    
  
     
 

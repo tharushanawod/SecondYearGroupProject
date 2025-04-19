@@ -10,14 +10,14 @@
 <body>
 <?php require APPROOT . '/views/inc/sidebar.php'; ?>
     <div class="main-content">
-        <h1>Do List(Accepted Jobs)</h1>
+        <h1>Accepted Jobs</h1>
 
         <table>
             <thead>
             <tr>
                 <th>Profile</th>
                 <th>Farmer Name</th>
-                <th>Accepted Time</th>
+                <th>Starting From</th>
                 <th>Job Descption</th>
             </tr>
             </thead>
@@ -31,7 +31,22 @@
                 </div>
                 </td>
                 <td class="farmer-name"><?php echo $request->name; ?></td>
-                <td class="request-time"><?php echo $request->updated_at; ?></td>
+                <td class="request-time"><?php 
+                $start_date= new DateTime($request->start_date);
+                $current_date= new DateTime(date('Y-m-d'));
+                $interval= $start_date->diff($current_date);
+                $days= $interval->days;
+
+                if($days==0){
+                    echo "Today";
+                }else if($days==1){
+                    echo "Tomorrow";
+                }else{
+                    echo "after".$days."after days ";
+                }
+                
+                
+                ?></td>
                 <td class="action-buttons">
                     <a href="<?php echo URLROOT.'/WorkerController/ViewAcceptedJob/'.$request->job_id; ?>"><button class="btn btn-view">Click To View</button></a>
                 

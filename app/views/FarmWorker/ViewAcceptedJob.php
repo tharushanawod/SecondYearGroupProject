@@ -3,58 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Request Details</title>
-    <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/FarmWorker/ViewRequest.css">
+    <title>Accepted Job Details</title>
+    <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/FarmWorker/ViewAcceptedJob.css">
     <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet"/>
-    <style>
-
-    </style>
 </head>
 <body>
 <?php require APPROOT . '/views/inc/sidebar.php'; ?>
   
 <div class="container">
-    <h1>Accepted Job Details</h1>
-    <table>
-        <tr>
-            <th>Job ID</th>
-            <td><?php echo $data->job_id; ?></td>
-        </tr>
-        <tr>
-            <th>Job Type</th>
-            <td><?php echo $data->job_type; ?></td>
-        </tr>
-        <tr>
-            <th>Work Duration</th>
-            <td><?php echo $data->work_duration; ?></td>
-        </tr>
-        <tr>
-            <th>Start Date</th>
-            <td><?php echo $data->start_date; ?></td>
-        </tr>
-        <tr>
-            <th>End Date</th>
-            <td><?php echo $data->end_date; ?></td>
-        </tr>
-        <tr>
-            <th>Skills</th>
-            <td><?php echo $data->skills; ?></td>
-        </tr>
-        <tr>
-            <th>Location</th>
-            <td><?php echo $data->location; ?></td>
-        </tr>
-        <tr>
-            <th>Accommodation</th>
-            <td><?php echo $data->accommodation; ?></td>
-        </tr>
-        <tr>
-            <th>Food</th>
-            <td><?php echo $data->food; ?></td>
-        </tr>
-    </table>
+    <div class="details-card">
+        <div class="section-title">
+            <i class="fas fa-info-circle"></i>
+            <span>Job Information</span>
+        </div>
+        <div class="details-grid">
+            <div class="detail-item">
+                <span class="detail-label">Job ID</span>
+                <span class="detail-value"><i class="fas fa-hashtag"></i><?php echo $data->job_id; ?></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Job Type</span>
+                <span class="detail-value"><i class="fas fa-briefcase"></i><?php echo $data->job_type; ?></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Work Duration</span>
+                <span class="detail-value"><i class="fas fa-clock"></i><?php echo $data->work_duration; ?></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Start Date</span>
+                <span class="detail-value"><i class="fas fa-calendar-alt"></i><?php echo $data->start_date; ?></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">End Date</span>
+                <span class="detail-value"><i class="fas fa-calendar-alt"></i><?php echo $data->end_date; ?></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Location</span>
+                <span class="detail-value"><i class="fas fa-map-marker-alt"></i><?php echo $data->location; ?></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="details-card">
+        <div class="section-title">
+            <i class="fas fa-tools"></i>
+            <span>Requirements</span>
+        </div>
+        <div class="details-grid">
+            <div class="detail-item">
+                <span class="detail-label">Required Skills</span>
+                <span class="detail-value"><i class="fas fa-check-circle"></i><?php echo $data->skills; ?></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="details-card">
+        <div class="section-title">
+            <i class="fas fa-home"></i>
+            <span>Facilities</span>
+        </div>
+        <div class="details-grid">
+            <div class="detail-item">
+                <span class="detail-label">Accommodation</span>
+                <span class="detail-value"><i class="fas fa-bed"></i><?php echo $data->accommodation; ?></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Food</span>
+                <span class="detail-value"><i class="fas fa-utensils"></i><?php echo $data->food; ?></span>
+            </div>
+        </div>
+    </div>
+
     <div class="buttons">
-        <a href="tel:<?php echo '+94788278880' ?>"><button class="accept-btn">Contact The Farmer</button></a>
+        <a href="tel:<?php echo '+94788278880' ?>">
+            <button class="btn contact-btn">
+                <i class="fas fa-phone"></i> Contact The Farmer
+            </button>
+        </a>
+      
+            <a href="<?php echo URLROOT.'/WorkerController/DoList'; ?>">
+                <button class="btn back-btn">
+                    <i class="fas fa-arrow-left"></i> Back to Jobs
+                </button>
+            </a>
+        
     </div>
 </div>
 

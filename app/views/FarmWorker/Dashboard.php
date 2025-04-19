@@ -8,76 +8,141 @@
     <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet"/>
 </head>
 <body>
-    <div class="dashboard-container">
-        
-    <?php require APPROOT . '/views/inc/sidebar.php'; ?>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
 
-        <div class="main-content">
-            <div class="main-content-header">
-                <h1>Farm Worker Dashboard</h1>
-            </div>
+<div class="dashboard-container">
+    <div class="welcome-section">
+        <h1>Welcome back,
+            <?php echo $data['user_name']; ?>!
+        </h1>
+        <p>Track your tasks and monitor your performance</p>
+    </div>
 
-            <div class="cardBox">
-                <div class="card">
-                    <div class="image"><img width="50" height="50" src="https://img.icons8.com/ios/50/approval--v1.png" alt="approval--v1"/></div>
-                    <div>
-                        <div class="numbers"><?php echo $this->getAcceptedJobCount();?></div>
-                        <div class="cardName">Accepted Requests</div>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon tasks-icon">
+                    <i class="fas fa-tasks"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Active Job</h3>
+                    <p>
+                    <?php 
+                        echo isset($data['active_job'][0]->job_type) 
+                            ? $data['active_job'][0]->job_type 
+                            : "No Active Jobs"; 
+                        ?>
+
+
+                    </p>
+                    <div class="stat-date">
+                        Active Now
                     </div>
                 </div>
-
-                <div class="card">
-                    <div class="image"><img width="50" height="50" src="https://img.icons8.com/ios/50/clock--v1.png" alt="clock--v1"/></div>
-                    <div>
-                        <div class="numbers"><?php echo $this->getPendingJobCount();?></div>
-                        <div class="cardName">Pending Requests</div>
-                    </div>
-                </div>                              
             </div>
-           
-            
-            <div class="recentOrders">
-                <div class="cardHeader">
-                    <h2>Recent Requests</h2>                    
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon completed-icon">
+                    <i class="fas fa-check-circle"></i>
                 </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <td><b>Farmer</b></td>
-                            <td><b>Start Date</b></td>
-                            <td><b>End Date</b></td>
-                            <td><b>Description</b></td>
-                        </tr>
-                    </thead>
+                <div class="stat-info">
+                    <h3>Completed Jobs</h3>
+                    <p>
+                        <?php echo $data['completed_jobs']; ?>
+                    </p>
+                    <div class="stat-date">As of
+                        <?php echo date('M d, Y'); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                    <tbody>
-                        <tr>
-                        
-                            <td>Samith Perera</td>
-                            <td>2024/12/20</td>
-                            <td>2024/12/28</td>
-                            <td>Looking for a farm worker to help with daily tasks.</td>
-                        </tr>
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon pending-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Pending Jobs</h3>
+                    <p>
+                        <?php echo $data['pending_jobs']; ?>
+                    </p>
+                    <div class="stat-date">As of
+                        <?php echo date('M d, Y'); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                        <tr>
-                         
-                            <td>F.G Gamage</td>
-                            <td>2024/12/25</td>
-                            <td>2024/12/30</td>
-                            <td>Seeking a farm worker to assist with planting and harvesting.</td>
-                        </tr>
-
-                        <tr>
-                   
-                            <td>Aruna Gamage</td>
-                            <td>2024/12/15</td>
-                            <td>2024/12/20</td>
-                            <td>Looking for a farm worker to help with apply pesticides.</td>
-                        </tr>                        
-                    </tbody>
-                </table>
-            </div>            
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon rating-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Overall Rating</h3>
+                    <p>
+                       <?php echo number_format($data['overall_rating'], 2); ?>
+                    </p>
+                    <div class="stat-date">As of
+                        <?php echo date('M d, Y'); ?>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <div class="recent-section">
+        <div class="section-header">
+            <h2>Recent Tasks</h2>
+            <a href="<?php echo URLROOT; ?>/FarmWorkerController/tasks" class="view-all">
+                View All <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <table class="recent-tasks">
+            <thead>
+                <tr>
+                    <th>Task</th>
+                    <th>Duration</th>
+                    <th>location</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach($data['recent_tasks'] as $task): ?>
+                <tr>
+                    <td>
+                        <?php echo $task->job_type; ?>
+                    </td>
+                    <td>
+                    <?php
+                        $start_date = strtotime($task->start_date);
+                        $end_date = strtotime($task->end_date);
+                        $duration = ($end_date - $start_date) / (60 * 60 * 24); // duration in days
+                        echo $duration . " days";
+                        ?>
+
+                    </td>
+                    <td>
+                        <?php echo $task->location; ?>
+                    </td>
+                    <td>
+                        <?php echo date('M d, Y', strtotime($task->end_date)); ?>
+                    </td>
+                    <td>
+                        <span class="task-status status-<?php echo strtolower($task->status); ?>">
+                            <?php echo $task->status; ?>
+                        </span>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
 </body>
 </html>
