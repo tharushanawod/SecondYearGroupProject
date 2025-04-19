@@ -31,10 +31,12 @@ class SupplierController extends Controller {
     public function dashboard() {
         $supplierId = $_SESSION['user_id'];
         $recentOrders = $this->Supplier->getRecentOrders($supplierId);
+       
         
         $data = [
             'recentOrders' => $recentOrders
         ];
+     
         
         $this->view('Ingredient Supplier/Supplier Dashboard', $data);
     }
@@ -212,15 +214,15 @@ class SupplierController extends Controller {
     }
 
     public function viewOrders() {
-        $status = $_GET['status'] ?? 'all';
-        $supplierId = $_SESSION['user_id'];
-        if ($status === 'all') {
-            $orders = $this->Supplier->getOrdersBySupplierId($supplierId);
-        } else {
-            $orders = $this->Supplier->getOrdersByStatusAndSupplierId($status, $supplierId);
-        }
-        $data = ['orders' => $orders];
-        $this->view('Ingredient Supplier/Orders', $data);
+        // $status = $_GET['status'] ?? 'all';
+        // $supplierId = $_SESSION['user_id'];
+        // if ($status === 'all') {
+        //     $orders = $this->Supplier->getOrdersBySupplierId($supplierId);
+        // } else {
+        //     $orders = $this->Supplier->getOrdersByStatusAndSupplierId($status, $supplierId);
+        // }
+        // $data = ['orders' => $orders];
+        $this->view('Ingredient Supplier/OrdersManagement');
     }
 
     public function acceptOrder($orderId) {
@@ -465,6 +467,64 @@ public function submitRequest() {
             Redirect('SupplierController/RequestHelp');
         }
     }
+}
+
+public function getAllOrders($userId) {
+    $orders = $this->Supplier->getAllOrders($userId);
+    header('Content-Type: application/json');
+    echo json_encode($orders);
+
+}
+
+public function getOrderDetails($orderId) {
+    $orderDetails = $this->Supplier->getOrderDetails($orderId);
+    header('Content-Type: application/json');
+    echo json_encode($orderDetails);
+}
+
+public function getBuyerDetails($orderId) {
+    $buyerDetails = $this->Supplier->getBuyerDetails($orderId);
+    header('Content-Type: application/json');
+    echo json_encode($buyerDetails);
+
+}
+
+public function getDeliveryConfirmationStatus($orderId) {
+    $status = $this->Supplier->getDeliveryConfirmationStatus($orderId);
+    header('Content-Type: application/json');
+    echo json_encode($status);
+}
+
+public function sendDeliveryCode($orderId) {
+
+  
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
+        $data = [
+            'orderId' => $orderId,
+            'deliveryCompany' => trim($_POST['deliveryCompany']),
+            'trackingNumber' => trim($_POST['trackingNumber']),
+        ];
+
+
+
+            $result = $this->Supplier->sendDeliveryCode($data);
+
+            if ($result) {
+                Redirect('SupplierController/viewOrders');
+            }
+        } 
+    else {
+    
+        $data = [
+            'orderId' => $orderId
+            
+        ];
+        $this->view('Ingredient Supplier/DeliveryCode', $data);
+    }
+
+
+
 }
 
 }

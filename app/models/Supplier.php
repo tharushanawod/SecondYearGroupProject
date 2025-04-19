@@ -169,8 +169,15 @@ class Supplier {
         return $this->db->single()->farmer_id;
     }
 
-    public function getOrdersBySupplierId($supplierId) {
-        $this->db->query('SELECT * FROM orders WHERE supplier_id = :supplierId');
+    public function getAllOrders($supplierId) {
+        $this->db->query('SELECT 
+        orders.*,transaction.transaction_id
+        FROM orders
+        LEFT JOIN transaction ON orders.order_id = transaction.order_id
+        INNER JOIN order_items ON orders.order_id = order_items.order_id
+        INNER JOIN supplier_products ON order_items.product_id = supplier_products.product_id
+        WHERE supplier_products.supplier_id = :supplierId
+        ORDER BY orders.order_date DESC');
         $this->db->bind(':supplierId', $supplierId);
         return $this->db->resultSet();
     }
@@ -213,18 +220,20 @@ class Supplier {
         return $this->db->resultSet();
     }
 
-    public function getRecentOrders($supplierId, $limit = 5) {
+    public function getRecentOrders($supplierId) {
         $this->db->query('
-            SELECT o.*, f.name as customer_name 
-            FROM orders o
-            JOIN users f ON o.farmer_id = f.user_id
-            WHERE o.supplier_id = :supplierId
-            ORDER BY o.created_at DESC 
-            LIMIT :limit
+          SELECT orders.*
+FROM orders 
+INNER JOIN users ON orders.user_id = users.user_id
+INNER JOIN order_items ON orders.order_id = order_items.order_id
+INNER JOIN supplier_products ON order_items.product_id = supplier_products.product_id
+WHERE supplier_products.supplier_id = :supplierId
+ORDER BY orders.order_date DESC
+LIMIT 5
+
         ');
         
         $this->db->bind(':supplierId', $supplierId);
-        $this->db->bind(':limit', $limit);
         return $this->db->resultSet();
     }
 
@@ -276,5 +285,50 @@ class Supplier {
         $this->db->bind(':created_at', $data['created_at']);
         return $this->db->execute();
     } 
+
+    public function getOrderDetails($orderId) {
+        $this->db->query('
+            SELECT oi.*, sp.product_name, sp.price, o.order_date
+            FROM order_items oi
+            JOIN supplier_products sp ON oi.product_id = sp.product_id
+            JOIN orders o ON oi.order_id = o.order_id
+            WHERE oi.order_id = :orderId
+        ');
+        $this->db->bind(':orderId', $orderId);
+        return $this->db->resultSet();
+    }
+
+    public function getBuyerDetails($orderId) {
+        $this->db->query('
+            SELECT *
+            FROM orders
+            WHERE order_id = :order_id
+        ');
+        $this->db->bind(':order_id', $orderId);
+        return $this->db->single();
+    }
+
+    public function getDeliveryConfirmationStatus($orderId) {
+        $this->db->query('
+            SELECT  transaction.delivery_confirmed
+            FROM orders
+            LEFT JOIN transaction
+            ON orders.order_id = transaction.order_id
+            WHERE orders.order_id = :order_id
+        ');
+        $this->db->bind(':order_id', $orderId);
+        return $this->db->single();
+    }
+
+    public function sendDeliveryCode($data){
+        $this->db->query('INSERT INTO delivery_codes (order_id, company, code) 
+                         VALUES (:order_id, :delivery_company, :tracking_number)');
+        
+        $this->db->bind(':order_id', $data['orderId']);
+        $this->db->bind(':delivery_company', $data['deliveryCompany']);
+        $this->db->bind(':tracking_number', $data['trackingNumber']);
+
+        return $this->db->execute();
+    }
 }
 ?>

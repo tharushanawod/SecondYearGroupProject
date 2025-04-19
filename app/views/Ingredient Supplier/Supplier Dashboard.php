@@ -107,27 +107,34 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach($data['recent_orders'] as $order): ?>
+            <?php if (!empty($data['recentOrders'])) : ?>
+               <?php foreach($data['recentOrders'] as $order): ?>
+
                 <tr>
                     <td>#
-                        <?php echo $order['order_id']; ?>
+                        <?php echo $order->order_id; ?>
                     </td>
                     <td>
-                        <?php echo $order['customer_name']; ?>
+                        <?php echo $order->first_name; ?>
                     </td>
                     <td>Rs.
-                        <?php echo number_format($order['amount'], 2); ?>
+                        <?php echo number_format($order->total_amount, 2); ?>
                     </td>
                     <td>
-                        <?php echo date('M d, Y', strtotime($order['date'])); ?>
+                        <?php echo date('M d, Y', strtotime($order->order_date)); ?>
                     </td>
                     <td>
-                        <span class="order-status status-<?php echo strtolower($order['status']); ?>">
-                            <?php echo $order['status']; ?>
+                        <span class="order-status status-<?php echo strtolower($order->status); ?>">
+                            <?php echo $order->status; ?>
                         </span>
                     </td>
                 </tr>
                 <?php endforeach; ?>
+                <?php else : ?>
+                    <tr>
+                        <td colspan="5" class="no-orders">No recent orders available.</td>
+                    </tr>
+<?php endif; ?>
             </tbody>
         </table>
     </div>

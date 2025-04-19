@@ -336,3 +336,13 @@ DO
     delivery_confirmed BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (order_id) REFERENCES orders(order_id)
 );
+
+
+CREATE TABLE delivery_codes (
+    code_id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT NOT NULL,
+    code VARCHAR(10) NOT NULL,
+    company VARCHAR(10) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (order_id) REFERENCES orders(order_id)
+);
