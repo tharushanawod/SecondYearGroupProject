@@ -23,7 +23,10 @@
         <li><a href="<?php echo URLROOT;?>/ManufacturerController/PendingPayments"><i class="fa-solid fa-clock"></i><span class="menu-text">Pending Payments</span></a></li>
         <li><a href="<?php echo URLROOT;?>/ManufacturerController/purchaseHistory"><i class="fas fa-comments"></i><span class="menu-text">Orders</span></a></li>
         <li><a href="<?php echo URLROOT;?>/ManufacturerController/RequestHelp"><i class="fa-solid fa-comment-dots"></i><span class="menu-text">Request Help</span></a></li>
-                
+        <li><a href="<?php echo URLROOT; ?>/WorkerController/getUnreadNotifications">
+                <i class="fa-solid fa-bell"></i>
+                <span class="menu-text">Notifications</span>
+                </a></li>         
         
         
         <?php elseif ($user_role === 'buyer'): ?>
@@ -57,7 +60,10 @@
               <li><a href="<?php echo URLROOT;?>/WorkerController/DoList"><i class="fa-solid fa-list-check"></i><span class="menu-text">Accepted Jobs</span></a></li>
               <li><a href="<?php echo URLROOT;?>/WorkerController/trainingSelection"><i class="fa-solid fa-truck-monster"></i><span class="menu-text">Training</span></a></li>
               <li><a href="<?php echo URLROOT;?>/WorkerController/RequestHelp"><i class="fa-solid fa-comment-dots"></i><span class="menu-text">Request Help</span></a></li>
-              
+              <li><a href="<?php echo URLROOT; ?>/WorkerController/getUnreadNotifications">
+                <i class="fa-solid fa-bell"></i>
+                <span class="menu-text">Notifications</span>
+                </a></li>
               
               <?php elseif ($user_role === 'supplier'): ?>
                 <li><a href="<?php echo URLROOT;?>/SupplierController/dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>
@@ -67,11 +73,17 @@
                 <li><a href="<?php echo URLROOT;?>/SupplierController/RequestHelp"><i class="fa-solid fa-comment-dots"></i><span class="menu-text">Request Help</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/SupplierController/Wallet"><i class="fa-solid fa-wallet"></i><span class="menu-text">Wallet</span></a></li>
 
+                <li><a href="<?php echo URLROOT; ?>/SupplierController/getUnreadNotifications">
+                  <i class="fa-solid fa-bell"></i>
+                  <span class="menu-text">Notifications</span>
+                  </a></li>
+                  
                 <?php elseif ($user_role === 'moderator'): ?>
                   <li><a href="<?php echo URLROOT;?>/ModeratorController/Dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>
                   <li><a href="<?php echo URLROOT;?>/ModeratorController/Report"><i class="fa-solid fa-chart-bar"></i><span class="menu-text">Reports</span></a></li>  
                   <li><a href="<?php echo URLROOT;?>/ModeratorController/Help"><i class="fa-solid fa-comment-dots"></i><span class="menu-text">Help Center</span></a></li>
                   <?php else: ?>
+
                 <li><a href="<?php echo URLROOT;?>/AdminController/Dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/AdminController/UserControl"><i class="fa-solid fa-users"></i><span class="menu-text">User Control</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/AdminController/ModeratorControl"><i class="fa-solid fa-user-tie"></i><span class="menu-text">Moderators</span></a></li>

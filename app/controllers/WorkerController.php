@@ -1,7 +1,7 @@
-<?php 
-
+<?php
 class WorkerController extends Controller {
     private $WorkerModel;
+    private $NotificationModel;
 
     public function __construct() {  
         if (!$this->isloggedin()) {
@@ -12,14 +12,11 @@ class WorkerController extends Controller {
             Redirect('LandingController/login');
         } 
         $this->WorkerModel = $this->model('Worker');
+        $this->NotificationModel = $this->model('Notification');
     }
 
     public function isloggedin() {
-        if (isset($_SESSION['user_id']) && ($_SESSION['user_role']=='farmworker')){
-            return true;
-        } else {
-            return false;
-        }
+        return isset($_SESSION['user_id']) && $_SESSION['user_role'] == 'farmworker';
     }
 
     public function Dashboard() {
@@ -42,16 +39,15 @@ class WorkerController extends Controller {
         $this->view('FarmWorker/Dashboard', $data);
     }
 
-    public function ManageProfile()
-    {
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){ 
-            $_POST = filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING);
+    public function ManageProfile() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') { 
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
             $data = [
                 'user_id' => $_SESSION['user_id'],
                 'name' => trim($_POST['name']),
                 'phone' => trim($_POST['phone']),
                 'email' => trim($_POST['email']),
-                'bio'   => trim($_POST['bio']),
+                'bio' => trim($_POST['bio']),
                 'password' => trim($_POST['password']),
                 'name_err' => '',
                 'phone_err' => '',
@@ -60,84 +56,63 @@ class WorkerController extends Controller {
                 'bio_err' => ''
             ];
 
-            if(empty($data['name'])){
+            if (empty($data['name'])) {
                 $data['name_err'] = 'Please input a name';
             }
-
-            if(empty($data['phone'])){
+            if (empty($data['phone'])) {
                 $data['contact_err'] = 'Please input a contact number';
             }
-           
-
-            if(empty($data['email'])){
+            if (empty($data['email'])) {
                 $data['email_err'] = 'Please input an email';
             }
-
-            if(empty($data['bio'])){
+            if (empty($data['bio'])) {
                 $data['bio_err'] = 'Please input a bio';
             }
 
-           
-            
-
-            if(empty($data['name_err']) && empty($data['phone_err'])  && empty($data['email_err']) && empty($data['bio_err']) ){
-                echo 'Profile Updated';
-                if(!empty($data['password'])){
-                    $data['password'] = password_hash($data['password'],PASSWORD_DEFAULT);
-                    }
-                
-                $result = $this->WorkerModel->UpdateProfile($data);
-              
-                if($result){
-                    Redirect('WorkerController/ManageProfile');
+            if (empty($data['name_err']) && empty($data['phone_err']) && empty($data['email_err']) && empty($data['bio_err'])) {
+                if (!empty($data['password'])) {
+                    $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
                 }
-            }else{
-                $this->view('FarmWorker/ManageProfile',$data);
+                $result = $this->WorkerModel->UpdateProfile($data);
+                if ($result) {
+                    Redirect('LandingController/logout');
+                }
             }
-        
-            }
-            else{
-                $user=$this->WorkerModel->getUserById($_SESSION['user_id']);
-                $_SESSION['user_name'] = $user->name;
-                $_SESSION['user_email'] = $user->email;
-                $data = [
-                    'name' => $user->name,
-                    'phone' => $user->phone,
-                    'email' => $user->email,
-                    'bio' => $user->bio,
-                    'password' => '',
-                    'name_err' => '',
-                    'phone_err' => '',
-                    'email_err' => '',
-                    'password_err' => ''
-                ];
-                $this->view('FarmWorker/ManageProfile',$data);
-                
-            }
+            $this->view('FarmWorker/ManageProfile', $data);
+        } else {
+            $user = $this->WorkerModel->getUserById($_SESSION['user_id']);
+            $data = [
+                'name' => $user->name,
+                'phone' => $user->phone,
+                'email' => $user->email,
+                'bio' => $user->bio,
+                'password' => '',
+                'name_err' => '',
+                'phone_err' => '',
+                'email_err' => '',
+                'password_err' => ''
+            ];
+            $this->view('FarmWorker/ManageProfile', $data);
+        }
     }
 
-    // Get profile image URL
     public function getProfileImage($user_id) {
         $imagePath = $this->WorkerModel->getProfileImage($_SESSION['user_id']);
-        return $imagePath ? URLROOT .'/'.$imagePath : URLROOT . '/images/default.jpg';
+        return $imagePath ? URLROOT . '/' . $imagePath : URLROOT . '/images/default.jpg';
     }
 
     public function uploadProfileImage() {
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) {
-    $targetDir = "uploads/ProfilePictures/";
-    $fileName = basename($_FILES["profile_picture"]["name"]);
-    $targetFile = $targetDir . $fileName;
-
-    if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $targetFile)) {
-        $uploadResult = $this->WorkerModel->updateProfileImage($_SESSION['user_id'], $targetFile);
-       Redirect('WorkerController/ManageProfile');
-        // Update user's profile picture in the database here
-    } else {
-        echo "Error uploading file.";
-    }
-}
-
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) {
+            $targetDir = "Uploads/ProfilePictures/";
+            $fileName = basename($_FILES["profile_picture"]["name"]);
+            $targetFile = $targetDir . $fileName;
+            if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $targetFile)) {
+                $uploadResult = $this->WorkerModel->updateProfileImage($_SESSION['user_id'], $targetFile);
+                Redirect('WorkerController/ManageProfile');
+            } else {
+                echo "Error uploading file.";
+            }
+        }
     }
 
     public function save() {
@@ -166,81 +141,69 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
     }  
 
     public function jobDescription() {
-
-       
         $this->view('FarmWorker/JobDescription');
     }
 
     public function jobRequest() {
         $data['jobRequests'] = $this->WorkerModel->getJobRequests($_SESSION['user_id']);
-    
-       
-        $this->view('FarmWorker/JobRequest',$data);
-        
+        $this->view('FarmWorker/JobRequest', $data);
     }
 
     public function ViewRequest($job_id) {
-        $requests =  $this->WorkerModel->ViewRequest($job_id);
-        $data= $requests[0];
+        $requests = $this->WorkerModel->ViewRequest($job_id);
+        $data = $requests[0];
         $this->view('FarmWorker/ViewRequest', $data);
     }
-    
 
     public function trainingSelection() {
         $this->view('FarmWorker/TrainingSelection');
     }
 
     public function AcceptJob($job_id) {
-        $Result= $this->WorkerModel->AcceptJob($job_id);
-        
-
-        if($Result){
+        $Result = $this->WorkerModel->AcceptJob($job_id);
+        if ($Result) {
             Redirect('WorkerController/JobRequest');
         }
-        
     }
 
     public function RejectJob($job_id) {
-        $Result= $this->WorkerModel->RejectJob($job_id);
-        
-
-        if($Result){
+        $Result = $this->WorkerModel->RejectJob($job_id);
+        if ($Result) {
             Redirect('WorkerController/JobRequest');
         }
-        
     }
 
-    public function DoList(){
+    public function DoList() {
         $data['jobRequests'] = $this->WorkerModel->DoList($_SESSION['user_id']);
-    
-       
-        $this->view('FarmWorker/DoList',$data);
+        $this->view('FarmWorker/DoList', $data);
     }
 
     public function ViewAcceptedJob($job_id) {
-        $requests =  $this->WorkerModel->ViewRequest($job_id);
-        $data= $requests[0];
+        $requests = $this->WorkerModel->ViewRequest($job_id);
+        $data = $requests[0];
         $this->view('FarmWorker/ViewAcceptedJob', $data);
     }
 
-    public function getAcceptedJobCount(){
+    public function getAcceptedJobCount() {
         $count = $this->WorkerModel->getAcceptedJobCount($_SESSION['user_id']);
         return $count;
     }
 
-    public function getPendingJobCount(){
+    public function getPendingJobCount() {
         $count = $this->WorkerModel->getPendingJobCount($_SESSION['user_id']);
         return $count;
     }
- 
+
     public function RequestHelp() {
-        $data = [];
-        $this->View('FarmWorker/RequestHelp', $data);
+        $data = [
+            'requests' => $this->NotificationModel->getHelpRequestsWithResponses($_SESSION['user_id'])
+        ];
+        $this->view('FarmWorker/RequestHelp', $data);
     }
 
     public function showForm($category) {
         $data = ['category' => $category];
-        $this->View('FarmWorker/RequestHelp', $data);
+        $this->view('FarmWorker/RequestHelp', $data);
     }
 
     public function submitRequest() {
@@ -257,9 +220,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
                 'created_at' => date('Y-m-d H:i:s')
             ];
 
-            // Handle file upload
             if (isset($_FILES['attachment']) && $_FILES['attachment']['error'] == UPLOAD_ERR_OK) {
-                $uploadDir = 'uploads/help_requests/'; 
+                $uploadDir = 'Uploads/help_requests/';
                 if (!file_exists($uploadDir)) {
                     mkdir($uploadDir, 0777, true);
                 }
@@ -272,7 +234,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
                 }
             }
 
-            // Save to database
             if ($this->WorkerModel->saveHelpRequest($data)) {
                 $_SESSION['request_success'] = 'Your request has been submitted successfully!';
                 Redirect('WorkerController/RequestHelp');
@@ -284,12 +245,74 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
         }
     }
 
+    public function getNotifications($user_id) {
+        $helpRequestNotifications = $this->NotificationModel->getHelpRequestNotificationsForUser($user_id);
+        $notifications = $helpRequestNotifications; 
+        header('Content-Type: application/json');
+        try {
+            echo json_encode($notifications);
+        } catch (Exception $e) {
+            error_log("Failed to encode notifications for user_id $user_id: " . $e->getMessage());
+            echo json_encode([]);
+        }
+    }
 
+    public function getUnreadNotifications() {
+        $data = [
+            'notifications' => $this->NotificationModel->getHelpRequestNotificationsForUser($_SESSION['user_id']),
+            'unread_count' => $this->NotificationModel->getUnreadHelpNotificationsCountForUser($_SESSION['user_id'])->count
+        ];
+        $this->view('inc/Notification', $data);
+    }
 
+    public function markHelpNotificationAsRead($notificationId, $userId) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Ensure the user is authorized
+            if ($userId != $_SESSION['user_id']) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'error' => 'Unauthorized']);
+                exit;
+            }
+
+            $notificationModel = $this->model('Notification');
+            $result = $notificationModel->markHelpNotificationAsRead($notificationId, $userId);
+
+            header('Content-Type: application/json');
+            echo json_encode(['success' => $result]);
+            exit;
+        } else {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'error' => 'Invalid request method']);
+            exit;
+        }
+    }
+
+    public function markNotificationAsRead($notificationId, $userId) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Ensure the user is authorized
+            if ($userId != $_SESSION['user_id']) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'error' => 'Unauthorized']);
+                exit;
+            }
+
+            $notificationModel = $this->model('Notification');
+            $result = $notificationModel->markNotificationAsRead($notificationId, $userId);
+
+            header('Content-Type: application/json');
+            echo json_encode(['success' => $result]);
+            exit;
+        } else {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'error' => 'Invalid request method']);
+            exit;
+        }
+    }    
+
+    public function getUnreadNotificationsCount($user_id) {
+        $count = $this->NotificationModel->getUnreadHelpNotificationsCountForUser($user_id)->count;
+        return $count;
+    }
+    
 }
-
-
-
-
-
-
+?>

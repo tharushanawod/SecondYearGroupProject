@@ -46,34 +46,62 @@
             </a>
         </div>
 
-        <?php
-        // Display form if a category is provided
-        if (isset($data['category'])) {
-            $category = $data['category'];
-            echo '<div class="help-form">';
-            echo '<h2>' . ucfirst($category) . ' Issue</h2>';
-            echo '<form action="' . URLROOT . '/FarmerController/submitRequest" method="POST" enctype="multipart/form-data">';
-            echo '<input type="hidden" name="category" value="' . $category . '">';
-            echo '<div class="form-group">';
-            echo '<label for="' . $category . '-subject">Subject</label>';
-            echo '<input type="text" id="' . $category . '-subject" name="subject" required>';
-            echo '</div>';
-            echo '<div class="form-group">';
-            echo '<label for="' . $category . '-description">Description</label>';
-            echo '<textarea id="' . $category . '-description" name="description" rows="5" required></textarea>';
-            echo '</div>';
-            echo '<div class="form-group">';
-            echo '<label for="' . $category . '-attachment">Attachment (Optional)</label>';
-            echo '<input type="file" id="' . $category . '-attachment" name="attachment">';
-            echo '</div>';
-            echo '<div class="form-buttons">';
-            echo '<button type="submit" class="submit-btn">Submit Request</button>';
-            echo '<button type="button" class="cancel-btn" onclick="window.location.href=\'' . URLROOT . '/FarmerController/requestHelp\'">Cancel</button>';
-            echo '</div>';
-            echo '</form>';
-            echo '</div>';
-        }
-        ?>
-    </div>
+        <?php if (isset($data['category'])): ?>
+            <div class="help-form">
+                <h2><?php echo ucfirst($data['category']); ?> Issue</h2>
+                <form action="<?php echo URLROOT; ?>/FarmerController/submitRequest" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="category" value="<?php echo $data['category']; ?>">
+                    <div class="form-group">
+                        <label for="<?php echo $data['category']; ?>-subject">Subject</label>
+                        <input type="text" id="<?php echo $data['category']; ?>-subject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="<?php echo $data['category']; ?>-description">Description</label>
+                        <textarea id="<?php echo $data['category']; ?>-description" name="description" rows="5" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="<?php echo $data['category']; ?>-attachment">Attachment (Optional)</label>
+                        <input type="file" id="<?php echo $data['category']; ?>-attachment" name="attachment">
+                    </div>
+                    <div class="form-buttons">
+                        <button type="submit" class="submit-btn">Submit Request</button>
+                        <button type="button" class="cancel-btn" onclick="window.location.href='<?php echo URLROOT; ?>/FarmerController/requestHelp'">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        <?php endif; ?>
+
+        <div class="requests-section">
+            <h2>Responses for Your Requests</h2>
+            <?php if (empty($data['requests'])): ?>
+                <p class="no-requests">No help requests submitted.</p>
+            <?php else: ?>
+                <div class="requests-grid">
+                    <?php foreach ($data['requests'] as $request): ?>
+                        <div class="request-card" data-notification-id="<?php echo $request->notification_id; ?>">
+                            <div class="request-header">
+                                <span class="request-id">ID: <?php echo htmlspecialchars($request->id); ?></span>
+                                <span class="request-status <?php echo strtolower($request->status); ?>">
+                                    <?php echo htmlspecialchars($request->status); ?>
+                                </span>
+                            </div>
+                            <div class="request-body">
+                                <h3><?php echo htmlspecialchars($request->subject); ?></h3>
+                                <p class="category"><?php echo htmlspecialchars(ucfirst($request->category)); ?></p>
+                                <p class="response">
+                                    <?php echo $request->reply ? htmlspecialchars(substr($request->reply, 0, 100)) . '...' : 'No response yet'; ?>
+                                </p>
+                            </div>
+                            <div class="request-footer">
+                                <span class="submitted">
+                                    Submitted: <?php echo date('M d, Y H:i', strtotime($request->created_at)); ?>
+                                </span>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>    
 </body>
 </html>
