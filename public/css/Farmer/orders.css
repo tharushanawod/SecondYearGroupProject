@@ -1,0 +1,272 @@
+@import url(../components/sidebar.css);
+
+:root {
+  --primary-color: #2e8b57;
+  --primary-dark: #246c44;
+  --secondary-color: #f5f7fa;
+  --text-dark: #1e293b;
+  --text-light: #64748b;
+  --border-color: #e2e8f0;
+  --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  --transition: all 0.3s ease;
+  --pending-color: #f59e0b;
+  --processing-color: #3b82f6;
+  --completed-color: #10b981;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: var(--secondary-color);
+  min-height: 100vh;
+ 
+}
+
+.orders-container {
+  margin-left: 250px;
+  max-width: 1200px;
+  width: 100%;
+  padding: 20px;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.orders-header {
+  text-align: center;
+  margin-bottom: 60px;
+  animation: slideDown 0.5s ease-out;
+}
+
+.orders-header h1 {
+  color: var(--text-dark);
+  font-size: 36px;
+  margin-bottom: 15px;
+}
+
+.orders-header p {
+  color: var(--text-light);
+  font-size: 18px;
+}
+
+.cards-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-top: 20px;
+}
+
+.order-card {
+  background: white;
+  border-radius: 20px;
+  width: 300px;
+  height: 400px;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  position: relative;
+  transition: var(--transition);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.5s ease-out;
+}
+
+.order-card:hover {
+  transform: translateY(-15px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.to-pay .card-header {
+  background: linear-gradient(135deg, var(--pending-color), #e67e22);
+}
+
+.to-pickup .card-header {
+  background: linear-gradient(135deg, var(--processing-color), #1d4ed8);
+}
+
+.to-receive .card-header {
+  background: linear-gradient(135deg, var(--completed-color), #047857);
+}
+
+.card-icon {
+  font-size: 80px;
+  position: relative;
+  z-index: 2;
+  animation: pulse 2s infinite;
+}
+
+.card-wave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background: white;
+  border-radius: 100% 100% 0 0;
+}
+
+.card-content {
+  padding: 30px 25px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.card-title {
+  color: var(--text-dark);
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.card-description {
+  color: var(--text-light);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.card-badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  backdrop-filter: blur(5px);
+}
+
+.card-button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: auto;
+  text-decoration: none;
+}
+
+.to-pay .card-button {
+  background: var(--pending-color);
+  color: white;
+}
+
+.to-pickup .card-button {
+  background: var(--processing-color);
+  color: white;
+}
+
+.to-receive .card-button {
+  background: var(--completed-color);
+  color: white;
+}
+
+.to-pay .card-button:hover {
+  background: #e67e22;
+  transform: translateY(-5px);
+}
+
+.to-pickup .card-button:hover {
+  background: #1d4ed8;
+  transform: translateY(-5px);
+}
+
+.to-receive .card-button:hover {
+  background: #047857;
+  transform: translateY(-5px);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 1024px) {
+  .cards-container {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .order-card {
+    width: 100%;
+    max-width: 350px;
+    height: 350px;
+  }
+
+  .card-header {
+    height: 120px;
+  }
+
+  .card-icon {
+    font-size: 60px;
+  }
+}

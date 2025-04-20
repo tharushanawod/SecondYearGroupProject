@@ -45,7 +45,7 @@
             <li><a href="<?php echo URLROOT;?>/FarmerController/orderManagement"><i class="fas fa-comments"></i><span class="menu-text">Orders</span></a></li>
             <li><a href="<?php echo URLROOT;?>/FarmerController/workerManagement"><i class="fa-solid fa-user"></i><span class="menu-text">Workers</span></a></li>
             <li><a href="<?php echo URLROOT;?>/CartController/browseProducts"><i class="fa-solid fa-flask"></i><span class="menu-text">Ingredients</span></a></li>
-            <li><a href="<?php echo URLROOT;?>/FarmerController/inventory"><i class="fa-solid fa-business-time"></i><span class="menu-text">My Orders</span></a></li>
+            <li><a href="<?php echo URLROOT;?>/FarmerController/orders"><i class="fa-solid fa-business-time"></i><span class="menu-text">My Orders</span></a></li>
             <li ><a href="<?php echo URLROOT; ?>/FarmerController/getUnreadNotifications"><i class="fa-solid fa-bell"></i><span class="menu-text">Notifications</span></a></li>
             <li><a href="<?php echo URLROOT;?>/FarmerController/requestHelp"><i class="fa-solid fa-comment-dots"></i><span class="menu-text">Request Help</span></a></li>
             <li><a href="<?php echo URLROOT;?>/FarmerController/Wallet"><i class="fa-solid fa-wallet"></i><span class="menu-text">Wallet</span></a></li>

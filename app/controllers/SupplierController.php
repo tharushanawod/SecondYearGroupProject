@@ -477,7 +477,7 @@ public function getAllOrders($userId) {
 }
 
 public function getOrderDetails($orderId) {
-    $orderDetails = $this->Supplier->getOrderDetails($orderId);
+    $orderDetails = $this->Supplier->getOrderDetails($orderId, $_SESSION['user_id']);
     header('Content-Type: application/json');
     echo json_encode($orderDetails);
 }

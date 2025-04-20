@@ -287,15 +287,17 @@ LIMIT 5
         return $this->db->execute();
     } 
 
-    public function getOrderDetails($orderId) {
+    public function getOrderDetails($orderId, $supplierId) {
         $this->db->query('
             SELECT oi.*, sp.product_name, sp.price, o.order_date
             FROM order_items oi
             JOIN supplier_products sp ON oi.product_id = sp.product_id
+            JOIN users u ON sp.supplier_id = u.user_id
             JOIN orders o ON oi.order_id = o.order_id
-            WHERE oi.order_id = :orderId
+            WHERE oi.order_id = :orderId AND sp.supplier_id = :supplierId
         ');
         $this->db->bind(':orderId', $orderId);
+        $this->db->bind(':supplierId', $supplierId);
         return $this->db->resultSet();
     }
 

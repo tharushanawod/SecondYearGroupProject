@@ -544,6 +544,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
         $this->View('Farmer/inventory', $data);
     }
 
+    public function getIngredientInventory($user_id) {
+        $data = $this->farmerModel->getIngredientInventory($user_id);
+        echo json_encode($data);
+    }
+
     public function addToCart() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Sanitize POST data
@@ -694,6 +699,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
     public function Wallet(){
         $data=$this->farmerModel->getWalletDetails($_SESSION['user_id']);
         $this->View('Farmer/Wallet',$data);
+    }
+
+    public function orders(){
+        $data = [];
+        $this->View('Farmer/Orders',$data);
+    }
+
+    public function ToPickup(){
+        $orders = $this->farmerModel->getToPickupOrders($_SESSION['user_id']);
+        $data=[
+            'orders' => $orders
+        ];
+        $this->View('Farmer/ToPickup',$data);
     }
 
 

@@ -502,7 +502,30 @@ class Farmer {
         $result = $this->db->single();
         return $result; 
     }
+    
 
+    public function getIngredientInventory($userId){
+        $this->db->query("SELECT orders.order_id,order_items.quantity,order_items.price,supplier_products.product_name,orders.order_date,order_items.supplier_confirmed
+        FROM orders
+        INNER JOIN order_items ON orders.order_id = order_items.order_id
+        INNER JOIN supplier_products ON order_items.product_id = supplier_products.product_id
+        WHERE orders.user_id = :userId AND orders.status = 'paid' AND order_items.supplier_confirmed = 1");
+        $this->db->bind(':userId', $userId);
+        $result = $this->db->resultSet();
+        return $result;
+       
+    }
+
+    public function getToPickupOrders($userId){
+        $this->db->query("SELECT orders.order_id,order_items.quantity,order_items.price,supplier_products.product_name,orders.order_date,order_items.supplier_confirmed,supplier_products.image
+        FROM orders
+        INNER JOIN order_items ON orders.order_id = order_items.order_id
+        INNER JOIN supplier_products ON order_items.product_id = supplier_products.product_id
+        WHERE orders.user_id = :userId AND orders.status = 'paid' AND order_items.supplier_confirmed = 0");
+        $this->db->bind(':userId', $userId);
+        $result = $this->db->resultSet();
+        return $result;
+    }
 
 
     
