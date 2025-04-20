@@ -16,6 +16,7 @@ $hash = strtoupper(md5(
     strtoupper(md5($merchant_secret)) 
 ));
 
+
 //logging the hash and all varibles  for debugging
 error_log("testing".var_export($merchant_id, true));
 error_log("testing".var_export($order_id, true));
@@ -93,7 +94,7 @@ error_log("testing".var_export($hash, true));
                 <input type="hidden" name="merchant_id" value="<?php echo $_ENV['MERCHANT_ID']; ?>">
                 <input type="hidden" name="return_url" value="<?php echo URLROOT; ?>/CartController/paymentSuccess?amount=<?php echo $amount; ?>">
                 <input type="hidden" name="cancel_url" value="<?php echo URLROOT; ?>/CartController/paymentCancel">
-                <input type="hidden" name="notify_url" value="https://3539-139-59-27-84.ngrok-free.app/GroupProject/CartController/paymentNotify">
+                <input type="hidden" name="notify_url" value="https://7563-139-59-27-84.ngrok-free.app/GroupProject/CartController/paymentNotifylaterPayment">
                 <input type="hidden" name="order_id" value="<?php echo $data['order_details']->order_id; ?>">
                 <input type="hidden" name="items" value="Order_Items">
                 <input type="hidden" name="currency" value="LKR">
@@ -106,6 +107,7 @@ error_log("testing".var_export($hash, true));
                 <input  type="hidden" name="city" value="<?php echo $data['order_details']->city; ?>">
                 <input  type="hidden" name="country" value="Sri Lanka">
                 <input  type="hidden" name="hash" value="<?php echo $hash; ?>">
+                <input  type="hidden" name="custom_1" value="<?php echo $data['order_details']->product_id; ?>">
                 <input type="submit" value="Pay Now" class="payment-button">   
                 
             </form>

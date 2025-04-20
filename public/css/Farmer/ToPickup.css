@@ -136,7 +136,8 @@ body {
     position: absolute;
     top: 15px;
     right: 15px;
-    background: var(--status-bg);
+    /* background: var(--status-bg); */
+    background: white;
     color: var(--status-color);
     padding: 5px 12px;
     border-radius: 20px;

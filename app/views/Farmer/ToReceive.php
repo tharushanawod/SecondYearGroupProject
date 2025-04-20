@@ -14,7 +14,7 @@
 <?php require APPROOT . '/views/inc/sidebar.php'; ?>
     <div class="container">
         <div class="page-header">
-            <h1 class="page-title">Orders Awaiting Pickup</h1>
+            <h1 class="page-title">Orders To Receive</h1>
             <a href="orders.html" class="back-button">
                 <i class="fas fa-arrow-left"></i>
                 Back to Orders
@@ -42,7 +42,7 @@
                     alt="<?php echo $order->product_name; ?>">
                     <div class="status-badge">
                     <i class="fas fa-clock"></i>
-                    Awaiting Pickup
+                    Awaiting For Confirmation
                     </div>
                 </div>
                 <div class="product-details">
@@ -67,6 +67,11 @@
                     </div>
                     <div class="product-action">
                     <span class="order-id">Order #<?php echo $order->order_id; ?></span>
+                    <a href="<?php echo URLROOT;?>/FarmerController/ConfirmIngredientOrderReceive/<?php  echo $order->order_id?>/<?php echo $order->product_id?>"> <button class="contact-seller" data-phone="<?php echo $order->seller_phone; ?>">
+                    <i class="fas fa-check-circle"></i>
+                       Confirm Order
+                    </button></a>
+                   
                     </div>
                 </div>
                 </div>

@@ -10,7 +10,7 @@ class CartController extends Controller {
         $currentMethod = $this->getCurrentMethodFromURL();
     
         // Bypass authentication if the current method is 'Notify'
-        if ($currentMethod !== 'paymentNotify') {
+        if ($currentMethod !== 'paymentNotify' && $currentMethod !== 'paymentNotifylaterPayment') {
             // Check if user is logged in
             if (!$this->isloggedin()) {
                 unset($_SESSION['user_id']);
@@ -267,6 +267,18 @@ class CartController extends Controller {
       
         $this->View('Cart/Pay', $data);
     }
+
+    public function PayingLater($order_id,$product_id){
+
+        $order_details =$this->cartModel->PayingLater($order_id,$product_id);
+        $array = [$order_details];
+
+        $data = [
+            'order_details' => $order_details,
+            'cart_items' => $array
+        ];
+        $this->View('Cart/PayLater', $data);
+    }
     
     public function rateProduct() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -427,6 +439,58 @@ class CartController extends Controller {
 
     public function Cancel() {
         echo "Payment was cancelled!";
+    }
+
+    public function paymentNotifylaterPayment(){
+        $this->cartModel = $this->model('Cart');
+        error_log("Notify function triggered: " . var_export($_POST, true)); // Log the POST data for debugging
+
+        $hash = $_POST['md5sig'];
+        $order_id = $_POST['order_id'];
+        $amount = $_POST['payhere_amount'];
+        $payment_id = $_POST['payment_id'];
+        $status_code = $_POST['status_code'];
+        $currency = $_POST['payhere_currency'];
+        $product_id = $_POST['custom_1'];
+
+
+        // Your merchant secret key
+        $merchant_secret = $_ENV['MERCHANT_SECRET'];
+
+        // Verify the received hash
+        $generated_hash = strtoupper(md5(
+            $_POST['merchant_id'] .
+            $_POST['order_id'] .
+            $_POST['payhere_amount'] .
+            $_POST['payhere_currency'] .
+            $_POST['status_code'] .
+            strtoupper(md5($merchant_secret))
+        ));
+        if ($hash === $generated_hash) {
+          error_log("tharusha".var_export($_POST, true));
+            // Hash matches, it's a valid notification
+            if ($status_code == 2) {
+                // Payment successful
+                // Update your database, notify the user, etc.
+                $payment_status = 'paid';
+          
+               
+
+
+                $this->cartModel->updatePaymentStatus2($order_id, $payment_status,$product_id);
+                $this->cartModel->TransactionComplete($order_id, $amount,$payment_id);
+               
+                
+
+            } else {
+                // Payment failed
+                $payment_status = 'failed';
+                $this->cartModel->updatePaymentStatus($order_id, $payment_status);
+            }
+        } else {
+            // Invalid hash
+            echo "Invalid payment notification.";
+        }
     }
     
 }

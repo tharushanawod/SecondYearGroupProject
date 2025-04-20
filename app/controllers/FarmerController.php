@@ -544,9 +544,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
         $this->View('Farmer/inventory', $data);
     }
 
-    public function getIngredientInventory($user_id) {
-        $data = $this->farmerModel->getIngredientInventory($user_id);
-        echo json_encode($data);
+    public function ToReceive() {
+        $orders = $this->farmerModel->getToReceiveOrders($_SESSION['user_id']);
+        $data = [
+            'orders' => $orders
+        ];
+        $this->view('Farmer/ToReceive', $data);
+      
     }
 
     public function addToCart() {
@@ -712,6 +716,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
             'orders' => $orders
         ];
         $this->View('Farmer/ToPickup',$data);
+    }
+
+    public function ToPay(){
+        $orders = $this->farmerModel->getToPayOrders($_SESSION['user_id']);
+        $data=[
+            'orders' => $orders
+        ];
+        $this->View('Farmer/ToPay',$data);
+    }
+
+    public function ConfirmIngredientOrderReceive($order_id,$product_id) {
+        $result =$this->farmerModel->ConfirmIngredientOrderReceive($order_id,$product_id);
+        if($result) {
+            Redirect('FarmerController/ToReceive');
+        } else {
+            die('Something went wrong');
+        }
     }
 
 

@@ -30,7 +30,7 @@
                         <h2 class="card-title">To Pay</h2>
                         <p class="card-description">View orders that need payment to process your purchases.</p>
                     </div>
-                    <a href="to-pay.html" class="card-button">
+                    <a href="<?php echo URLROOT;?>/FarmerController/ToPay" class="card-button">
                         <i class="fas fa-arrow-right"></i>
                         View Orders
                     </a>
@@ -68,7 +68,7 @@
                         <h2 class="card-title">To Receive</h2>
                         <p class="card-description">Monitor orders that are on the way to your location.</p>
                     </div>
-                    <a href="<?php echo URLROOT;?>/FarmerController/inventory" class="card-button">
+                    <a href="<?php echo URLROOT;?>/FarmerController/ToReceive" class="card-button">
                         <i class="fas fa-arrow-right"></i>
                         View Orders
                     </a>

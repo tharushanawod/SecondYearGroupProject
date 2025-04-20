@@ -504,12 +504,13 @@ class Farmer {
     }
     
 
-    public function getIngredientInventory($userId){
-        $this->db->query("SELECT orders.order_id,order_items.quantity,order_items.price,supplier_products.product_name,orders.order_date,order_items.supplier_confirmed
+    public function getToReceiveOrders($userId){
+        $this->db->query("SELECT orders.order_id,users.name,order_items.quantity,order_items.price,supplier_products.product_name,orders.order_date,order_items.supplier_confirmed,supplier_products.image,order_items.product_id
         FROM orders
         INNER JOIN order_items ON orders.order_id = order_items.order_id
         INNER JOIN supplier_products ON order_items.product_id = supplier_products.product_id
-        WHERE orders.user_id = :userId AND orders.status = 'paid' AND order_items.supplier_confirmed = 1");
+        INNER JOIN users ON supplier_products.supplier_id = users.user_id
+        WHERE orders.user_id = :userId AND order_items.status = 'paid' AND order_items.supplier_confirmed = 1 AND order_items.delivery_confirmed = 0");
         $this->db->bind(':userId', $userId);
         $result = $this->db->resultSet();
         return $result;
@@ -517,17 +518,38 @@ class Farmer {
     }
 
     public function getToPickupOrders($userId){
-        $this->db->query("SELECT orders.order_id,order_items.quantity,order_items.price,supplier_products.product_name,orders.order_date,order_items.supplier_confirmed,supplier_products.image
+        $this->db->query("SELECT orders.order_id,users.name,order_items.quantity,order_items.price,supplier_products.product_name,orders.order_date,order_items.supplier_confirmed,supplier_products.image
         FROM orders
         INNER JOIN order_items ON orders.order_id = order_items.order_id
         INNER JOIN supplier_products ON order_items.product_id = supplier_products.product_id
+        INNER JOIN users ON supplier_products.supplier_id = users.user_id
         WHERE orders.user_id = :userId AND orders.status = 'paid' AND order_items.supplier_confirmed = 0");
         $this->db->bind(':userId', $userId);
         $result = $this->db->resultSet();
         return $result;
     }
 
+    public function getToPayOrders($userId){
+        $this->db->query("SELECT orders.order_id,users.name,order_items.quantity,order_items.product_id,order_items.price,supplier_products.product_name,orders.order_date,order_items.supplier_confirmed,supplier_products.image
+        FROM orders
+        INNER JOIN order_items ON orders.order_id = order_items.order_id
+        INNER JOIN supplier_products ON order_items.product_id = supplier_products.product_id
+           INNER JOIN users ON supplier_products.supplier_id = users.user_id
+        WHERE orders.user_id = :userId AND order_items.status = 'pending' AND order_items.supplier_confirmed = 0");
+        $this->db->bind(':userId', $userId);
+        $result = $this->db->resultSet();
+        return $result;
+    }
 
+    public function ConfirmIngredientOrderReceive($order_id,$product_id){
+        $this->db->query('UPDATE order_items SET delivery_confirmed = "1"
+         WHERE order_id = :order_id AND  product_id = :product_id');
+        $this->db->bind(':order_id', $order_id);
+        $this->db->bind(':product_id', $product_id);
+        return $this->db->execute();
+
+
+    }
     
 
     

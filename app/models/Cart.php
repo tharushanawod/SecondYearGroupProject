@@ -457,6 +457,63 @@ class Cart {
         $this->db->bind(':order_id', $order_id);
         return $this->db->execute();
     }
+
+    public function UpdatePaymentStatus2($order_id,$payment_status, $product_id) {
+        $this->db->query('UPDATE order_items SET status = :status WHERE order_id = :order_id AND product_id = :product_id');
+        $this->db->bind(':status', $payment_status);
+        $this->db->bind(':order_id', $order_id);
+        $this->db->bind(':product_id', $product_id);
+        return $this->db->execute();
+       
+    }
+    
+    
+
+    public function PayingLater($order_id,$product_id) {
+        $this->db->query('
+        SELECT 
+    order_items.product_id, 
+    order_items.quantity,
+    supplier_products.product_name,
+    order_items.price as total_amount,
+    order_items.price as price,
+    orders.order_id,
+    orders.first_name,
+    orders.last_name,
+    orders.address,
+    orders.city,
+    orders.postcode,
+    orders.phone,
+    COUNT(DISTINCT supplier_products.supplier_id) as seller_count
+FROM 
+    order_items
+INNER JOIN 
+    supplier_products ON order_items.product_id = supplier_products.product_id
+INNER JOIN 
+    orders ON order_items.order_id = orders.order_id
+WHERE 
+    order_items.order_id = :order_id
+AND 
+    order_items.product_id = :product_id
+GROUP BY 
+    order_items.product_id, 
+    order_items.quantity,
+    supplier_products.product_name,
+    order_items.price,
+    orders.order_id,
+    orders.first_name,
+    orders.last_name,
+    orders.address,
+    orders.city,
+    orders.postcode,
+    orders.phone
+
+        ');
+        $this->db->bind(':order_id', $order_id);
+        $this->db->bind(':product_id', $product_id);
+        $result = $this->db->single();
+        return $result;
+    }
     
 }
 ?>
