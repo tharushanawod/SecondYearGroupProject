@@ -423,20 +423,54 @@ class Cart {
     }
 
     public function getProductDetails($order_id){
-        $this->db->query('SELECT order_items.*,supplier_products.product_name
-        FROM order_items 
-        LEFT JOIN supplier_products ON order_items.product_id = supplier_products.product_id
-        WHERE order_id = :order_id');
+        $this->db->query('SELECT 
+    oi.*, 
+    sp.product_name,
+    (SELECT COUNT(DISTINCT sp2.supplier_id)
+     FROM order_items oi2
+     JOIN supplier_products sp2 ON oi2.product_id = sp2.product_id
+     WHERE oi2.order_id = oi.order_id) AS seller_count
+FROM 
+    order_items oi
+LEFT JOIN 
+    supplier_products sp ON oi.product_id = sp.product_id
+WHERE 
+    oi.order_id = :order_id
+');
         $this->db->bind(':order_id', $order_id);
         return $this->db->resultSet();
     }
     
-    public function updatePaymentStatus($order_id, $status) {
-        $this->db->query('UPDATE orders SET status = :status WHERE order_id = :order_id');
-        $this->db->bind(':status', $status);
-        $this->db->bind(':order_id', $order_id);
+    public function UpdatePaymentStatus($order_id, $product_ids, $payment_status) {
+        // Build placeholders (?, ?, ?) based on product_ids count
+        $placeholders = implode(',', array_fill(0, count($product_ids), '?'));
+    
+        // Update payment status in order_items table
+        $sql = "UPDATE order_items
+                SET status = ?
+                WHERE order_id = ? AND product_id IN ($placeholders)";
+    
+        // Prepare the query
+        $this->db->query($sql);
+    
+        // Bind parameters in correct order:
+        // 1. status
+        // 2. order_id
+        // 3+. product_ids
+        $this->db->bind(1, $payment_status);
+        $this->db->bind(2, $order_id);
+    
+        foreach ($product_ids as $index => $product_id) {
+            $this->db->bind($index + 3, $product_id);
+        }
+    
+        // Execute the query
         return $this->db->execute();
     }
+    
+    
+    
+    
 
     public function TransactionComplete($order_id, $amount,$payment_id) {
         $this->db->query('INSERT INTO transaction 
@@ -513,6 +547,18 @@ GROUP BY
         $this->db->bind(':product_id', $product_id);
         $result = $this->db->single();
         return $result;
+    }
+
+    public function getUserDetails($user_id) {
+        $this->db->query('SELECT * FROM orders WHERE user_id = :user_id');
+        $this->db->bind(':user_id', $user_id);
+        $Result= $this->db->single();
+
+        if ($Result) {
+            return $Result;
+        } else {
+            return false;
+        }
     }
     
 }

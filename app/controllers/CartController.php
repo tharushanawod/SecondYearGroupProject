@@ -239,10 +239,12 @@ class CartController extends Controller {
         try {
             $cartItems = $this->cartModel->getCartItems($_SESSION['user_id']);
             $subTotal = $this->cartModel->calculateSubTotal($cartItems);
+            $user_details = $this->cartModel->getUserDetails($_SESSION['user_id']);
             
             $data = [
                 'cart_items' => $cartItems,
-                'subTotal' => $subTotal
+                'subTotal' => $subTotal,
+                'user_details' => $user_details
             ];
             
             $this->view('Cart/Checkout', $data);
@@ -373,6 +375,8 @@ class CartController extends Controller {
                     $payment_id = $_POST['payment_id'];
                     $status_code = $_POST['status_code'];
                     $currency = $_POST['payhere_currency'];
+                    $product_ids = explode(',', $_POST['custom_1']);
+
 
 
                     // Your merchant secret key
@@ -398,7 +402,7 @@ class CartController extends Controller {
                            
 
 
-                            $this->cartModel->updatePaymentStatus($order_id, $payment_status);
+                            $this->cartModel->updatePaymentStatus($order_id,$product_ids, $payment_status);
                             $this->cartModel->TransactionComplete($order_id, $amount,$payment_id);
                             $this->cartModel->UpdateInventory($order_id);
                             

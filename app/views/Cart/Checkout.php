@@ -22,32 +22,32 @@
 
     <div class="form-group">
         <label for="first-name">First name *</label>
-        <input type="text" id="first-name" name="first-name" required>
+        <input type="text" id="first-name" name="first-name" value="<?php echo isset($data['user_details']->first_name) ? $data['user_details']->first_name : ''; ?>" required>
     </div>
 
     <div class="form-group">
         <label for="last-name">Last name *</label>
-        <input type="text" id="last-name" name="last-name" required>
+        <input type="text" id="last-name" name="last-name" value="<?php echo isset($data['user_details']->last_name) ? $data['user_details']->last_name : ''; ?>" required>
     </div>
 
     <div class="form-group">
         <label for="address">Street address *</label>
-        <input type="text" id="address" name="address" required>
+        <input type="text" id="address" name="address" value="<?php echo isset($data['user_details']->address) ? $data['user_details']->address : ''; ?>" required>
     </div>
 
     <div class="form-group">
         <label for="city">Town / City *</label>
-        <input type="text" id="city" name="city" required>
+        <input type="text" id="city" name="city" value="<?php echo isset($data['user_details']->city) ? $data['user_details']->city : ''; ?>" required>
     </div>
 
     <div class="form-group">
         <label for="postcode">Postcode / ZIP *</label>
-        <input type="text" id="postcode" name="postcode" required>
+        <input type="text" id="postcode" name="postcode" value="<?php echo isset($data['user_details']->postcode) ? $data['user_details']->postcode : ''; ?>" required>
     </div>
 
     <div class="form-group">
         <label for="phone">Phone *</label>
-        <input type="tel" id="phone" name="phone" required>
+        <input type="tel" id="phone" name="phone" value="<?php echo isset($data['user_details']->phone) ? $data['user_details']->phone : ''; ?>" required>
     </div>
 
     <button class="place-order-btn" type="submit" name="place_order">

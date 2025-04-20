@@ -3,8 +3,16 @@ $merchant_id = $_ENV['MERCHANT_ID'];
 $merchant_secret = $_ENV['MERCHANT_SECRET'];
 $order_id = $data['order_details']->order_id; // Dynamic order ID
 $price = number_format((float)$data['order_details']->total_amount, 2, '.', ''); // Only format once
-$seller_count = $data['order_details']->seller_count; // Number of sellers
+$seller_count = $data['cart_items'][0]->seller_count; // Number of sellers
 $amount = $price + 350.00 *$seller_count; // Amount to be paid
+
+
+$product_ids = [];
+$cart_items = $data['cart_items']; // this gives the array of objects
+foreach ($cart_items as $item) {
+    $product_ids[] = $item->product_id;
+}
+
 
 $currency = "LKR"; // Or USD
 // Generate hash
@@ -93,7 +101,7 @@ error_log("testing".var_export($hash, true));
                 <input type="hidden" name="merchant_id" value="<?php echo $_ENV['MERCHANT_ID']; ?>">
                 <input type="hidden" name="return_url" value="<?php echo URLROOT; ?>/CartController/paymentSuccess?amount=<?php echo $amount; ?>">
                 <input type="hidden" name="cancel_url" value="<?php echo URLROOT; ?>/CartController/paymentCancel">
-                <input type="hidden" name="notify_url" value="https://3539-139-59-27-84.ngrok-free.app/GroupProject/CartController/paymentNotify">
+                <input type="hidden" name="notify_url" value="https://7563-139-59-27-84.ngrok-free.app/GroupProject/CartController/paymentNotify">
                 <input type="hidden" name="order_id" value="<?php echo $data['order_details']->order_id; ?>">
                 <input type="hidden" name="items" value="Order_Items">
                 <input type="hidden" name="currency" value="LKR">
@@ -106,6 +114,7 @@ error_log("testing".var_export($hash, true));
                 <input  type="hidden" name="city" value="<?php echo $data['order_details']->city; ?>">
                 <input  type="hidden" name="country" value="Sri Lanka">
                 <input  type="hidden" name="hash" value="<?php echo $hash; ?>">
+                <input type="hidden" name="custom_1" value="<?php echo implode(',', $product_ids); ?>">
                 <input type="submit" value="Pay Now" class="payment-button">   
                 
             </form>
