@@ -505,11 +505,12 @@ class Farmer {
     
 
     public function getToReceiveOrders($userId){
-        $this->db->query("SELECT orders.order_id,users.name,order_items.quantity,order_items.price,supplier_products.product_name,orders.order_date,order_items.supplier_confirmed,supplier_products.image,order_items.product_id
+        $this->db->query("SELECT orders.order_id,users.name,order_items.quantity,order_items.price,supplier_products.product_name,orders.order_date,order_items.supplier_confirmed,supplier_products.image,order_items.product_id,delivery_codes.code
         FROM orders
         INNER JOIN order_items ON orders.order_id = order_items.order_id
         INNER JOIN supplier_products ON order_items.product_id = supplier_products.product_id
         INNER JOIN users ON supplier_products.supplier_id = users.user_id
+        LEFT JOIN delivery_codes ON orders.order_id = delivery_codes.order_id
         WHERE orders.user_id = :userId AND order_items.status = 'paid' AND order_items.supplier_confirmed = 1 AND order_items.delivery_confirmed = 0");
         $this->db->bind(':userId', $userId);
         $result = $this->db->resultSet();

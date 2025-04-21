@@ -171,7 +171,7 @@ class Supplier {
 
     public function getAllOrders($supplierId) {
         $this->db->query('SELECT 
-        orders.*,transaction.transaction_id,delivery_codes.code_id
+        orders.*,transaction.transaction_id,delivery_codes.code_id,order_items.status as payment_status
         FROM orders
         LEFT JOIN transaction ON orders.order_id = transaction.order_id
         LEFT JOIN delivery_codes ON orders.order_id = delivery_codes.order_id

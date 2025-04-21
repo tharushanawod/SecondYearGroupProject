@@ -64,10 +64,15 @@
                         <span class="info-label">Seller:</span>
                         <span class="info-value"><?php echo $order->name; ?></span>
                     </div>
+                    <div class="info-row">
+                        <span class="info-label">Tracking Number:</span>
+                        <span class="info-value"><?php echo isset($order->code) ? $order->code : 'N/A'; ?></span>
+                    </div>
                     </div>
                     <div class="product-action">
                     <span class="order-id">Order #<?php echo $order->order_id; ?></span>
-                    <a href="<?php echo URLROOT;?>/FarmerController/ConfirmIngredientOrderReceive/<?php  echo $order->order_id?>/<?php echo $order->product_id?>"> <button class="contact-seller" data-phone="<?php echo $order->seller_phone; ?>">
+                    <a href="<?php echo URLROOT;?>/FarmerController/ConfirmIngredientOrderReceive/<?php  echo $order->order_id?>/<?php echo $order->product_id?>"> 
+                        <button class="contact-seller">
                     <i class="fas fa-check-circle"></i>
                        Confirm Order
                     </button></a>
