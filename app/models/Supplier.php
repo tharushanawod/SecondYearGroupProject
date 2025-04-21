@@ -171,13 +171,13 @@ class Supplier {
 
     public function getAllOrders($supplierId) {
         $this->db->query('SELECT 
-        orders.*,transaction.transaction_id,delivery_codes.code_id,order_items.status as payment_status
+        orders.*,transaction.transaction_id,delivery_codes.code_id,order_items.status as payment_status,order_items.delivery_confirmed
         FROM orders
         LEFT JOIN transaction ON orders.order_id = transaction.order_id
         LEFT JOIN delivery_codes ON orders.order_id = delivery_codes.order_id
         INNER JOIN order_items ON orders.order_id = order_items.order_id
         INNER JOIN supplier_products ON order_items.product_id = supplier_products.product_id
-        WHERE supplier_products.supplier_id = :supplierId
+        WHERE supplier_products.supplier_id = :supplierId AND order_items.supplier_confirmed = 1
         ORDER BY orders.order_date DESC');
         $this->db->bind(':supplierId', $supplierId);
         return $this->db->resultSet();
@@ -376,6 +376,35 @@ LIMIT 5
             $this->db->rollBack();
             die('Failed: ' . $e->getMessage());
         }
+
+       
+    }
+
+    public function PendingOrderCount($user_id){
+        $this->db->query('SELECT COUNT(DISTINCT order_items.order_id) as order_count FROM order_items
+        INNER JOIN supplier_products
+        ON order_items.product_id = supplier_products.product_id
+        WHERE supplier_products.supplier_id = :supplier_id AND order_items.status = "pending"
+        ');
+
+$this->db->bind(':supplier_id', $user_id);
+$count = $this->db->single();
+return $count->order_count;
+            
+    }
+
+    public function getPendingOrders($supplierId){
+        $this->db->query('SELECT 
+        orders.*,transaction.transaction_id,delivery_codes.code_id,order_items.status as payment_status,order_items.delivery_confirmed
+        FROM orders
+        LEFT JOIN transaction ON orders.order_id = transaction.order_id
+        LEFT JOIN delivery_codes ON orders.order_id = delivery_codes.order_id
+        INNER JOIN order_items ON orders.order_id = order_items.order_id
+        INNER JOIN supplier_products ON order_items.product_id = supplier_products.product_id
+        WHERE supplier_products.supplier_id = :supplierId AND order_items.supplier_confirmed = 0
+        ORDER BY orders.order_date DESC');
+        $this->db->bind(':supplierId', $supplierId);
+        return $this->db->resultSet();
     }
 }
 ?>

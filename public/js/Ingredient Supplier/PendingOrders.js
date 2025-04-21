@@ -3,7 +3,7 @@ const ordersTable = document.querySelector("#orderTable tbody");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 const pageInfo = document.getElementById("pageInfo");
-const order_count = document.getElementById("order_count");
+
 
 // Variables
 let currentPage = 1;
@@ -12,7 +12,7 @@ let orders = []; // Stores all fetched orders
 
 // Fetch all orders and render the table
 function fetchOrders() {
-  fetch(`${URLROOT}/SupplierController/getAllOrders/${USERID}`)
+  fetch(`${URLROOT}/SupplierController/getPendingOrders/${USERID}`)
     .then((response) => response.json())
     .then((data) => {
       orders = data; // Store fetched orders
@@ -41,42 +41,36 @@ function renderTable() {
       <td><button onclick="viewBuyerDetails(${
         order.order_id
       })">View Buyer</button></td>
-      <td>${getDeliveryConfirmationStatus(order)}</td>
-      <td>${getCodeSendStatus(order)}</td>
+      <td>${getPaymentStatusHTML(order)}</td>
+      <td>${getActionButtons(order)}</td>
+    
     `;
     ordersTable.appendChild(row);
   });
 }
 
-
-
-// Get delivery confirmation status
-function getDeliveryConfirmationStatus(order) {
-  if (order.delivery_confirmed === 1) {
-    return `<span class="confirmed"><i class="fa-solid fa-check"></i> Delivered </span>`;
-  } else if (
-    order.delivery_confirmed === 0 &&
-    order.payment_status === "paid"
-  ) {
-    return `<span class="pending"><i class="fa-solid fa-clock"></i> Not Delivered</span>`;
+// Get status HTML based on order data
+function getPaymentStatusHTML(order) {
+  if (order.payment_status === "paid") {
+    return `<span class="confirmed"><i class="fas fa-money-bill-wave"></i> Paid </span>`;
+  } else if (order.payment_status === "pending") {
+    return `<span class="confirmed"><i class="fa-solid fa-clock"></i> Pending </span>`;
   } else {
-    return `<span class="pending"><i class="fa-solid fa-xmark"></i> Not Paid</span>`;
+    return `<span class="rejected"><i class="fa-solid fa-xmark"></i> Cancelled</span>`;
   }
 }
 
-// Get code send status
-function getCodeSendStatus(order) {
-  let result;
-
-  if (order.code_id === null && order.payment_status === "paid") {
-    result = `<a href="${URLROOT}/SupplierController/sendDeliveryCode/${order.order_id}"> <button>Send Code</button></a>`;
-  } else if (order.code_id) {
-    result = `<span>Code Sent</span>`;
-  } else {
-    result = `<span>X wait till payment</span>`;
+function getActionButtons(order) {
+    if (order.payment_status === "paid") {
+      return `<button onclick="AcceptOrder(${order.order_id})">Accept Order</button>
+      <button onclick="cancelOrder(${order.order_id})">Reject Order</button>`;
+    } else if (order.payment_status === "pending") {
+      return `<span class="confirmed"><i class="fa-solid fa-clock"></i> Wait till payment </span>`;
+    } else {
+      return `<span class="rejected"><i class="fa-solid fa-xmark"></i> Cancelled</span>`;
+    }
   }
-  return result;
-}
+
 
 // Update pagination info
 function updatePagination() {
@@ -106,7 +100,7 @@ nextBtn.addEventListener("click", () => {
 });
 
 // Confirm an order
-function confirmOrder(orderId) {
+function AcceptOrder(orderId) {
   fetch(`${URLROOT}/SupplierController/confirmOrder/${orderId}`, {
     method: "POST",
   })
@@ -228,17 +222,4 @@ window.onclick = function (event) {
 
 // Initial fetch and render
 fetchOrders();
-fetchPendingOrderCount();
 
-function fetchPendingOrderCount() {
-  fetch(`${URLROOT}/SupplierController/PendingOrderCount/${USERID}`)
-    .then((response) => response.json())
-    .then((data) => {
-      let ordercount = data; // Store fetched orders
-      order_count.innerText = ordercount;
-
-      renderTable(); // Render the table
-      updatePagination(); // Update pagination info
-    })
-    .catch((error) => console.error("Error fetching orders:", error));
-}

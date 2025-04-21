@@ -67,7 +67,6 @@
               
               <?php elseif ($user_role === 'supplier'): ?>
                 <li><a href="<?php echo URLROOT;?>/SupplierController/dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>
-                <li><a href="<?php echo URLROOT;?>/SupplierController/shop"><i class="fa-solid fa-gauge"></i><span class="menu-text">Products</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/SupplierController/productManagement"><i class="fa-solid fa-store"></i><span class="menu-text">Product Control</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/SupplierController/viewOrders"><i class="fa-solid fa-gauge"></i><span class="menu-text">View Orders</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/SupplierController/RequestHelp"><i class="fa-solid fa-comment-dots"></i><span class="menu-text">Request Help</span></a></li>

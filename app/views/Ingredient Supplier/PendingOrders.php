@@ -12,12 +12,8 @@
 
   <div class="table-container">
     <div class="header-container">
-      <h1>Orders Management</h1>
-      <div class="pending-orders-btn" onclick="showPendingOrders()">
-        <i class="fas fa-clock"></i>
-        <a href="<?php echo URLROOT;?>/SupplierController/PendingOrders"><span class="pending-orders-text">Pending Orders</span></a>
-        <span class="count-badge" id="order_count"></span>
-      </div>
+      <h1>Pending Orders</h1>
+      
     </div>
     <table id="orderTable">
       <thead>
@@ -25,8 +21,8 @@
           <th>Order ID</th>
           <th>Order Details</th>
           <th>Delivery Details</th>
-          <th>Delivery Confirmation</th>
-          <th>Delivery Code</th>
+          <th>Payment Status</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -79,6 +75,6 @@
   const URLROOT = "<?php echo URLROOT; ?>";
   const USERID = "<?php echo $_SESSION['user_id']; ?>";
 </script>
- <script src="<?php echo URLROOT;?>/js/Ingredient Supplier/OrdersManagement.js"></script>
+ <script src="<?php echo URLROOT;?>/js/Ingredient Supplier/PendingOrders.js"></script>
 </body>
 </html>

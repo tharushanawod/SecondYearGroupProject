@@ -605,5 +605,22 @@ public function getUnreadNotificationsCount($user_id) {
     return $count;
 }
 
+public function PendingOrderCount($user_id){
+    $count = $this->Supplier->PendingOrderCount($user_id);
+    header('Content-Type: application/json');
+    echo json_encode($count);
+}
+
+public function PendingOrders(){
+    $data=[];
+    $this->View('Ingredient Supplier/PendingOrders',$data);
+}
+
+public function getPendingOrders($user_id){
+    $pending_orders = $this->Supplier->getPendingOrders($user_id);
+    header('Content-Type: application/json');
+    echo json_encode($pending_orders);
+}
+
 }
 ?>
