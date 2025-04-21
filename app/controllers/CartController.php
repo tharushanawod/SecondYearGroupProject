@@ -496,5 +496,15 @@ class CartController extends Controller {
             echo "Invalid payment notification.";
         }
     }
+
+    public function CancelOrder($order_id){
+        $result = $this->cartModel->CancelOrder($order_id);
+        If($result){
+            Redirect('FarmerController/ToPay');
+        }
+        else{
+            echo "Invalid payment Cancelation.";
+        }
+    }
     
 }

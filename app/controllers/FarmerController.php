@@ -5,6 +5,7 @@ class FarmerController extends Controller {
     private $farmerModel;
     private $cartModel;
     private $NotificationModel;
+    private $Supplier;
 
     public function __construct() {
         if (!$this->isloggedin()) {
@@ -17,6 +18,7 @@ class FarmerController extends Controller {
         $this->farmerModel = $this->model('Farmer');
         $this->cartModel = $this->model('Cart');
         $this->NotificationModel = $this->model('Notification');
+        $this->Supplier = $this->model('Supplier');
     }
 
     public function isloggedin() {
@@ -671,10 +673,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
     }
 
     public function ToPay(){
-        $orders = $this->farmerModel->getToPayOrders($_SESSION['user_id']);
-        $data=[
-            'orders' => $orders
-        ];
+        $order_details = $this->farmerModel->getToPayOrders($_SESSION['user_id']);
+        
+   
+     $ordersGrouped = [];
+
+     foreach ($order_details as $row) {
+         $orderId = $row->order_id;
+     
+         if (!isset($ordersGrouped[$orderId])) {
+             $ordersGrouped[$orderId] = (object)[
+                 'order_id' => $row->order_id,
+                 'order_date' => $row->order_date,
+                 'total_amount'=>$row->total_amount,
+                 'items' => []
+             ];
+         }
+     
+         $ordersGrouped[$orderId]->items[] = (object)[
+             'product_name' => $row->product_name,
+             'quantity' => $row->quantity,
+             'price' => $row->price,
+             'image_url' => $row->image
+         ];
+
+     }
+     
+     // Then pass $ordersGrouped to your view
+     
+     $data=[
+        'orders'=>$ordersGrouped
+     ];
+  
+     
         $this->View('Farmer/ToPay',$data);
     }
 
@@ -805,6 +836,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
     public function getUnreadNotificationsCount($user_id) {
         $count = $this->NotificationModel->getUnreadHelpNotificationsCountForUser($user_id)->count;
         return $count;
+    }
+
+    //function to add ratingsto suppliers
+    public function addRating() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_SESSION['user_id'])) {
+            redirect('pages/error');
+        }
+    
+        $data = [
+            'supplier_id' => trim($_POST['supplier_id']),
+            'farmer_id' => $_SESSION['user_id'],
+            'rating' => trim($_POST['rating']),
+            'review' => trim($_POST['review'])
+        ];
+    
+        if ($this->Supplier->addRating($data)) {
+            $_SESSION['message'] = 'Thank you for your review!';
+            $_SESSION['message_type'] = 'success';
+        } else {
+            $_SESSION['message'] = 'Unable to submit review';
+            $_SESSION['message_type'] = 'error';
+        }
+    
+        redirect('CartController/viewDetails/' . $data['supplier_id']);
     }
 
 

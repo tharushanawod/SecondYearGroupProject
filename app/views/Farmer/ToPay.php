@@ -4,87 +4,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orders To Be Picked Up</title>
+    <title>Pending Orders</title>
     <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet" />
-    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Farmer/ToPickup.css" />
-   
+    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Cart/ToPay.css" />
+
 </head>
 
 <body>
 <?php require APPROOT . '/views/inc/sidebar.php'; ?>
     <div class="container">
         <div class="page-header">
-            <h1 class="page-title">Orders Awaiting Payment</h1>
-            <a href="orders.html" class="back-button">
-                <i class="fas fa-arrow-left"></i>
-                Back to Orders
-            </a>
+            <h1 class="page-title">Pending Orders</h1>
+            <p class="page-description">Review and pay for your pending ingredient orders</p>
         </div>
 
-        <div class="filters">
-            <button class="filter active">All (5)</button>
-            <button class="filter">Recent (3)</button>
-            <button class="filter">Oldest (2)</button>
-            <button class="filter">High Value (2)</button>
-        </div>
-
-        <div class="cards-grid">
-            <?php if(empty($data['orders'])): ?>
-            <script>
-                document.querySelector('.empty-state').style.display = 'flex';
-            </script>
-            <?php else: ?>
-            <?php foreach($data['orders'] as $order): ?>
-                <!-- Product Card -->
-                <div class="product-card">
-                <div class="product-image">
-                    <img src="<?php echo $order->image ? URLROOT.'/uploads/'.$order->image : URLROOT.'/img/default-product.jpg'; ?>"
-                    alt="<?php echo $order->product_name; ?>">
+        <div class="orders-grid">
+            <?php if (!empty($data['orders'])) : ?>
+            <?php foreach ($data['orders'] as $order) : ?>
+                <div class="order-card">
+                <div class="order-header">
+                    <div class="order-id">
+                    <i class="fas fa-shopping-bag"></i>
+                    Order #<?php echo $order->order_id; ?>
+                    </div>
+                    <div class="order-date">
+                    <i class="fas fa-calendar-alt"></i>
+                    Placed on: <?php echo date("F j, Y", strtotime($order->order_date)); ?>
+                    </div>
                     <div class="status-badge">
                     <i class="fas fa-clock"></i>
-                    Awaiting Pickup
+                    <?php echo $order->status; ?>
                     </div>
                 </div>
-                <div class="product-details">
-                    <h3 class="product-name"><?php echo $order->product_name; ?></h3>
-                    <div class="product-info">
-                    <div class="info-row">
-                        <span class="info-label">Quantity:</span>
-                        <span class="info-value"><?php echo $order->quantity; ?> items</span>
+                <div class="order-body">
+                    <div class="order-items">
+                    <?php foreach ($order->items as $item) : ?>
+                        <div class="item">
+                        <div class="item-image">
+                            <img src="<?php echo URLROOT.'/uploads/'.$item->image_url; ?>" alt="<?php echo $item->product_name; ?>">
+                        </div>
+                        <div class="item-details">
+                            <h3 class="item-name"><?php echo $item->product_name; ?></h3>
+                            <p class="item-description"><?php echo $item->description; ?></p>
+                            <div class="item-meta">
+                            <?php if (isset($item->weight)) : ?>
+                                <span class="meta-item">
+                                <i class="fas fa-weight"></i>
+                                <?php echo $item->weight; ?>
+                                </span>
+                            <?php endif; ?>
+                            <span class="meta-item">
+                                <i class="fas fa-tag"></i>
+                                LKR <?php echo number_format($item->price, 2); ?>
+                            </span>
+                            <span class="meta-item">
+                                <i class="fas fa-cubes"></i>
+                                Qty: <?php echo $item->quantity; ?>
+                            </span>
+                            </div>
+                        </div>
+                        </div>
+                    <?php endforeach; ?>
                     </div>
-                    <div class="info-row">
-                        <span class="info-label">Price:</span>
-                        <span class="info-value">LKR <?php echo number_format($order->price, 2); ?></span>
+                    <div class="order-summary">
+                    <div class="price-details">
+                        <div class="subtotal">
+                        <span>Subtotal:</span>
+                        <span>LKR <?php echo number_format($order->total_amount, 2); ?></span>
+                        </div>
+                        <div class="total">LKR <?php echo number_format($order->total_amount, 2); ?></div>
                     </div>
-                    <div class="info-row">
-                        <span class="info-label">Order Date:</span>
-                        <span class="info-value"><?php echo $order->order_date; ?></span>
+                    <div class="order-actions">
+                        <a href="<?php echo URLROOT .'/CartController/pay/'.$order->order_id ?>">
+                        <button class="btn btn-primary" >
+                        <i class="fas fa-credit-card"></i>
+                        Pay Now
+                        </button>
+                        </a>
+
+                        <a href="<?php echo URLROOT .'/CartController/CancelOrder/'.$order->order_id ?>">
+                        <button class="btn btn-danger">
+                        <i class="fas fa-times"></i>
+                        Cancel Order
+                        </button>
+                        </a>
+                        
+                       
                     </div>
-                    <div class="info-row">
-                        <span class="info-label">Seller:</span>
-                        <span class="info-value"><?php echo $order->name; ?></span>
-                    </div>
-                    </div>
-                    <div class="product-action">
-                    <span class="order-id">Order #<?php echo $order->order_id; ?></span>
-                    <a href="<?php echo URLROOT?>/CartController/PayingLater/<?php  echo $order->order_id ?>/<?php echo $order->product_id ?>">  <button class="contact-seller" data-phone="<?php echo $order->name; ?>">
-                    <i class="fas fa-money-bill-wave"></i>
-                        Pay
-                    </button></a>
-                  
                     </div>
                 </div>
                 </div>
             <?php endforeach; ?>
+            <?php else : ?>
+            <script>
+                document.querySelector('.empty-state').style.display = 'flex';
+                document.querySelector('.orders-grid').style.display = 'none';
+            </script>
             <?php endif; ?>
         </div>
 
-        <!-- Empty State (hidden by default, show when no orders) -->
+        <!-- Empty state (hidden by default, show when no orders) -->
         <div class="empty-state" style="display: none;">
-            <i class="fas fa-box-open"></i>
-            <h3>No orders awaitting to pay</h3>
-            <p>All your orders have been paid out or you haven't placed any orders yet.</p>
+            <i class="fas fa-shopping-cart"></i>
+            <h3>No Pending Orders</h3>
+            <p>You don't have any orders waiting for payment at the moment. Browse our catalog to place a new order.</p>
+            <a href="#" class="btn btn-primary">Shop Now</a>
         </div>
+
+        <a href="orders.html" class="back-link">
+            <i class="fas fa-arrow-left"></i>
+            Back to All Orders
+        </a>
     </div>
 </body>
 

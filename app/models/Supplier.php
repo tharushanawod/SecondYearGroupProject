@@ -223,7 +223,7 @@ class Supplier {
 
     public function getRecentOrders($supplierId) {
         $this->db->query('
-          SELECT orders.*
+          SELECT orders.*,order_items.status as payment_status,order_items.price,order_items.quantity
 FROM orders 
 INNER JOIN users ON orders.user_id = users.user_id
 INNER JOIN order_items ON orders.order_id = order_items.order_id
@@ -245,7 +245,7 @@ LIMIT 5
         $this->db->bind(':supplier_id', $data['supplier_id']);
         $this->db->bind(':farmer_id', $data['farmer_id']);
         $this->db->bind(':rating', $data['rating']);
-        $this->db->bind(':review_text', $data['review_text']);
+        $this->db->bind(':review_text', $data['review']);
 
         return $this->db->execute();
     }
@@ -405,6 +405,36 @@ return $count->order_count;
         ORDER BY orders.order_date DESC');
         $this->db->bind(':supplierId', $supplierId);
         return $this->db->resultSet();
+    }
+
+    public function getCompletedOrderCount($supplierId) {
+        $this->db->query('SELECT COUNT(DISTINCT order_items.order_id) as order_count
+         FROM order_items
+         INNER JOIN supplier_products
+         ON order_items.product_id = supplier_products.product_id 
+         WHERE supplier_products.supplier_id = :supplierId AND order_items.supplier_confirmed = 1 AND order_items.delivery_confirmed = 1 AND order_items.status ="paid"');
+        $this->db->bind(':supplierId', $supplierId);
+        return $this->db->single()->order_count;
+    }
+
+    public function getActiveorderCount($supplierId) {
+        $this->db->query('SELECT COUNT(DISTINCT order_items.order_id) as order_count
+         FROM order_items
+         INNER JOIN supplier_products
+         ON order_items.product_id = supplier_products.product_id 
+         WHERE supplier_products.supplier_id = :supplierId AND order_items.supplier_confirmed = 1 AND order_items.delivery_confirmed = 1 AND order_items.status ="paid"');
+        $this->db->bind(':supplierId', $supplierId);
+        return $this->db->single()->order_count;
+    }
+
+    public function getTotalRevenue($supplierId) {
+        $this->db->query('SELECT SUM(order_items.price * order_items.quantity) as total_revenue
+         FROM order_items
+         INNER JOIN supplier_products
+         ON order_items.product_id = supplier_products.product_id 
+         WHERE supplier_products.supplier_id = :supplierId AND order_items.supplier_confirmed = 1 AND order_items.delivery_confirmed = 1 AND order_items.status ="paid"');
+        $this->db->bind(':supplierId', $supplierId);
+        return $this->db->single()->total_revenue;
     }
 }
 ?>

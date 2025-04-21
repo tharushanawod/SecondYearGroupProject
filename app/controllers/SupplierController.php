@@ -33,10 +33,16 @@ class SupplierController extends Controller {
     public function dashboard() {
         $supplierId = $_SESSION['user_id'];
         $recentOrders = $this->Supplier->getRecentOrders($supplierId);
-       
+        $completedOrderCount = $this->Supplier->getCompletedOrderCount($supplierId);
+        $PendingOrderCount = $this->Supplier->PendingOrderCount($supplierId);
+        $totalRevenue = $this->Supplier->getTotalRevenue($supplierId);
+    
         
         $data = [
-            'recentOrders' => $recentOrders
+            'recentOrders' => $recentOrders,
+            'CompletedOrderCount'=> $completedOrderCount,
+            'PendingOrderCount'=> $PendingOrderCount,
+            'total_revenue' => $totalRevenue
         ];
      
         

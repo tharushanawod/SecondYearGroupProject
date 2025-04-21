@@ -560,6 +560,13 @@ GROUP BY
             return false;
         }
     }
+
+    public function CancelOrder($order_id){
+        $this->db->query('UPDATE order_items SET status = "cancelled"
+         WHERE order_id = :order_id');
+        $this->db->bind(':order_id', $order_id);
+        return $this->db->execute();
+    }
     
 }
 ?>

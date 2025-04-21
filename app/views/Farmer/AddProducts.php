@@ -7,6 +7,7 @@
     <title>Products</title>
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Farmer/AddProducts.css">
     <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet"/>
+
 </head>
 
 <body>
@@ -17,35 +18,63 @@
             <?php echo $data['user_id'];?>
             <button class="create-btn" onclick="openPopup()">Add New Product</button>
         </div>
-        <div class="filters">
-            <div class="filter-dropdown">
-                <button class="filter-btn">
-                    <span>Grouped by:</span>
-                    <span>Warehouse</span>
-                    <span>▼</span>
-                </button>
-                <div class="filter-menu">
-                    <a href="#">Warehouse</a>
-                    <a href="#">Category</a>
-                    <a href="#">Price</a>
-                </div>
+        
+        <!-- Filter Section -->
+        <div class="filter-bar">
+            <div class="filter-group">
+                <label class="filter-label">Status</label>
+                <select class="filter-select" id="statusFilter">
+                    <option value="all">All Products</option>
+                    <option value="active">Active</option>
+                    <option value="expired">Expired</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Price Range</label>
+                <select class="filter-select" id="priceFilter">
+                    <option value="all">All Prices</option>
+                    <option value="low">Under Rs. 1,000</option>
+                    <option value="medium">Rs. 1,000 - Rs. 5,000</option>
+                    <option value="high">Above Rs. 5,000</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Sort By</label>
+                <select class="filter-select" id="sortFilter">
+                    <option value="default">Default</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                </select>
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-btn reset-btn" id="resetFilters">Reset</button>
+                <button class="filter-btn apply-btn" id="applyFilters">Apply Filters</button>
             </div>
         </div>
+
         <div class="product-grid">
             <?php if (!empty($data['products'])): ?>
             <?php foreach ($data['products'] as $product): ?>
-            <div class="product-card">
+            <?php 
+                $isActive = strtotime($product->closing_date) > time();
+                $statusClass = $isActive ? 'active' : 'expired';
+                $statusText = $isActive ? 'Active' : 'Expired';
+                $statusIcon = $isActive ? 'fa-circle-check' : 'fa-circle-xmark';
+            ?>
+            <div class="product-card" data-price="<?php echo $product->starting_price; ?>" data-status="<?php echo $isActive ? 'active' : 'expired'; ?>">
                 <div class="product-image">
-                    <!-- Default image (you can change this if you have a dynamic image URL in the database) -->
                     <img src="<?php echo URLROOT; ?>/<?php echo $product->media; ?>" alt="Corn Product">
+                    <div class="status-badge <?php echo $statusClass; ?>">
+                        <i class="fas <?php echo $statusIcon; ?>"></i> <?php echo $statusText; ?>
+                    </div>
                 </div>
                 <div class="product-info">
                     <div class="product-name">Corn</div>
                     <div class="product-code">Product ID: <?php echo htmlspecialchars($product->product_id); ?></div>
-                    <div class="product-code">Quantity: <?php echo htmlspecialchars($product->quantity); ?>(Kg)</div>
+                    <div class="product-quantity">Quantity: <?php echo htmlspecialchars($product->quantity); ?>(Kg)</div>
                     <div class="product-price">Unit Price: Rs. <?php echo htmlspecialchars($product->starting_price); ?></div>
                     <div class="countdown-timer" data-expiry-date="<?php echo $product->closing_date; ?>">
-                        Closing Time: <span id="countdown-<?php echo $product->product_id; ?>"></span>
+                        <i class="fas fa-clock"></i> <span id="countdown-<?php echo $product->product_id; ?>"></span>
                     </div>
 
                     <!-- Updated action buttons structure -->
@@ -71,8 +100,11 @@
             </div>
             <?php endforeach; ?>
             <?php else: ?>
-            <p>No products available.</p>
-
+            <div class="empty-state">
+                <i class="fas fa-leaf"></i>
+                <p>No products available yet</p>
+                <button class="add-first-btn" onclick="openPopup()">Add Your First Product</button>
+            </div>
             <?php endif; ?>
         </div>
 
@@ -120,45 +152,11 @@
             </form>
         </div>
     </div>
-    <div class="prices-popup" id="pricesPopupMessage">
-        <h2>Company Purchase Rates</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Company Name</th>
-                    <th>Unit Price (LKR)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Prima</td>
-                    <td>150</td>
-                </tr>
-                <tr>
-                    <td>XYZ Manufacturing</td>
-                    <td>145</td>
-                </tr>
-                <tr>
-                    <td>Sri Lanka Foods</td>
-                    <td>160</td>
-                </tr>
-                <tr>
-                    <td>Ceylon Agro Industries</td>
-                    <td>155</td>
-                </tr>
-                <tr>
-                    <td>Premier Products</td>
-                    <td>150</td>
-                </tr>
-            </tbody>
-        </table>
-        <button class="prices-close-btn" id="pricesPopupMessage" onclick="closePricesPopup()">Close</button>
-    </div>
     
     <script>
     const URLROOT = '<?php echo URLROOT; ?>';
     </script>
-<script src="<?php echo URLROOT;?>/js/Farmer/AddProducts.js"></script>
+<script src="<?php echo URLROOT; ?>/js/Farmer/AddProducts.js"></script>
 
 </body>
 </html>

@@ -531,11 +531,11 @@ class Farmer {
     }
 
     public function getToPayOrders($userId){
-        $this->db->query("SELECT orders.order_id,users.name,order_items.quantity,order_items.product_id,order_items.price,supplier_products.product_name,orders.order_date,order_items.supplier_confirmed,supplier_products.image
+        $this->db->query("SELECT orders.order_id,order_items.quantity,order_items.price,supplier_products.product_name,orders.order_date,supplier_products.image,orders.total_amount
         FROM orders
         INNER JOIN order_items ON orders.order_id = order_items.order_id
         INNER JOIN supplier_products ON order_items.product_id = supplier_products.product_id
-           INNER JOIN users ON supplier_products.supplier_id = users.user_id
+        INNER JOIN users ON supplier_products.supplier_id = users.user_id
         WHERE orders.user_id = :userId AND order_items.status = 'pending' AND order_items.supplier_confirmed = 0");
         $this->db->bind(':userId', $userId);
         $result = $this->db->resultSet();
@@ -551,6 +551,10 @@ class Farmer {
 
 
     }
+
+  
+
+
     
 
     

@@ -86,10 +86,10 @@
             <div class="supplier-rating-section">
                 <h2>Supplier Ratings & Reviews</h2>
                 
-                <!-- Average Rating Display
+                <!-- Average Rating Display -->
                 <div class="rating-summary">
                     <div class="average-rating">
-                        <span class="rating-number"><?php echo $data['averageRating']; ?></span>
+                        <span class="rating-number">Average Rating  <?php echo number_format($data['averageRating'],1); ?></span>
                         <div class="stars">
                             <?php for($i = 1; $i <= 5; $i++): ?>
                                 <i class="fa<?php echo ($i <= $data['averageRating']) ? 's' : 'r'; ?> fa-star"></i>
@@ -97,7 +97,7 @@
                         </div>
                         <span class="total-ratings">(<?php echo $data['totalRatings']; ?> reviews)</span>
                     </div>
-                </div> -->
+                </div>
             
                 <!-- Reviews List -->
                 <div class="reviews-list">
@@ -134,7 +134,7 @@
                 <?php if(isset($_SESSION['user_id']) && $_SESSION['user_role'] === 'farmer'): ?>
                     <div class="add-rating-form">
                         <h3>Rate this Supplier</h3>
-                        <form action="<?php echo URLROOT; ?>/SupplierController/addRating" method="POST">
+                        <form action="<?php echo URLROOT; ?>/FarmerController/addRating" method="POST">
                             <input type="hidden" name="supplier_id" value="<?php echo $data['product']->supplier_id; ?>">
                             <input type="hidden" name="product_id" value="<?php echo $data['product']->product_id; ?>">
                             <div class="star-rating">

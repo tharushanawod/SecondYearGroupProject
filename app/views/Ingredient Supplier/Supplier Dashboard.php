@@ -25,9 +25,9 @@
                     <i class="fas fa-box"></i>
                 </div>
                 <div class="stat-info">
-                    <h3>Total Orders</h3>
+                    <h3>Total Completd Orders</h3>
                     <p>
-                        <?php echo $data['total_orders']; ?>
+                        <?php echo $data['CompletedOrderCount']; ?>
                     </p>
                     <div class="stat-date">As of
                         <?php echo date('M d, Y'); ?>
@@ -42,9 +42,9 @@
                     <i class="fas fa-clock"></i>
                 </div>
                 <div class="stat-info">
-                    <h3>Active Orders</h3>
+                    <h3>Pending Orders</h3>
                     <p>
-                        <?php echo $data['active_orders']; ?>
+                        <?php echo $data['PendingOrderCount']; ?>
                     </p>
                     <div class="stat-date">Updated
                         <?php echo date('M d, Y'); ?>
@@ -118,14 +118,14 @@
                         <?php echo $order->first_name; ?>
                     </td>
                     <td>Rs.
-                        <?php echo number_format($order->total_amount, 2); ?>
+                        <?php echo number_format($order->price*$order->quantity, 2); ?>
                     </td>
                     <td>
                         <?php echo date('M d, Y', strtotime($order->order_date)); ?>
                     </td>
                     <td>
-                        <span class="order-status status-<?php echo strtolower($order->status); ?>">
-                            <?php echo $order->status; ?>
+                        <span class="order-status status-<?php echo strtolower($order->payment_status); ?>">
+                            <?php echo $order->payment_status; ?>
                         </span>
                     </td>
                 </tr>
