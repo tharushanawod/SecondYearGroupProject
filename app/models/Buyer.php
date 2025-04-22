@@ -395,5 +395,46 @@ AND corn_products.closing_date > NOW();
         return $results->active_products; 
     }
     
+    public function getFilteredBids($category, $sortBy, $minPrice, $maxPrice, $minQty, $maxQty) {
+        $sql = "SELECT corn_products.*, 
+                       MAX(bids.bid_amount) AS highest_bid, 
+                       COALESCE(AVG(buyer_reviews_farmer.rating), 0) AS avg_rating
+                FROM corn_products
+                LEFT JOIN buyer_reviews_farmer 
+                    ON corn_products.user_id = buyer_reviews_farmer.farmer_id
+                LEFT JOIN bids 
+                    ON corn_products.product_id = bids.product_id
+                WHERE closing_date > NOW()";
+    
+        if (!empty($category)) $sql .= " AND category = :category";
+        if (!empty($minPrice)) $sql .= " AND starting_price >= :minPrice";
+        if (!empty($maxPrice)) $sql .= " AND starting_price <= :maxPrice";
+        if (!empty($minQty)) $sql .= " AND quantity >= :minQty";
+        if (!empty($maxQty)) $sql .= " AND quantity <= :maxQty";
+    
+        $sql .= " GROUP BY corn_products.product_id";
+    
+        switch ($sortBy) {
+            case 'price_low': $sql .= " ORDER BY starting_price ASC"; break;
+            case 'price_high': $sql .= " ORDER BY starting_price DESC"; break;
+            case 'newest': $sql .= " ORDER BY created_at DESC"; break;
+            case 'ending_soon': $sql .= " ORDER BY closing_date ASC"; break;
+            case 'most_bids': $sql .= " ORDER BY COUNT(bids.bid_id) DESC"; break;
+        }
+    
+        $this->db->query($sql);
+    
+        if (!empty($category))  $this->db->bind(':category', $category);
+        if (!empty($minPrice))  $this->db->bind(':minPrice', $minPrice);
+        if (!empty($maxPrice))  $this->db->bind(':maxPrice', $maxPrice);
+        if (!empty($minQty))    $this->db->bind(':minQty', $minQty);
+        if (!empty($maxQty))    $this->db->bind(':maxQty', $maxQty);
+    
+        return $this->db->resultSet();
+    }
+    
+    
+    
+    
     }
 ?>

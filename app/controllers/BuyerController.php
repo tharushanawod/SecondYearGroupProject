@@ -299,40 +299,7 @@ class BuyerController extends Controller {
         $this->View('Buyer/pay', $data);
     }
 
-    // public function getNotifications($buyer_id) {
-    //     $productsnotifications = (array) $this->NotificationModel->getNotifications($buyer_id);
-    //     $winningnotifications = (array) $this->NotificationModel->getWinningNotifications($buyer_id);
-        
-    //     $notifications = array_merge($productsnotifications, $winningnotifications);
-    
-    //     // Sort by date descending
-    //     usort($notifications, function($a, $b) {
-    //         return strtotime($b->created_at) - strtotime($a->created_at);
-    //     });
-    
-    //     // Output as JSON
-    //     header('Content-Type: application/json');
-    //     echo json_encode($notifications);
-    // }
-    
 
-//     public function getUnreadNotifications() {
-//         $data = [];
-//         $this->View('inc/Notification', $data);
-//     }
-
-//     public function markNotificationAsRead($id, $buyer_id) {
-//         $result = $this->NotificationModel->markNotificationAsRead($id, $buyer_id);
-//         header('Content-Type: application/json');
-//         echo json_encode(['success' => $result]);
-//     }
-
-//     public function getUnreadNotificationsCount($buyer_id) {
-       
-//         $count = $this->NotificationModel->getUnreadNotificationsCount($buyer_id);
-//         return $count->count;
-        
-//     }
 
     public function CancelBid($bid_id) {
         $result = $this->BuyerModel->cancelBid($bid_id);
@@ -447,56 +414,6 @@ class BuyerController extends Controller {
     }
 
 
-    // public function RequestHelp() {
-    //     $data = [];
-    //     $this->View('Buyer/RequestHelp', $data);
-    // }
-
-    // public function showForm($category) {
-    //     $data = ['category' => $category];
-    //     $this->View('Buyer/RequestHelp', $data);
-    // }
-
-    // public function submitRequest() {
-    //     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    //         $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-    //         $data = [
-    //             'user_id' => $_SESSION['user_id'],
-    //             'user_role' => $_SESSION['user_role'],
-    //             'category' => trim($_POST['category']),
-    //             'subject' => trim($_POST['subject']),
-    //             'description' => trim($_POST['description']),
-    //             'attachment' => null,
-    //             'status' => 'pending',
-    //             'created_at' => date('Y-m-d H:i:s')
-    //         ];
-
-    //         // Handle file upload
-    //         if (isset($_FILES['attachment']) && $_FILES['attachment']['error'] == UPLOAD_ERR_OK) {
-    //             $uploadDir = 'uploads/help_requests/'; 
-    //             if (!file_exists($uploadDir)) {
-    //                 mkdir($uploadDir, 0777, true);
-    //             }
-    //             $attachmentName = basename($_FILES['attachment']['name']);
-    //             $uploadFile = $uploadDir . $attachmentName;
-    //             if (move_uploaded_file($_FILES['attachment']['tmp_name'], $uploadFile)) {
-    //                 $data['attachment'] = $uploadFile;
-    //             } else {
-    //                 error_log("Failed to upload attachment: " . $attachmentName);
-    //             }
-    //         }
-
-    //         // Save to database
-    //         if ($this->BuyerModel->saveHelpRequest($data)) {
-    //             $_SESSION['request_success'] = 'Your request has been submitted successfully!';
-    //             Redirect('BuyerController/RequestHelp');
-    //         } else {
-    //             error_log("Failed to save help request: " . json_encode($data));
-    //             $_SESSION['request_error'] = 'Failed to submit your request. Please try again.';
-    //             Redirect('BuyerController/RequestHelp');
-    //         }
-    //     }
-    // }
 
     public function getPurchaseHistory($user_id) {
         $purchaseHistory = $this->BuyerModel->getPurchaseHistory($user_id);
@@ -580,30 +497,7 @@ class BuyerController extends Controller {
         }
     }
 
-    public function getNotifications($user_id, $buyer_id) {
-        $helpRequestNotifications = $this->NotificationModel->getHelpRequestNotificationsForUser($user_id);
-        $notifications = $helpRequestNotifications; 
-        $productsnotifications = (array) $this->NotificationModel->getNotifications($buyer_id);
-        $winningnotifications = (array) $this->NotificationModel->getWinningNotifications($buyer_id);
-        $notifications = array_merge($productsnotifications, $winningnotifications);
-        header('Content-Type: application/json');
-        echo json_encode($notifications);
-        header('Content-Type: application/json');
-        try {
-            echo json_encode($notifications);
-        } catch (Exception $e) {
-            error_log("Failed to encode notifications for user_id $user_id: " . $e->getMessage());
-            echo json_encode([]);
-        }
-    }
 
-    public function getUnreadNotifications() {
-        $data = [
-            'notifications' => $this->NotificationModel->getHelpRequestNotificationsForUser($_SESSION['user_id']),
-            'unread_count' => $this->NotificationModel->getUnreadHelpNotificationsCountForUser($_SESSION['user_id'])->count
-        ];
-        $this->view('inc/Notification', $data);
-    }
 
     public function markHelpNotificationAsRead($notificationId, $userId) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -627,71 +521,52 @@ class BuyerController extends Controller {
         }
     }
 
-    public function markNotificationAsRead($notificationId, $userId) {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Ensure the user is authorized
-            if ($userId != $_SESSION['user_id']) {
-                header('Content-Type: application/json');
-                echo json_encode(['success' => false, 'error' => 'Unauthorized']);
-                exit;
-            }
+  
 
-            $notificationModel = $this->model('Notification');
-            $result = $notificationModel->markNotificationAsRead($notificationId, $userId);
 
-            header('Content-Type: application/json');
-            echo json_encode(['success' => $result]);
-            exit;
-        } else {
-            header('Content-Type: application/json');
-            echo json_encode(['success' => false, 'error' => 'Invalid request method']);
-            exit;
-        }
 
+    public function filterBids() {
+        $input = json_decode(file_get_contents("php://input"), true);
+    
+        $category = $input['category'] ?? '';
+        $sortBy = $input['sortBy'] ?? '';
+        $minPrice = $input['minPrice'] ?? '';
+        $maxPrice = $input['maxPrice'] ?? '';
+        $minQty = $input['minQty'] ?? '';
+        $maxQty = $input['maxQty'] ?? '';
+    
+        $filtered = $this->BuyerModel->getFilteredBids($category, $sortBy, $minPrice, $maxPrice, $minQty, $maxQty);
+    
+        echo json_encode($filtered);
+    }
+
+    public function getNotifications($buyer_id) {
+        $productsnotifications = (array) $this->NotificationModel->getNotifications($buyer_id);
+$winningnotifications = (array) $this->NotificationModel->getWinningNotifications($buyer_id);
+$notifications = array_merge($productsnotifications, $winningnotifications);
+
+        header('Content-Type: application/json');
+        echo json_encode($notifications);
+    }
+
+    public function getUnreadNotifications() {
+        $data = [];
+        $this->View('inc/Notification', $data);
+    }
+
+    public function markNotificationAsRead($id, $buyer_id) {
         $result = $this->NotificationModel->markNotificationAsRead($id, $buyer_id);
         header('Content-Type: application/json');
         echo json_encode(['success' => $result]);
-    }    
-
-    public function getUnreadNotificationsCount($user_id, $buyer_id) {
-        $count = $this->NotificationModel->getUnreadHelpNotificationsCountForUser($user_id)->count;
-        $count = $this->NotificationModel->getUnreadNotificationsCount($buyer_id);
-        return $count->count;
-        return $count;
     }
 
-
-
-
-
-
-
-//     public function getNotifications($buyer_id) {
-//         $productsnotifications = (array) $this->NotificationModel->getNotifications($buyer_id);
-// $winningnotifications = (array) $this->NotificationModel->getWinningNotifications($buyer_id);
-// $notifications = array_merge($productsnotifications, $winningnotifications);
-
-//         header('Content-Type: application/json');
-//         echo json_encode($notifications);
-//     }
-
-    // public function getUnreadNotifications() {
-    //     $data = [];
-    //     $this->View('inc/Notification', $data);
-    // }
-
-    // public function markNotificationAsRead($id, $buyer_id) {
-    //     $result = $this->NotificationModel->markNotificationAsRead($id, $buyer_id);
-    //     header('Content-Type: application/json');
-    //     echo json_encode(['success' => $result]);
-    // }
-
-    // public function getUnreadNotificationsCount($buyer_id) {
+    public function getUnreadNotificationsCount($buyer_id) {
        
-    //     $count = $this->NotificationModel->getUnreadNotificationsCount($buyer_id);
-    //     return $count->count;
+        $count = $this->NotificationModel->getUnreadNotificationsCount($buyer_id);
+        return $count->count;
         
-    // }
+    }
+    
 
 }
 
