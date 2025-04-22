@@ -548,6 +548,41 @@ class Users {
     }
 
 
+    public function getUserByEmail($email) {
+        $this->db->query('SELECT * FROM users WHERE email = :email');
+        $this->db->bind(':email',$email);
+        return $row = $this->db->single();
+    }
+
+    // Insert password reset token
+    public function createPasswordResetToken($email, $token) {
+        $this->db->query('INSERT INTO password_resets (email, token) VALUES (:email, :token)');
+        $this->db->bind(':email', $email);
+        $this->db->bind(':token', $token);
+        return $this->db->execute();
+    }
+
+    public function getResetToken($token) {
+        $this->db->query('SELECT * FROM password_resets WHERE token = :token');
+        $this->db->bind(':token', $token);
+        return $this->db->single();
+    }
+
+    public function updatePassword($email, $password) {
+        $this->db->query('UPDATE users SET password = :password WHERE email = :email');
+        $this->db->bind(':password', $password);
+        $this->db->bind(':email', $email);
+        return $this->db->execute();
+    }
+
+    public function deleteResetToken($token) {
+        $this->db->query('DELETE FROM password_resets WHERE token = :token');
+        $this->db->bind(':token', $token);
+        return $this->db->execute();
+    }
+    
+
+
 }
 
 ?>

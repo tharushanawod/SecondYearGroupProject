@@ -1,4 +1,3 @@
-
 const bidsTable = document.querySelector("#orderTable tbody");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
@@ -13,7 +12,8 @@ function fetchBids() {
   fetch(`${URLROOT}/BuyerController/getPendingPayments/${USERID}`)
     .then((response) => response.json())
     .then((data) => {
-        PendingPayments = data; // Store all bids in the array
+      console.log(data);
+      PendingPayments = data; // Store all bids in the array
       renderTable(); // Initial table render
       updatePagination();
     })
@@ -28,25 +28,24 @@ function renderTable() {
 
   bidsTable.innerHTML = ""; // Clear the table
 
-    // 👉 Check if there is no data
-    if (paginatedPendingPayments.length === 0) {
-      const row = document.createElement("tr");
-      row.innerHTML = `<td colspan="7" style="text-align:center;">No data to show</td>`;
-      bidsTable.appendChild(row);
-      return; // Stop here, don't try to render
-    }
+  if (paginatedPendingPayments.length === 0) {
+    const row = document.createElement("tr");
+    row.innerHTML = `<td colspan="7" style="text-align:center;">No data to show</td>`;
+    bidsTable.appendChild(row);
+    return;
+  }
 
   paginatedPendingPayments.forEach((PendingPayment) => {
-    const row = document.createElement("tr");
-    const targetDate = new Date(PendingPayment.order_closing_date);
     const totalpayment = PendingPayment.bid_price * PendingPayment.quantity;
     const advancepayment = totalpayment * 0.2;
+    const countdownId = `countdown-${PendingPayment.order_id}`;
 
+    const row = document.createElement("tr");
     row.innerHTML = `
       <td data-label="Order ID">${PendingPayment.order_id}</td>
       <td data-label="Product">${PendingPayment.bid_price}</td>
       <td data-label="Quantity">${PendingPayment.quantity} kg</td>
-      <td data-label="Remaining Time" id="countdown-${PendingPayment.order_id}">Calculating...</td>
+      <td data-label="Remaining Time"><span id="${countdownId}">Calculating...</span></td>
       <td data-label="Total">${totalpayment.toFixed(2)}</td>
       <td data-label="Advance">${advancepayment.toFixed(2)}</td>
       <td data-label="Action">
@@ -55,43 +54,16 @@ function renderTable() {
     `;
     bidsTable.appendChild(row);
 
-    startCountdown(targetDate, `countdown-${PendingPayment.order_id}`);
+    // Start countdown
+    startCountdown(PendingPayment.order_closing_date, countdownId);
   });
 }
 
-function calculateRemainingTime(targetDate) {
-  const now = new Date();
-  const timeDifference = targetDate - now;
-
-  if (timeDifference <= 0) return "Time is up!";
-
-  const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-
-  return `${days}d ${hours}h ${minutes}m ${seconds}s`;
-}
-
-function startCountdown(targetDate, elementId) {
-  function updateCountdown() {
-    const countdownElement = document.getElementById(elementId);
-    if (!countdownElement) return;
-
-    const remainingTime = calculateRemainingTime(targetDate);
-    countdownElement.innerHTML = remainingTime;
-
-    if (remainingTime === "Time is up!") clearInterval(interval);
-  }
-
-  updateCountdown();
-  const interval = setInterval(updateCountdown, 1000);
-}
 
 
 // Update pagination info (current page and total pages)
 function updatePagination() {
-  const totalPages = Math.ceil(bids.length / rowsPerPage);
+  const totalPages = Math.ceil(PendingPayments.length / rowsPerPage);
   pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
 
   prevBtn.disabled = currentPage === 1;
@@ -109,7 +81,7 @@ prevBtn.addEventListener("click", () => {
 
 // Handle next page button click
 nextBtn.addEventListener("click", () => {
-  const totalPages = Math.ceil(bids.length / rowsPerPage);
+  const totalPages = Math.ceil(PendingPayments.length / rowsPerPage);
   if (currentPage < totalPages) {
     currentPage++;
     renderTable();
@@ -120,40 +92,34 @@ nextBtn.addEventListener("click", () => {
 // Initial fetch and render
 fetchBids();
 
-function calculateRemainingTime(targetDate) {
-  const now = new Date();
-  const timeDifference = targetDate - now;
 
-  // If the target date is in the past, return "Time is up!"
-  if (timeDifference <= 0) {
-      return "Time is up!";
+function Payment(order_id) {
+  window.location.href = `${URLROOT}/BuyerController/getPaymentDetailsForOrder/${order_id}`;
+}
+
+function startCountdown(targetDateStr, elementId) {
+  const targetDate = new Date(targetDateStr);
+
+  function updateCountdown() {
+    const now = new Date();
+    const diff = targetDate - now;
+
+    const element = document.getElementById(elementId);
+    if (!element) return;
+
+    if (diff <= 0) {
+      element.textContent = "Expired";
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    element.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
   }
 
-  const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24)); // Days
-  const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); // Hours
-  const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60)); // Minutes
-  const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000); // Seconds
-
-  return `${days}d ${hours}h ${minutes}m ${seconds}s`;
-}
-
-function startCountdown(targetDate) {
-  const countdownElement = document.getElementById('countdown'); // Element to display the time
-
-  // Update the countdown every second
-  const interval = setInterval(() => {
-      const remainingTime = calculateRemainingTime(targetDate);
-
-      // Display the remaining time
-      countdownElement.innerHTML = remainingTime;
-
-      // Stop the countdown when time is up
-      if (remainingTime === "Time is up!") {
-          clearInterval(interval);
-      }
-  }, 1000); // Update every second
-}
-
-function Payment(order_id){
-  window.location.href = `${URLROOT}/BuyerController/getPaymentDetailsForOrder/${order_id}`;
+  updateCountdown(); // Initial call
+  setInterval(updateCountdown, 1000); // Update every second
 }

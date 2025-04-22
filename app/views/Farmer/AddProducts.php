@@ -73,6 +73,13 @@
                     <div class="product-code">Product ID: <?php echo htmlspecialchars($product->product_id); ?></div>
                     <div class="product-quantity">Quantity: <?php echo htmlspecialchars($product->quantity); ?>(Kg)</div>
                     <div class="product-price">Unit Price: Rs. <?php echo htmlspecialchars($product->starting_price); ?></div>
+                    <div class="product-price">Current Highest Bid:  <?php
+                    if(empty($product->highest_bid)){
+                        echo "No Bids Yet";
+                    }else{
+                        echo 'Rs.'.htmlspecialchars($product->highest_bid); 
+                    }
+                    ?></div>
                     <div class="countdown-timer" data-expiry-date="<?php echo $product->closing_date; ?>">
                         <i class="fas fa-clock"></i> <span id="countdown-<?php echo $product->product_id; ?>"></span>
                     </div>
@@ -80,7 +87,7 @@
                     <!-- Updated action buttons structure -->
                     <div class="action-buttons">
                         <div class="action-label">
-                        <?php if (strtotime($product->closing_date) > time()): ?>
+                        <?php if (strtotime($product->closing_date) > time() && empty($product->highest_bid)): ?>
                             <a href="<?php echo URLROOT; ?>/FarmerController/DeleteProducts/<?php echo $product->product_id; ?>"
                                 onclick="return confirm('Are you sure you want to delete this product?');">Delete</a>
                                 <?php else: ?>
@@ -88,7 +95,7 @@
 <?php endif; ?>
                         </div>
                         <div class="action-label">
-                        <?php if (strtotime($product->closing_date) > time()): ?>
+                        <?php if (strtotime($product->closing_date) > time() && empty($product->highest_bid)): ?>
     <a href="#" onclick="openPopup('<?php echo $product->product_id; ?>'); return false;">Update</a>
 <?php else: ?>
     <span class="disabled-update"> Update</span>

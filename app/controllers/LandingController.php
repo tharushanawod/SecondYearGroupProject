@@ -193,15 +193,38 @@ class LandingController extends Controller{
                 $mail->Password = 'cjvnnrstpmhzntvp';
                 $mail->SMTPSecure = 'tls';
                 $mail->Port = 587;
-        
+
                 $mail->setFrom('tharushanjayasinghe222@gmail.com', 'Tharusha Nawod');
                 $mail->addAddress($receiver);
-        
+
                 $mail->isHTML(true);
                 $mail->Subject = 'Corn Cradle Verification';
-                $mail->Body = "Hello,<br><br>Your OTP code is: <b>$otp</b><br><br>Thank you for using our service.";
+                
+                // HTML email with CSS styling
+                $mail->Body = "
+                <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 5px;'>
+                    <div style='background-color: #4CAF50; padding: 15px; text-align: center; border-radius: 5px 5px 0 0;'>
+                        <h1 style='color: white; margin: 0;'>Email Verification</h1>
+                    </div>
+                    <div style='padding: 20px; background-color: #f9f9f9;'>
+                        <p style='font-size: 16px; line-height: 1.5; color: #333;'>Hello,</p>
+                        <p style='font-size: 16px; line-height: 1.5; color: #333;'>Thank you for registering with Corn Cradle. To complete your registration, please use the verification code below:</p>
+                        <div style='text-align: center; margin: 30px 0;'>
+                            <div style='background-color: #e8f5e9; border: 2px dashed #4CAF50; padding: 15px; display: inline-block; border-radius: 5px;'>
+                                <span style='font-size: 24px; font-weight: bold; letter-spacing: 5px; color: #2E7D32;'>$otp</span>
+                            </div>
+                        </div>
+                        <p style='font-size: 16px; line-height: 1.5; color: #333;'>This code will expire in 15 minutes. If you did not request this code, please ignore this email.</p>
+                        <p style='font-size: 16px; line-height: 1.5; color: #333;'>Thank you for using our service!</p>
+                    </div>
+                    <div style='padding: 15px; text-align: center; color: #666; font-size: 14px; background-color: #e0e0e0; border-radius: 0 0 5px 5px;'>
+                        &copy; " . date('Y') . " Corn Cradle. All rights reserved.
+                    </div>
+                </div>";
+                
+                // Plain text alternative for email clients that don't support HTML
+                $mail->AltBody = "Hello,\n\nYour OTP code is: $otp\n\nThank you for using our service.";
 
-        
                 $mail->send();
                 echo "✅ OTP has been successfully sent to $receiver.";
                 
@@ -234,8 +257,126 @@ class LandingController extends Controller{
             }
         }
     }
+
+   
+    public function ForgotPassword() {
+        
+        $this->View('Landing/forgot_password');
+    }
     
-    
+
+    // Handle the password reset request
+    public function handleForgotPassword() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $email = $_POST['email'];
+
+            // Check if the email exists in the database
+            $user = $this->userModel->getUserByEmail($email);
+
+            if ($user) {
+                // Generate a unique reset token
+                $token = bin2hex(random_bytes(50));
+
+                // Save the token in the database
+                $this->userModel->createPasswordResetToken($email, $token);
+
+                // Send the reset link to the user
+                $resetLink = "http://localhost/GroupProject/LandingController/showResetPasswordForm?token=" . $token;
+
+                $mail = new PHPMailer(true);
+                try {
+                    $mail->isSMTP();
+                    $mail->Host = 'smtp.gmail.com';
+                    $mail->SMTPAuth = true;
+                    $mail->Username = 'tharushanjayasinghe222@gmail.com';
+                    $mail->Password = 'cjvnnrstpmhzntvp';
+                    $mail->SMTPSecure = 'tls';
+                    $mail->Port = 587;
+            
+                    $mail->setFrom('tharushanjayasinghe222@gmail.com', 'Tharusha Nawod');
+                    $mail->addAddress($email);
+            
+                    $mail->isHTML(true);
+                    $mail->Subject = 'Corn Cradle - Password Reset Request';
+                    
+                    // HTML body with CSS styling
+                    $mail->Body = "
+                    <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 5px;'>
+                        <div style='background-color: #4CAF50; padding: 15px; text-align: center; border-radius: 5px 5px 0 0;'>
+                            <h1 style='color: white; margin: 0;'>Password Reset</h1>
+                        </div>
+                        <div style='padding: 20px; background-color: #f9f9f9;'>
+                            <p style='font-size: 16px; line-height: 1.5; color: #333;'>Hello,</p>
+                            <p style='font-size: 16px; line-height: 1.5; color: #333;'>We received a request to reset your password. Click the button below to reset it:</p>
+                            <div style='text-align: center; margin: 30px 0;'>
+                                <a href='$resetLink' style='background-color: #4CAF50; color: white; padding: 12px 25px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;'>Reset Password</a>
+                            </div>
+                            <p style='font-size: 16px; line-height: 1.5; color: #333;'>If you did not request a password reset, please ignore this email.</p>
+                            <p style='font-size: 16px; line-height: 1.5; color: #333;'>The link will expire in 24 hours.</p>
+                        </div>
+                        <div style='padding: 15px; text-align: center; color: #666; font-size: 14px; background-color: #e0e0e0; border-radius: 0 0 5px 5px;'>
+                            &copy; " . date('Y') . " Corn Cradle. All rights reserved.
+                        </div>
+                    </div>";
+                    
+                    // Plain text alternative
+                    $mail->AltBody = "Hello,\n\nWe received a request to reset your password. Please click the following link to reset it:\n\n$resetLink\n\nIf you did not request a password reset, please ignore this email.\n\nThe link will expire in 24 hours.";
+            
+                    $mail->send();
+                    echo "✅ Password reset link has been successfully sent to $email.";
+                    
+                } catch (Exception $e) {
+                    echo "Mailer Error: {$mail->ErrorInfo}";
+                }
+
+            } else {
+                echo "Email address not found.";
+            }
+        }
+    }
+
+    // Show the reset password form
+    public function showResetPasswordForm() {
+        $token = $_GET['token'];
+
+        // Check if the token is valid
+        $resetRequest = $this->userModel->getResetToken($token);
+
+        if ($resetRequest) {
+            $this->View('Landing/reset_password');
+        } else {
+            echo "Invalid or expired token.";
+        }
+    }
+
+    // Handle the password reset process
+    public function resetPassword() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $token = $_POST['token'];
+            $newPassword = $_POST['password'];
+            $confirmPassword = $_POST['confirm_password'];
+
+            if ($newPassword === $confirmPassword) {
+                // Check if the token is valid
+                $resetRequest = $this->userModel->getResetToken($token);
+
+                if ($resetRequest) {
+                    // Update the password in the database
+                    $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+                    $this->userModel->updatePassword($resetRequest->email, $hashedPassword);
+
+                    // Delete the token from the database
+                    $this->userModel->deleteResetToken($token);
+
+                    echo "Password has been successfully updated.";
+                } else {
+                    echo "Invalid or expired token.";
+                }
+            } else {
+                echo "Passwords do not match.";
+            }
+        }
+    }
 
     public function Login(){
         if($_SERVER['REQUEST_METHOD'] == 'POST')

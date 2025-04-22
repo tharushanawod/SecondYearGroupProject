@@ -146,7 +146,20 @@ class Farmer {
     }
 
     public function getProductsByFarmerId($farmerId) {
-        $this->db->query('SELECT * FROM corn_products WHERE user_id = :userid ORDER BY closing_date DESC');
+        $this->db->query('SELECT 
+                        p.*, 
+                        MAX(b.bid_amount) AS highest_bid
+                    FROM 
+                        corn_products p
+                    LEFT JOIN 
+                        bids b ON p.product_id = b.product_id
+                    WHERE 
+                        p.user_id = :userid
+                    GROUP BY 
+                        p.product_id
+                    ORDER BY 
+                        p.closing_date DESC;
+                    ');
         $this->db->bind(':userid', $farmerId);
         return $this->db->resultSet(); // Fetch all products
     }

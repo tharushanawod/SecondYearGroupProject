@@ -43,32 +43,14 @@ if (paginatedBids.length === 0) {
 }
 
 paginatedBids.forEach((bid) => {
-  const targetDate = new Date(bid.closing_date); // Closing date of the bid
-  const currentDate = new Date(); // Current date and time
 
-  // Calculate the remaining time in milliseconds
-  const remainingTime = targetDate - currentDate;
-
-  // If the remaining time is less than or equal to zero, the auction has ended
-  let remainingTimeText = 'Auction Ended';
-  if (remainingTime > 0) {
-    // Calculate days, hours, minutes, and seconds
-    const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
-
-    remainingTimeText = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-  }
-
+  const countdownId = `countdown-${bid.order_id}`;
   const row = document.createElement("tr");
   row.innerHTML = `
     <td data-label="Bid ID">${bid.bid_id}</td>
     <td data-label="Your Bid">${bid.bid_amount}</td>
     <td data-label="Current Highest Bid">${bid.highest_bid}</td>
-    <td data-label="Remaining Time">
-      <span>${remainingTimeText}</span>
-    </td>
+     <td data-label="Remaining Time"><span id="${countdownId}">Calculating...</span></td>
     <td data-label="Quantity (kg)">${bid.quantity}</td>
     <td data-label="Actions">
       ${bid.payment_status === 'Pending' ? `
@@ -79,6 +61,8 @@ paginatedBids.forEach((bid) => {
   `;
 
   bidsTable.appendChild(row);
+   // Start countdown
+   startCountdown(bid.closing_date, countdownId);
 });
 }
 
@@ -140,3 +124,32 @@ confirmCancel.addEventListener("click", () => {
     .catch((error) => console.log("Error canceling bid:", error));
   popupOverlay.style.display = "none";
 });
+
+
+
+function startCountdown(targetDateStr, elementId) {
+  const targetDate = new Date(targetDateStr);
+
+  function updateCountdown() {
+    const now = new Date();
+    const diff = targetDate - now;
+
+    const element = document.getElementById(elementId);
+    if (!element) return;
+
+    if (diff <= 0) {
+      element.textContent = "Expired";
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    element.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  }
+
+  updateCountdown(); // Initial call
+  setInterval(updateCountdown, 1000); // Update every second
+}
