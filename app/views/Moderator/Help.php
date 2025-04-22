@@ -6,7 +6,6 @@
     <title>Help Requests</title>
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Moderator/Help.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
 </head>
 <body>
 <?php require APPROOT . '/views/inc/sidebar.php'; ?>
@@ -75,7 +74,97 @@
                     <p>No help requests found.</p>
                 <?php endif; ?>
             </div>
+
+            <!-- Transaction Logs Section -->
+            <h2>Transaction & Order Logs</h2>
+            <p class="section-desc">Monitor and resolve transaction-related issues across the platform</p>
+            
+            <div class="log-cards">
+                <!-- Account Log Card -->
+                <div class="log-card account-log">
+                    <div class="log-card-header">
+                        <div class="log-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="log-info">
+                            <h3>Account Log</h3>
+                            <span class="log-count">24 new entries</span>
+                        </div>
+                    </div>
+                    <div class="log-content">
+                        
+                        <a href="<?php echo URLROOT;?>/ModeratorController/AccountLog" class="view-all-link">View All Account Logs <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- Buyer Transaction Log Card -->
+                <div class="log-card buyer-log">
+                    <div class="log-card-header">
+                        <div class="log-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="log-info">
+                            <h3>Buyer Transaction Log</h3>
+                            <span class="log-count">12 pending issues</span>
+                        </div>
+                    </div>
+                    <div class="log-content">
+                    
+                        <a href="<?php echo URLROOT;?>/ModeratorController/BuyerTransactionLog" class="view-all-link">View All Transaction Logs <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- Farmer Transaction Log Card -->
+                <div class="log-card farmer-log">
+                    <div class="log-card-header">
+                        <div class="log-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <div class="log-info">
+                            <h3>Farmer Transaction Log</h3>
+                            <span class="log-count">8 issues to review</span>
+                        </div>
+                    </div>
+                    <div class="log-content">
+                       
+                        <a href="<?php echo URLROOT;?>/ModeratorController/FarmerTransactionLog" class="view-all-link">View All Transaction Logs <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="log-card buyer-log">
+                    <div class="log-card-header">
+                        <div class="log-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="log-info">
+                            <h3>Buyer Order log</h3>
+                            <span class="log-count">12 pending issues</span>
+                        </div>
+                    </div>
+                    <div class="log-content">
+                    
+                        <a href="<?php echo URLROOT;?>/ModeratorController/BuyerOrderLog" class="view-all-link">View All Order Logs <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="log-card farmer-log">
+                    <div class="log-card-header">
+                        <div class="log-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <div class="log-info">
+                            <h3>Farmer Order Log</h3>
+                            <span class="log-count">8 issues to review</span>
+                        </div>
+                    </div>
+                    <div class="log-content">
+                       
+                        <a href="<?php echo URLROOT;?>/ModeratorController/FarmerOrderLog" class="view-all-link">View All  Order Logs <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
         <?php endif; ?>
     </div>
+
 </body>
 </html>

@@ -53,6 +53,81 @@ class Moderator{
         return $row;
     }
 
+         // Update or Insert profile image path in the database
+         public function updateProfileImage($userId, $imagePath) {
+            // Check if a record already exists for the user
+            $this->db->query("SELECT id FROM profile_pictures WHERE user_id = :userId");
+            $this->db->bind(':userId', $userId);
+            $row = $this->db->single();
+    
+            if ($row) {
+                // Update existing record
+                $this->db->query("UPDATE profile_pictures SET file_path = :imagePath WHERE user_id = :userId");
+                $this->db->bind(':imagePath', $imagePath);
+                $this->db->bind(':userId', $userId);
+            } else {
+                // Insert new record
+                $this->db->query("INSERT INTO profile_pictures (user_id, file_path) VALUES (:userId, :imagePath)");
+                $this->db->bind(':userId', $userId);
+                $this->db->bind(':imagePath', $imagePath);
+            }
+    
+            return $this->db->execute();
+        }
+
+        public function getAccountLog(){
+            $this->db->query('SELECT * FROM restriction_logs');
+            $rows = $this->db->resultSet();
+            return $rows;
+        }
+
+        public function getBuyerOrderLog(){
+            $this->db->query('SELECT * FROM orders_from_buyers');
+            $rows = $this->db->resultSet();
+            return $rows;
+        }
+
+        public function getBuyerTransactionLog(){
+            $this->db->query('SELECT * FROM buyer_payments');
+            $rows = $this->db->resultSet();
+            return $rows;
+        }
+
+        public function getFarmerOrderLog(){
+            $this->db->query('SELECT o.order_id,
+                o.user_id as farmer_id,
+                o.first_name,
+                o.last_name,
+                o.address,
+                o.city,
+                o.postcode,
+                o.phone,
+                o.order_date,
+                oi.product_id,
+                oi.quantity,
+                oi.price,
+                oi.supplier_confirmed,
+                oi.delivery_confirmed,
+                oi.status AS status,
+                u.name AS supplier_name,
+                sp.supplier_id,
+                sp.product_name
+                FROM orders AS o
+            INNER JOIN order_items oi ON o.order_id = oi.order_id
+            INNER JOIN supplier_products sp ON oi.product_id = sp.product_id
+               INNER JOIN users u  ON sp.supplier_id = u.user_id
+           ');
+
+            $rows = $this->db->resultSet();
+            return $rows;
+        }
+
+        public function getFarmerTransactionLog(){
+            $this->db->query('SELECT * FROM transaction');
+            $rows = $this->db->resultSet();
+            return $rows;
+        }
+
 
 }
 ?>

@@ -38,7 +38,8 @@ class LandingController extends Controller{
 
     public function signup() {
         // Sanitize data
-        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
         
         // Initialize the user type
         $user_type = $_POST['user_type'] ?? $_GET['user_type'];
