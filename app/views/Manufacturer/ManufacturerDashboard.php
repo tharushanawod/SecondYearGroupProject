@@ -4,147 +4,154 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manufacturer Dashboard</title>
+    <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet" />
     <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/Manufacturer/ManufacturerDashboard.css">
-    <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet"/>
 </head>
 <body>
-    <div class="dashboard-container">
-        <?php require APPROOT . '/views/inc/sidebar.php'; ?>
+<?php require APPROOT . '/views/inc/sidebar.php'; ?>
 
-        <div class="main-content">
-            <div class="main-content-header">
-                <h1>Manufacturer Dashboard</h1>
-            </div>
+<div class="dashboard-container">
+    <div class="welcome-section">
+        <h1>Welcome back, <?php echo $data['user_name']; ?>!</h1>
+        <p>Track your bids and manage your minimum price</p>
+    </div>
 
-            <?php if (isset($_SESSION['success'])): ?>
-                <p class="success"><?php echo $_SESSION['success']; unset($_SESSION['success']); ?></p>
-            <?php endif; ?>
-            <?php if (isset($_SESSION['error'])): ?>
-                <p class="error"><?php echo $_SESSION['error']; unset($_SESSION['error']); ?></p>
-            <?php endif; ?>
-            <?php if (empty($data)): ?>
-                <p class="error">Unable to load dashboard data. Please try again later.</p>
-            <?php endif; ?>
-            
-            <!-- New top section with pricing info and history side by side -->
-            <div class="top-section">
-                <div class="price-info">
-                    <h3>Market Prices</h3>
-                    <div class="price-item">
-                        <p>Current Floor Price: LKR <?php echo !empty($data['floor_price']) ? number_format($data['floor_price'], 2) : 'Not Available'; ?>
-                            <?php if (!empty($data['is_default_floor_price']) && $data['is_default_floor_price']): ?>
-                                <span class="warning">(Default value, contact support for an updated price)</span>
-                            <?php endif; ?>
-                        </p>
-                    </div>
-                    <div class="price-item">
-                        <p>Market Average (Last 30 Days): LKR <?php echo !empty($data['market_average']) ? number_format($data['market_average'], 2) : 'Not Available'; ?>
-                            <?php if (!empty($data['market_average']) && isset($data['market_average_reliable']) && !$data['market_average_reliable']): ?>
-                                <span class="warning">(Based on limited bids)</span>
-                            <?php endif; ?>
-                        </p>
-                    </div>
-                    <div class="price-item">
-                        <p>Your Minimum Price: LKR <?php echo !empty($data['last_price']) ? number_format($data['last_price'], 2) : 'Not Set'; ?>+</p>
-                    </div>
+    <?php if (isset($_SESSION['price_success'])): ?>
+        <div class="success"><?php echo $_SESSION['price_success']; unset($_SESSION['price_success']); ?></div>
+    <?php endif; ?>
+    <?php if (isset($_SESSION['price_error'])): ?>
+        <div class="error"><?php echo $_SESSION['price_error']; unset($_SESSION['price_error']); ?></div>
+    <?php endif; ?>
+    <?php if (!empty($data['error'])): ?>
+        <div class="error"><?php echo $data['error']; ?></div>
+    <?php endif; ?>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon price-icon">
+                    <i class="fas fa-tag"></i>
                 </div>
-
-                <div class="price-history">
-                    <h2>Price History</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <td>Date</td>
-                                <td>Minimum Price</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (!empty($data['price_history'])): ?>
-                                <?php foreach ($data['price_history'] as $price): ?>
-                                    <tr>
-                                        <td><?php echo htmlspecialchars($price->updated_at); ?></td>
-                                        <td>LKR <?php echo number_format($price->unit_price, 2); ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr><td colspan="2">No price history available</td></tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
+                <div class="stat-info">
+                    <h3>Current Minimum Price</h3>
+                    <p>LKR <?php echo $data['last_price'] ? number_format($data['last_price'], 2) : 'Not Set'; ?></p>
+                    <div class="stat-date">
+                        <a href="<?php echo URLROOT; ?>/ManufacturerController/SetPrice" class="set-price-link">Set Price</a>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <!-- These sections remain unchanged -->
-            <div class="details">
-                <!-- Recent Auction Bids -->
-                <div class="recentOrders">
-                    <div class="cardHeader">
-                        <h2>Recent Auction Bids</h2>
-                        <a href="#" class="btn">View All Bids</a>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <td>Farmer</td>
-                                <td>Bid Amount</td>
-                                <td>Status</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (!empty($data['recent_bids'])): ?>
-                                <?php foreach ($data['recent_bids'] as $bid): ?>
-                                    <tr>
-                                        <td><?php echo htmlspecialchars($bid->farmer); ?></td>
-                                        <td>LKR <?php echo number_format($bid->bid_amount, 2); ?></td>
-                                        <td><span class="<?php echo strtolower($bid->status); ?>"><?php echo htmlspecialchars($bid->status); ?></span></td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr><td colspan="3">No recent bids available</td></tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon bids-icon">
+                    <i class="fas fa-gavel"></i>
                 </div>
+                <div class="stat-info">
+                    <h3>Total Bids You Placed</h3>
+                    <p><?php echo $data['total_bids']; ?></p>
+                    <div class="stat-date">As of <?php echo date('M d, Y'); ?></div>
+                </div>
+            </div>
+        </div>
 
-                <!-- Recent Purchases -->
-                <div class="recentCustomers">
-                    <div class="cardHeader">
-                        <h2>Recent Purchases</h2>
-                        <a href="<?php echo URLROOT; ?>/ManufacturerController/setMinimumPrice" class="btn">Update Minimum Price</a>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <td>Source</td>
-                                <td>Amount</td>
-                                <td>Type</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (!empty($data['recent_purchases'])): ?>
-                                <?php foreach ($data['recent_purchases'] as $purchase): ?>
-                                    <tr>
-                                        <td><?php echo htmlspecialchars($purchase->source); ?></td>
-                                        <td>LKR <?php echo number_format($purchase->amount, 2); ?></td>
-                                        <td><?php echo htmlspecialchars($purchase->type); ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr><td colspan="3">No recent purchases available</td></tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon active-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Active Products</h3>
+                    <p><?php echo $data['active_products']; ?></p>
+                    <div class="stat-date">Updated <?php echo date('M d, Y'); ?></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon spent-icon">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Total Spent</h3>
+                    <p>LKR <?php echo number_format($data['total_spent'], 2); ?></p>
+                    <div class="stat-date">Since <?php echo date('M d, Y'); ?></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon win-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Auctions Won</h3>
+                    <p><?php echo $data['auction_won']; ?></p>
+                    <div class="stat-date">As of <?php echo date('M d, Y'); ?></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        document.querySelector('.toggle-tools')?.addEventListener('click', function(e) {
-            e.preventDefault();
-            const parent = this.parentElement;
-            parent.classList.toggle('active');
-        });
-    </script>
+    <div class="recent-section">
+        <div class="section-header">
+            <h2>Recent Bids</h2>
+            <a href="<?php echo URLROOT; ?>/ManufacturerController/BidControl" class="view-all">
+                View All <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <table class="recent-bids">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Bid Amount</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (!empty($data['recent_bids'])): ?>
+                    <?php foreach($data['recent_bids'] as $bid): ?>
+                    <tr>
+                        <td>Corn <?php echo htmlspecialchars($bid->quantity); ?> Kg</td>
+                        <td>LKR <?php echo number_format($bid->bid_amount, 2); ?></td>
+                        <td><?php echo date('M d, Y', strtotime($bid->bid_time)); ?></td>
+                        <td>
+                            <span class="bid-status <?php
+                                if ($bid->closing_date > date('Y-m-d H:i:s') && !is_null($bid->order_id)) {
+                                    echo 'status-won';
+                                } elseif ($bid->closing_date > date('Y-m-d H:i:s') && is_null($bid->order_id)) {
+                                    echo 'status-active';
+                                } elseif ($bid->closing_date < date('Y-m-d H:i:s') && is_null($bid->order_id)) {
+                                    echo 'status-lost';
+                                } else {
+                                    echo '';
+                                }
+                            ?>">
+                                <?php
+                                if ($bid->closing_date > date('Y-m-d H:i:s') && !is_null($bid->order_id)) {
+                                    echo 'Won';
+                                } elseif ($bid->closing_date > date('Y-m-d H:i:s') && is_null($bid->order_id)) {
+                                    echo 'Active';
+                                } elseif ($bid->closing_date < date('Y-m-d H:i:s') && is_null($bid->order_id)) {
+                                    echo 'Lost';
+                                } else {
+                                    echo 'Unknown';
+                                }
+                                ?>
+                            </span>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr><td colspan="4">No recent bids available</td></tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
 </body>
 </html>

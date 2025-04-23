@@ -16,7 +16,7 @@
       
       <?php if($user_role == 'manufacturer') : ?>
         <li><a href="<?php echo URLROOT;?>/ManufacturerController/Dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>
-        <li><a href="<?php echo URLROOT;?>/ManufacturerController/setMinimumPrice"><i class="fa-solid fa-money-check-dollar"></i><span class="menu-text">Prices</span></a></li>
+        <li><a href="<?php echo URLROOT;?>/ManufacturerController/setPrice"><i class="fa-solid fa-money-check-dollar"></i><span class="menu-text">Prices</span></a></li>
         <li><a href="<?php echo URLROOT;?>/ManufacturerController/StockHolders"><i class="fa-solid fa-store"></i><span class="menu-text">Stock Holders</span></a></li>
         <li><a href="<?php echo URLROOT;?>/ManufacturerController/LandingPage"><i class="fa-solid fa-chess-bishop"></i><span class="menu-text">Place Bids</span></a></li>
         <li><a href="<?php echo URLROOT;?>/ManufacturerController/BidControl"><i class="fa-solid fa-hand"></i><span class="menu-text">Bid Control</span></a></li>

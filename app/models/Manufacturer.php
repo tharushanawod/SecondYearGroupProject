@@ -1,158 +1,250 @@
 <?php
-// File: models/Manufacturer.php
 class Manufacturer {
     private $db;
 
     public function __construct() {
-        $this->db = new Database();
-    }
-
-    // Get user by ID (unchanged)
-    public function getUserById($id) {
-        $this->db->query('SELECT * FROM users WHERE user_id = :id');
-        $this->db->bind(':id', $id);
-        $row = $this->db->single();
-        return $row;
-    }
-
-    public function getFloorPrice() {
         try {
-            $this->db->query("SELECT price FROM floor_price WHERE product_type = 'DryCorn' ORDER BY calculated_at DESC LIMIT 1");
-            $row = $this->db->single();
-            return $row ? $row->price : 1000; // Default to 1000 if no floor price
+            $this->db = new Database();
         } catch (Exception $e) {
-            error_log("getFloorPrice error: " . $e->getMessage());
-            return 1000; // Fallback
+            error_log('Database connection failed in Manufacturer: ' . $e->getMessage());
+            throw new Exception('Unable to connect to the database.');
         }
     }
 
-    public function getLastPrice($manufacturer_id) {
+    public function getLastPrice($user_id) {
         try {
-            $this->db->query('SELECT * FROM manufacturer_prices WHERE manufacturer_id = :id ORDER BY updated_at DESC LIMIT 1');
-            $this->db->bind(':id', $manufacturer_id);
+            $this->db->query('SELECT * FROM manufacturer_prices WHERE manufacturer_id = :user_id ORDER BY updated_at DESC LIMIT 1');
+            $this->db->bind(':user_id', $user_id);
             return $this->db->single();
         } catch (Exception $e) {
-            error_log("getLastPrice error: " . $e->getMessage());
+            error_log('Error in getLastPrice: ' . $e->getMessage());
             return null;
         }
     }
 
-    public function getPreviousPrice($manufacturer_id) {
+    public function getOtherManufacturersPrices($current_user_id) {
         try {
-            $this->db->query('SELECT * FROM manufacturer_prices WHERE manufacturer_id = :id ORDER BY updated_at DESC');
-            $this->db->bind(':id', $manufacturer_id);
+            $this->db->query('
+                SELECT u.name, mp.unit_price
+                FROM manufacturer_prices mp
+                INNER JOIN users u ON mp.manufacturer_id = u.user_id
+                WHERE u.user_role = "manufacturer"
+                AND mp.manufacturer_id != :current_user_id
+                ORDER BY u.name ASC
+            ');
+            $this->db->bind(':current_user_id', $current_user_id);
             return $this->db->resultSet();
         } catch (Exception $e) {
-            error_log("getPreviousPrice error: " . $e->getMessage());
+            error_log('Error in getOtherManufacturersPrices: ' . $e->getMessage());
             return [];
         }
     }
 
-    public function getPrices($manufacturer_id) {
+    public function getPriceHistory($user_id) {
         try {
-            $market_data = $this->getMarketAverage();
-            $data = [
-                'floor_price' => $this->getFloorPrice(),
-                'last_price' => null,
-                'market_average' => $market_data['avg_price'],
-                'market_average_reliable' => $market_data['is_reliable'],
-                'price_history' => $this->getPreviousPrice($manufacturer_id)
-            ];
-            $lastPrice = $this->getLastPrice($manufacturer_id);
-            if ($lastPrice) {
-                $data['last_price'] = $lastPrice->unit_price;
+            $this->db->query('
+                SELECT unit_price, updated_at, action
+                FROM manufacturer_price_history
+                WHERE manufacturer_id = :user_id
+                ORDER BY updated_at DESC
+                LIMIT 10
+            ');
+            $this->db->bind(':user_id', $user_id);
+            return $this->db->resultSet();
+        } catch (Exception $e) {
+            error_log('Error in getPriceHistory: ' . $e->getMessage());
+            return [];
+        }
+    }
+
+    public function setPrice($user_id, $unit_price) {
+        try {
+            $this->db->beginTransaction();
+
+            // Insert or update price
+            $this->db->query('
+                INSERT INTO manufacturer_prices (manufacturer_id, unit_price, updated_at)
+                VALUES (:user_id, :unit_price, NOW())
+                ON DUPLICATE KEY UPDATE
+                    unit_price = :unit_price,
+                    updated_at = NOW()
+            ');
+            $this->db->bind(':user_id', $user_id);
+            $this->db->bind(':unit_price', $unit_price);
+            $success = $this->db->execute();
+
+            // Log to history
+            if ($success) {
+                $this->db->query('
+                    INSERT INTO manufacturer_price_history (manufacturer_id, unit_price, updated_at, action)
+                    VALUES (:user_id, :unit_price, NOW(), "set")
+                ');
+                $this->db->bind(':user_id', $user_id);
+                $this->db->bind(':unit_price', $unit_price);
+                $success = $this->db->execute();
             }
-            return $data;
-        } catch (Exception $e) {
-            error_log("getPrices error: " . $e->getMessage());
-            return [];
-        }
-    }
 
-    // File: models/Manufacturer.php
-    public function getMarketAverage() {
-        try {
-            $this->db->query("
-                SELECT AVG(b.bid_amount) as avg_price, COUNT(b.bid_id) as bid_count
-                FROM bids b
-                JOIN corn_products cp ON b.product_id = cp.product_id
-                WHERE b.bid_time >= DATE_SUB(NOW(), INTERVAL 30 DAY)
-                AND cp.product_type = 'DryCorn'
-            ");
-            $row = $this->db->single();
-            return [
-                'avg_price' => $row->avg_price ?? 0,
-                'is_reliable' => ($row->bid_count >= 5)
-            ];
-        } catch (Exception $e) {
-            error_log("getMarketAverage error: " . $e->getMessage());
-            return ['avg_price' => 0, 'is_reliable' => false];
-        }
-    }
-
-    public function setMinimumPrice($data) {
-        try {
-            $existingPrice = $this->getLastPrice($data['manufacturer_id']);
-            if ($existingPrice) {
-                $this->db->query('UPDATE manufacturer_prices SET unit_price = :unit_price, updated_at = NOW() WHERE id = :id');
-                $this->db->bind(':id', $existingPrice->id);
+            if ($success) {
+                $this->db->commit();
+                return true;
             } else {
-                $this->db->query('INSERT INTO manufacturer_prices (manufacturer_id, unit_price, updated_at) VALUES (:manufacturer_id, :unit_price, NOW())');
-                $this->db->bind(':manufacturer_id', $data['manufacturer_id']);
+                $this->db->rollBack();
+                return false;
             }
-            $this->db->bind(':unit_price', $data['unit_price']);
-            return $this->db->execute();
         } catch (Exception $e) {
-            error_log("setMinimumPrice error: " . $e->getMessage());
+            $this->db->rollBack();
+            error_log('Error in setPrice: ' . $e->getMessage());
             return false;
         }
     }
 
-    public function getUserStatus($user_id) {
-        $this->db->query('SELECT user_status FROM users WHERE user_id = :user_id');
-        $this->db->bind(':user_id', $user_id);
-        return $this->db->single();  // This will return the user's status (e.g., 'restricted')
-    }
-
-    public function getrestrictedDetails($user_id){
-        $this->db->query('SELECT * FROM restriction_logs WHERE user_id = :user_id');
-        $this->db->bind(':user_id', $user_id);
-        return $this->db->resultSet();  // This will return the user's status (e.g., 'restricted')
-    }
-
-    public function deleteLastPrice($manufacturer_id) {
+    public function deletePrice($user_id) {
         try {
-            $lastPrice = $this->getLastPrice($manufacturer_id);
-            if ($lastPrice) {
-                $this->db->query('DELETE FROM manufacturer_prices WHERE id = :id');
-                $this->db->bind(':id', $lastPrice->id);
-                return $this->db->execute();
+            $this->db->beginTransaction();
+
+            // Check if price exists and get current price
+            $this->db->query('SELECT unit_price FROM manufacturer_prices WHERE manufacturer_id = :user_id');
+            $this->db->bind(':user_id', $user_id);
+            $current_price = $this->db->single();
+
+            if (!$current_price) {
+                $this->db->rollBack();
+                return false;
             }
-            return false;
+
+            // Delete current price
+            $this->db->query('DELETE FROM manufacturer_prices WHERE manufacturer_id = :user_id');
+            $this->db->bind(':user_id', $user_id);
+            $success = $this->db->execute() && $this->db->rowCount() > 0;
+
+            // Log deletion to history with actual price
+            if ($success) {
+                $this->db->query('
+                    INSERT INTO manufacturer_price_history (manufacturer_id, unit_price, updated_at, action)
+                    VALUES (:user_id, :unit_price, NOW(), "delete")
+                ');
+                $this->db->bind(':user_id', $user_id);
+                $this->db->bind(':unit_price', $current_price->unit_price);
+                $success = $this->db->execute();
+            }
+
+            if ($success) {
+                $this->db->commit();
+                return true;
+            } else {
+                $this->db->rollBack();
+                return false;
+            }
         } catch (Exception $e) {
-            error_log("deleteLastPrice error: " . $e->getMessage());
+            $this->db->rollBack();
+            error_log('Error in deletePrice: ' . $e->getMessage());
             return false;
         }
-    }
-
-    // Save help request
-    public function saveHelpRequest($data) {
-        $this->db->query("
-            INSERT INTO help_requests (user_id, user_role, category, subject, description, attachment, status, created_at)
-            VALUES (:user_id, :user_role, :category, :subject, :description, :attachment, :status, :created_at)
-        ");
-        $this->db->bind(':user_id', $data['user_id']);
-        $this->db->bind(':user_role', $data['user_role']);
-        $this->db->bind(':category', $data['category']);
-        $this->db->bind(':subject', $data['subject']);
-        $this->db->bind(':description', $data['description']);
-        $this->db->bind(':attachment', $data['attachment']);
-        $this->db->bind(':status', $data['status']);
-        $this->db->bind(':created_at', $data['created_at']);
-        return $this->db->execute();
     }
 
     
+    public function ManageProfile($data) {
+        try {
+            $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
+            $this->db->query('UPDATE users SET name = :name, phone = :phone, email = :email, password = :password WHERE user_id = :id');
+            $this->db->bind(':id', $_SESSION['user_id']);
+            $this->db->bind(':name', $data['name']);
+            $this->db->bind(':phone', $data['contact']);
+            $this->db->bind(':email', $data['email']);
+            $this->db->bind(':password', $hashedPassword);
+            return $this->db->execute();
+        } catch (Exception $e) {
+            error_log('Error in ManageProfile: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function getAllFarmers() {
+        try {
+            $this->db->query("
+                SELECT users.user_id, users.name, farmers.district, AVG(buyer_reviews_farmer.rating) AS avg_rating
+                FROM users
+                INNER JOIN farmers ON users.user_id = farmers.user_id
+                LEFT JOIN buyer_reviews_farmer ON users.user_id = buyer_reviews_farmer.farmer_id
+                GROUP BY users.user_id
+            ");
+            return $this->db->resultSet();
+        } catch (Exception $e) {
+            error_log('Error in getAllFarmers: ' . $e->getMessage());
+            return [];
+        }
+    }
+
+    public function getAllBuyers() {
+        try {
+            $this->db->query("
+                SELECT users.user_id, users.name
+                FROM users
+                INNER JOIN buyers ON users.user_id = buyers.user_id
+            ");
+            return $this->db->resultSet();
+        } catch (Exception $e) {
+            error_log('Error in getAllBuyers: ' . $e->getMessage());
+            return [];
+        }
+    }
+
+    public function AddBankAccount($data) {
+        try {
+            $this->db->query('
+                INSERT INTO bank_details (user_id, bank_name, account_number, name_on_card, card_number, expiry_date, cvv)
+                VALUES (:user_id, :bank_name, :account_number, :name_on_card, :card_number, :expiry_date, :cvv)
+                ON DUPLICATE KEY UPDATE
+                    bank_name = :bank_name,
+                    account_number = :account_number,
+                    name_on_card = :name_on_card,
+                    card_number = :card_number,
+                    expiry_date = :expiry_date,
+                    cvv = :cvv
+            ');
+            $this->db->bind(':user_id', $data['user_id']);
+            $this->db->bind(':bank_name', $data['bank_name']);
+            $this->db->bind(':account_number', $data['account_number']);
+            $this->db->bind(':name_on_card', $data['name_on_card']);
+            $this->db->bind(':card_number', $data['card_number']);
+            $this->db->bind(':expiry_date', $data['expiry_date']);
+            $this->db->bind(':cvv', $data['cvv']);
+            return $this->db->execute();
+        } catch (Exception $e) {
+            error_log('Error in AddBankAccount: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function GetBankAndCardDetails($user_id) {
+        try {
+            $this->db->query('SELECT * FROM bank_details WHERE user_id = :user_id');
+            $this->db->bind(':user_id', $user_id);
+            return $this->db->single();
+        } catch (Exception $e) {
+            error_log('Error in GetBankAndCardDetails: ' . $e->getMessage());
+            return null;
+        }
+    }
+
+    public function getBankAccountData($user_id) {
+        try {
+            $this->db->query('SELECT * FROM bank_details WHERE user_id = :user_id');
+            $this->db->bind(':user_id', $user_id);
+            return $this->db->single();
+        } catch (Exception $e) {
+            error_log('Error in getBankAccountData: ' . $e->getMessage());
+            return null;
+        }
+    }
+
+    public function getUserById ($id){
+        $this->db->query('SELECT * FROM users WHERE user_id = :id');
+        $this->db->bind(':id',$id);
+        $row = $this->db->single();
+        return $row;
+    }
+
     public function UpdateProfile($data) {
         if (!empty($data['password'])) {
             // Include password in the update query
@@ -193,6 +285,8 @@ class Manufacturer {
        
     }
 
+
+     // Update or Insert profile image path in the database
     public function updateProfileImage($userId, $imagePath) {
         // Check if a record already exists for the user
         $this->db->query("SELECT id FROM profile_pictures WHERE user_id = :userId");
@@ -214,269 +308,359 @@ class Manufacturer {
         return $this->db->execute();
     }
 
-    // Get all Farmers (for StockHolders)
-    public function getAllFarmers() {
-        $this->db->query("
-            SELECT users.user_id, users.name, farmers.district, AVG(buyer_reviews_farmer.rating) AS avg_rating
-            FROM users
-            INNER JOIN farmers ON users.user_id = farmers.user_id
-            LEFT JOIN buyer_reviews_farmer ON users.user_id = buyer_reviews_farmer.farmer_id
-            GROUP BY users.user_id
-        ");
-        return $this->db->resultSet();
-    }
 
-    // Get all Buyers (for StockHolders)
-    public function getAllBuyers() {
-        $this->db->query("
-            SELECT users.user_id, users.name
-            FROM users
-            INNER JOIN buyers ON users.user_id = buyers.user_id
-        ");
-        return $this->db->resultSet();
-    }
-
-    // Get available products for bidding
+    //function to display available corn products
     public function getAvailableProducts() {
-        $this->db->query("
-            SELECT corn_products.*, 
-                MAX(bids.bid_amount) AS highest_bid, 
-                COALESCE(AVG(buyer_reviews_farmer.rating), 0) AS avg_rating
+        $this->db->query("SELECT corn_products.*, 
+            MAX(bids.bid_amount) AS highest_bid, 
+            COALESCE(AVG(buyer_reviews_farmer.rating), 0) AS avg_rating
             FROM corn_products
             LEFT JOIN buyer_reviews_farmer 
             ON corn_products.user_id = buyer_reviews_farmer.farmer_id
             LEFT JOIN bids 
             ON corn_products.product_id = bids.product_id
             WHERE closing_date > NOW()
-            GROUP BY corn_products.product_id
-        ");
-        return $this->db->resultSet();
+            GROUP BY corn_products.product_id;
+
+");
+        $rows = $this->db->resultSet();
+        return $rows;
     }
 
-    // Get product by ID
     public function getProductById($id) {
         $this->db->query("
-            SELECT corn_products.*, 
-                   users.name, 
-                   farmers.district, 
-                   MAX(bids.bid_amount) AS highest_bid
-            FROM corn_products
-            INNER JOIN users 
-            ON corn_products.user_id = users.user_id
-            LEFT JOIN farmers 
-            ON corn_products.user_id = farmers.user_id
-            LEFT JOIN bids  
-            ON corn_products.product_id = bids.product_id
-            WHERE corn_products.product_id = :id
-            GROUP BY corn_products.product_id, users.name, farmers.district
+        SELECT corn_products.*, 
+       users.name, 
+       farmers.district, 
+       MAX(bids.bid_amount) AS highest_bid
+FROM corn_products
+INNER JOIN users 
+ON corn_products.user_id = users.user_id
+LEFT JOIN farmers 
+ON corn_products.user_id = farmers.user_id
+LEFT JOIN bids  
+ON corn_products.product_id = bids.product_id
+WHERE corn_products.product_id = :id
+GROUP BY corn_products.product_id, users.name, farmers.district;
+
         ");
         $this->db->bind(':id', $id);
-        return $this->db->single();
+        $row = $this->db->single();
+        return $row;
     }
 
-    // Get Farmer by ID
     public function getFarmersById($id) {
         $this->db->query('
-            SELECT 
-                users.*, 
-                farmers.*, 
-                profile_pictures.file_path, 
-                AVG(buyer_reviews_farmer.rating) AS average_rating
-            FROM users
-            INNER JOIN farmers ON users.user_id = farmers.user_id
-            LEFT JOIN profile_pictures ON farmers.user_id = profile_pictures.user_id
-            LEFT JOIN buyer_reviews_farmer ON users.user_id = buyer_reviews_farmer.farmer_id
-            WHERE users.user_id = :id
-            GROUP BY 
-                users.user_id, 
-                farmers.user_id, 
-                profile_pictures.user_id, 
-                profile_pictures.file_path
-        ');
-        $this->db->bind(':id', $id);
-        return $this->db->single();
+        SELECT 
+    users.*, 
+    farmers.*, 
+    profile_pictures.file_path, 
+    AVG(buyer_reviews_farmer.rating) AS average_rating
+    FROM users
+    INNER JOIN farmers ON users.user_id = farmers.user_id
+    LEFT JOIN profile_pictures ON farmers.user_id = profile_pictures.user_id
+    LEFT JOIN buyer_reviews_farmer ON users.user_id = buyer_reviews_farmer.farmer_id
+    WHERE users.user_id = :id
+    GROUP BY 
+    users.user_id, 
+    farmers.user_id, 
+    profile_pictures.user_id, 
+    profile_pictures.file_path;
+    ');
+    $this->db->bind(':id', $id);
+    $farmer = $this->db->single();
+    return $farmer;
+    
+       
+
     }
 
-    // Submit a bid
-    public function submitBid($data) {
-        $this->db->query("INSERT INTO bids (product_id, buyer_id, bid_amount, payment_status) VALUES (:product_id, :buyer_id, :bid_amount, :payment_status)");
+    public function SubmitBid($data) {
+        $this->db->query("INSERT INTO bids (product_id, buyer_id, bid_amount,payment_status) VALUES (:product_id, :buyer_id, :bid_amount,:payment_status)");
         $this->db->bind(':product_id', $data['product_id']);
         $this->db->bind(':buyer_id', $data['buyer_id']);
         $this->db->bind(':bid_amount', $data['bid_amount']);
         $this->db->bind(':payment_status', 'Pending');
-        return $this->db->execute();
+
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    // Add a review for a Farmer
     public function AddReview($data) {
         $this->db->query('INSERT INTO buyer_reviews_farmer (review_text, rating, buyer_id, farmer_id) VALUES (:review_text, :rating, :buyer_id, :farmer_id)');
         $this->db->bind(':review_text', $data['review_text']);
         $this->db->bind(':rating', $data['rating']);
         $this->db->bind(':buyer_id', $data['buyer_id']);
         $this->db->bind(':farmer_id', $data['farmer_id']);
-        return $this->db->execute();
+    
+        // Execute and return result
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    // Fetch reviews for a Farmer
-    public function fetchReviews($id) {
+
+    //function to get all reviews
+    public function fetchReviews($id){
+
         $this->db->query('
-            SELECT buyer_reviews_farmer.*, users.name, profile_pictures.file_path
-            FROM buyer_reviews_farmer
-            INNER JOIN users ON buyer_reviews_farmer.buyer_id = users.user_id
-            LEFT JOIN profile_pictures ON users.user_id = profile_pictures.user_id
-            WHERE buyer_reviews_farmer.farmer_id = :id
-        ');
+        SELECT buyer_reviews_farmer.*, users.name,profile_pictures.file_path
+        FROM buyer_reviews_farmer
+        INNER JOIN users  ON buyer_reviews_farmer.buyer_id = users.user_id
+        INNER JOIN profile_pictures  ON users.user_id = profile_pictures.user_id
+        WHERE buyer_reviews_farmer.farmer_id = :id
+    ');
+       
         $this->db->bind(':id', $id);
-        return $this->db->resultSet();
+        $results = $this->db->resultSet();
+        return $results;
     }
 
-    // Get all active bids for the Manufacturer
     public function getAllActiveBidsForBuyer($user_id) {
         $this->db->query('
-            SELECT 
-                bids.bid_id,
-                bids.bid_amount,
-                bids.product_id,
-                bids.payment_status,
-                corn_products.quantity, 
-                corn_products.closing_date,
-                (SELECT MAX(bids_inner.bid_amount) 
-                 FROM bids AS bids_inner 
-                 WHERE bids_inner.product_id = bids.product_id) AS highest_bid
-            FROM bids
-            INNER JOIN corn_products ON bids.product_id = corn_products.product_id
-            WHERE bids.buyer_id = :user_id
-            AND corn_products.closing_date > NOW()
+       SELECT 
+    bids.bid_id,
+    bids.bid_amount,
+    bids.product_id,
+    bids.payment_status,
+    corn_products.quantity, 
+    corn_products.closing_date,
+    (SELECT MAX(bids_inner.bid_amount) 
+     FROM bids AS bids_inner 
+     WHERE bids_inner.product_id = bids.product_id) AS highest_bid
+FROM bids
+INNER JOIN corn_products ON bids.product_id = corn_products.product_id
+WHERE bids.buyer_id = :user_id
+AND corn_products.closing_date > NOW();
+
         ');
         $this->db->bind(':user_id', $user_id);
-        return $this->db->resultSet();
+        $bids = $this->db->resultSet();
+        return $bids;
     }
 
-    // Cancel a bid
-    public function cancelBid($bid_id) {
+    public function CancelBid($bid_id) {
         $this->db->query('DELETE FROM bids WHERE bid_id = :bid_id');
         $this->db->bind(':bid_id', $bid_id);
-        return $this->db->execute();
+    
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    // Get pending payments
     public function getPendingPayments($user_id) {
         $this->db->query('
-            SELECT * FROM orders_from_buyers
-            WHERE buyer_id = :user_id
-            AND payment_status = "Pending"
-        ');
+        SELECT * FROM orders_from_buyers
+        WHERE buyer_id = :user_id
+        AND payment_status = "Pending";');
         $this->db->bind(':user_id', $user_id);
-        return $this->db->resultSet();
+        $pendingpayments = $this->db->resultSet();
+
+        return $pendingpayments;
     }
 
-    // Get payment details for an order
     public function getPaymentDetailsForOrder($order_id) {
         $this->db->query('
-            SELECT * FROM orders_from_buyers
-            WHERE order_id = :order_id
-        ');
+        SELECT * FROM orders_from_buyers
+        WHERE order_id = :order_id;');
         $this->db->bind(':order_id', $order_id);
-        return $this->db->single();
+        $paymentdetails = $this->db->single();
+
+        return $paymentdetails;
     }
 
-    // Update payment status
     public function updatePaymentStatus($order_id, $payment_status) {
         $this->db->query('UPDATE orders_from_buyers SET payment_status = :payment_status WHERE order_id = :order_id');
         $this->db->bind(':payment_status', $payment_status);
         $this->db->bind(':order_id', (int)$order_id);
-        return $this->db->execute();
-    }
 
-    // Get purchase history
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+     
+    public function saveHelpRequest($data) {
+        $this->db->query("
+            INSERT INTO help_requests (user_id, user_role, category, subject, description, attachment, status, created_at)
+            VALUES (:user_id, :user_role, :category, :subject, :description, :attachment, :status, :created_at)
+        ");
+        $this->db->bind(':user_id', $data['user_id']);
+        $this->db->bind(':user_role', $data['user_role']);
+        $this->db->bind(':category', $data['category']);
+        $this->db->bind(':subject', $data['subject']);
+        $this->db->bind(':description', $data['description']);
+        $this->db->bind(':attachment', $data['attachment']);
+        $this->db->bind(':status', $data['status']);
+        $this->db->bind(':created_at', $data['created_at']);
+        return $this->db->execute();
+    } 
+
+
+    public function TransactionComplete($order_id, $amount, $serviceCharge, $payment_id) {
+        try {
+            $this->db->beginTransaction(); // Start transaction
+    
+            // Insert payment
+            $this->db->query('
+                INSERT INTO buyer_payments (order_id, paid_amount, payment_id)
+                VALUES (:order_id, :paid_amount, :payment_id)
+            ');
+            $this->db->bind(':order_id', $order_id);
+            $this->db->bind(':paid_amount', $amount);
+            $this->db->bind(':payment_id', $payment_id);
+            $this->db->execute();
+    
+            // Update order status
+            $this->db->query('
+                            UPDATE wallets 
+                            SET balance = balance + :serviceCharge
+                            WHERE user_id = :admin_id
+                        ');
+                        $this->db->bind(':serviceCharge', $serviceCharge);
+                        $this->db->bind(':admin_id', 123); // Set this to the admin’s user ID
+                        $this->db->execute();
+
+    
+            $this->db->commit(); // Commit if all succeed
+            return true;
+    
+        } catch (Exception $e) {
+            $this->db->rollback(); // Rollback if any fails
+            return false;
+        }
+    }
+    
+
     public function getPurchaseHistory($user_id) {
         $this->db->query('
-            SELECT orders_from_buyers.*, corn_products.quantity, corn_products.closing_date
-            FROM orders_from_buyers
-            INNER JOIN corn_products ON orders_from_buyers.product_id = corn_products.product_id
-            WHERE orders_from_buyers.buyer_id = :user_id
-            ORDER BY orders_from_buyers.order_date DESC
+            SELECT 
+                orders_from_buyers.quantity,
+                orders_from_buyers.bid_price,
+                orders_from_buyers.farmer_id,
+                buyer_payments.transaction_id,
+                buyer_payments.paid_amount,
+                buyer_payments.order_id,
+                buyer_payments.farmer_confirmed,
+                buyer_payments.buyer_confirmed
+            FROM 
+                orders_from_buyers
+            INNER JOIN 
+                buyer_payments ON orders_from_buyers.order_id = buyer_payments.order_id 
+            WHERE 
+                orders_from_buyers.buyer_id = :user_id 
         ');
+        
         $this->db->bind(':user_id', $user_id);
         return $this->db->resultSet();
     }
 
-    // Add bank account details
-    public function AddBankAccount($data) {
-        $this->db->query('
-            INSERT INTO bank_details (user_id, bank_name, account_number, name_on_card, card_number, expiry_date, cvv)
-            VALUES (:user_id, :bank_name, :account_number, :name_on_card, :card_number, :expiry_date, :cvv)
-            ON DUPLICATE KEY UPDATE
-                bank_name = :bank_name,
-                account_number = :account_number,
-                name_on_card = :name_on_card,
-                card_number = :card_number,
-                expiry_date = :expiry_date,
-                cvv = :cvv
-        ');
-        $this->db->bind(':user_id', $data['user_id']);
-        $this->db->bind(':bank_name', $data['bank_name']);
-        $this->db->bind(':account_number', $data['account_number']);
-        $this->db->bind(':name_on_card', $data['name_on_card']);
-        $this->db->bind(':card_number', $data['card_number']);
-        $this->db->bind(':expiry_date', $data['expiry_date']);
-        $this->db->bind(':cvv', $data['cvv']);
+    public function confirmOrder($order_id) {
+        $this->db->query('UPDATE buyer_payments SET buyer_confirmed = 1 WHERE order_id = :order_id');
+        $this->db->bind(':order_id', $order_id);
         return $this->db->execute();
     }
 
-    // Get bank and card details
-    public function GetBankAndCardDetails($user_id) {
-        $this->db->query('SELECT * FROM bank_details WHERE user_id = :user_id');
+    public function getUserStatus($user_id) {
+        $this->db->query('SELECT user_status FROM users WHERE user_id = :user_id');
         $this->db->bind(':user_id', $user_id);
-        return $this->db->single();
+        return $this->db->single();  // This will return the user's status (e.g., 'restricted')
     }
 
-    // Get bank account data
-    public function getBankAccountData($user_id) {
-        $this->db->query('SELECT * FROM bank_details WHERE user_id = :user_id');
+    public function getrestrictedDetails($user_id){
+        $this->db->query('SELECT * FROM restriction_logs WHERE user_id = :user_id');
         $this->db->bind(':user_id', $user_id);
-        return $this->db->single();
+        return $this->db->resultSet();  // This will return the user's status (e.g., 'restricted')
     }
 
-    // File: models/Manufacturer.php
-public function getRecentBids($manufacturer_id) {
-    try {
-        $this->db->query("
-            SELECT u.name AS farmer, b.bid_amount, b.status
-            FROM bids b
-            JOIN corn_products cp ON b.product_id = cp.product_id
-            JOIN users u ON cp.user_id = u.user_id
-            WHERE b.buyer_id = :manufacturer_id
-            ORDER BY b.bid_time DESC
+    public function getTotalBids($user_id) {
+        $this->db->query('SELECT COUNT(*) as total_bids FROM bids WHERE buyer_id = :user_id');
+        $this->db->bind(':user_id', $user_id);
+        $results=$this->db->single();  // This will return the user's status (e.g., 'restricted')
+        return $results->total_bids; // Return the total number of bids
+    }
+    public function getTotalSpent($user_id) {
+        $this->db->query('SELECT SUM(bid_price * quantity) as total_spent FROM orders_from_buyers WHERE buyer_id = :user_id');
+        $this->db->bind(':user_id', $user_id);
+        $results = $this->db->single();  // This will return the user's status (e.g., 'restricted')
+        return $results->total_spent; // Return the total amount spent
+    }
+    public function getAuctionsWon($user_id) {
+        $this->db->query('SELECT COUNT(*) as auctions_won FROM orders_from_buyers WHERE buyer_id = :user_id');
+        $this->db->bind(':user_id', $user_id);
+        $results = $this->db->single();  // This will return the user's status (e.g., 'restricted')
+        return $results->auctions_won; // Return the total number of auctions won
+    }
+    public function getRecentBids($user_id) {
+        $this->db->query('
+            SELECT corn_products.quantity, bids.bid_amount, bids.bid_time,orders_from_buyers.order_id,corn_products.closing_date
+            FROM bids
+            INNER JOIN corn_products ON bids.product_id = corn_products.product_id
+            LEFT JOIN orders_from_buyers ON corn_products.product_id = orders_from_buyers.product_id
+            WHERE bids.buyer_id = :user_id
+            ORDER BY bids.bid_time DESC
             LIMIT 5
-        ");
-        $this->db->bind(':manufacturer_id', $manufacturer_id);
-        return $this->db->resultSet();
-    } catch (Exception $e) {
-        error_log("getRecentBids error: " . $e->getMessage());
-        return [];
-    }
-}
+        ');
+        $this->db->bind(':user_id', $user_id);
+        return $this->db->resultSet();  // This will return the user's statu
 
-public function getRecentPurchases($manufacturer_id) {
-    try {
-        $this->db->query("
-            SELECT u.name AS source, o.bid_price AS amount, 
-                   CASE WHEN o.order_type = 'auction' THEN 'Auction' ELSE 'Direct' END AS type
-            FROM orders_from_buyers o
-            JOIN corn_products cp ON o.product_id = cp.product_id
-            JOIN users u ON cp.user_id = u.user_id
-            WHERE o.buyer_id = :manufacturer_id
-            ORDER BY o.order_date DESC
-            LIMIT 5
-        ");
-        $this->db->bind(':manufacturer_id', $manufacturer_id);
-        return $this->db->resultSet();
-    } catch (Exception $e) {
-        error_log("getRecentPurchases error: " . $e->getMessage());
-        return [];
-    }
-}
 
+        }
+    
+    public function getActiveProducts(){
+        $this->db->query('
+            SELECT COUNT(*) as active_products
+            FROM corn_products
+            WHERE corn_products.closing_date > NOW()
+        ');
+        $results = $this->db->single();  
+        return $results->active_products; 
+    }
+    
+    public function getFilteredBids($category, $sortBy, $minPrice, $maxPrice, $minQty, $maxQty) {
+        $sql = "SELECT corn_products.*, 
+                       MAX(bids.bid_amount) AS highest_bid, 
+                       COALESCE(AVG(buyer_reviews_farmer.rating), 0) AS avg_rating
+                FROM corn_products
+                LEFT JOIN buyer_reviews_farmer 
+                    ON corn_products.user_id = buyer_reviews_farmer.farmer_id
+                LEFT JOIN bids 
+                    ON corn_products.product_id = bids.product_id
+                WHERE closing_date > NOW()";
+    
+        if (!empty($category)) $sql .= " AND category = :category";
+        if (!empty($minPrice)) $sql .= " AND starting_price >= :minPrice";
+        if (!empty($maxPrice)) $sql .= " AND starting_price <= :maxPrice";
+        if (!empty($minQty)) $sql .= " AND quantity >= :minQty";
+        if (!empty($maxQty)) $sql .= " AND quantity <= :maxQty";
+    
+        $sql .= " GROUP BY corn_products.product_id";
+    
+        switch ($sortBy) {
+            case 'price_low': $sql .= " ORDER BY starting_price ASC"; break;
+            case 'price_high': $sql .= " ORDER BY starting_price DESC"; break;
+            case 'newest': $sql .= " ORDER BY created_at DESC"; break;
+            case 'ending_soon': $sql .= " ORDER BY closing_date ASC"; break;
+            case 'most_bids': $sql .= " ORDER BY COUNT(bids.bid_id) DESC"; break;
+        }
+    
+        $this->db->query($sql);
+    
+        if (!empty($category))  $this->db->bind(':category', $category);
+        if (!empty($minPrice))  $this->db->bind(':minPrice', $minPrice);
+        if (!empty($maxPrice))  $this->db->bind(':maxPrice', $maxPrice);
+        if (!empty($minQty))    $this->db->bind(':minQty', $minQty);
+        if (!empty($maxQty))    $this->db->bind(':maxQty', $maxQty);
+    
+        return $this->db->resultSet();
+    }
 }
 ?>

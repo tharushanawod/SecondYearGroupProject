@@ -1,204 +1,182 @@
-<?php 
-
+<?php
 class ManufacturerController extends Controller {
     private $ManufacturerModel;
     private $NotificationModel;
 
     public function __construct() {
-
+        // Get the current method from the URL
         $currentMethod = $this->getCurrentMethodFromURL();
+    
+        // Bypass authentication if the current method is 'Notify'
+        if ($currentMethod !== 'Notify') {
+            // Check if user is logged in
+            if (!$this->isloggedin()) {
+                unset($_SESSION['user_id']);
+                unset($_SESSION['user_email']);
+                unset($_SESSION['user_name']);
+                session_destroy();
+                Redirect('LandingController/login');
+            } else {
 
-        if (!$this->isloggedin()) {
-            error_log("Unauthorized access attempt to ManufacturerController by user: " . ($_SESSION['user_email'] ?? 'unknown'));
-            unset($_SESSION['user_id'], $_SESSION['user_email'], $_SESSION['user_name']);
-            session_destroy();
-            Redirect('LandingController/login');
-        }else{
-            $this->ManufacturerModel = $this->model('Manufacturer');
-            $this->NotificationModel = $this->model('Notification');
+                  // Load models
+        $this->ManufacturerModel = $this->model('Manufacturer');
+        $this->NotificationModel = $this->model('Notification');
 
-             // User is logged in, now check if they are restricted
-             $user_id = $_SESSION['user_id'];
-             $user = $this->ManufacturerModel->getUserStatus($user_id);  // Fetch user status from the database
- 
-             // If the user is restricted, prevent access to any page except "Manage Profile"
-             if ($user->user_status === 'restricted') {
-                 if ($currentMethod !== 'ManageProfile' && $currentMethod !== 'Resetricted') {
-                     Redirect('ManufacturerController/Resetricted/' . $user_id);
-                 }
-             }
-        }
-
-       
+                // User is logged in, now check if they are restricted
+                $user_id = $_SESSION['user_id'];
+                $user = $this->ManufacturerModel->getUserStatus($user_id);  // Fetch user status from the database
+    
+                // If the user is restricted, prevent access to any page except "Manage Profile"
+                if ($user->user_status === 'restricted') {
+                    if ($currentMethod !== 'ManageProfile' && $currentMethod !== 'Resetricted') {
+                        Redirect('ManufacturerController/Resetricted/' . $user_id);
+                    }
+                }
+                
+            }
+        }   
+      
     }
 
     public function isloggedin() {
-        return isset($_SESSION['user_id']) && $_SESSION['user_role'] === 'manufacturer';
-    }
-
-    private function getCurrentMethodFromURL() {
-        // Parse the URL
-        if (isset($_GET['url'])) {
-            $url = rtrim($_GET['url'], '/');
-            $url = filter_var($url, FILTER_SANITIZE_URL);
-            $url = explode('/', $url);
-
-            // The second segment of the URL is the method name
-            return $url[1] ?? null;
+        if (isset($_SESSION['user_id']) && ($_SESSION['user_role'] == 'manufacturer')) {
+            return true;
+        } else {
+            return false;
         }
-        return null;
     }
-
-    public function Resetricted($user_id){
-        $data = $this->ManufacturerModel->getrestrictedDetails($user_id);
-        $this->View('inc/Restricted', $data);
-    }
-
 
     public function Dashboard() {
-        try {
-            if (!$this->isloggedin()) {
-                error_log("Unauthorized access attempt to ManufacturerController by user: " . ($_SESSION['user_email'] ?? 'unknown'));
-                unset($_SESSION['user_id'], $_SESSION['user_email'], $_SESSION['user_name']);
-                session_destroy();
-                Redirect('LandingController/login');
-            }
+        $last_price = $this->ManufacturerModel->getLastPrice($_SESSION['user_id']);
+        $total_bids = $this->ManufacturerModel->getTotalBids($_SESSION['user_id']);
+        $active_products = $this->ManufacturerModel->getActiveProducts();
+        $total_spent = $this->ManufacturerModel->getTotalSpent($_SESSION['user_id']);
+        $auction_won = $this->ManufacturerModel->getAuctionsWon($_SESSION['user_id']);
+        $recent_bids = $this->ManufacturerModel->getRecentBids($_SESSION['user_id']);
 
-            $id = $_SESSION['user_id'];
-            $data = $this->ManufacturerModel->getPrices($id);
-            $data['is_default_floor_price'] = $this->ManufacturerModel->getFloorPrice() == 1000;
-            $data['recent_bids'] = $this->ManufacturerModel->getRecentBids($id);
-            $data['recent_purchases'] = $this->ManufacturerModel->getRecentPurchases($id);
-            if (empty($data['floor_price']) && empty($data['market_average']) && empty($data['price_history'])) {
-                error_log("No data returned from getPrices for user_id: $id");
-                $_SESSION['error'] = 'Failed to load dashboard data. Please try again.';
-            }
-            $this->view('Manufacturer/ManufacturerDashboard', $data);
-        } catch (Exception $e) {
-            error_log("Error in Dashboard: " . $e->getMessage());
-            $_SESSION['error'] = 'An error occurred while loading the dashboard. Please contact support.';
-            $this->view('Manufacturer/ManufacturerDashboard', []);
-        }
+        $data = [
+            'user_name' => $_SESSION['user_name'],
+            'last_price' => $last_price ? $last_price->unit_price : null,
+            'total_bids' => $total_bids,
+            'active_products' => $active_products,
+            'total_spent' => $total_spent,
+            'auction_won' => $auction_won,
+            'recent_bids' => $recent_bids,
+            'error' => ''
+        ];
+
+        $this->View('Manufacturer/ManufacturerDashboard', $data);
     }
 
-    public function setMinimumPrice() {
-        $id = $_SESSION['user_id'];
-        $floor_price = $this->ManufacturerModel->getFloorPrice();
-    
+    public function SetPrice() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-            $action = trim($_POST['action']);
-            $market_data = $this->ManufacturerModel->getMarketAverage();
+            // Sanitize input
+            $unit_price = filter_input(INPUT_POST, 'unit_price', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $action = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) ?? 'set';
+
             $data = [
-                'manufacturer_id' => $id,
-                'unit_price' => trim($_POST['unit_price'] ?? ''),
-                'floor_price' => $floor_price,
-                'market_average' => $market_data['avg_price'],
-                'market_average_reliable' => $market_data['is_reliable'],
-                'price_history' => $this->ManufacturerModel->getPreviousPrice($id),
-                'price_err' => '',
-                'is_default_floor_price' => $floor_price == 1000
+                'unit_price' => $unit_price,
+                'unit_price_err' => '',
+                'other_prices' => $this->ManufacturerModel->getOtherManufacturersPrices($_SESSION['user_id']),
+                'price_history' => $this->ManufacturerModel->getPriceHistory($_SESSION['user_id'])
             ];
-    
-            if ($action == 'update') {
-                if (empty($data['unit_price'])) {
-                    $data['price_err'] = 'Please enter a price';
-                } elseif (!is_numeric($data['unit_price']) || $data['unit_price'] <= 0) {
-                    $data['price_err'] = 'Price must be a positive number';
-                } elseif ($data['unit_price'] < $data['floor_price']) {
-                    $data['price_err'] = 'Price must be at least LKR ' . $data['floor_price'];
+
+            if ($action === 'delete') {
+                if ($this->ManufacturerModel->deletePrice($_SESSION['user_id'])) {
+                    $_SESSION['price_success'] = 'Price deleted successfully!';
+                    header('Location: ' . URLROOT . '/ManufacturerController/SetPrice');
+                    exit;
+                } else {
+                    $_SESSION['price_error'] = 'Failed to delete price. Please try again.';
+                    header('Location: ' . URLROOT . '/ManufacturerController/SetPrice');
+                    exit;
                 }
-    
-                if (empty($data['price_err'])) {
-                    if ($this->ManufacturerModel->setMinimumPrice($data)) {
-                        $_SESSION['success'] = 'Minimum price updated successfully';
-                        Redirect('ManufacturerController/setMinimumPrice');
+            } elseif ($action === 'set') {
+                if (empty($data['unit_price'])) {
+                    $data['unit_price_err'] = 'Please enter a unit price';
+                } elseif (!is_numeric($data['unit_price']) || $data['unit_price'] <= 0) {
+                    $data['unit_price_err'] = 'Please enter a valid positive number';
+                } elseif ($data['unit_price'] > 10000) {
+                    $data['unit_price_err'] = 'Price cannot exceed 10,000 LKR';
+                }
+
+                if (empty($data['unit_price_err'])) {
+                    if ($this->ManufacturerModel->setPrice($_SESSION['user_id'], $data['unit_price'])) {
+                        $_SESSION['price_success'] = 'Price updated successfully!';
+                        header('Location: ' . URLROOT . '/ManufacturerController/SetPrice');
+                        exit;
                     } else {
-                        $data['price_err'] = 'Failed to update price';
+                        $data['unit_price_err'] = 'Failed to update price. Please try again.';
                     }
                 }
-            } elseif ($action == 'delete') {
-                if ($this->ManufacturerModel->deleteLastPrice($id)) {
-                    $_SESSION['success'] = 'Minimum price deleted successfully';
-                    Redirect('ManufacturerController/setMinimumPrice');
-                } else {
-                    $data['price_err'] = 'Failed to delete price';
-                }
+            } else {
+                $data['unit_price_err'] = 'Invalid action.';
             }
-    
-            $this->view('Manufacturer/SetMinPrice', $data);
+
+            // Render form with errors
+            $this->View('Manufacturer/SetPrice', $data);
         } else {
-            try {
-                $market_data = $this->ManufacturerModel->getMarketAverage();
-                $data = [
-                    'manufacturer_id' => $id,
-                    'unit_price' => $this->ManufacturerModel->getLastPrice($id) ? $this->ManufacturerModel->getLastPrice($id)->unit_price : '',
-                    'floor_price' => $floor_price,
-                    'market_average' => $market_data['avg_price'],
-                    'market_average_reliable' => $market_data['is_reliable'],
-                    'price_history' => $this->ManufacturerModel->getPreviousPrice($id),
-                    'price_err' => '',
-                    'is_default_floor_price' => $floor_price == 1000
-                ];
-                $this->view('Manufacturer/SetMinPrice', $data);
-            } catch (Exception $e) {
-                error_log("Error in setMinimumPrice GET: " . $e->getMessage());
-                $_SESSION['error'] = 'Failed to load page. Please try again.';
-                $this->view('Manufacturer/SetMinPrice', [
-                    'price_err' => 'Server error',
-                    'floor_price' => $floor_price,
-                    'market_average' => 0,
-                    'market_average_reliable' => false,
-                    'price_history' => [],
-                    'unit_price' => '',
-                    'is_default_floor_price' => $floor_price == 1000
-                ]);
-            }
+            $last_price = $this->ManufacturerModel->getLastPrice($_SESSION['user_id']);
+            $data = [
+                'unit_price' => $last_price ? $last_price->unit_price : '',
+                'unit_price_err' => '',
+                'other_prices' => $this->ManufacturerModel->getOtherManufacturersPrices($_SESSION['user_id']),
+                'price_history' => $this->ManufacturerModel->getPriceHistory($_SESSION['user_id'])
+            ];
+            $this->View('Manufacturer/SetPrice', $data);
         }
     }
 
+    // Other methods unchanged (e.g., ManageProfile, RequestHelp, etc.)
     public function ManageProfile() {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') { 
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){ 
+            $_POST = filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING);
             $data = [
-                'user_id' => $_SESSION['user_id'],
                 'name' => trim($_POST['name']),
-                'phone' => trim($_POST['phone']),
+                'contact' => trim($_POST['contact']),
+                'address' => trim($_POST['address']),
                 'email' => trim($_POST['email']),
                 'password' => trim($_POST['password']),
                 'name_err' => '',
-                'phone_err' => '',
+                'contact_err' => '',
                 'address_err' => '',
-                'email_err' => ''
+                'email_err' => '',
+                'password_err' => ''
             ];
 
-            if (empty($data['name'])) {
+            if(empty($data['name'])){
                 $data['name_err'] = 'Please input a name';
             }
-            if (empty($data['phone'])) {
+
+            if(empty($data['contact'])){
                 $data['contact_err'] = 'Please input a contact number';
             }
-            if (empty($data['email'])) {
+
+            if(empty($data['address'])){
+                $data['address_err'] = 'Please input an address';
+            }
+
+            if(empty($data['email'])){
                 $data['email_err'] = 'Please input an email';
             }
 
-            if (empty($data['name_err']) && empty($data['phone_err']) && empty($data['email_err'])) {
-                echo 'Profile Updated';
-                if (!empty($data['password'])) {
-                    $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
-                }
-                $result = $this->ManufacturerModel->UpdateProfile($data);
-                if ($result) {
-                    Redirect('LandingController/logout');
-                }
-            } else {
-                $this->view('Manufacturer/ManageProfile', $data);
+            if(empty($data['password'])){
+                $data['password_err'] = 'Please input a password';
             }
+
+            if(empty($data['name_err']) && empty($data['contact_err']) && empty($data['address_err']) && empty($data['email_err']) && empty($data['password_err'])){
+                $result = $this->ManufacturerModel->ManageProfile($data);
+                if($result){
+                    header('Location: ' . URLROOT . '/ManufacturerController/Dashboard');
+                    exit;
+                }
+            }
+            $this->view('Manufacturer/ManageProfile', $data);
         } else {
             $user = $this->ManufacturerModel->getUserById($_SESSION['user_id']);
             $data = [
                 'name' => $user->name,
-                'phone' => $user->phone,
+                'contact' => $user->phone,
                 'email' => $user->email,
                 'password' => '',
                 'name_err' => '',
@@ -210,33 +188,62 @@ class ManufacturerController extends Controller {
         }
     }
 
-    public function getProfileImage($user_id) {
-        $imagePath = $this->ManufacturerModel->getProfileImage($_SESSION['user_id']);
-        return $imagePath ? URLROOT . '/' . $imagePath : URLROOT . '/profile_picture/1.jpg';
+    public function StockHolders() {
+        $data = [];
+        $this->view('Manufacturer/StockHolders');
     }
 
-    public function uploadProfileImage() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) {
-            $targetDir = "uploads/ProfilePictures/";
-            $fileName = basename($_FILES["profile_picture"]["name"]);
-            $targetFile = $targetDir . $fileName;
-            if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $targetFile)) {
-                $uploadResult = $this->ManufacturerModel->updateProfileImage($_SESSION['user_id'], $targetFile);
-                Redirect('ManufacturerController/ManageProfile');
+    public function RequestHelp() {
+        $data = [];
+        $this->View('Manufacturer/RequestHelp', $data);
+    }
+
+    public function showForm($category) {
+        $data = ['category' => $category];
+        $this->View('Manufacturer/RequestHelp', $data);
+    }
+
+    public function submitRequest() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            $data = [
+                'user_id' => $_SESSION['user_id'],
+                'user_role' => $_SESSION['user_role'],
+                'category' => trim($_POST['category']),
+                'subject' => trim($_POST['subject']),
+                'description' => trim($_POST['description']),
+                'attachment' => null,
+                'status' => 'pending',
+                'created_at' => date('Y-m-d H:i:s')
+            ];
+
+            if (isset($_FILES['attachment']) && $_FILES['attachment']['error'] == UPLOAD_ERR_OK) {
+                $uploadDir = 'Uploads/help_requests/'; 
+                if (!file_exists($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+                $attachmentName = basename($_FILES['attachment']['name']);
+                $uploadFile = $uploadDir . $attachmentName;
+                if (move_uploaded_file($_FILES['attachment']['tmp_name'], $uploadFile)) {
+                    $data['attachment'] = $uploadFile;
+                } else {
+                    error_log("Failed to upload attachment: " . $attachmentName);
+                }
+            }
+
+            if ($this->ManufacturerModel->saveHelpRequest($data)) {
+                $_SESSION['request_success'] = 'Your request has been submitted successfully!';
+                header('Location: ' . URLROOT . '/ManufacturerController/RequestHelp');
+                exit;
             } else {
-                echo "Error uploading file.";
+                error_log("Failed to save help request: " . json_encode($data));
+                $_SESSION['request_error'] = 'Failed to submit your request. Please try again.';
+                header('Location: ' . URLROOT . '/ManufacturerController/RequestHelp');
+                exit;
             }
         }
     }
 
-       public function StockHolders() {
-        $this->view('Manufacturer/StockHolders');
-    }
-
-
-
-
-    
     public function index() {
         $data = [];
         $this->View('inc/404.php', $data);
@@ -244,17 +251,17 @@ class ManufacturerController extends Controller {
 
     public function LandingPage() {
         $data = [];
-        $this->View('Buyer/LandingPage', $data);
+        $this->View('Manufacturer/LandingPage', $data);
     }
 
     public function bidProduct() {
         $data = $this->ManufacturerModel->getAvailableProducts();
-        $this->View('Buyer/bidProduct', $data);
+        $this->View('Manufacturer/bidProduct', $data);
     }
 
     public function PlaceBid($product_id) {
         $data = $this->ManufacturerModel->getProductById($product_id);
-        $this->View('Buyer/PlaceBid', $data);
+        $this->View('Manufacturer/PlaceBid', $data);
     }
 
     public function SubmitBid() {
@@ -278,7 +285,7 @@ class ManufacturerController extends Controller {
 
     public function BidControl() {
         $data = [];
-        $this->View('Buyer/BidControl', $data);
+        $this->View('Manufacturer/BidControl', $data);
     }
 
     public function getAllActiveBidsForBuyer($user_id) {
@@ -288,7 +295,7 @@ class ManufacturerController extends Controller {
 
     public function PendingPayments() {
         $data = [];
-        $this->View('Buyer/PendingPayments', $data);
+        $this->View('Manufacturer/PendingPayments', $data);
     }
 
     public function getPendingPayments($user_id) {
@@ -298,12 +305,32 @@ class ManufacturerController extends Controller {
 
     public function purchaseHistory() {
         $data = [];
-        $this->View('Buyer/purchase history', $data);
+        $this->View('Manufacturer/purchaseHistory', $data);
+    }
+
+    public function getProfileImage($user_id) {
+        $imagePath = $this->ManufacturerModel->getProfileImage($_SESSION['user_id']);
+        return $imagePath ? URLROOT . '/' . $imagePath : URLROOT . '/images/default.jpg';
+    }
+
+    public function uploadProfileImage() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) {
+            $targetDir = "Uploads/ProfilePictures/";
+            $fileName = basename($_FILES["profile_picture"]["name"]);
+            $targetFile = $targetDir . $fileName;
+            if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $targetFile)) {
+                $uploadResult = $this->ManufacturerModel->updateProfileImage($_SESSION['user_id'], $targetFile);
+                header('Location: ' . URLROOT . '/ManufacturerController/ManageProfile');
+                exit;
+            } else {
+                echo "Error uploading file.";
+            }
+        }
     }
 
     public function FarmerProfile($id) {
         $data = $this->ManufacturerModel->getFarmersById($id);
-        $this->View('Buyer/FarmerProfile', $data);
+        $this->View('Manufacturer/FarmerProfile', $data);
     }
 
     public function AddReview($farmer_id) {
@@ -324,16 +351,17 @@ class ManufacturerController extends Controller {
             }
             if (empty($data['reviewText_err']) && empty($data['rating_err'])) {
                 if ($this->ManufacturerModel->AddReview($data)) {
-                    Redirect('BuyerController/FarmerProfile/' . $farmer_id);
+                    header('Location: ' . URLROOT . '/ManufacturerController/FarmerProfile/' . $farmer_id);
+                    exit;
                 } else {
                     die('Something went wrong while saving the review.');
                 }
             } else {
-                $this->view('Buyer/FarmerProfile', $data);
+                $this->view('Manufacturer/FarmerProfile', $data);
             }
         } else {
             $data = [];
-            $this->view('Buyer/FarmerProfile', $data);
+            $this->view('Manufacturer/FarmerProfile', $data);
         }
     }
 
@@ -357,19 +385,20 @@ class ManufacturerController extends Controller {
             ];
             $result = $this->ManufacturerModel->AddBankAccount($data);
             if ($result) {
-                Redirect('BuyerController/ManageProfile');
+                header('Location: ' . URLROOT . '/ManufacturerController/ManageProfile');
+                exit;
             }
         } else {
             $user = $this->ManufacturerModel->GetBankAndCardDetails($_SESSION['user_id']);
             $data = [
-                'bank_name' => $user->bank_name,
-                'account_number' => $user->account_number,
-                'account_name' => $user->account_name,
+                'bank_name' => $user->bank_name ?? '',
+                'account_number' => $user->account_number ?? '',
+                'account_name' => $user->name_on_card ?? '',
                 'bank_name_err' => '',
                 'account_number_err' => '',
                 'account_name_err' => ''
             ];
-            $this->view('Buyer/ManageProfile', $data);
+            $this->view('Manufacturer/ManageProfile', $data);
         }
     }
 
@@ -380,10 +409,33 @@ class ManufacturerController extends Controller {
 
     public function pay() {
         $data = [];
-        $this->View('Buyer/pay', $data);
+        $this->View('Manufacturer/pay', $data);
     }
 
+    public function getNotifications($buyer_id) {
+        $productsnotifications = (array) $this->NotificationModel->getNotifications($buyer_id);
+        $winningnotifications = (array) $this->NotificationModel->getWinningNotifications($buyer_id);
+        $notifications = array_merge($productsnotifications, $winningnotifications);
 
+        header('Content-Type: application/json');
+        echo json_encode($notifications);
+    }
+
+    public function getUnreadNotifications() {
+        $data = [];
+        $this->View('inc/Notification', $data);
+    }
+
+    public function markNotificationAsRead($id, $buyer_id) {
+        $result = $this->NotificationModel->markNotificationAsRead($id, $buyer_id);
+        header('Content-Type: application/json');
+        echo json_encode(['success' => $result]);
+    }
+
+    public function getUnreadNotificationsCount($buyer_id) {
+        $count = $this->NotificationModel->getUnreadNotificationsCount($buyer_id);
+        return $count->count;
+    }
 
     public function CancelBid($bid_id) {
         $result = $this->ManufacturerModel->cancelBid($bid_id);
@@ -393,8 +445,7 @@ class ManufacturerController extends Controller {
 
     public function AdjustBid($bid_id) {
         $data = $this->ManufacturerModel->getProductById($bid_id);
-        var_dump($data);
-        $this->View('Buyer/AdjustBid', $data);
+        $this->View('Manufacturer/AdjustBid', $data);
     }
 
     public function getPaymentDetailsForOrder($order_id) {
@@ -418,69 +469,51 @@ class ManufacturerController extends Controller {
             'phone' => $userdetails->phone,
             'email' => $userdetails->email,
         ];
-        $this->View('Buyer/Pay', $data);
+        $this->View('Manufacturer/Pay', $data);
     }
 
-//function to update the payment status
     public function Notify() {
         error_log("Notify function triggered");
-                        // Sample data from the POST request
-                    $merchant_id = $_POST['merchant_id'];
-                    $order_id = $_POST['order_id'];
-                    $payment_id = $_POST['payment_id'];
-                    $status = $_POST['status'];
-                    $currency = $_POST['currency'];
-                    $amount = $_POST['amount'];
-                    $hash = $_POST['hash'];
+        $merchant_id = $_POST['merchant_id'];
+        $order_id = $_POST['order_id'];
+        $payment_id = $_POST['payment_id'];
+        $status = $_POST['status'];
+        $currency = $_POST['currency'];
+        $amount = $_POST['amount'];
+        $hash = $_POST['hash'];
 
-                    // Your merchant secret key
-                    $merchant_secret = $_ENV['MERCHANT_SECRET'];
+        $merchant_secret = $_ENV['MERCHANT_SECRET'];
+        $generated_hash = strtoupper(md5(
+            $merchant_id .
+            $order_id .
+            number_format($amount, 2, '.', '') .
+            $currency .
+            strtoupper(md5($merchant_secret))
+        ));
 
-                    // Verify the received hash
-                    $generated_hash = strtoupper(md5(
-                        $merchant_id .
-                        $order_id .
-                        number_format($amount, 2, '.', '') .
-                        $currency .
-                        strtoupper(md5($merchant_secret))
-                    ));
-
-                    if ($hash === $generated_hash) {
-                        // Hash matches, it's a valid notification
-                        if ($status == 1) {
-                            // Payment successful
-                            // Update your database, notify the user, etc.
-                            $payment_status = 'paid';
-                            $this->ManufacturerModel->updatePaymentStatus($order_id, $payment_status);
-                        } else {
-                            // Payment failed
-                            $payment_status = 'failed';
-                            $this->ManufacturerModel->updatePaymentStatus($order_id, $payment_status);
-                        }
-                    } else {
-                        // Invalid hash
-                        echo "Invalid payment notification.";
-                    }
+        if ($hash === $generated_hash) {
+            if ($status == 1) {
+                $payment_status = 'paid';
+                $this->ManufacturerModel->updatePaymentStatus($order_id, $payment_status);
+            } else {
+                $payment_status = 'failed';
+                $this->ManufacturerModel->updatePaymentStatus($order_id, $payment_status);
+            }
+        } else {
+            echo "Invalid payment notification.";
+        }
     }
 
     public function Success() {
-        // Check if 'order_id' and 'amount' are set in the URL (GET request)
         if (isset($_GET['order_id']) && isset($_GET['amount'])) {
-            // Sanitize the input to prevent malicious data
             $order_id = htmlspecialchars($_GET['order_id']);
             $amount = htmlspecialchars($_GET['amount']);
-            
-            // Prepare the data to pass to the view
             $data = [
                 'order_id' => $order_id,
                 'amount' => $amount
             ];
-    
-            // Pass the data to the view
-            $this->View('Buyer/PaymentSuccess', $data);
+            $this->View('Manufacturer/PaymentSuccess', $data);
         } else {
-            // Handle the case where 'order_id' or 'amount' are not present
-            // You can show an error message or redirect to another page
             echo "Invalid payment data.";
         }
     }    
@@ -489,84 +522,52 @@ class ManufacturerController extends Controller {
         echo "Payment was cancelled!";
     }
 
-      
-    public function RequestHelp() {
-        $data = [
-            'requests' => $this->NotificationModel->getHelpRequestsWithResponses($_SESSION['user_id'])
-        ];
-        $this->view('Manufacturer/RequestHelp', $data);
-    }
+   
+   
+    private function getCurrentMethodFromURL() {
+        // Parse the URL
+        if (isset($_GET['url'])) {
+            $url = rtrim($_GET['url'], '/');
+            $url = filter_var($url, FILTER_SANITIZE_URL);
+            $url = explode('/', $url);
 
-    public function showForm($category) {
-        $data = ['category' => $category];
-        $this->view('Manufacturer/RequestHelp', $data);
-    }
-
-    public function submitRequest() {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-            $data = [
-                'user_id' => $_SESSION['user_id'],
-                'user_role' => $_SESSION['user_role'],
-                'category' => trim($_POST['category']),
-                'subject' => trim($_POST['subject']),
-                'description' => trim($_POST['description']),
-                'attachment' => null,
-                'status' => 'pending',
-                'created_at' => date('Y-m-d H:i:s')
-            ];
-
-            if (isset($_FILES['attachment']) && $_FILES['attachment']['error'] == UPLOAD_ERR_OK) {
-                $uploadDir = 'Uploads/help_requests/';
-                if (!file_exists($uploadDir)) {
-                    mkdir($uploadDir, 0777, true);
-                }
-                $attachmentName = basename($_FILES['attachment']['name']);
-                $uploadFile = $uploadDir . $attachmentName;
-                if (move_uploaded_file($_FILES['attachment']['tmp_name'], $uploadFile)) {
-                    $data['attachment'] = $uploadFile;
-                } else {
-                    error_log("Failed to upload attachment: " . $attachmentName);
-                }
-            }
-
-            if ($this->ManufacturerModel->saveHelpRequest($data)) {
-                $_SESSION['request_success'] = 'Your request has been submitted successfully!';
-                Redirect('ManufacturerController/RequestHelp');
-            } else {
-                error_log("Failed to save help request: " . json_encode($data));
-                $_SESSION['request_error'] = 'Failed to submit your request. Please try again.';
-                Redirect('ManufacturerController/RequestHelp');
-            }
+            // The second segment of the URL is the method name
+            return $url[1] ?? null;
         }
+        return null;
     }
 
-    public function getNotifications($user_id, $buyer_id) {
-        $helpRequestNotifications = $this->NotificationModel->getHelpRequestNotificationsForUser($user_id);
-        $notifications = $helpRequestNotifications; 
-        $productsnotifications = (array) $this->NotificationModel->getNotifications($buyer_id);
-        $winningnotifications = (array) $this->NotificationModel->getWinningNotifications($buyer_id);
-        $notifications = array_merge($productsnotifications, $winningnotifications);
+    public function getPurchaseHistory($user_id) {
+        $purchaseHistory = $this->ManufacturerModel->getPurchaseHistory($user_id);
         header('Content-Type: application/json');
-        echo json_encode($notifications);
+        echo json_encode($purchaseHistory);
+    }
+
+    public function getFarmerDetails($farmerId) {
+        $farmerDetails = $this->ManufacturerModel->getFarmersById($farmerId);
+        
         header('Content-Type: application/json');
-        try {
-            echo json_encode($notifications);
-        } catch (Exception $e) {
-            error_log("Failed to encode notifications for user_id $user_id: " . $e->getMessage());
-            echo json_encode([]);
-        }
+        echo json_encode([
+            'name' => $farmerDetails->name,
+            'contact_number' => $farmerDetails->phone,
+            'pickup_location' => $farmerDetails->address
+        ]);
     }
 
-    public function getUnreadNotifications() {
-        $data = [
-            'notifications' => $this->NotificationModel->getHelpRequestNotificationsForUser($_SESSION['user_id']),
-            'unread_count' => $this->NotificationModel->getUnreadHelpNotificationsCountForUser($_SESSION['user_id'])->count
-        ];
-        $this->view('inc/Notification', $data);
+    public function confirmOrder($order_id){
+        $result = $this->ManufacturerModel->confirmOrder($order_id);
+        header('Content-Type: application/json');
+        echo json_encode(['success' => $result]);
+
     }
 
-    public function markHelpNotificationAsRead($notificationId, $userId) {
+    public function Resetricted($user_id){
+        $data = $this->ManufacturerModel->getrestrictedDetails($user_id);
+        $this->View('inc/Restricted', $data);
+    }
+
+
+       public function markHelpNotificationAsRead($notificationId, $userId) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Ensure the user is authorized
             if ($userId != $_SESSION['user_id']) {
@@ -588,40 +589,25 @@ class ManufacturerController extends Controller {
         }
     }
 
-    public function markNotificationAsRead($notificationId, $userId) {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Ensure the user is authorized
-            if ($userId != $_SESSION['user_id']) {
-                header('Content-Type: application/json');
-                echo json_encode(['success' => false, 'error' => 'Unauthorized']);
-                exit;
-            }
-
-            $notificationModel = $this->model('Notification');
-            $result = $notificationModel->markNotificationAsRead($notificationId, $userId);
-
-            header('Content-Type: application/json');
-            echo json_encode(['success' => $result]);
-            exit;
-        } else {
-            header('Content-Type: application/json');
-            echo json_encode(['success' => false, 'error' => 'Invalid request method']);
-            exit;
-        }
-
-        $result = $this->NotificationModel->markNotificationAsRead($id, $buyer_id);
-        header('Content-Type: application/json');
-        echo json_encode(['success' => $result]);
-    }    
-
-    public function getUnreadNotificationsCount($user_id, $buyer_id) {
-        $count = $this->NotificationModel->getUnreadHelpNotificationsCountForUser($user_id)->count;
-        $count = $this->NotificationModel->getUnreadNotificationsCount($buyer_id);
-        return $count->count;
-        return $count;
-    }
+  
 
 
-     
+
+    public function filterBids() {
+        $input = json_decode(file_get_contents("php://input"), true);
+    
+        $category = $input['category'] ?? '';
+        $sortBy = $input['sortBy'] ?? '';
+        $minPrice = $input['minPrice'] ?? '';
+        $maxPrice = $input['maxPrice'] ?? '';
+        $minQty = $input['minQty'] ?? '';
+        $maxQty = $input['maxQty'] ?? '';
+    
+        $filtered = $this->ManufacturerModel->getFilteredBids($category, $sortBy, $minPrice, $maxPrice, $minQty, $maxQty);
+    
+        echo json_encode($filtered);
+    }  
+
+
 }
 ?>

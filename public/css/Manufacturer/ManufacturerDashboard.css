@@ -1,349 +1,240 @@
 @import url(../components/sidebar.css);
-
 * {
-    font-family: "Ubuntu", sans-serif;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
 }
 
 body {
-    font-family: "Ubuntu", sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #ffffff;
-    background-size: cover;
-    background-position: center;
+  background: #f5f7fa;
+  min-height: 100vh;
 }
 
 .dashboard-container {
-    display: flex;
-    min-height: 100vh;
+  margin-left: 250px;
+  padding: 30px;
 }
 
-.main-content {
-    margin-left: 270px;
-    padding: 30px;
-    flex-grow: 1;
+.welcome-section {
+  background: linear-gradient(135deg, #2e8b57 0%, #246c44 100%);
+  border-radius: 15px;
+  padding: 30px;
+  color: white;
+  margin-bottom: 30px;
+  animation: slideDown 0.5s ease-out;
 }
 
-.main-content-header h1 {
-    font-size: 48px;
-    font-weight: 700;
-    color: #032b03;
-    text-align: center;
-    margin-bottom: 30px;
-    letter-spacing: 2px;
+.welcome-section h1 {
+  font-size: 28px;
+  margin-bottom: 10px;
 }
 
-/* New top section with pricing info and history side by side */
-.top-section {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 30px;
-    margin-bottom: 30px;
+.welcome-section p {
+  opacity: 0.9;
+  font-size: 16px;
 }
 
-.price-info {
-    background: #d5f7eb;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    /* border-left: 6px solid #41cc94; */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
 }
 
-.price-info:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+  animation: fadeIn 0.5s ease-out;
 }
 
-.price-info h3 {
-    color: #032b03;
-    font-size: 26px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    text-align: left;
+.stat-card:hover {
+  transform: translateY(-5px);
 }
 
-.price-item {
-    margin: 15px 0;
-    padding: 15px;
-    background: #f0faf6;
-    border-radius: 10px;
-    transition: background 0.3s ease, transform 0.2s ease;
+.stat-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
 }
 
-.price-item p {
-    font-size: 18px;
-    color: #032b03;
-    margin: 0;
-    font-weight: 500;
+.stat-icon {
+  width: 45px;
+  height: 45px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
 }
 
-.price-item:hover {
-    background: #d4f1e4;
-    transform: scale(1.02);
+.bids-icon {
+  background: #e1f8ff;
+  color: #0891b2;
 }
 
-.price-item .warning {
-    color: #f39c12;
-    font-size: 14px;
-    font-style: italic;
-    margin-left: 10px;
+.active-icon {
+  background: #f0fff4;
+  color: #2e8b57;
 }
 
-.price-history {
-    padding: 25px;
-    background: #d5f7eb;
-    border-radius: 15px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+.spent-icon {
+  background: #fff1f2;
+  color: #e11d48;
 }
 
-.price-history h2 {
-    color: #032b03;
-    font-size: 28px;
-    font-weight: 600;
-    margin-bottom: 20px;
+.win-icon {
+  background: #fef3c7;
+  color: #d97706;
 }
 
-.price-history table {
-    width: 100%;
-    border-collapse: collapse;
+.stat-info h3 {
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 5px;
 }
 
-.price-history table thead td {
-    font-weight: 600;
-    color: #032b03;
-    padding: 15px;
-    background: #e8f3ec;
-    font-size: 14px;
+.stat-info p {
+  color: #1e293b;
+  font-size: 24px;
+  font-weight: 600;
 }
 
-.price-history table tr {
-    color: #032b03;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+.stat-date {
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 400;
+  margin-top: 5px;
 }
 
-.price-history table tr:last-child {
-    border-bottom: none;
+.recent-section {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  animation: slideUp 0.5s ease-out;
 }
 
-.price-history table tr:hover {
-    background-color: #e0f7e9;
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.price-history table tr td {
-    padding: 15px;
-    text-align: center;
-    font-size: 16px;
+.section-header h2 {
+  color: #1e293b;
+  font-size: 20px;
 }
 
-.price-history table tr td:first-child {
-    text-align: left;
+.view-all {
+  color: #2e8b57;
+  text-decoration: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.3s ease;
 }
 
-.details {
-    display: grid;
-    grid-template-columns: 1fr 1fr; 
-    grid-gap: 30px;
-    margin-bottom: 30px;
+.view-all:hover {
+  color: #246c44;
 }
 
-.details .recentOrders,
-.details .recentCustomers {
-    background: #d5f7eb;
-    padding: 25px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    border-radius: 15px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+.recent-bids {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
-.details .recentOrders:hover,
-.details .recentCustomers:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+.recent-bids th {
+  background: #f8fafc;
+  padding: 12px;
+  text-align: left;
+  color: #64748b;
+  font-weight: 500;
+  font-size: 14px;
 }
 
-.cardHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+.recent-bids td {
+  padding: 12px;
+  color: #334155;
+  border-bottom: 1px solid #f1f5f9;
 }
 
-.cardHeader h2 {
-    font-size: 24px;
-    font-weight: 600;
-    color: #032b03;
+.bid-status {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
 }
 
-.cardHeader .btn {
-    padding: 10px 20px;
-    background: linear-gradient(90deg, #41cc94 0%, #74dbb2 100%);
-    text-decoration: none;
-    color: #ffffff;
-    border-radius: 8px;
-    font-weight: 500;
-    transition: background 0.3s ease;
+.status-active {
+  background: #f0fff4;
+  color: #2e8b57;
 }
 
-.cardHeader .btn:hover {
-    background: linear-gradient(90deg, #74dbb2 0%, #41cc94 100%);
+.status-won {
+  background: #fef3c7;
+  color: #d97706;
 }
 
-.details table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
+.status-lost {
+  background: #fee2e2;
+  color: #dc2626;
 }
 
-.details table thead td {
-    font-weight: 600;
-    color: #032b03;
-    padding: 15px;
-    background: #e8f3ec;
-    font-size: 14px;
+@keyframes slideDown {
+  from {
+      transform: translateY(-20px);
+      opacity: 0;
+  }
+
+  to {
+      transform: translateY(0);
+      opacity: 1;
+  }
 }
 
-.details .recentOrders table tr {
-    color: #032b03;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+@keyframes slideUp {
+  from {
+      transform: translateY(20px);
+      opacity: 0;
+  }
+
+  to {
+      transform: translateY(0);
+      opacity: 1;
+  }
 }
 
-.details .recentOrders table tr:last-child {
-    border-bottom: none;
-}
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+  }
 
-.details .recentOrders table tbody tr:hover {
-    background-color: #e0f7e9;
-}
-
-.details .recentOrders table tr td {
-    padding: 15px;
-    text-align: left;
-    font-size: 16px;
-}
-
-.details .recentOrders table tr td:last-child {
-    text-align: center;
-}
-
-.details .recentOrders table tr td:nth-child(2) {
-    text-align: center;
-}
-
-.accepted, .pending {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: #ffffff;
-    border-radius: 20px;
-    font-size: 14px;
-    width: 100px;
-    height: 30px;
-    padding: 0;
-    text-align: center;
-}
-
-.accepted {
-    background: #41cc94;
-}
-
-.pending {
-    background: #f39c12;
-}
-
-.details .recentCustomers table tr {
-    color: #032b03;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.details .recentCustomers table tr:last-child {
-    border-bottom: none;
-}
-
-.details .recentCustomers table tr:hover {
-    background-color: #e0f7e9;
-}
-
-.details .recentCustomers table tr td {
-    padding: 15px;
-    text-align: center;
-    font-size: 16px;
-}
-
-.details .recentCustomers table tr td:first-child {
-    text-align: left;
-}
-
-.error {
-    color: #ff0000;
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 16px;
-    font-weight: 500;
-}
-
-.success {
-    color: #41cc94;
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 16px;
-    font-weight: 500;
-}
-
-@media (max-width: 1200px) {
-    .main-content {
-        margin-left: 220px;
-    }
-    
-    .top-section,
-    .details {
-        grid-template-columns: 1fr;
-    }
-
-    .details .recentOrders,
-    .details .recentCustomers {
-        min-height: auto;
-    }
-}
-
-@media (max-width: 991px) {
-    .main-content {
-        margin-left: 100px;
-    }
-
-    .main-content-header h1 {
-        font-size: 36px;
-    }
-
-    .price-info h3,
-    .price-history h2,
-    .cardHeader h2 {
-        font-size: 22px;
-    }
+  to {
+      opacity: 1;
+  }
 }
 
 @media (max-width: 768px) {
-    .main-content {
-        margin-left: 0;
-        padding: 20px;
-    }
+  .dashboard-container {
+      margin-left: 0;
+      padding: 20px;
+  }
 
-    .main-content-header h1 {
-        font-size: 28px;
-    }
+  .stats-grid {
+      grid-template-columns: 1fr;
+  }
 
-    .price-info,
-    .price-history,
-    .details .recentOrders,
-    .details .recentCustomers {
-        padding: 15px;
-    }
-
-    .price-item p,
-    .details table tr td {
-        font-size: 14px;
-    }
+  .recent-bids {
+      display: block;
+      overflow-x: auto;
+  }
 }
