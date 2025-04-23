@@ -581,6 +581,19 @@ class Users {
         return $this->db->execute();
     }
     
+    public function getUserdetails($user_id) {
+        $this->db->query('SELECT * FROM users WHERE user_id = :user_id');
+        $this->db->bind(':user_id', $user_id);
+        return $this->db->single();
+    }
+
+    public function restrictUserWithReason($restrictionData) {
+        $this->db->query('INSERT INTO restriction_logs (user_id,reason) VALUES (:user_id,:reason)');
+        $this->db->bind(':user_id', $restrictionData['user_id']);
+        $this->db->bind(':reason', $restrictionData['reason']);
+        return $this->db->execute();
+       
+    }
 
 
 }

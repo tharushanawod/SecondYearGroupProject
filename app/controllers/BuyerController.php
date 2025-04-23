@@ -441,7 +441,7 @@ class BuyerController extends Controller {
 
     public function Resetricted($user_id){
         $data = $this->BuyerModel->getrestrictedDetails($user_id);
-        $this->View('Buyer/Restricted', $data);
+        $this->View('inc/Restricted', $data);
     }
 
 

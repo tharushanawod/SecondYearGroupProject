@@ -323,14 +323,16 @@ class LandingController extends Controller{
                     $mail->AltBody = "Hello,\n\nWe received a request to reset your password. Please click the following link to reset it:\n\n$resetLink\n\nIf you did not request a password reset, please ignore this email.\n\nThe link will expire in 24 hours.";
             
                     $mail->send();
-                    echo "✅ Password reset link has been successfully sent to $email.";
+                    $data['success'] = 'A password reset link has been sent to your email address.';
+                    $this->View('Landing/forgot_password', $data);
                     
                 } catch (Exception $e) {
                     echo "Mailer Error: {$mail->ErrorInfo}";
                 }
 
             } else {
-                echo "Email address not found.";
+                $data['email_err'] = 'Email address not found';
+                $this->View('Landing/forgot_password', $data);
             }
         }
     }

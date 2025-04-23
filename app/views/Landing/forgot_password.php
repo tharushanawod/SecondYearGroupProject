@@ -186,13 +186,15 @@
         <form method="POST" action="<?php echo URLROOT; ?>/LandingController/handleForgotPassword">
             <label for="email">Email Address</label>
             <input type="email" id="email" name="email" placeholder="Enter your registered email" required>
+            <span style="color: red; font-weight: bold;"><?php if(isset($data['email_err'])) echo $data['email_err'];?></span>
+            <span style="color: red; font-weight: bold;"><?php if(isset($data['success'])) echo $data['success'];?></span>
             <button type="submit">
                 <span>Send Reset Link</span>
             </button>
         </form>
 
         <div class="links">
-            <a href="index.php?controller=auth&action=login">Return to Login</a>
+            <a href="<?php echo URLROOT; ?>/LandingController/Login">Return to Login</a>
         </div>
     </div>
 </body>

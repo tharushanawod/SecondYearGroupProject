@@ -160,6 +160,56 @@ class AdminController extends Controller {
         }
     }
 
+    public function Restriction($user_id){
+        $user = $this->AdminModel->getUserdetails($user_id);
+
+        if($user->user_id == $_SESSION['user_id']){
+            die('You cannot restrict yourself');
+        }
+
+        
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                
+                // Check if reasons were selected
+                if(isset($_POST['reasons']) && !empty($_POST['reasons'])) {
+                    // Sanitize input
+                    $reasons = filter_var_array($_POST['reasons'], FILTER_SANITIZE_STRING);
+                    
+                    // Combine reasons into a string
+                    $restriction_reason = implode(', ', $reasons);
+                    
+                    // Prepare data for model
+                    $restrictionData = [
+                        'user_id' => $user_id,
+                        'reason' => $restriction_reason
+                    ];
+                    
+                    // Call model method to restrict user
+                    if($this->AdminModel->restrictUserWithReason($restrictionData) && $this->AdminModel->RestrictUser($user_id)) {
+                        Redirect('AdminController/UserControl');
+                    } else {
+                        die('Something went wrong while restricting the user.');
+                    }
+                } else {
+                    // If no reason was selected, return to form with error
+                    $_SESSION['restriction_error'] = 'Please select at least one reason for restriction';
+                    Redirect('AdminController/Restriction/' . $user_id);
+                }
+            } else {
+                $data=[
+                    'user_id' => $user_id,
+                    'name' => $user->name,
+                    'user_type' => $user->user_type,
+                    
+                ];
+        
+                $this->View('Admin/Restrict',$data);
+                
+            }
+        
+       
+    }
+
  
   
 

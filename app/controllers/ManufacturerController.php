@@ -5,20 +5,55 @@ class ManufacturerController extends Controller {
     private $NotificationModel;
 
     public function __construct() {
+
+        $currentMethod = $this->getCurrentMethodFromURL();
+
         if (!$this->isloggedin()) {
             error_log("Unauthorized access attempt to ManufacturerController by user: " . ($_SESSION['user_email'] ?? 'unknown'));
             unset($_SESSION['user_id'], $_SESSION['user_email'], $_SESSION['user_name']);
             session_destroy();
             Redirect('LandingController/login');
+        }else{
+            $this->ManufacturerModel = $this->model('Manufacturer');
+            $this->NotificationModel = $this->model('Notification');
+
+             // User is logged in, now check if they are restricted
+             $user_id = $_SESSION['user_id'];
+             $user = $this->ManufacturerModel->getUserStatus($user_id);  // Fetch user status from the database
+ 
+             // If the user is restricted, prevent access to any page except "Manage Profile"
+             if ($user->user_status === 'restricted') {
+                 if ($currentMethod !== 'ManageProfile' && $currentMethod !== 'Resetricted') {
+                     Redirect('ManufacturerController/Resetricted/' . $user_id);
+                 }
+             }
         }
 
-        $this->ManufacturerModel = $this->model('Manufacturer');
-        $this->NotificationModel = $this->model('Notification');
+       
     }
 
     public function isloggedin() {
         return isset($_SESSION['user_id']) && $_SESSION['user_role'] === 'manufacturer';
     }
+
+    private function getCurrentMethodFromURL() {
+        // Parse the URL
+        if (isset($_GET['url'])) {
+            $url = rtrim($_GET['url'], '/');
+            $url = filter_var($url, FILTER_SANITIZE_URL);
+            $url = explode('/', $url);
+
+            // The second segment of the URL is the method name
+            return $url[1] ?? null;
+        }
+        return null;
+    }
+
+    public function Resetricted($user_id){
+        $data = $this->ManufacturerModel->getrestrictedDetails($user_id);
+        $this->View('inc/Restricted', $data);
+    }
+
 
     public function Dashboard() {
         try {

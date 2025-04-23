@@ -77,6 +77,18 @@ class Worker {
        
     }
 
+    public function getUserStatus($user_id) {
+        $this->db->query('SELECT user_status FROM users WHERE user_id = :user_id');
+        $this->db->bind(':user_id', $user_id);
+        return $this->db->single();  // This will return the user's status (e.g., 'restricted')
+    }
+
+    public function getrestrictedDetails($user_id){
+        $this->db->query('SELECT * FROM restriction_logs WHERE user_id = :user_id');
+        $this->db->bind(':user_id', $user_id);
+        return $this->db->resultSet();  // This will return the user's status (e.g., 'restricted')
+    }
+
 
      // Update or Insert profile image path in the database
     public function updateProfileImage($userId, $imagePath) {

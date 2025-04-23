@@ -31,7 +31,7 @@ function renderTable() {
         const isRestricted = user.user_status.toLowerCase() === 'restricted';
         const actionButton = isRestricted 
             ? `<button class="activate-btn" onclick="showRestrictModal('${URLROOT}/AdminController/ActivateUser/${user.user_id}', true)">Activate User</button>`
-            : `<button class="cancel-btn" onclick="showRestrictModal('${URLROOT}/AdminController/RestrictUser/${user.user_id}', false)">Restrict User</button>`;
+            : `<button class="cancel-btn" onclick="window.location.href='${URLROOT}/AdminController/Restriction/${user.user_id}'">Restrict User</button>`;
 
         const row = document.createElement("tr");
         row.innerHTML = `

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restrict User</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #f8f8f8;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #338bc8;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .restriction-options {
+            margin-bottom: 15px;
+        }
+
+        .restriction-option {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        button {
+            background-color: #338bc8;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2a70a0;
+        }
+
+        .header {
+            background-color: #338bc8;
+            color: white;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Restrict User Access</h1>
+            <p>Use this form to document user restriction reasons</p>
+        </div>
+
+        <form action="index.php?controller=admin&action=restrictUser" method="POST">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="user_type">User Type:</label>
+                <select id="user_type" name="user_type" required>
+                    <option value="">Select user type</option>
+                    <option value="buyer">Buyer</option>
+                    <option value="farmer">Farmer</option>
+                    <option value="supplier">Ingredient Supplier</option>
+                    <option value="moderator">Moderator</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Reason for Restriction:</label>
+                <div class="restriction-options">
+                    <label class="restriction-option">
+                        <input type="checkbox" name="reasons[]" value="spam"> Spamming/Excessive Posting
+                    </label>
+                    <label class="restriction-option">
+                        <input type="checkbox" name="reasons[]" value="inappropriate"> Inappropriate Content
+                    </label>
+                    <label class="restriction-option">
+                        <input type="checkbox" name="reasons[]" value="harassment"> Harassment of Other Users
+                    </label>
+                    <label class="restriction-option">
+                        <input type="checkbox" name="reasons[]" value="fake"> Fake Profile Information
+                    </label>
+                    <label class="restriction-option">
+                        <input type="checkbox" name="reasons[]" value="scam"> Scam Activities
+                    </label>
+                    <label class="restriction-option">
+                        <input type="checkbox" name="reasons[]" value="terms"> Terms of Service Violation
+                    </label>
+                    <label class="restriction-option">
+                        <input type="checkbox" name="reasons[]" value="other"> Other
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="restriction_details">Additional Details:</label>
+                <textarea id="restriction_details" name="restriction_details"
+                    placeholder="Provide specific details about the violation..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="restriction_duration">Restriction Duration:</label>
+                <select id="restriction_duration" name="restriction_duration" required>
+                    <option value="1_day">1 Day</option>
+                    <option value="1_week">1 Week</option>
+                    <option value="1_month">1 Month</option>
+                    <option value="3_months">3 Months</option>
+                    <option value="6_months">6 Months</option>
+                    <option value="permanent">Permanent</option>
+                </select>
+            </div>
+
+            <button type="submit">Submit Restriction</button>
+        </form>
+    </div>
+</body>
+
+</html>

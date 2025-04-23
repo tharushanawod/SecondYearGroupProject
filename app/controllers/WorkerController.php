@@ -4,19 +4,53 @@ class WorkerController extends Controller {
     private $NotificationModel;
 
     public function __construct() {  
+
+        $currentMethod = $this->getCurrentMethodFromURL();
+
         if (!$this->isloggedin()) {
             unset($_SESSION['user_id']);
             unset($_SESSION['user_email']);
             unset($_SESSION['user_name']);
             session_destroy();
             Redirect('LandingController/login');
-        } 
-        $this->WorkerModel = $this->model('Worker');
-        $this->NotificationModel = $this->model('Notification');
+        } else{
+            $this->WorkerModel = $this->model('Worker');
+            $this->NotificationModel = $this->model('Notification');
+
+             // User is logged in, now check if they are restricted
+             $user_id = $_SESSION['user_id'];
+             $user = $this->WorkerModel->getUserStatus($user_id);  // Fetch user status from the database
+ 
+             // If the user is restricted, prevent access to any page except "Manage Profile"
+             if ($user->user_status === 'restricted') {
+                 if ($currentMethod !== 'ManageProfile' && $currentMethod !== 'Resetricted') {
+                     Redirect('WorkerController/Resetricted/' . $user_id);
+                 }
+             }
+        }
+       
     }
 
     public function isloggedin() {
         return isset($_SESSION['user_id']) && $_SESSION['user_role'] == 'farmworker';
+    }
+
+    private function getCurrentMethodFromURL() {
+        // Parse the URL
+        if (isset($_GET['url'])) {
+            $url = rtrim($_GET['url'], '/');
+            $url = filter_var($url, FILTER_SANITIZE_URL);
+            $url = explode('/', $url);
+
+            // The second segment of the URL is the method name
+            return $url[1] ?? null;
+        }
+        return null;
+    }
+
+    public function Resetricted($user_id){
+        $data = $this->WorkerModel->getrestrictedDetails($user_id);
+        $this->View('inc/Restricted', $data);
     }
 
     public function Dashboard() {

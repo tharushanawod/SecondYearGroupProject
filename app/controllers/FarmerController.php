@@ -8,6 +8,9 @@ class FarmerController extends Controller {
     private $Supplier;
 
     public function __construct() {
+
+        $currentMethod = $this->getCurrentMethodFromURL();
+
         if (!$this->isloggedin()) {
             unset($_SESSION['user_id']);
             unset($_SESSION['user_email']);
@@ -15,10 +18,24 @@ class FarmerController extends Controller {
             session_destroy();
             Redirect('LandingController/login');
         }
-        $this->farmerModel = $this->model('Farmer');
-        $this->cartModel = $this->model('Cart');
-        $this->NotificationModel = $this->model('Notification');
-        $this->Supplier = $this->model('Supplier');
+        else{
+            $this->farmerModel = $this->model('Farmer');
+            $this->cartModel = $this->model('Cart');
+            $this->NotificationModel = $this->model('Notification');
+            $this->Supplier = $this->model('Supplier');
+
+             // User is logged in, now check if they are restricted
+             $user_id = $_SESSION['user_id'];
+             $user = $this->farmerModel->getUserStatus($user_id);  // Fetch user status from the database
+ 
+             // If the user is restricted, prevent access to any page except "Manage Profile"
+             if ($user->user_status === 'restricted') {
+                 if ($currentMethod !== 'ManageProfile' && $currentMethod !== 'Resetricted') {
+                     Redirect('FarmerController/Resetricted/' . $user_id);
+                 }
+             }
+        }
+      
     }
 
     public function isloggedin() {
@@ -27,6 +44,24 @@ class FarmerController extends Controller {
         } else {
             return false;
         }
+    }
+
+    private function getCurrentMethodFromURL() {
+        // Parse the URL
+        if (isset($_GET['url'])) {
+            $url = rtrim($_GET['url'], '/');
+            $url = filter_var($url, FILTER_SANITIZE_URL);
+            $url = explode('/', $url);
+
+            // The second segment of the URL is the method name
+            return $url[1] ?? null;
+        }
+        return null;
+    }
+
+    public function Resetricted($user_id){
+        $data = $this->farmerModel->getrestrictedDetails($user_id);
+        $this->View('inc/Restricted', $data);
     }
 
     public function Dashboard() {

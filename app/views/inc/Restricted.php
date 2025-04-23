@@ -76,7 +76,29 @@
 
         <div class="action-buttons">
             <button class="action-btn profile-btn"
-                onclick="window.location.href='<?php echo URLROOT; ?>/BuyerController/ManageProfile'">
+                onclick="window.location.href='<?php echo URLROOT; ?>/<?php 
+                    $role = $_SESSION['user_role'];
+                    switch($role) {
+                        case 'buyer':
+                            echo 'BuyerController';
+                            break;
+                        case 'farmer':
+                            echo 'FarmerController';
+                            break;
+                        case 'farmworker':
+                            echo 'WorkerController';
+                            break;
+                        case 'supplier':
+                            echo 'SupplierController';
+                            break;
+                        case 'manufacturer':
+                            echo 'ManufacturerController';
+                            break;
+                        default:
+                            echo 'UserController';
+                            break;
+                    }
+                ?>/ManageProfile'">
                 <i class="fas fa-user-cog"></i> Manage Profile
             </button>
             <button class="action-btn logout-btn"
