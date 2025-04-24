@@ -4,7 +4,7 @@
    <title>Settings</title>
    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet" />
-   <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Farmer/ManageProfile.css" />
+   <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Manufacturer/ManageProfile.css" />
    <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet" />
 </head>
 
@@ -36,7 +36,7 @@
             <div class="image-preview">
                <img src="<?php echo URLROOT;?>/images/profile.jpg" alt="Profile preview" id="preview-image">
             </div>
-            <form class="upload-form" action="<?php echo URLROOT;?>/BuyerController/uploadProfileImage" method="POST"
+            <form class="upload-form" action="<?php echo URLROOT;?>/ManufacturerController/uploadProfileImage" method="POST"
                enctype="multipart/form-data">
                <input type="file" name="profile_picture" accept="image/*" required>
                <button type="submit">Save Profile Image</button>
@@ -62,7 +62,7 @@
          </div>
          <h2>Profile</h2>
 
-         <form action="<?php echo URLROOT;?>/BuyerController/ManageProfile" method="post" id="profileForm">
+         <form action="<?php echo URLROOT;?>/ManufacturerController/ManageProfile" method="post" id="profileForm">
             <div class="form-group">
                <div>
                   <label for="name"> Name </label>

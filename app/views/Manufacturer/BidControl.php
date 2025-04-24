@@ -46,6 +46,6 @@
   const URLROOT = "<?php echo URLROOT; ?>";
   const USERID = "<?php echo $_SESSION['user_id']; ?>";
 </script>
-<script src="<?php echo URLROOT;?>/js/Buyer/BidControl.js"></script>
+<script src="<?php echo URLROOT;?>/js/Manufacturer/BidControl.js"></script>
 </body>
 </html>

@@ -85,8 +85,11 @@ class BuyerController extends Controller {
     }
 
     public function LandingPage() {
-        $data = [];
-        $this->View('Buyer/LandingPage', $data);
+        $prices = $this->BuyerModel->getManufacturerPrices();
+        $data = [
+            'prices' => $prices
+        ];
+        $this->view('Buyer/LandingPage', $data);
     }
 
     public function bidProduct() {

@@ -433,8 +433,28 @@ AND corn_products.closing_date > NOW();
         return $this->db->resultSet();
     }
     
-    
-    
-    
+    public function getManufacturerPrices() {
+        try {
+            $this->db->query('
+                SELECT 
+                    u.user_id,
+                    m.company_name,
+                    mp.unit_price,
+                    IFNULL(pp.file_path, "images/default_company.png") AS profile_image
+                FROM manufacturer_prices mp
+                INNER JOIN users u ON mp.manufacturer_id = u.user_id
+                INNER JOIN manufacturers m ON u.user_id = m.user_id
+                LEFT JOIN profile_pictures pp ON u.user_id = pp.user_id
+                WHERE u.user_type = "manufacturer"
+                ORDER BY mp.unit_price DESC
+            ');
+            return $this->db->resultSet();
+        } catch (Exception $e) {
+            error_log('Error in getManufacturerPrices: ' . $e->getMessage());
+            return [];
+        }
     }
+ 
+    
+}
 ?>

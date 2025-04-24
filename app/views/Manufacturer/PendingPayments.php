@@ -38,6 +38,6 @@
         const URLROOT = "<?php echo URLROOT; ?>";
         const USERID = "<?php echo $_SESSION['user_id']; ?>";
     </script>
-    <script src="<?php echo URLROOT;?>/js/Buyer/PendingPayments.js"></script>
+    <script src="<?php echo URLROOT;?>/js/Manufacturer/PendingPayments.js"></script>
 </body>
 </html>

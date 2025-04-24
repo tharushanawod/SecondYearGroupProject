@@ -48,7 +48,7 @@
                         <img src="<?php echo URLROOT.'/'.$product->media;?>" alt="Product Image">
                         <h3><?php echo $product->name; ?></h3>
                         <div class="farmer-info">
-                            <a href="<?php echo URLROOT;?>/BuyerController/FarmerProfile/<?php echo $product->user_id;?>" class="farmer-link">
+                            <a href="<?php echo URLROOT;?>/ManufacturerController/FarmerProfile/<?php echo $product->user_id;?>" class="farmer-link">
                             <i class="fa-solid fa-user"></i> View Farmer Profile
                             </a>
                             <div class="rating">
@@ -76,7 +76,7 @@
                         ?></p>
                         <p>Quantity: <?php echo $product->quantity; ?> kg</p>
                         <div class="button-row">
-                            <a href="<?php echo URLROOT;?>/BuyerController/PlaceBid/<?php echo $product->product_id ;?>" class="action-btn">Place Bid</a>                        
+                            <a href="<?php echo URLROOT;?>/ManufacturerController/PlaceBid/<?php echo $product->product_id ;?>" class="action-btn">Place Bid</a>                        
                         </div>
                     </div>
                 <?php endforeach; ?>

@@ -30,7 +30,7 @@
                 </div>
                 <form action="<?php echo URLROOT; ?>/ManufacturerController/SetPrice" method="POST" class="price-form">
                     <label for="unit_price">Unit Price (LKR):</label>
-                    <input type="number" step="0.01" name="unit_price" id="unit_price" value="<?php echo htmlspecialchars($data['unit_price']); ?>" required>
+                    <input type="number" step="1" name="unit_price" id="unit_price" value="<?php echo htmlspecialchars($data['unit_price']); ?>" required>
                     <?php if (!empty($data['unit_price_err'])): ?>
                         <p class="error"><?php echo htmlspecialchars($data['unit_price_err']); ?></p>
                     <?php endif; ?>

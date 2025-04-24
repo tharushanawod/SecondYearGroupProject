@@ -22,7 +22,7 @@
             <p>Auction Closes In: <span id="countdown"></span></p>
             <p>Quantity: <?php echo $data->quantity; ?> kg</p>
 
-            <form class="bid-form" id="bidForm" action="<?php echo URLROOT; ?>/BuyerController/SubmitBid"  onsubmit="return validateBid()">
+            <form class="bid-form" id="bidForm" action="<?php echo URLROOT; ?>/ManufacturerController/SubmitBid"  onsubmit="return validateBid()">
             <input type="hidden" name="product_id" value="<?php echo $data->product_id; ?>">
             <input type="hidden" name="buyer_id" value="<?php echo $_SESSION['user_id']; ?>">
             <input type="number" id="bid_amount" name="bid_amount" placeholder="Enter your bid amount" required>
@@ -61,6 +61,6 @@
     var quantity = <?php echo $data->quantity; ?>;
     const URLROOT = "<?php echo URLROOT; ?>";
 </script>
-<script src="<?php echo URLROOT;?>/js/Buyer/PlaceBid.js"></script>
+<script src="<?php echo URLROOT;?>/js/Manufacturer/PlaceBid.js"></script>
 </body>
 </html>

@@ -255,10 +255,10 @@
         </div>
 
         <div class="action-buttons">
-            <a href="<?php echo URLROOT; ?>/BuyerController/dashboard" class="btn btn-primary">
+            <a href="<?php echo URLROOT; ?>/ManufacturerController/dashboard" class="btn btn-primary">
                 <i class="fas fa-home"></i> Go to Dashboard
             </a>
-            <a href="<?php echo URLROOT; ?>/BuyerController/purchaseHistory" class="btn btn-secondary">
+            <a href="<?php echo URLROOT; ?>/ManufacturerController/purchaseHistory" class="btn btn-secondary">
                 <i class="fas fa-shopping-bag"></i> View Orders
             </a>
         </div>

@@ -49,7 +49,7 @@
 
 
             <div class="add-review">
-                <form action="<?php echo URLROOT.'/BuyerController/AddReview/'.$data->user_id?>" method="POST">
+                <form action="<?php echo URLROOT.'/ManufacturerController/AddReview/'.$data->user_id?>" method="POST">
                 <h3>Add Your Review</h3>
                 <textarea class="review-input" name="review_text" placeholder="Share Your Experience" rows="4"></textarea>
                 <div class="star-rating">
@@ -70,6 +70,6 @@
         const URLROOT = "<?php echo URLROOT;?>";
         const USER_ID = "<?php echo $data->user_id;?>";
     </script>
-    <script src="<?php echo URLROOT?>/js/Buyer/FarmerProfile.js"></script>
+    <script src="<?php echo URLROOT?>/js/Manufacturer/FarmerProfile.js"></script>
 </body>
 </html>

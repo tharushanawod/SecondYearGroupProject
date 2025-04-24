@@ -239,10 +239,13 @@ class ManufacturerController extends Controller {
         $data = [];
         $this->View('inc/404.php', $data);
     }
-
+        
     public function LandingPage() {
-        $data = [];
-        $this->View('Manufacturer/LandingPage', $data);
+        $prices = $this->ManufacturerModel->getManufacturerPrices();
+        $data = [
+            'prices' => $prices
+        ];
+        $this->view('Manufacturer/LandingPage', $data);
     }
 
     public function bidProduct() {
@@ -587,6 +590,8 @@ class ManufacturerController extends Controller {
         $filtered = $this->ManufacturerModel->getFilteredBids($category, $sortBy, $minPrice, $maxPrice, $minQty, $maxQty);
     
         echo json_encode($filtered);
-    } 
+    }
+    
+   
 }
 ?>

@@ -256,6 +256,7 @@ class FarmerController extends Controller {
         }
     }
 
+    
     public function GetIdea() {
         $prices = $this->farmerModel->getManufacturerPrices();
         $data = [

@@ -33,7 +33,7 @@
          <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <h3>Upload Profile Picture</h3>
-            <form class="upload-form" action="<?php echo URLROOT;?>/BuyerController/uploadProfileImage" method="POST"
+            <form class="upload-form" action="<?php echo URLROOT;?>/ManufacturerController/uploadProfileImage" method="POST"
                enctype="multipart/form-data">
                <input type="file" name="profile_picture" accept="image/*" required>
                <button type="submit">Upload</button>
@@ -58,7 +58,7 @@
          </div>
          <h2>Profile</h2>
 
-         <form action="<?php echo URLROOT;?>/BuyerController/ManageProfile" method="post" id="profileForm">
+         <form action="<?php echo URLROOT;?>/ManufacturerController/ManageProfile" method="post" id="profileForm">
             <div class="form-group">
                <div>
                   <label for="name"> Name </label>
