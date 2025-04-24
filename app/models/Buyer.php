@@ -446,6 +446,11 @@ AND corn_products.closing_date > NOW();
                 INNER JOIN manufacturers m ON u.user_id = m.user_id
                 LEFT JOIN profile_pictures pp ON u.user_id = pp.user_id
                 WHERE u.user_type = "manufacturer"
+                AND mp.updated_at = (
+                    SELECT MAX(updated_at)
+                    FROM manufacturer_prices mp2
+                    WHERE mp2.manufacturer_id = mp.manufacturer_id
+                )
                 ORDER BY mp.unit_price DESC
             ');
             return $this->db->resultSet();

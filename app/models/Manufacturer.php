@@ -10,7 +10,7 @@ class Manufacturer {
             throw new Exception('Unable to connect to the database.');
         }
     }
-
+   
     public function getLastPrice($user_id) {
         try {
             $this->db->query('SELECT * FROM manufacturer_prices WHERE manufacturer_id = :user_id ORDER BY updated_at DESC LIMIT 1');
@@ -21,15 +21,21 @@ class Manufacturer {
             return null;
         }
     }
+
     public function getOtherManufacturersPrices($current_user_id) {
         try {
             $this->db->query('
-                SELECT m.company_name, mp.unit_price
+                SELECT m.company_name, mp.unit_price, mp.updated_at
                 FROM manufacturer_prices mp
                 INNER JOIN users u ON mp.manufacturer_id = u.user_id
                 INNER JOIN manufacturers m ON u.user_id = m.user_id
                 WHERE u.user_type = "manufacturer"
                 AND mp.manufacturer_id != :current_user_id
+                AND mp.updated_at = (
+                    SELECT MAX(updated_at)
+                    FROM manufacturer_prices mp2
+                    WHERE mp2.manufacturer_id = mp.manufacturer_id
+                )
                 ORDER BY m.company_name ASC
             ');
             $this->db->bind(':current_user_id', $current_user_id);
@@ -40,19 +46,29 @@ class Manufacturer {
         }
     }
 
-    public function getPriceHistory($user_id) {
+    public function getManufacturerPrices() {
         try {
             $this->db->query('
-                SELECT unit_price, updated_at, action
-                FROM manufacturer_price_history
-                WHERE manufacturer_id = :user_id
-                ORDER BY updated_at DESC
-                LIMIT 10
+                SELECT 
+                    u.user_id,
+                    m.company_name,
+                    mp.unit_price,
+                    IFNULL(pp.file_path, "images/default_company.png") AS profile_image
+                FROM manufacturer_prices mp
+                INNER JOIN users u ON mp.manufacturer_id = u.user_id
+                INNER JOIN manufacturers m ON u.user_id = m.user_id
+                LEFT JOIN profile_pictures pp ON u.user_id = pp.user_id
+                WHERE u.user_type = "manufacturer"
+                AND mp.updated_at = (
+                    SELECT MAX(updated_at)
+                    FROM manufacturer_prices mp2
+                    WHERE mp2.manufacturer_id = mp.manufacturer_id
+                )
+                ORDER BY mp.unit_price DESC
             ');
-            $this->db->bind(':user_id', $user_id);
             return $this->db->resultSet();
         } catch (Exception $e) {
-            error_log('Error in getPriceHistory: ' . $e->getMessage());
+            error_log('Error in getManufacturerPrices: ' . $e->getMessage());
             return [];
         }
     }
@@ -618,26 +634,5 @@ AND corn_products.closing_date > NOW();
         }
     }
 
-    public function getManufacturerPrices() {
-        try {
-            $this->db->query('
-                SELECT 
-                    u.user_id,
-                    m.company_name,
-                    mp.unit_price,
-                    IFNULL(pp.file_path, "images/default_company.png") AS profile_image
-                FROM manufacturer_prices mp
-                INNER JOIN users u ON mp.manufacturer_id = u.user_id
-                INNER JOIN manufacturers m ON u.user_id = m.user_id
-                LEFT JOIN profile_pictures pp ON u.user_id = pp.user_id
-                WHERE u.user_type = "manufacturer"
-                ORDER BY mp.unit_price DESC
-            ');
-            return $this->db->resultSet();
-        } catch (Exception $e) {
-            error_log('Error in getManufacturerPrices: ' . $e->getMessage());
-            return [];
-        }
-    }
 }
 ?>
