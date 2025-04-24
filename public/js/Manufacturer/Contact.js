@@ -1,19 +1,9 @@
-// Open Hire Modal
-function openHireModal(workerName) {
-    document.getElementById("hireModal").style.display = "flex";
-    document.getElementById("workerName").textContent = `${workerName}`;
+function openHireModal(name, phone) {
+    document.getElementById('workerName').textContent = name;
+    document.getElementById('workerPhone').textContent = phone || 'Phone not available';
+    document.getElementById('hireModal').style.display = 'block';
 }
 
-
-// Close Modal
 function closeModal(modalId) {
-    document.getElementById(modalId).style.display = "none";
+    document.getElementById(modalId).style.display = 'none';
 }
-
-
-
-function cancelHire() {
-    closeModal('hireModal');
-}
-
-

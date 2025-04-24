@@ -79,20 +79,7 @@
                     <div class="stat-date">Since <?php echo date('M d, Y'); ?></div>
                 </div>
             </div>
-        </div>
-
-        <div class="stat-card">
-            <div class="stat-header">
-                <div class="stat-icon win-icon">
-                    <i class="fas fa-trophy"></i>
-                </div>
-                <div class="stat-info">
-                    <h3>Auctions Won</h3>
-                    <p><?php echo $data['auction_won']; ?></p>
-                    <div class="stat-date">As of <?php echo date('M d, Y'); ?></div>
-                </div>
-            </div>
-        </div>
+        </div>        
     </div>
 
     <div class="recent-section">

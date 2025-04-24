@@ -35,10 +35,16 @@
                         <p class="error"><?php echo htmlspecialchars($data['unit_price_err']); ?></p>
                     <?php endif; ?>
                     <input type="hidden" name="action" value="set">
-                    <button type="submit" class="btn"><?php echo $data['unit_price'] ? 'Update Price' : 'Add Price'; ?></button>
-                    <?php if ($data['unit_price']): ?>
-                        <button type="submit" name="action" value="delete" class="btn delete-btn" onclick="return confirm('Are you sure you want to delete the price?');">Delete Price</button>
-                    <?php endif; ?>
+                    <div class="button-group">
+                        <button type="submit" class="btn save-btn" title="<?php echo $data['unit_price'] ? 'Update Price' : 'Add Price'; ?>">
+                            <i class="fas fa-save"></i>
+                        </button>
+                        <?php if ($data['unit_price']): ?>
+                            <button type="submit" name="action" value="delete" class="btn delete-btn" onclick="return confirm('Are you sure you want to delete the price?');" title="Delete Price">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        <?php endif; ?>
+                    </div>
                 </form>
             </div>
 
@@ -68,7 +74,7 @@
                 </table>
             </div>
 
-            <div class="recent-section">
+            <!-- <div class="recent-section">
                 <div class="section-header">
                     <h2>Your Price History</h2>
                 </div>
@@ -96,7 +102,7 @@
                 </table>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <script>
         document.querySelector('.toggle-tools')?.addEventListener('click', function(e) {

@@ -662,5 +662,30 @@ AND corn_products.closing_date > NOW();
     
         return $this->db->resultSet();
     }
+    public function stockHolders() {
+        try {
+            $this->db->query('
+                SELECT 
+                    u.user_id,
+                    u.name,
+                    u.email,
+                    u.phone,                    
+                    IFNULL(pp.file_path, "images/default.jpg") AS profile_image,
+                    SUM(o.quantity) AS total_quantity
+                FROM orders_from_buyers o
+                INNER JOIN users u ON o.buyer_id = u.user_id
+                LEFT JOIN profile_pictures pp ON u.user_id = pp.user_id
+                WHERE o.payment_status = "paid"
+                AND u.user_type = "buyer"
+                GROUP BY u.user_id, u.name, u.email, u.phone,pp.file_path
+                HAVING SUM(o.quantity) > 1000
+                ORDER BY total_quantity DESC
+            ');
+            return $this->db->resultSet();
+        } catch (Exception $e) {
+            error_log('Error in stockHolders: ' . $e->getMessage());
+            return [];
+        }
+    }
 }
 ?>

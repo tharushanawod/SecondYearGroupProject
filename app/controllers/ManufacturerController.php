@@ -4,12 +4,9 @@ class ManufacturerController extends Controller {
     private $NotificationModel;
 
     public function __construct() {
-        // Get the current method from the URL
         $currentMethod = $this->getCurrentMethodFromURL();
     
-        // Bypass authentication if the current method is 'Notify'
-        if ($currentMethod !== 'Notify') {
-            // Check if user is logged in
+        if ($currentMethod !== 'Notify') {            
             if (!$this->isloggedin()) {
                 unset($_SESSION['user_id']);
                 unset($_SESSION['user_email']);
@@ -17,16 +14,10 @@ class ManufacturerController extends Controller {
                 session_destroy();
                 Redirect('LandingController/login');
             } else {
-
-                  // Load models
         $this->ManufacturerModel = $this->model('Manufacturer');
         $this->NotificationModel = $this->model('Notification');
-
-                // User is logged in, now check if they are restricted
                 $user_id = $_SESSION['user_id'];
-                $user = $this->ManufacturerModel->getUserStatus($user_id);  // Fetch user status from the database
-    
-                // If the user is restricted, prevent access to any page except "Manage Profile"
+                $user = $this->ManufacturerModel->getUserStatus($user_id); 
                 if ($user->user_status === 'restricted') {
                     if ($currentMethod !== 'ManageProfile' && $currentMethod !== 'Resetricted') {
                         Redirect('ManufacturerController/Resetricted/' . $user_id);
@@ -70,7 +61,6 @@ class ManufacturerController extends Controller {
 
     public function SetPrice() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Sanitize input
             $unit_price = filter_input(INPUT_POST, 'unit_price', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             $action = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) ?? 'set';
 
@@ -112,8 +102,6 @@ class ManufacturerController extends Controller {
             } else {
                 $data['unit_price_err'] = 'Invalid action.';
             }
-
-            // Render form with errors
             $this->View('Manufacturer/SetPrice', $data);
         } else {
             $last_price = $this->ManufacturerModel->getLastPrice($_SESSION['user_id']);
@@ -127,7 +115,6 @@ class ManufacturerController extends Controller {
         }
     }
 
-    // Other methods unchanged (e.g., ManageProfile, RequestHelp, etc.)
     public function ManageProfile() {
         if($_SERVER['REQUEST_METHOD'] == 'POST'){ 
             $_POST = filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING);
@@ -189,9 +176,13 @@ class ManufacturerController extends Controller {
     }
 
     public function StockHolders() {
-        $data = [];
-        $this->view('Manufacturer/StockHolders');
+        $buyers = $this->ManufacturerModel->stockHolders();
+        $data = [
+            'buyers' => $buyers
+        ];
+        $this->view('Manufacturer/StockHolders', $data);
     }
+
 
     public function RequestHelp() {
         $data = [];
@@ -520,18 +511,13 @@ class ManufacturerController extends Controller {
 
     public function Cancel() {
         echo "Payment was cancelled!";
-    }
-
-   
+    }   
    
     private function getCurrentMethodFromURL() {
-        // Parse the URL
         if (isset($_GET['url'])) {
             $url = rtrim($_GET['url'], '/');
             $url = filter_var($url, FILTER_SANITIZE_URL);
             $url = explode('/', $url);
-
-            // The second segment of the URL is the method name
             return $url[1] ?? null;
         }
         return null;
@@ -567,9 +553,8 @@ class ManufacturerController extends Controller {
     }
 
 
-       public function markHelpNotificationAsRead($notificationId, $userId) {
+    public function markHelpNotificationAsRead($notificationId, $userId) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Ensure the user is authorized
             if ($userId != $_SESSION['user_id']) {
                 header('Content-Type: application/json');
                 echo json_encode(['success' => false, 'error' => 'Unauthorized']);
@@ -589,10 +574,6 @@ class ManufacturerController extends Controller {
         }
     }
 
-  
-
-
-
     public function filterBids() {
         $input = json_decode(file_get_contents("php://input"), true);
     
@@ -606,8 +587,6 @@ class ManufacturerController extends Controller {
         $filtered = $this->ManufacturerModel->getFilteredBids($category, $sortBy, $minPrice, $maxPrice, $minQty, $maxQty);
     
         echo json_encode($filtered);
-    }  
-
-
+    } 
 }
 ?>

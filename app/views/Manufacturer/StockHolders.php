@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Holders</title>
+    <title>Stock Holders</title>
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Manufacturer/StockHolders.css">
     <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet"/>
 </head>
@@ -11,88 +11,41 @@
 <?php require APPROOT . '/views/inc/sidebar.php'; ?>
 
 <div class="maincontainer">
-<h1> Last Purchases (More Than 1000Kg)</h1>
+    <h1>Stock Holders (Over 1,000 kg)</h1>
 
-<!-- Worker Profile Cards -->
-<div class="worker-container">
-<div class="worker-card">
-        <h3>R.M.M.A Rajapaksha</h3>
-        <div class="worker-img">
-            <img src="<?php echo URLROOT;?>/images/1.jpg" alt="R.M.M.A Rajapaksha">                
-        </div>
-        <p><b>Location:</b> Negombo</p>
-        <p><b>Availability:</b> Available</p>
-        <p><b>Email:</b> rajapaksha@example.com</p>
-        <p><b>Stock Size:(kg)</b> 3455</p>
-        <div class="button-group">
-            <button class="hire-btn" onclick="openHireModal('R.M.M.A Rajapaksha')"><b>Contact</b></button>
-        </div>
-    </div>
-
-    <div class="worker-card">
-        <h3>G.J.G Ekanayake</h3>
-        <div class="worker-img">
-            <img src="<?php echo URLROOT;?>/images/2.jpg" alt="G.J.G Ekanayake">                
-        </div>
-        <p><b>Location:</b> Negombo</p>
-        <p><b>Availability:</b> Available</p>
-        <p><b>Email:</b> ekanayake@example.com</p>
-        <p><b>Stock Size:(kg)</b> 3200</p>
-        <div class="button-group">
-            <button class="hire-btn" onclick="openHireModal('G.J.G Ekanayake')"><b>Contact</b></button>
-        </div>
-    </div>
-
-    <div class="worker-card">
-        <h3>D.B.N Rathnayaka</h3>
-        <div class="worker-img">
-            <img src="<?php echo URLROOT;?>/images/3.jpg" alt="D.B.N Rathnayaka">                
-        </div>
-        <p><b>Location:</b> Negombo</p>
-        <p><b>Availability:</b> Available</p>
-        <p><b>Email:</b> rathnayaka@example.com</p>
-        <p><b>Stock Size:(kg)</b> 2750</p>
-        <div class="button-group">
-            <button class="hire-btn" onclick="openHireModal('D.B.N Rathnayaka')"><b>Contact</b></button>
-        </div>
-    </div>
-
-    <div class="worker-card">
-        <h3>F.H.N Dasanayaka</h3>
-        <div class="worker-img">
-            <img src="<?php echo URLROOT;?>/images/4.jpg" alt="F.H.N Dasanayaka">                
-        </div>
-        <p><b>Location:</b> Negombo</p>
-        <p><b>Availability:</b> Available</p>
-        <p><b>Email:</b> dasanayaka@example.com</p>
-        <p><b>Stock Size:(kg)</b> 3050</p>
-        <div class="button-group">
-            <button class="hire-btn" onclick="openHireModal('F.H.N Dasanayaka')"><b>Contact</b></button>
-        </div>
-    </div>
-
-    
-   
+    <!-- Buyer Cards -->
+    <div class="worker-container">
+        <?php if (empty($data['buyers'])): ?>
+            <p>No buyers found with purchases over 1,000 kg.</p>
+        <?php else: ?>
+            <?php foreach ($data['buyers'] as $buyer): ?>
+                <div class="worker-card">
+                    <h3><?php echo htmlspecialchars($buyer->name); ?></h3>
+                    <div class="worker-img">
+                        <img src="<?php echo URLROOT . '/' . htmlspecialchars($buyer->profile_image); ?>" alt="<?php echo htmlspecialchars($buyer->name); ?>">
+                    </div>                    
+                    <p><b>Availability:</b> Available</p>
+                    <p><b>Email:</b> <?php echo htmlspecialchars($buyer->email); ?></p>
+                    <p><b>Total Purchased (kg):</b> <?php echo number_format($buyer->total_quantity, 0); ?></p>
+                    <div class="button-group">
+                        <button class="hire-btn" onclick="openHireModal('<?php echo htmlspecialchars($buyer->name); ?>', '<?php echo htmlspecialchars($buyer->phone); ?>')"><b>Contact</b></button>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
     </div>
 </div>
 
-</div>
-</div>
-
-
-   
-
-   
-    <div id="hireModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('hireModal')">&times;</span>
-            <h3>Contact</h3>
-            <p id="workerName"></p>
-             <p>0771346754</p>
-            <button onclick="cancelHire()"><b>Cancel</b></button>
-        </div>
+<div id="hireModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('hireModal')">&times;</span>
+        <h3>Contact</h3>
+        <p id="workerName"></p>
+        <p id="workerPhone"></p>
+        <button onclick="closeModal('hireModal')"><b>Cancel</b></button>
     </div>
-   
-    <script src="<?php echo URLROOT;?>/js/Manufacturer/Contact.js"></script>
+</div>
+
+<script src="<?php echo URLROOT;?>/js/Manufacturer/Contact.js"></script>
 </body>
 </html>
