@@ -9,7 +9,7 @@
 </head>
 <body>
 <?php require APPROOT . '/views/inc/sidebar.php'; ?> 
-<h1> Buyer Transaction Logs</h1>
+<h1> Farmers Transaction Logs</h1>
     <div class="table-container">
         <table id="logTable">
             <thead>
@@ -21,6 +21,7 @@
                     <th>Payment Date</th>
                     <th>wallet Status</th> 
                     <th>Withdraw Status</th> 
+                    <th>Action</th> 
                 </tr>
             </thead>
             <tbody>

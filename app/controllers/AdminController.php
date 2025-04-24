@@ -684,7 +684,48 @@ class AdminController extends Controller {
     public function Logs() {
         $this->view('Admin/Logs');
     }
- 
+
+   
+    
+    public function Refund($transaction_id){
+        
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+           
+            // Sanitize POST data
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            
+            $data = [
+                'transaction_id' => $transaction_id,
+                'refund_amount' => floatval(trim($_POST['refund_amount'])),
+                'refund_reason' => trim($_POST['refund_reason']),
+                'admin_notes' => trim($_POST['admin_notes']),
+                'admin_id' => $_SESSION['user_id'],
+            ];
+            
+            // Process the refund using the model
+            if($this->AdminModel->processRefund($data)){
+                // Set flash message for success
+                // flash('refund_message', 'Refund has been processed successfully');
+                Redirect('AdminController/Dashboard');
+            } else {
+                echo "error";
+                // // If something went wrong, return to the form with the data
+                // $this->view('Admin/Refund', $data);
+            }
+        } else {
+
+            $log = $this->AdminModel->getBuyerTransaction($transaction_id);
+            $data = [
+                'transaction_id' => $log->transaction_id,
+                'order_id' => $log->order_id,
+                'refund_amount' => $log->paid_amount,
+                'refund_reason' => '',
+                'admin_notes' => ''
+            ];
+            
+            $this->view('Admin/Refund', $data);
+        }
+    }
  
     
 

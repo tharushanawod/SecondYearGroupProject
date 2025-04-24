@@ -143,11 +143,11 @@
                 </div>
                 <div class="form-group">
                     <label for="expiry-date">Closing Date & Time</label>
-                    <input type="datetime-local" id="closing_date" name="closing_date" class="form-control">
+                    <input type="datetime-local" id="closing_date" name="closing_date" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label for="media">Media (images Only)</label>
-                    <input type="file" class="form-control" id="media" name="media" accept="image/*,video/*,model/*">
+                    <input type="file" class="form-control" id="media" name="media" accept="image/*,video/*,model/*" required>
                     <img id="media-preview" src="#" alt="Current Media"
                         style="display:none; max-width: 200px; margin-top: 10px;">
                 </div>

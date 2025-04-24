@@ -22,6 +22,7 @@
                     <th>Payment ID</th>
                     <th>wallet Status</th> 
                     <th>Withdraw Status</th> 
+                    <th>Action</th> 
                 </tr>
             </thead>
             <tbody>

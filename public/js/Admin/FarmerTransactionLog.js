@@ -51,6 +51,8 @@ function renderTable() {
         <td data-label="Withdraw Status">${getWithdrawStatus(
           log.wallet_status
         )}</td>
+
+        <td><button class="btn btn-sm btn-primary view-buyer-btn">Refund Money</button></td>
     `;
     logTable.appendChild(row);
   });

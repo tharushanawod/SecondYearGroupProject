@@ -3,6 +3,7 @@ class ModeratorController extends Controller {
     private $notificationModel;
     private $notification;
     private $ModeratorModel;
+    private $userModel;
 
     public function __construct() {
         if (!$this->isloggedin()) {
@@ -15,6 +16,8 @@ class ModeratorController extends Controller {
         $this->notificationModel = $this->model('M_pages');
         $this->notification = $this->model('Notification');
         $this->ModeratorModel = $this->model('Moderator');
+        $this->userModel = $this->model('Users');
+
     }
 
     public function isloggedin() {
@@ -342,6 +345,50 @@ class ModeratorController extends Controller {
             ];
 
             $this->view('Moderator/ReportToAdmin', $data);
+        }
+    }
+
+    public function Ratings(){
+
+        // Fetch ratings from the model
+        $ratings = $this->userModel->getRatings();
+        
+        $rating_merged = array_merge($ratings['farmer_reviews_worker'], $ratings['buyer_reviews_farmer']);
+        // Pass the ratings data to the view
+        $data = ['ratings' => $rating_merged];
+
+        $this->View('Moderator/Ratings',$data);
+    }
+
+    public function ApproveWorkerReview($id){
+        if($this->userModel->ApproveWorkerReview($id)){
+            Redirect('ModeratorController/Ratings');
+        }else{
+            die('Something went wrong');
+        }
+    }
+   
+    public function ApproveProductReview($id){
+        if($this->userModel->ApproveProductReview($id)){
+            Redirect('ModeratorController/Ratings');
+        }else{
+            die('Something went wrong');
+        }
+    }
+
+    public function RejectWorkerReview($id){
+        if($this->userModel->RejectWorkerReview($id)){
+            Redirect('ModeratorController/Ratings');
+        }else{
+            die('Something went wrong');
+        }
+    }
+
+    public function RejectProductReview($id){
+        if($this->userModel->RejectProductReview($id)){
+            Redirect('ModeratorController/Ratings');
+        }else{
+            die('Something went wrong');
         }
     }
 }
