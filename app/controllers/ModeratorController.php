@@ -3,6 +3,7 @@ class ModeratorController extends Controller {
     private $notificationModel;
     private $notification;
     private $ModeratorModel;
+    private $userModel;
 
     public function __construct() {
         if (!$this->isloggedin()) {
@@ -15,6 +16,8 @@ class ModeratorController extends Controller {
         $this->notificationModel = $this->model('M_pages');
         $this->notification = $this->model('Notification');
         $this->ModeratorModel = $this->model('Moderator');
+        $this->userModel = $this->model('Users');
+
     }
 
     public function isloggedin() {
@@ -306,6 +309,87 @@ class ModeratorController extends Controller {
        $logs = $this->ModeratorModel->getFarmerTransactionLog();     
        echo json_encode($logs);
         
+    }
+
+    public function ReportToAdmin(){
+      
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
+            $data = [
+                'user_id' => trim($_POST['user_id']),
+                'moderator_comments' =>trim($_POST['moderator_comments']),
+                'moderator_id'=> $_SESSION['user_id']
+            ];
+     
+
+            if (!empty($data['user_id']) && !empty($data['moderator_comments'])) {
+                $result = $this->ModeratorModel->ReportToAdmin($data);
+                if ($result) {
+                    $data= 
+                    ['report_success'=>"Report submitted successfully!" ];
+
+                    $this->view('Moderator/ReportToAdmin', $data);
+                } else {
+                    echo 'Failed to report to admin';
+                }
+            } else {
+                $this->view('Moderator/ReportToAdmin', $data);
+            }
+
+           
+        }else{
+            $data = [
+                'user_id' => '',
+                'moderator_comments' => ''
+                
+            ];
+
+            $this->view('Moderator/ReportToAdmin', $data);
+        }
+    }
+
+    public function Ratings(){
+
+        // Fetch ratings from the model
+        $ratings = $this->userModel->getRatings();
+        
+        $rating_merged = array_merge($ratings['farmer_reviews_worker'], $ratings['buyer_reviews_farmer']);
+        // Pass the ratings data to the view
+        $data = ['ratings' => $rating_merged];
+
+        $this->View('Moderator/Ratings',$data);
+    }
+
+    public function ApproveWorkerReview($id){
+        if($this->userModel->ApproveWorkerReview($id)){
+            Redirect('ModeratorController/Ratings');
+        }else{
+            die('Something went wrong');
+        }
+    }
+   
+    public function ApproveProductReview($id){
+        if($this->userModel->ApproveProductReview($id)){
+            Redirect('ModeratorController/Ratings');
+        }else{
+            die('Something went wrong');
+        }
+    }
+
+    public function RejectWorkerReview($id){
+        if($this->userModel->RejectWorkerReview($id)){
+            Redirect('ModeratorController/Ratings');
+        }else{
+            die('Something went wrong');
+        }
+    }
+
+    public function RejectProductReview($id){
+        if($this->userModel->RejectProductReview($id)){
+            Redirect('ModeratorController/Ratings');
+        }else{
+            die('Something went wrong');
+        }
     }
 }
 

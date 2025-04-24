@@ -91,7 +91,7 @@ error_log("testing".var_export($hash, true));
             <input type="hidden" name="merchant_id" value="<?php echo $merchant_id;?>">    <!-- Replace your Merchant ID -->
             <input type="hidden" name="return_url" value="<?php echo URLROOT;?>/BuyerController/Success?amount=<?php echo $amount; ?>"> <!-- Correct URL -->
     <input type="hidden" name="cancel_url" value="http://sample.com/cancel">
-    <input type="hidden" name="notify_url" value="https://bc65-139-59-27-84.ngrok-free.app/GroupProject/BuyerController/Notify">
+    <input type="hidden" name="notify_url" value="https://f4d9-157-230-255-203.ngrok-free.app/GroupProject/BuyerController/Notify">
     <input type="hidden" name="order_id" value="<?php echo $data['order_id'];?>">
     <input type="hidden" name="items" value="Corn">
     <input type="hidden" name="currency" value="LKR">

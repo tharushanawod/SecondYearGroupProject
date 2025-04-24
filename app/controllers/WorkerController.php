@@ -83,11 +83,18 @@ class WorkerController extends Controller {
                 'email' => trim($_POST['email']),
                 'bio' => trim($_POST['bio']),
                 'password' => trim($_POST['password']),
+                'hourly_rate' => trim($_POST['hourly_rate']),
+                'working_area' => trim($_POST['working_area']),
+                'availability' => trim($_POST['availability']),
+                'skills' => $_POST['skills'],
+                'bio_err' => '',
                 'name_err' => '',
                 'phone_err' => '',
                 'address_err' => '',
                 'email_err' => '',
-                'bio_err' => ''
+                'bio_err' => '',
+                'hourly_rate_err' => '',
+                'working_area_err' => '',
             ];
 
             if (empty($data['name'])) {
@@ -109,7 +116,7 @@ class WorkerController extends Controller {
                 }
                 $result = $this->WorkerModel->UpdateProfile($data);
                 if ($result) {
-                    Redirect('LandingController/logout');
+                    Redirect('WorkerController/ManageProfile');
                 }
             }
             $this->view('FarmWorker/ManageProfile', $data);
@@ -120,11 +127,20 @@ class WorkerController extends Controller {
                 'phone' => $user->phone,
                 'email' => $user->email,
                 'bio' => $user->bio,
+                'hourly_rate' => $user->hourly_rate,
+                'working_area' => $user->working_area,
+                'availability' => $user->availability,
+                'skills' => $user->skills,
                 'password' => '',
                 'name_err' => '',
                 'phone_err' => '',
                 'email_err' => '',
-                'password_err' => ''
+                'password_err' => '',
+                'hourly_rate_err' => '',
+                'bio_err' => '',
+                'working_area_err' => '',
+                'availability_err' => '',
+                'skills_err' => '',
             ];
             $this->view('FarmWorker/ManageProfile', $data);
         }

@@ -2,6 +2,7 @@
 
 class AdminController extends Controller {
     private $AdminModel;
+    private $ModeratorModel;
 
     public function __construct() {
 
@@ -14,6 +15,7 @@ class AdminController extends Controller {
         }
         
         $this->AdminModel = $this->model('Users');
+        $this->ModeratorModel = $this->model('Moderator');
     }
 
     public function isloggedin() {
@@ -612,8 +614,118 @@ class AdminController extends Controller {
             echo "Document not found.";
         }
     }
+
+    public function ModeratorReports(){
+        $this->view('Admin/ModeratorReports');
+    }
     
+    public function getModeratorReportsg() {
+        $logs = $this->AdminModel->getModeratorReports();
+        
+        echo json_encode($logs);
+         
+     }
+
+     public function AccountLog() {
+        $this->view('Admin/AccountLog');
+    }
+
+    public function getAccountLog() {
+       $logs = $this->ModeratorModel->getAccountLog();
+       
+       echo json_encode($logs);
+        
+    }
+
     
+    public function BuyerOrderLog() {
+        $this->view('Admin/BuyerOrderLog');
+    }
+
+    public function getBuyerOrderLog() {
+       $logs = $this->ModeratorModel->getBuyerOrderLog();
+       
+       echo json_encode($logs);
+        
+    }
+
+    public function BuyerTransactionLog() {
+        $this->view('Admin/BuyerTransactionLog');
+    }
+
+    public function getBuyerTransactionLog() {
+       $logs = $this->ModeratorModel->getBuyerTransactionLog();
+       
+       echo json_encode($logs);
+        
+    }
+
+    public function FarmerOrderLog() {
+        $this->view('Admin/FarmerOrderLog');
+    }
+
+    public function getFarmerOrderLog() {
+       $logs = $this->ModeratorModel->getFarmerOrderLog();
+       
+       echo json_encode($logs);
+        
+    }
+
+    public function FarmerTransactionLog() {
+        $this->view('Admin/FarmerTransactionLog');
+    }
+
+    public function getFarmerTransactionLog() {
+       $logs = $this->ModeratorModel->getFarmerTransactionLog();     
+       echo json_encode($logs);
+        
+    }
+
+    public function Logs() {
+        $this->view('Admin/Logs');
+    }
+
+   
+    
+    public function Refund($transaction_id){
+        
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+           
+            // Sanitize POST data
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            
+            $data = [
+                'transaction_id' => $transaction_id,
+                'refund_amount' => floatval(trim($_POST['refund_amount'])),
+                'refund_reason' => trim($_POST['refund_reason']),
+                'admin_notes' => trim($_POST['admin_notes']),
+                'admin_id' => $_SESSION['user_id'],
+            ];
+            
+            // Process the refund using the model
+            if($this->AdminModel->processRefund($data)){
+                // Set flash message for success
+                // flash('refund_message', 'Refund has been processed successfully');
+                Redirect('AdminController/Dashboard');
+            } else {
+                echo "error";
+                // // If something went wrong, return to the form with the data
+                // $this->view('Admin/Refund', $data);
+            }
+        } else {
+
+            $log = $this->AdminModel->getBuyerTransaction($transaction_id);
+            $data = [
+                'transaction_id' => $log->transaction_id,
+                'order_id' => $log->order_id,
+                'refund_amount' => $log->paid_amount,
+                'refund_reason' => '',
+                'admin_notes' => ''
+            ];
+            
+            $this->view('Admin/Refund', $data);
+        }
+    }
  
     
 

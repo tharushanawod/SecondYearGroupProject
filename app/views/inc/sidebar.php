@@ -81,6 +81,9 @@
                   <li><a href="<?php echo URLROOT;?>/ModeratorController/Dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>
                   <li><a href="<?php echo URLROOT;?>/ModeratorController/Report"><i class="fa-solid fa-chart-bar"></i><span class="menu-text">Reports</span></a></li>  
                   <li><a href="<?php echo URLROOT;?>/ModeratorController/Help"><i class="fa-solid fa-comment-dots"></i><span class="menu-text">Help Center</span></a></li>
+                  <li><a href="<?php echo URLROOT;?>/ModeratorController/ReportToAdmin"><i class="fas fa-user-shield"></i> <span class="menu-text">Report TO Admin</span></a></li>
+                  <li><a href="<?php echo URLROOT;?>/ModeratorController/Ratings"><i class="fa-solid fa-star"></i> <span class="menu-text">Ratings</span></a></li>
+                  
                   <?php else: ?>
 
                 <li><a href="<?php echo URLROOT;?>/AdminController/Dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>

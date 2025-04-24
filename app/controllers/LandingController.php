@@ -159,12 +159,17 @@ class LandingController extends Controller{
                 'address' => '',
                 'password' => '',
                 'confirm_password' => '',
+                'hourly_rate' => '',
                 'name_err' => '',
                 'email_err' => '',
                 'phone_err' => '',
                 'address_err' => '',
                 'password_err' => '',
-                'confirm_password_err' => ''
+                'confirm_password_err' => '',
+                'working_area_err' => '',
+                'skills_err' => '',
+                'hourly_rate_err' => ''
+                
             ];
     
             $view = 'Landing/' . ucfirst($user_type) . 'Reg';
