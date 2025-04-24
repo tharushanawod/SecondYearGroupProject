@@ -4,28 +4,28 @@
    <title>Settings</title>
    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet" />
-   <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Manufacturer/ManageProfile.css" />
-   <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet" />
+   <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Farmer/ManageProfile.css" />
+   <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet"/>
 </head>
 
 <body>
    <?php require APPROOT . '/views/inc/sidebar.php'; ?>
    <div class="container">
 
-      <!-- profile image section  -->
+   <!-- profile image section  -->
 
       <div class="profilesidebar">
-         <?php $imagepath = $this->getProfileImage($_SESSION['user_id']); ?>
-         <img alt="profile picture" src="<?php echo $imagepath; ?>" />
-         <div class="edit-icon" onclick="openModal()">
-            <i class="fas fa-pencil-alt"> </i>
-         </div>
-         <h2>
-            <?php echo $_SESSION['user_name']; ?>
-         </h2>
-         <p>
-            <?php echo $_SESSION['user_role']; ?>
-         </p>
+            <?php $imagepath = $this->getProfileImage($_SESSION['user_id']); ?>
+            <img alt="profile picture"  src="<?php echo $imagepath; ?>" />
+            <div class="edit-icon" onclick="openModal()">
+               <i class="fas fa-pencil-alt"> </i>
+            </div>
+            <h2>
+               <?php echo $_SESSION['user_name']; ?>
+            </h2>
+            <p>
+               <?php echo $_SESSION['user_role']; ?>
+            </p>
       </div>
 
       <!-- popup modal for uploading profile picture -->
@@ -34,7 +34,7 @@
          <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <div class="image-preview">
-               <img src="<?php echo URLROOT;?>/images/profile.jpg" alt="Profile preview" id="preview-image">
+                <img src="<?php echo URLROOT;?>/images/profile.jpg" alt="Profile preview" id="preview-image">
             </div>
             <form class="upload-form" action="<?php echo URLROOT;?>/ManufacturerController/uploadProfileImage" method="POST"
                enctype="multipart/form-data">
@@ -46,19 +46,18 @@
 
       <!-- popup to confirm the save profile details -->
       <div id="popup" class="popup">
-         <div class="popup-content">
-            <span class="close-btn" onclick="closePopup()">&times;</span>
-            <p>Your profile has been updated successfully!</p>
-            <p>Please Login To the System Again</p>
-         </div>
-      </div>
+    <div class="popup-content">
+      <span class="close-btn" onclick="closePopup()">&times;</span>
+      <p>Your profile has been updated successfully!</p>
+    </div>
+  </div>
 
 
       <div class="content">
          <h1>Settings</h1>
          <div class="tabs">
-            <a href="#"> General </a>
-
+            <a  href="#"> General </a>
+           
          </div>
          <h2>Profile</h2>
 
@@ -101,8 +100,13 @@
             <button class="save-btn" type="submit" onclick="showPopup()">Save information</button>
       </div>
       </form>
+
+
+
+
+
    </div>
- <script src="<?php echo URLROOT;?>/js/common/ManageProfile.js"></script>
+   <script src="<?php echo URLROOT;?>/js/Common/ManageProfile.js"></script>
 
 </body>
 
