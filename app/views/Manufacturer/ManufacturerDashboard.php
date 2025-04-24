@@ -36,7 +36,7 @@
                     <h3>Current Minimum Price</h3>
                     <p>LKR <?php echo $data['last_price'] ? number_format($data['last_price'], 2) : 'Not Set'; ?></p>
                     <div class="stat-date">
-                        <a href="<?php echo URLROOT; ?>/ManufacturerController/SetPrice" class="set-price-link">Set Price</a>
+                    <div class="stat-date">As of <?php echo date('M d, Y'); ?></div>
                     </div>
                 </div>
             </div>

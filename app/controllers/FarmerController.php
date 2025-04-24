@@ -256,9 +256,12 @@ class FarmerController extends Controller {
         }
     }
 
-    public function GetIdea(){
-        $data=[];
-        $this->view('Farmer/GetIdea',$data);
+    public function GetIdea() {
+        $prices = $this->farmerModel->getManufacturerPrices();
+        $data = [
+            'prices' => $prices
+        ];
+        $this->view('Farmer/GetIdea', $data);
     }
     
 

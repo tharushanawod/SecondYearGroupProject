@@ -181,6 +181,12 @@
             font-weight: 400;
         }
 
+        .no-rates {
+            font-size: 1.2em;
+            color: #2c584a;
+            padding: 20px;
+        }
+
         @media (max-width: 1200px) {
             .content-wrapper {
                 margin-left: 250px;
@@ -230,41 +236,29 @@
         <div class="container-card">
             <img src="<?php echo URLROOT;?>/images/images/img39.png" alt="Product Image" class="large-image">
             <div class="text">
-            <h1>Get Higher Price from Buyers!</h1>
-            <p>Get Better Prices, We Find Buyers!</p>
-            <a href="<?php echo URLROOT;?>/FarmerController/AddProduct" class="button-link">
-                <button class="cta-button">Add Your Product→</button>
-            </a>
+                <h1>Get Higher Price from Buyers!</h1>
+                <p>Get Better Prices, We Find Buyers!</p>
+                <a href="<?php echo URLROOT;?>/FarmerController/AddProduct" class="button-link">
+                    <button class="cta-button">Add Your Product→</button>
+                </a>
             </div>
         </div>
     </div>   
     <div class="current-rates">
         <h2>Current Rates</h2>
         <div class="rates-grid">
-            <div class="rate-card">
-                <img src="<?php echo URLROOT;?>/images/images/img65.png" alt="Company Logo">
-                <h3>Prima</h3>
-                <p>Product: Dry Corn</p>
-                <p>Rate: LKR 100 (1Kg)</p>
-            </div>
-            <div class="rate-card">
-                <img src="<?php echo URLROOT;?>/images/images/img66.png" alt="Company Logo">
-                <h3>Munchee</h3>
-                <p>Product: Dry Corn</p>
-                <p>Rate: LKR 101 (1Kg)</p>
-            </div>
-            <div class="rate-card">
-                <img src="<?php echo URLROOT;?>/images/images/img67.jpeg" alt="Company Logo">
-                <h3>Maliban</h3>
-                <p>Product: Dry Corn</p>
-                <p>Rate: LKR 99 (1Kg)</p>
-            </div>
-            <div class="rate-card">
-                <img src="<?php echo URLROOT;?>/images/images/img70.png" alt="Company Logo">
-                <h3>Cargills</h3>
-                <p>Product: Dry Corn</p>
-                <p>Rate: LKR 104 (1Kg)</p>
-            </div>
+            <?php if (empty($data['prices'])): ?>
+                <p class="no-rates">No manufacturer prices available</p>
+            <?php else: ?>
+                <?php foreach ($data['prices'] as $price): ?>
+                    <div class="rate-card">
+                        <img src="<?php echo URLROOT . '/' . htmlspecialchars($price->profile_image ?: 'images/default_company.png'); ?>" alt="<?php echo htmlspecialchars($price->company_name ?: 'Unknown Manufacturer'); ?> Logo">
+                        <h3><?php echo htmlspecialchars($price->company_name ?: 'Unknown Manufacturer'); ?></h3>
+                        <p>Product: Dry Corn</p>
+                        <p>Rate: LKR <?php echo number_format($price->unit_price, 2); ?> (1Kg)</p>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
     </div>    
 </body>

@@ -63,7 +63,7 @@
                         <?php if (!empty($data['other_prices'])): ?>
                             <?php foreach ($data['other_prices'] as $price): ?>
                                 <tr>
-                                    <td><?php echo htmlspecialchars($price->name); ?></td>
+                                    <td><?php echo htmlspecialchars($price->company_name ?: 'Unknown Manufacturer'); ?></td>
                                     <td><?php echo number_format($price->unit_price, 2); ?></td>
                                 </tr>
                             <?php endforeach; ?>
@@ -73,36 +73,8 @@
                     </tbody>
                 </table>
             </div>
-
-            <!-- <div class="recent-section">
-                <div class="section-header">
-                    <h2>Your Price History</h2>
-                </div>
-                <table class="recent-bids">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Price (LKR)</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php if (!empty($data['price_history'])): ?>
-                            <?php foreach ($data['price_history'] as $history): ?>
-                                <tr>
-                                    <td><?php echo date('Y-m-d H:i:s', strtotime($history->updated_at)); ?></td>
-                                    <td><?php echo $history->action === 'delete' ? 'Deleted' : number_format($history->unit_price, 2); ?></td>
-                                    <td><?php echo ucfirst($history->action); ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <tr><td colspan="3">No price history available</td></tr>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
-            </div>
         </div>
-    </div> -->
+    </div>
 
     <script>
         document.querySelector('.toggle-tools')?.addEventListener('click', function(e) {

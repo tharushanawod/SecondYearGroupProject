@@ -21,16 +21,16 @@ class Manufacturer {
             return null;
         }
     }
-
     public function getOtherManufacturersPrices($current_user_id) {
         try {
             $this->db->query('
-                SELECT u.name, mp.unit_price
+                SELECT m.company_name, mp.unit_price
                 FROM manufacturer_prices mp
                 INNER JOIN users u ON mp.manufacturer_id = u.user_id
-                WHERE u.user_role = "manufacturer"
+                INNER JOIN manufacturers m ON u.user_id = m.user_id
+                WHERE u.user_type = "manufacturer"
                 AND mp.manufacturer_id != :current_user_id
-                ORDER BY u.name ASC
+                ORDER BY m.company_name ASC
             ');
             $this->db->bind(':current_user_id', $current_user_id);
             return $this->db->resultSet();
@@ -39,7 +39,7 @@ class Manufacturer {
             return [];
         }
     }
-
+    
     public function getPriceHistory($user_id) {
         try {
             $this->db->query('
