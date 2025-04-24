@@ -61,16 +61,16 @@ class ManufacturerController extends Controller {
 
     public function SetPrice() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Sanitize input
             $unit_price = filter_input(INPUT_POST, 'unit_price', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-            $action = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) ?? 'set';
-
+            $action = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? 'set';
+    
             $data = [
                 'unit_price' => $unit_price,
                 'unit_price_err' => '',
-                'other_prices' => $this->ManufacturerModel->getOtherManufacturersPrices($_SESSION['user_id']),
-                'price_history' => $this->ManufacturerModel->getPriceHistory($_SESSION['user_id'])
+                'other_prices' => $this->ManufacturerModel->getOtherManufacturersPrices($_SESSION['user_id'])
             ];
-
+    
             if ($action === 'delete') {
                 if ($this->ManufacturerModel->deletePrice($_SESSION['user_id'])) {
                     $_SESSION['price_success'] = 'Price deleted successfully!';
@@ -89,7 +89,7 @@ class ManufacturerController extends Controller {
                 } elseif ($data['unit_price'] > 10000) {
                     $data['unit_price_err'] = 'Price cannot exceed 10,000 LKR';
                 }
-
+    
                 if (empty($data['unit_price_err'])) {
                     if ($this->ManufacturerModel->setPrice($_SESSION['user_id'], $data['unit_price'])) {
                         $_SESSION['price_success'] = 'Price updated successfully!';
@@ -108,8 +108,7 @@ class ManufacturerController extends Controller {
             $data = [
                 'unit_price' => $last_price ? $last_price->unit_price : '',
                 'unit_price_err' => '',
-                'other_prices' => $this->ManufacturerModel->getOtherManufacturersPrices($_SESSION['user_id']),
-                'price_history' => $this->ManufacturerModel->getPriceHistory($_SESSION['user_id'])
+                'other_prices' => $this->ManufacturerModel->getOtherManufacturersPrices($_SESSION['user_id'])
             ];
             $this->View('Manufacturer/SetPrice', $data);
         }
@@ -239,6 +238,7 @@ class ManufacturerController extends Controller {
         $data = [];
         $this->View('inc/404.php', $data);
     }
+
         
     public function LandingPage() {
         $prices = $this->ManufacturerModel->getManufacturerPrices();

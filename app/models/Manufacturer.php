@@ -60,7 +60,7 @@ class Manufacturer {
     public function setPrice($user_id, $unit_price) {
         try {
             $this->db->beginTransaction();
-
+    
             // Insert or update price
             $this->db->query('
                 INSERT INTO manufacturer_prices (manufacturer_id, unit_price, updated_at)
@@ -72,18 +72,7 @@ class Manufacturer {
             $this->db->bind(':user_id', $user_id);
             $this->db->bind(':unit_price', $unit_price);
             $success = $this->db->execute();
-
-            // Log to history
-            if ($success) {
-                $this->db->query('
-                    INSERT INTO manufacturer_price_history (manufacturer_id, unit_price, updated_at, action)
-                    VALUES (:user_id, :unit_price, NOW(), "set")
-                ');
-                $this->db->bind(':user_id', $user_id);
-                $this->db->bind(':unit_price', $unit_price);
-                $success = $this->db->execute();
-            }
-
+    
             if ($success) {
                 $this->db->commit();
                 return true;
@@ -97,37 +86,16 @@ class Manufacturer {
             return false;
         }
     }
-
+    
     public function deletePrice($user_id) {
         try {
             $this->db->beginTransaction();
-
-            // Check if price exists and get current price
-            $this->db->query('SELECT unit_price FROM manufacturer_prices WHERE manufacturer_id = :user_id');
-            $this->db->bind(':user_id', $user_id);
-            $current_price = $this->db->single();
-
-            if (!$current_price) {
-                $this->db->rollBack();
-                return false;
-            }
-
+    
             // Delete current price
             $this->db->query('DELETE FROM manufacturer_prices WHERE manufacturer_id = :user_id');
             $this->db->bind(':user_id', $user_id);
             $success = $this->db->execute() && $this->db->rowCount() > 0;
-
-            // Log deletion to history with actual price
-            if ($success) {
-                $this->db->query('
-                    INSERT INTO manufacturer_price_history (manufacturer_id, unit_price, updated_at, action)
-                    VALUES (:user_id, :unit_price, NOW(), "delete")
-                ');
-                $this->db->bind(':user_id', $user_id);
-                $this->db->bind(':unit_price', $current_price->unit_price);
-                $success = $this->db->execute();
-            }
-
+    
             if ($success) {
                 $this->db->commit();
                 return true;
