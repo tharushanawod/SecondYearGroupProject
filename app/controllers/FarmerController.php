@@ -416,11 +416,15 @@ class FarmerController extends Controller {
                     'name' => $user->name,
                     'phone' => $user->phone,
                     'email' => $user->email,
+                    'address' => $user->address,
+                    'district' => $user->district,
                     'password' => '',
                     'name_err' => '',
                     'phone_err' => '',
                     'email_err' => '',
-                    'password_err' => ''
+                    'password_err' => '',
+                    'address_err' => '',
+                    'district_err' => ''
                 ];
                 $this->view('Farmer/ManageProfile',$data);
                 

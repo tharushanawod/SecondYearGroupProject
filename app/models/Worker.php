@@ -10,7 +10,7 @@ class Worker {
 
     public function getUserById($id) {
         $this->db->query('
-            SELECT users.*, farmworkers.bio 
+            SELECT users.*, farmworkers.*
             FROM users
             LEFT JOIN farmworkers
             ON users.user_id = farmworkers.user_id
@@ -44,8 +44,15 @@ class Worker {
             }
     
             // Update the farmworkers table
-            $this->db->query('UPDATE farmworkers SET bio = :bio WHERE user_id = :id');
+            // Convert skills array to string
+            $skills = (isset($data['skills']) && is_array($data['skills'])) ? implode(',', $data['skills']) : '';
+            
+            $this->db->query('UPDATE farmworkers SET bio = :bio, hourly_rate = :hourly_rate, working_area = :working_area, availability = :availability, skills = :skills WHERE user_id = :id');
             $this->db->bind(':bio', $data['bio']);
+            $this->db->bind(':hourly_rate', $data['hourly_rate']);
+            $this->db->bind(':working_area', $data['working_area']);
+            $this->db->bind(':availability', $data['availability']);
+            $this->db->bind(':skills', $skills);
             $this->db->bind(':id', $data['user_id']);
             
             if (!$this->db->execute()) {

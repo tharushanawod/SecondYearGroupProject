@@ -103,6 +103,61 @@
                   <label for="password"> Password </label>
                   <input id="password" name="password" placeholder="********" type="password" />
                </div>
+
+               <div>
+                  <label for="hourly_rate">Preferred Hourly Rate </label>
+                  <input id="hourly_rate" name="hourly_rate" placeholder="Rs.xxxx" type="number"
+                     value="<?php echo $data['hourly_rate']?>" />
+                  <span class="invalid">
+                     <?php echo $data['hourly_rate_err']; ?>
+                  </span>
+               </div>
+
+               <div>
+                  <label for="working_area">Preferred Working Area</label>
+                  <input id="working_area" name="working_area" placeholder="Colombo" type="text"
+                     value="<?php echo $data['working_area']?>" />
+                  <span class="invalid">
+                     <?php echo $data['working_area_err']; ?>
+                  </span>
+               </div>
+
+               <div>
+                  <label for="availability">Availability Status</label>
+                  <select id="availability" name="availability">
+                     <option value="Available" <?php echo ($data['availability'] == 'Available') ? 'selected' : ''; ?>>Available</option>
+                     <option value="Unavailable" <?php echo ($data['availability'] == 'Unavailable') ? 'selected' : ''; ?>>Unavailable</option>
+                  </select>
+                  <span class="invalid">
+                     <?php echo isset($data['availability_err']) ? $data['availability_err'] : ''; ?>
+                  </span>
+               </div>
+
+               <div>
+                  <label>Skills</label>
+                  <div class="skills-container">
+                     <?php 
+                     // Define all available skills
+                     $allSkills = ['Operating Machinery', 'Maintaining Crops', 'Harvesting', 'Planting'];
+                     
+                     // Convert stored skills string to array (if exists)
+                     $userSkills = isset($data['skills']) ? explode(',', $data['skills']) : [];
+                     
+                     // Display each skill as a checkbox
+                     foreach ($allSkills as $skill) {
+                        $checked = in_array($skill, $userSkills) ? 'checked' : '';
+                        echo '<div class="skill-item">';
+                        echo '<input type="checkbox" name="skills[]" value="' . $skill . '" ' . $checked . '>';
+                        echo '<label for="' . strtolower(str_replace(' ', '_', $skill)) . '">' . $skill . '</label>';
+                        echo '</div>';
+                     }
+                     ?>
+                  </div>
+                  <span class="invalid">
+                     <?php echo isset($data['skills_err']) ? $data['skills_err'] : ''; ?>
+                  </span>
+               </div>
+
             </div>
             <button class="save-btn" type="submit" onclick="showPopup()">Save information</button>
       </div>

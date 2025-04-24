@@ -102,11 +102,11 @@
             <p>Check user feedback and ratings</p>
               </div>
           </a>
-          <a href="<?php echo URLROOT; ?>/admin/announcements" class="action-button-link">
+          <a href="<?php echo URLROOT; ?>/AdminController/ModeratorReports" class="action-button-link">
               <div class="action-button">
-            <i class="fas fa-bullhorn"></i>
-            <h4>Send Announcements</h4>
-            <p>Broadcast important messages</p>
+              <i class="fas fa-flag"></i>
+            <h4>Moderator Reports</h4>
+            <p>View Critical Issues</p>
               </div>
           </a>
             </div>

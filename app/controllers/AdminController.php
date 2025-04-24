@@ -2,6 +2,7 @@
 
 class AdminController extends Controller {
     private $AdminModel;
+    private $ModeratorModel;
 
     public function __construct() {
 
@@ -14,6 +15,7 @@ class AdminController extends Controller {
         }
         
         $this->AdminModel = $this->model('Users');
+        $this->ModeratorModel = $this->model('Moderator');
     }
 
     public function isloggedin() {
@@ -612,8 +614,77 @@ class AdminController extends Controller {
             echo "Document not found.";
         }
     }
+
+    public function ModeratorReports(){
+        $this->view('Admin/ModeratorReports');
+    }
     
+    public function getModeratorReportsg() {
+        $logs = $this->AdminModel->getModeratorReports();
+        
+        echo json_encode($logs);
+         
+     }
+
+     public function AccountLog() {
+        $this->view('Admin/AccountLog');
+    }
+
+    public function getAccountLog() {
+       $logs = $this->ModeratorModel->getAccountLog();
+       
+       echo json_encode($logs);
+        
+    }
+
     
+    public function BuyerOrderLog() {
+        $this->view('Admin/BuyerOrderLog');
+    }
+
+    public function getBuyerOrderLog() {
+       $logs = $this->ModeratorModel->getBuyerOrderLog();
+       
+       echo json_encode($logs);
+        
+    }
+
+    public function BuyerTransactionLog() {
+        $this->view('Admin/BuyerTransactionLog');
+    }
+
+    public function getBuyerTransactionLog() {
+       $logs = $this->ModeratorModel->getBuyerTransactionLog();
+       
+       echo json_encode($logs);
+        
+    }
+
+    public function FarmerOrderLog() {
+        $this->view('Admin/FarmerOrderLog');
+    }
+
+    public function getFarmerOrderLog() {
+       $logs = $this->ModeratorModel->getFarmerOrderLog();
+       
+       echo json_encode($logs);
+        
+    }
+
+    public function FarmerTransactionLog() {
+        $this->view('Admin/FarmerTransactionLog');
+    }
+
+    public function getFarmerTransactionLog() {
+       $logs = $this->ModeratorModel->getFarmerTransactionLog();     
+       echo json_encode($logs);
+        
+    }
+
+    public function Logs() {
+        $this->view('Admin/Logs');
+    }
+ 
  
     
 

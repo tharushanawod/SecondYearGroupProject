@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/MAMP/htdocs/GroupProject",
-      "program": "c:/MAMP/htdocs/GroupProject/build/Debug/outDebug",
+      "cwd": "e:/MAMP/htdocs/GroupProject/public/css/Admin",
+      "program": "e:/MAMP/htdocs/GroupProject/public/css/Admin/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

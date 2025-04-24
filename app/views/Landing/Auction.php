@@ -219,7 +219,7 @@ body {
             <div class="step-number">3</div>
             <div class="step-content">
                 <h3>Auction Ends</h3>
-                <p>The highest bid at the end wins. If a bid is placed in the last 15 minutes, the auction extends by 5 minutes.</p>
+                <p>The highest bid at the end wins. If a bid is placed in the last 5 minutes, the auction extends by 5 minutes.</p>
             </div>
         </div>
 
@@ -227,7 +227,7 @@ body {
             <div class="step-number">4</div>
             <div class="step-content">
                 <h3>Payment</h3>
-                <p>The winner must pay 30% of the total amount within 24 hours via bank transfer.</p>
+                <p>The winner must pay 30% of the total amount within 24 hours via card transaction.</p>
             </div>
         </div>
 

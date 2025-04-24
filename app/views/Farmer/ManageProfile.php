@@ -92,11 +92,29 @@
                      <?php echo $data['email_err']; ?>
                   </span>
                </div>
+
                <div>
                   <label for="password"> Password </label>
                   <input id="password" name="password" placeholder="********" type="password" />
                </div>
+
+
+
+               <h2>Pickup Location</h2>
+               <div>
+                  <label for="address"> Address </label>
+                  <input id="address" name="address" placeholder="1st lane colombo" type="text"
+                     value="<?php echo $data['address']?>" />
+                  <span class="invalid">
+                     <?php echo $data['address_err']; ?>
+                  </span>
+               </div>
+               <div>
+                  <label for="district"> District </label>
+                  <input id="district" name="district" placeholder="Colombo" type="text" />
+               </div>
             </div>
+            
             <button class="save-btn" type="submit" onclick="showPopup()">Save information</button>
       </div>
       </form>

@@ -128,6 +128,19 @@ class Moderator{
             return $rows;
         }
 
+        public function ReportToAdmin($data) {
+            $this->db->query('INSERT INTO reports_to_admin (user_id, moderator_comments,moderator_id) VALUES (:user_id,:moderator_comments,:moderator_id)');
+            $this->db->bind(':moderator_id', $_SESSION['user_id']);
+            $this->db->bind(':user_id', $data['user_id']);
+            $this->db->bind(':moderator_comments', $data['moderator_comments']);
+
+            if ($this->db->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
 
 }
 ?>

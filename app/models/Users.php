@@ -595,6 +595,12 @@ class Users {
        
     }
 
+    public function getModeratorReports(){
+        $this->db->query('SELECT * FROM reports_to_admin');
+        $rows = $this->db->resultSet();
+        return $rows;
+    }
+
 
 }
 

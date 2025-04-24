@@ -299,7 +299,9 @@ class Farmer {
 
 
     public function getUserById ($id){
-        $this->db->query('SELECT * FROM users WHERE user_id = :id');
+        $this->db->query('SELECT * FROM users
+        LEFT JOIN farmers ON users.user_id = farmers.user_id
+         WHERE users.user_id = :id');
         $this->db->bind(':id',$id);
         $row = $this->db->single();
         return $row;

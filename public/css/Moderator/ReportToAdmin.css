@@ -1,0 +1,150 @@
+@import url(../components/sidebar2.css);
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background-color: #f8fafc;
+  color: #333;
+}
+
+.container {
+  margin-left: 350px;
+  padding: 30px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  position: relative;
+  margin-left: 250px;
+}
+
+h1 {
+  text-align: center;
+  color: #4299e1;
+  margin-bottom: 25px;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+h1:after {
+  content: "";
+  position: absolute;
+  width: 80px;
+  height: 3px;
+  background-color: #4299e1;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.field-container {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #2d3748;
+}
+
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+  outline: none;
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+input[type="submit"] {
+  background-color: #4299e1;
+  color: white;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  width: 100%;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(66, 153, 225, 0.2);
+}
+
+input[type="submit"]:hover {
+  background-color: #3182ce;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(66, 153, 225, 0.3);
+}
+
+input[type="submit"]:active {
+  transform: translateY(0);
+}
+
+.guidelines {
+  background-color: #ebf8ff;
+  border-left: 4px solid #4299e1;
+  padding: 15px 20px;
+  margin-bottom: 25px;
+  border-radius: 6px;
+}
+
+.guidelines h3 {
+  color: #4299e1;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.guidelines ul {
+  padding-left: 20px;
+}
+
+.guidelines li {
+  margin-bottom: 6px;
+  position: relative;
+  padding-left: 5px;
+}
+
+@media (max-width: 1024px) {
+  .container {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    max-width: 95%;
+    padding: 20px;
+  }
+
+  input[type="submit"] {
+    padding: 12px 20px;
+  }
+}
+
+.success{
+    color:red;
+    font-size: 1.5rem;
+    font-weight: 400;
+}

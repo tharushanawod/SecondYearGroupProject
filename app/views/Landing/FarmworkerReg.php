@@ -107,8 +107,7 @@
 
                 <div class="form-group">
                     <label for="hourly_rate">Hourly Rate</label>
-                    <input type="number" id="hourly_rate" name="hourly_rate" placeholder="Enter hourly rate" value="<?php echo $data['hourly_rate']; ?>"  min="0">
-                    <span class="form-invalid">
+                    <input type="number" id="hourly_rate" name="hourly_rate" placeholder="Enter hourly rate" value="<?php echo $data['hourly_rate'];?>">
                         <?php echo $data['hourly_rate_err']; ?>
                     </span>
                 </div>
@@ -129,6 +128,7 @@
                     </span>
                 </div>
 
+        
                 <button type="submit" class="signup-btn">Sign up</button>
                 <p class="login-text">Been here before? <a href="<?php echo URLROOT;?>/LandingController/Login">Log in</a></p>
             </form>

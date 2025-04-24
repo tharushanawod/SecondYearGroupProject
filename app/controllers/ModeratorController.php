@@ -307,6 +307,43 @@ class ModeratorController extends Controller {
        echo json_encode($logs);
         
     }
+
+    public function ReportToAdmin(){
+      
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
+            $data = [
+                'user_id' => trim($_POST['user_id']),
+                'moderator_comments' =>trim($_POST['moderator_comments']),
+                'moderator_id'=> $_SESSION['user_id']
+            ];
+     
+
+            if (!empty($data['user_id']) && !empty($data['moderator_comments'])) {
+                $result = $this->ModeratorModel->ReportToAdmin($data);
+                if ($result) {
+                    $data= 
+                    ['report_success'=>"Report submitted successfully!" ];
+
+                    $this->view('Moderator/ReportToAdmin', $data);
+                } else {
+                    echo 'Failed to report to admin';
+                }
+            } else {
+                $this->view('Moderator/ReportToAdmin', $data);
+            }
+
+           
+        }else{
+            $data = [
+                'user_id' => '',
+                'moderator_comments' => ''
+                
+            ];
+
+            $this->view('Moderator/ReportToAdmin', $data);
+        }
+    }
 }
 
 ?>

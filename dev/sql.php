@@ -346,3 +346,42 @@ CREATE TABLE delivery_codes (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (order_id) REFERENCES orders(order_id)
 );
+
+
+DELIMITER //
+
+CREATE EVENT IF NOT EXISTS relist_unpaid_products_every_minute
+ON SCHEDULE EVERY 1 MINUTE
+DO
+BEGIN
+  INSERT INTO corn_products (starting_price, quantity, media, user_id, closing_date, created_at)
+  SELECT
+    cp.starting_price,
+    cp.quantity,
+    cp.media,
+    cp.user_id,
+    DATE_ADD(NOW(), INTERVAL 7 DAY),
+    NOW()
+  FROM corn_products cp
+  LEFT JOIN orders_from_buyers ofb ON cp.product_id = ofb.product_id
+  LEFT JOIN bids b ON cp.product_id = b.product_id
+  WHERE cp.is_relisted = 0
+    AND (
+      (ofb.payment_status = 'pending' AND ofb.order_closing_date < NOW())
+      OR (cp.closing_date < NOW() AND b.product_id IS NULL)
+    );
+
+  -- Mark original products as relisted
+  UPDATE corn_products cp
+  LEFT JOIN orders_from_buyers ofb ON cp.product_id = ofb.product_id
+  LEFT JOIN bids b ON cp.product_id = b.product_id
+  SET cp.is_relisted = 1
+  WHERE cp.is_relisted = 0
+    AND (
+      (ofb.payment_status = 'pending' AND ofb.order_closing_date < NOW())
+      OR (cp.closing_date < NOW() AND b.product_id IS NULL)
+    );
+END //
+
+DELIMITER ;
+
