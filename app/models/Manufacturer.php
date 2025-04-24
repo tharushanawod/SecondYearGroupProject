@@ -39,7 +39,7 @@ class Manufacturer {
             return [];
         }
     }
-    
+
     public function getPriceHistory($user_id) {
         try {
             $this->db->query('
@@ -143,21 +143,47 @@ class Manufacturer {
     }
 
     
-    public function ManageProfile($data) {
-        try {
-            $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
-            $this->db->query('UPDATE users SET name = :name, phone = :phone, email = :email, password = :password WHERE user_id = :id');
-            $this->db->bind(':id', $_SESSION['user_id']);
-            $this->db->bind(':name', $data['name']);
-            $this->db->bind(':phone', $data['contact']);
-            $this->db->bind(':email', $data['email']);
-            $this->db->bind(':password', $hashedPassword);
-            return $this->db->execute();
-        } catch (Exception $e) {
-            error_log('Error in ManageProfile: ' . $e->getMessage());
-            return false;
+    public function updateProfile($data) {
+        if (!empty($data['password'])) {
+            $this->db->query('UPDATE users SET name = :name, email = :email, phone = :phone, password = :password WHERE user_id = :id');
+            $this->db->bind(':password', $data['password']);
+        } else {
+            $this->db->query('UPDATE users SET name = :name, email = :email, phone = :phone WHERE user_id = :id');
         }
+    
+        $this->db->bind(':id', $data['user_id']);
+        $this->db->bind(':name', $data['name']);
+        $this->db->bind(':email', $data['email']);
+        $this->db->bind(':phone', $data['phone']);
+
+        return $this->db->execute();
     }
+
+    public function getProfileImage($userId) {
+        $this->db->query("SELECT file_path FROM profile_pictures WHERE user_id = :userId");
+        $this->db->bind(':userId', $userId);
+        $row = $this->db->single();
+
+        return $row ? $row->file_path : false;
+    }
+
+    public function updateProfileImage($userId, $imagePath) {
+        $this->db->query("SELECT id FROM profile_pictures WHERE user_id = :userId");
+        $this->db->bind(':userId', $userId);
+        $row = $this->db->single();
+
+        if ($row) {
+            $this->db->query("UPDATE profile_pictures SET file_path = :imagePath WHERE user_id = :userId");
+        } else {
+            $this->db->query("INSERT INTO profile_pictures (user_id, file_path) VALUES (:userId, :imagePath)");
+        }
+
+        $this->db->bind(':userId', $userId);
+        $this->db->bind(':imagePath', $imagePath);
+
+        return $this->db->execute();
+    }
+
 
     public function getAllFarmers() {
         try {
@@ -243,73 +269,8 @@ class Manufacturer {
         $this->db->bind(':id',$id);
         $row = $this->db->single();
         return $row;
-    }
-
-    public function UpdateProfile($data) {
-        if (!empty($data['password'])) {
-            // Include password in the update query
-            $this->db->query('UPDATE users SET name = :name, email = :email, phone = :phone,  password = :password WHERE user_id = :id');
-            $this->db->bind(':password', $data['password']);
-        } else {
-            // Exclude password from the update query
-            $this->db->query('UPDATE users SET name = :name, email = :email, phone = :phone WHERE user_id = :id');
-        }
+    }   
     
-     
-        $this->db->bind(':id', $data['user_id']);
-        $this->db->bind(':name', $data['name']);
-        $this->db->bind(':email', $data['email']);
-        $this->db->bind(':phone', $data['phone']);
-       
-    
-
-        if ($this->db->execute()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
-     // Get profile image path by user ID
-     public function getProfileImage($userId) {
-        $this->db->query("SELECT file_path FROM profile_pictures WHERE user_id = :userId");
-        $this->db->bind(':userId', $userId);
-        $row = $this->db->single();
-
-        if($row){
-            return $row->file_path;
-        } else {
-            return false;
-        }
-       
-    }
-
-
-     // Update or Insert profile image path in the database
-    public function updateProfileImage($userId, $imagePath) {
-        // Check if a record already exists for the user
-        $this->db->query("SELECT id FROM profile_pictures WHERE user_id = :userId");
-        $this->db->bind(':userId', $userId);
-        $row = $this->db->single();
-
-        if ($row) {
-            // Update existing record
-            $this->db->query("UPDATE profile_pictures SET file_path = :imagePath WHERE user_id = :userId");
-            $this->db->bind(':imagePath', $imagePath);
-            $this->db->bind(':userId', $userId);
-        } else {
-            // Insert new record
-            $this->db->query("INSERT INTO profile_pictures (user_id, file_path) VALUES (:userId, :imagePath)");
-            $this->db->bind(':userId', $userId);
-            $this->db->bind(':imagePath', $imagePath);
-        }
-
-        return $this->db->execute();
-    }
-
-
-    //function to display available corn products
     public function getAvailableProducts() {
         $this->db->query("SELECT corn_products.*, 
             MAX(bids.bid_amount) AS highest_bid, 

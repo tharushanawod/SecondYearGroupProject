@@ -12,7 +12,7 @@
     
     <div class="help-container">
         <h1>Need Support?</h1>
-        <p>Please select a category that best describes your issue:</p>
+        <p>Please select a category that best describes your issue</p>
         
         <?php if (isset($_SESSION['request_success'])): ?>
             <div class="success"><?php echo $_SESSION['request_success']; unset($_SESSION['request_success']); ?></div>
@@ -21,25 +21,25 @@
         <?php endif; ?>
 
         <div class="category-boxes">
-            <a href="<?php echo URLROOT;?>/ManufacturerController/showForm/payment" class="category-box">
+            <a href="<?php echo URLROOT;?>/ManufacturerController/showForm/payment" class="category-box payment-category">
                 <i class="fas fa-money-bill-wave"></i>
                 <h3>Payment Issues</h3>
                 <p>Problems with payments, refunds, or billing</p>
             </a>
             
-            <a href="<?php echo URLROOT;?>/ManufacturerController/showForm/system" class="category-box">
+            <a href="<?php echo URLROOT;?>/ManufacturerController/showForm/system" class="category-box system-category">
                 <i class="fas fa-cogs"></i>
-                <h3>System Problems</h3>
+                <h3>System Issues</h3>
                 <p>Technical issues, bugs, or errors</p>
             </a>
             
-            <a href="<?php echo URLROOT;?>/ManufacturerController/showForm/account" class="category-box">
+            <a href="<?php echo URLROOT;?>/ManufacturerController/showForm/account" class="category-box account-category">
                 <i class="fas fa-user"></i>
                 <h3>Account Issues</h3>
                 <p>Login problems, profile updates, or account settings</p>
             </a>
             
-            <a href="<?php echo URLROOT;?>/ManufacturerController/showForm/other" class="category-box">
+            <a href="<?php echo URLROOT;?>/ManufacturerController/showForm/other" class="category-box other-category">
                 <i class="fas fa-question-circle"></i>
                 <h3>Other Issues</h3>
                 <p>Any other questions or concerns</p>
