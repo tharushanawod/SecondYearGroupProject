@@ -252,6 +252,7 @@ class ManufacturerController extends Controller {
         $data = $this->ManufacturerModel->getAvailableProducts();
         $this->View('Manufacturer/bidProduct', $data);
     }
+    
 
     public function PlaceBid($product_id) {
         $data = $this->ManufacturerModel->getProductById($product_id);
@@ -404,31 +405,6 @@ class ManufacturerController extends Controller {
     public function pay() {
         $data = [];
         $this->View('Manufacturer/pay', $data);
-    }
-
-    public function getNotifications($buyer_id) {
-        $productsnotifications = (array) $this->NotificationModel->getNotifications($buyer_id);
-        $winningnotifications = (array) $this->NotificationModel->getWinningNotifications($buyer_id);
-        $notifications = array_merge($productsnotifications, $winningnotifications);
-
-        header('Content-Type: application/json');
-        echo json_encode($notifications);
-    }
-
-    public function getUnreadNotifications() {
-        $data = [];
-        $this->View('inc/Notification', $data);
-    }
-
-    public function markNotificationAsRead($id, $buyer_id) {
-        $result = $this->NotificationModel->markNotificationAsRead($id, $buyer_id);
-        header('Content-Type: application/json');
-        echo json_encode(['success' => $result]);
-    }
-
-    public function getUnreadNotificationsCount($buyer_id) {
-        $count = $this->NotificationModel->getUnreadNotificationsCount($buyer_id);
-        return $count->count;
     }
 
     public function CancelBid($bid_id) {
@@ -592,6 +568,32 @@ class ManufacturerController extends Controller {
         echo json_encode($filtered);
     }
     
+    public function getNotifications($buyer_id) {
+        $productsnotifications = (array) $this->NotificationModel->getNotifications($buyer_id);
+        $winningnotifications = (array) $this->NotificationModel->getWinningNotifications($buyer_id);
+        $notifications = array_merge($productsnotifications, $winningnotifications);
+
+        header('Content-Type: application/json');
+        echo json_encode($notifications);
+    }
+
+    public function getUnreadNotifications() {
+        $data = [];
+        $this->View('inc/Notification', $data);
+    }
+
+    public function markNotificationAsRead($id, $buyer_id) {
+        $result = $this->NotificationModel->markNotificationAsRead($id, $buyer_id);
+        header('Content-Type: application/json');
+        echo json_encode(['success' => $result]);
+    }
+
+    public function getUnreadNotificationsCount($buyer_id) {
+       
+        $count = $this->NotificationModel->getUnreadNotificationsCount($buyer_id);
+        return $count->count;
+        
+    }
    
 }
 ?>

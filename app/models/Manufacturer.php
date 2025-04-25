@@ -265,9 +265,7 @@ class Manufacturer {
             LEFT JOIN bids 
             ON corn_products.product_id = bids.product_id
             WHERE closing_date > NOW()
-            GROUP BY corn_products.product_id;
-
-");
+            GROUP BY corn_products.product_id;");
         $rows = $this->db->resultSet();
         return $rows;
     }

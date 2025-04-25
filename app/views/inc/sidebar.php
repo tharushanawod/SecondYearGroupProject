@@ -23,7 +23,7 @@
         <li><a href="<?php echo URLROOT;?>/ManufacturerController/PendingPayments"><i class="fa-solid fa-clock"></i><span class="menu-text">Pending Payments</span></a></li>
         <li><a href="<?php echo URLROOT;?>/ManufacturerController/purchaseHistory"><i class="fas fa-comments"></i><span class="menu-text">Orders</span></a></li>
         <li><a href="<?php echo URLROOT;?>/ManufacturerController/RequestHelp"><i class="fa-solid fa-comment-dots"></i><span class="menu-text">Request Help</span></a></li>
-        <li><a href="<?php echo URLROOT; ?>/WorkerController/getUnreadNotifications">
+        <li><a href="<?php echo URLROOT; ?>/ManufacturerController/getUnreadNotifications">
                 <i class="fa-solid fa-bell"></i>
                 <span class="menu-text">Notifications</span>
                 </a></li>         

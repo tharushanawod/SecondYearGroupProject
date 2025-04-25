@@ -23,7 +23,7 @@ $hash = strtoupper(md5(
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Details</title>
     <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Buyer/Pay.css">
+    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Manufacturer/Pay.css">
    
 </head>
 <body>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Place Your Bid</title>
-    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Buyer/placeBid.css">
+    <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Manufacturer/placeBid.css">
     <link href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet"/>
 </head>
 <body>

@@ -43,8 +43,6 @@ class Notification {
         $this->db->bind(':buyer_id', $buyerId);
         return $this->db->resultSet();
     }
-
-
     
 
     // Create a notification for a help request reply
