@@ -320,7 +320,8 @@ AND corn_products.closing_date > NOW();
                 buyer_payments.paid_amount,
                 buyer_payments.order_id,
                 buyer_payments.farmer_confirmed,
-                buyer_payments.buyer_confirmed
+                buyer_payments.buyer_confirmed,
+                buyer_payments.refund_status
             FROM 
                 orders_from_buyers
             INNER JOIN 

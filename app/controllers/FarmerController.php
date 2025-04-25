@@ -512,8 +512,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
     }
 
     public function HireWorkerConfirmation($workerid){
-        error_reporting(E_ALL);
-        var_dump($_POST);
+    
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
             $data = [
@@ -536,6 +535,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
                 'food_err' => ''
             ];
 
+            // Check for no errors
+            if (empty($data['job_type_err']) && empty($data['work_duration_err']) && empty($data['start_date_err']) && empty($data['end_date_err']) && empty($data['location_err']) && empty($data['accommodation_err']) && empty($data['food_err'])) {
+                if ($this->farmerModel->HireWorker($data)) {
+                    Redirect('FarmerController/workerManagement');
+                } else {
+                    die('Something went wrong');
+                }
+            } else {
+                var_dump($data);
+                
             // Validate fields
             if (empty($data['job_type'])) {
                 $data['job_type_err'] = 'Please select a job type';
@@ -559,14 +568,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
                 $data['food_err'] = 'Please select food option';
             }
 
-            // Check for no errors
-            if (empty($data['job_type_err']) && empty($data['work_duration_err']) && empty($data['start_date_err']) && empty($data['end_date_err']) && empty($data['location_err']) && empty($data['accommodation_err']) && empty($data['food_err'])) {
-                if ($this->farmerModel->HireWorker($data)) {
-                    Redirect('FarmerController/workerManagement');
-                } else {
-                    die('Something went wrong');
-                }
-            } else {
+
                 $this->view('Farmer/HireWorker', $data);
             }
         }

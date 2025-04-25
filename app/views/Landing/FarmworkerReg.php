@@ -106,7 +106,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="hourly_rate">Hourly Rate</label>
+                    <label for="hourly_rate">Rate Per Day</label>
                     <input type="number" id="hourly_rate" name="hourly_rate" placeholder="Enter hourly rate" value="<?php echo $data['hourly_rate'];?>">
                         <?php echo $data['hourly_rate_err']; ?>
                     </span>

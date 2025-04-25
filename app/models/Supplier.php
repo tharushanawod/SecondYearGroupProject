@@ -448,5 +448,12 @@ return $count->order_count;
         $this->db->bind(':supplierId', $supplierId);
         return $this->db->single()->total_revenue;
     }
+
+    public function ConfirmOrder($orderId, $supplierId) {
+        $this->db->query('UPDATE order_items SET supplier_confirmed = 1 WHERE order_id = :orderId AND product_id IN (SELECT product_id FROM supplier_products WHERE supplier_id = :supplierId)');
+        $this->db->bind(':orderId', $orderId);
+        $this->db->bind(':supplierId', $supplierId);
+        return $this->db->execute();
+    }   
 }
 ?>

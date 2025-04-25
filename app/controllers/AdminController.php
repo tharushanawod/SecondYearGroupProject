@@ -601,19 +601,33 @@ class AdminController extends Controller {
         } else {
             $documentPath = $path . $this->AdminModel->getDocumentPathforsupplier($user_id);
         }
-        $documentPath = realpath($documentPath); // resolves weird paths or spaces
-
+    
+        $documentPath = realpath($documentPath);
     
         if (file_exists($documentPath)) {
-           // Set headers to display the file in the browser
-           header('Content-Type: ' . $this->getMimeType($documentPath));
-           header('Content-Disposition: inline; filename="' . basename($documentPath) . '"');
-           readfile($documentPath);
-           exit;
+            // Clear output buffer
+            if (ob_get_length()) {
+                ob_end_clean();
+            }
+    
+            // Get MIME type
+            $mime = $this->getMimeType($documentPath);
+    
+            // Send headers
+            header('Content-Type: ' . $mime);
+            header('Content-Length: ' . filesize($documentPath));
+            header('Content-Disposition: inline; filename="' . basename($documentPath) . '"');
+            header('Cache-Control: public');
+    
+            // Read file
+            readfile($documentPath);
+            exit;
         } else {
+            http_response_code(404);
             echo "Document not found.";
         }
     }
+    
 
     public function ModeratorReports(){
         $this->view('Admin/ModeratorReports');
@@ -727,7 +741,46 @@ class AdminController extends Controller {
         }
     }
  
-    
+    public function RefundOfIngredients($order_id,$product_id){
+        
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+           
+            // Sanitize POST data
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            
+            $data = [
+                'order_id' => $order_id,
+                'product_id' => $product_id,
+                'refund_amount' => floatval(trim($_POST['refund_amount'])),
+                'refund_reason' => trim($_POST['refund_reason']),
+                'admin_notes' => trim($_POST['admin_notes']),
+                'admin_id' => $_SESSION['user_id'],
+            ];
+            
+            // Process the refund using the model
+            if($this->AdminModel->processRefundOfIngredients($data)){
+                // Set flash message for success
+                // flash('refund_message', 'Refund has been processed successfully');
+                Redirect('AdminController/Dashboard');
+            } else {
+                echo "error";
+                // // If something went wrong, return to the form with the data
+                // $this->view('Admin/Refund', $data);
+            }
+        } else {
+
+            $log = $this->ModeratorModel->getFarmerOrderDeatails($order_id,$product_id);
+            $data = [
+                'order_id' => $log->order_id,
+                'product_id' => $log->product_id,
+                'refund_amount' => $log->price * $log->quantity,
+                'refund_reason' => '',
+                'admin_notes' => ''
+            ];
+            
+            $this->view('Admin/RefundOfIngredients', $data);
+        }
+    }
 
 
 }

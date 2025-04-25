@@ -227,7 +227,7 @@ body {
             <div class="step-number">4</div>
             <div class="step-content">
                 <h3>Payment</h3>
-                <p>The winner must pay 30% of the total amount within 24 hours via card transaction.</p>
+                <p>The winner must pay 20% of the total amount within 24 hours via card transaction.</p>
             </div>
         </div>
 
@@ -254,7 +254,7 @@ body {
         <div class="rule-card" data-aos="fade-up">
             <i class="fas fa-clock"></i>
             <h3>Last-Minute Bidding</h3>
-            <p>If a bid is placed within the last 15 minutes, the auction will be extended by 5 minutes to prevent last-second sniping.</p>
+            <p>If a bid is placed within the last 5 minutes, the auction will be extended by 5 minutes to prevent last-second sniping.</p>
         </div>
 
         <div class="rule-card" data-aos="fade-up">

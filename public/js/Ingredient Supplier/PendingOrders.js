@@ -100,13 +100,17 @@ nextBtn.addEventListener("click", () => {
 });
 
 // Confirm an order
-function AcceptOrder(orderId) {
-  fetch(`${URLROOT}/SupplierController/confirmOrder/${orderId}`, {
-    method: "POST",
-  })
-    .then(() => fetchOrders()) // Refresh data after confirmation
-    .catch((error) => console.error("Error confirming order:", error));
+async function AcceptOrder(orderId) {
+  try {
+    await fetch(`${URLROOT}/SupplierController/ConfirmOrder/${orderId}`, {
+      method: "POST",
+    });
+    await fetchOrders(); // Refresh data after confirmation
+  } catch (error) {
+    console.error("Error confirming order:", error);
+  }
 }
+
 
 // View buyer details
 function viewBuyerDetails(orderId) {

@@ -132,4 +132,7 @@ class Notification {
         $this->db->bind(':user_id', $user_id);
         return $this->db->resultSet();
     }
+
+
+    
 }

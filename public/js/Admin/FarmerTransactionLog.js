@@ -37,7 +37,7 @@ function renderTable() {
 
   paginatedLogs.forEach((log) => {
     const row = document.createElement("tr");
-    console.log(log); // Log the log object for debugging
+    const link = `${URLROOT}/AdminController/FarmerOrderLog`;
 
     row.innerHTML = `
         <td data-label="Transaction ID">${log.transaction_id || "N/A"}</td>
@@ -45,14 +45,7 @@ function renderTable() {
         <td data-label="Payment ID">${log.payment_id || "N/A"}</td>
         <td data-label="Amount">${log.amount_paid || "0"}</td>
         <td data-label="Payment Date">${log.payment_date || "N/A"}</td>
-        <td data-label="Wallet Status">${getWalletStatus(
-          log.wallet_status
-        )}</td>
-        <td data-label="Withdraw Status">${getWithdrawStatus(
-          log.wallet_status
-        )}</td>
-
-        <td><button class="btn btn-sm btn-primary view-buyer-btn">Refund Money</button></td>
+        <td><a href="${link}"><button class="btn btn-sm btn-primary view-buyer-btn">Refund Money</button></td>
     `;
     logTable.appendChild(row);
   });

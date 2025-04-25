@@ -662,5 +662,14 @@ public function getPendingOrders($user_id){
     echo json_encode($pending_orders);
 }
 
+public function ConfirmOrder($order_id){
+    $supplier_id = $_SESSION['user_id'];
+    $order = $this->Supplier->ConfirmOrder($order_id, $supplier_id);
+    if (!$order) {
+       throw new Exception("Order not found or you do not have permission to confirm this order.");
+    } 
+    
+}
+
 }
 ?>

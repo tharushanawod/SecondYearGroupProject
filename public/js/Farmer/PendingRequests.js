@@ -39,9 +39,9 @@ function renderTable() {
                 <td data-label="Request ID">${request.job_id}</td>
                 <td data-label="Worker Name">${request.worker_name}</td>
                 <td data-label="Status">${request.status}</td>
-                <td data-label="Action">
-                  <button class="action-btn confirm">Contact</button>
-                </td>
+                  <td data-label="Status">${request.start_date}</td>
+                    <td data-label="Status">${request.end_date}</td>
+                      <td data-label="Status">${request.phone}</td>
             `;
             requestsTable.appendChild(row);
         });

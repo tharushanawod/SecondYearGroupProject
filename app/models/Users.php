@@ -644,6 +644,54 @@ class Users {
         }
     }
 
+    
+    public function processRefundOfIngredients($data) {
+        try {
+            // Start a transaction
+            $this->db->beginTransaction();
+            
+            // Insert the refund record
+            $this->db->query('INSERT INTO farmer_refund_logs (order_id,product_id, refund_amount, refund_reason, admin_notes, processed_by) 
+                              VALUES (:order_id ,:product_id, :refund_amount, :refund_reason, :admin_notes, :admin_id)');    
+            $this->db->bind(':order_id', $data['order_id']);
+            $this->db->bind(':product_id', $data['product_id']);
+            $this->db->bind(':refund_amount', $data['refund_amount']);
+            $this->db->bind(':refund_reason', $data['refund_reason']);
+            $this->db->bind(':admin_notes', $data['admin_notes']);
+            $this->db->bind(':admin_id', $data['admin_id']);
+
+            
+            $this->db->execute();
+            
+            // Update the buyer_payments table to mark the transaction as refunded
+            $this->db->query('UPDATE order_items SET refund_status = :refund_status WHERE order_id = :order_id AND product_id = :product_id');
+            $this->db->bind(':refund_status', 'yes');
+            $this->db->bind(':order_id', $data['order_id']);
+            $this->db->bind(':product_id', $data['product_id']);
+            $this->db->execute();
+            
+            // Commit the transaction
+            $this->db->commit();
+            return true;
+            
+        } catch (Exception $e) {
+            // Rollback the transaction if any error occurs
+            $this->db->rollBack();
+            error_log('Refund Tharusha Error: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function getFarmerTransaction($transaction_id){
+        $this->db->query('SELECT * FROM buyer_payments
+        WHERE transaction_id = :transaction_id');
+        $this->db->bind(':transaction_id',$transaction_id);
+        $row = $this->db->single();
+        return $row;
+    }
+
+
+
 
 
 }

@@ -63,6 +63,7 @@ function fetchModerators() {
   fetch(`${URLROOT}/AdminController/getPendingUsers`)
     .then((response) => response.json())
     .then((data) => {
+      console.log(data);
       users = data; // Store all moderators in the array
       renderTable(); // Initial table render
       updatePagination();
@@ -92,7 +93,7 @@ function renderTable() {
                 <a href="${URLROOT}/AdminController/ViewDocument/${user.user_id}" target="_blank">
                     <button class="confirm-btn">View Document</button>
                 </a>
-                <a href="${URLROOT}/AdminController/VerifyUser/${user.user_id}">
+                <a href="${URLROOT}/AdminController/ActivateUser/${user.user_id}">
                     <button class="activate-btn">Verify User</button>
                 </a>
             </td>
