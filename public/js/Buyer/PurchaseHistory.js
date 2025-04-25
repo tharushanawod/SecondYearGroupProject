@@ -72,7 +72,10 @@ function getBuyerConfirmationStatus(payment) {
   // Replace with your actual data structure
   if (payment.buyer_confirmed === 1) {
     return '<span class="confirmed"><i class="fa-solid fa-check"></i> Confirmed</span>';
-  } else {
+  } else if( payment.buyer_confirmed === 0 && payment.refund_status === "yes") {
+    return '<span class="confirmed" style="color:red;"><i class="fa-solid fa-check"></i> Refunded</span>';
+  }
+  else{
     return `<button onclick="confirmOrder(${payment.order_id})" class="confirm-btn"><i class="fa-solid fa-square-check"></i>  Confirm</button>`;
   }
 }

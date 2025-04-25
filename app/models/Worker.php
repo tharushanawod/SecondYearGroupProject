@@ -318,6 +318,33 @@ class Worker {
         $this->db->bind(':userId', $userId);
         return $this->db->resultSet();
     }
+
+    public function getHelpRequestNotificationsForUser($user_id) {
+        $this->db->query('SELECT * FROM notification_for_users
+                          WHERE user_id = :user_id 
+                          AND is_read = 0 
+                          ORDER BY created_at DESC');
+        $this->db->bind(':user_id', $user_id);
+        try {
+            return $this->db->resultSet();
+        } catch (Exception $e) {
+            error_log("Failed to fetch notifications for user_id $user_id: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    public function getUnreadHelpNotificationsCountForUser($user_id) {
+        $this->db->query('SELECT COUNT(*) AS count FROM notification_for_users 
+                          WHERE user_id = :user_id 
+                          AND is_read = 0');
+        $this->db->bind(':user_id', $user_id);
+        try {
+            return $this->db->single();
+        } catch (Exception $e) {
+            error_log("Failed to count unread notifications for user_id $user_id: " . $e->getMessage());
+            return (object) ['count' => 0];
+        }
+    }
         
     
 }

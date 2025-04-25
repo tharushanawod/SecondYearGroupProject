@@ -309,8 +309,8 @@ class WorkerController extends Controller {
 
     public function getUnreadNotifications() {
         $data = [
-            'notifications' => $this->NotificationModel->getHelpRequestNotificationsForUser($_SESSION['user_id']),
-            'unread_count' => $this->NotificationModel->getUnreadHelpNotificationsCountForUser($_SESSION['user_id'])->count
+            'notifications' => $this->WorkerModel->getHelpRequestNotificationsForUser($_SESSION['user_id']),
+            'unread_count' => $this->WorkerModel->getUnreadHelpNotificationsCountForUser($_SESSION['user_id'])->count
         ];
         $this->view('inc/Notification', $data);
     }

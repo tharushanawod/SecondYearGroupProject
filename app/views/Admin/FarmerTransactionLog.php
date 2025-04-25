@@ -19,8 +19,6 @@
                     <th>Payment ID</th>
                     <th>Amount</th>
                     <th>Payment Date</th>
-                    <th>wallet Status</th> 
-                    <th>Withdraw Status</th> 
                     <th>Action</th> 
                 </tr>
             </thead>

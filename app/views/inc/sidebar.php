@@ -79,7 +79,6 @@
                   
                 <?php elseif ($user_role === 'moderator'): ?>
                   <li><a href="<?php echo URLROOT;?>/ModeratorController/Dashboard"><i class="fa-solid fa-gauge"></i><span class="menu-text">Dashboard</span></a></li>
-                  <li><a href="<?php echo URLROOT;?>/ModeratorController/Report"><i class="fa-solid fa-chart-bar"></i><span class="menu-text">Reports</span></a></li>  
                   <li><a href="<?php echo URLROOT;?>/ModeratorController/Help"><i class="fa-solid fa-comment-dots"></i><span class="menu-text">Help Center</span></a></li>
                   <li><a href="<?php echo URLROOT;?>/ModeratorController/ReportToAdmin"><i class="fas fa-user-shield"></i> <span class="menu-text">Report TO Admin</span></a></li>
                   <li><a href="<?php echo URLROOT;?>/ModeratorController/Ratings"><i class="fa-solid fa-star"></i> <span class="menu-text">Ratings</span></a></li>
@@ -90,7 +89,6 @@
                 <li><a href="<?php echo URLROOT;?>/AdminController/UserControl"><i class="fa-solid fa-users"></i><span class="menu-text">User Control</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/AdminController/ModeratorControl"><i class="fa-solid fa-user-tie"></i><span class="menu-text">Moderators</span></a></li>
                 <li><a href="<?php echo URLROOT;?>/AdminController/VerifyUsers"><i class="fa-solid fa-check"></i><span class="menu-text">Verify Users</span></a></li>
-                <li><a href="<?php echo URLROOT;?>/AdminController/Report"><i class="fa-solid fa-chart-bar"></i><span class="menu-text">Reports</span></a></li>  
                 <li><a href="<?php echo URLROOT;?>/AdminController/Wallet"><i class="fa-solid fa-wallet"></i><span class="menu-text">Wallet</span></a></li>
                
                 <?php endif; ?>

@@ -18,7 +18,9 @@
           <th>Request ID</th>
           <th>Worker Name</th>
           <th>Status</th>
-          <th>Action</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Contact Number</th>
         </tr>
       </thead>
       <tbody>

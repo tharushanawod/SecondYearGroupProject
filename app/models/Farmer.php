@@ -48,7 +48,8 @@ class Farmer {
         $this->db->query("SELECT 
         orders_from_buyers.*,
         buyer_payments.farmer_confirmed,
-        buyer_payments.buyer_confirmed
+        buyer_payments.buyer_confirmed,
+        buyer_payments.refund_status
         FROM orders_from_buyers
         LEFT JOIN buyer_payments ON orders_from_buyers.order_id = buyer_payments.order_id
         WHERE orders_from_buyers.farmer_id = :farmer_id
@@ -384,7 +385,7 @@ class Farmer {
     public function getPendingJobRequests($id) {
         try {
             // Updated query to get worker's name from the same users table
-            $this->db->query('SELECT workers.name AS worker_name, job_requests.* 
+            $this->db->query('SELECT workers.name AS worker_name, job_requests.* ,workers.phone
                               FROM job_requests
                               INNER JOIN users AS farmers 
                               ON farmers.user_id = job_requests.farmer_id 

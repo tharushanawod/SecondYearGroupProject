@@ -65,7 +65,7 @@
                 
             </div>
             <div class="rate">
-            <span>Hourly Rate 💵 <?php echo htmlspecialchars($worker->hourly_rate)?></span>
+            <span>Rate Per Day 💵 <?php echo htmlspecialchars($worker->hourly_rate)?></span>
             </div>
             <div class="skills-list">
                 <?php
@@ -79,8 +79,11 @@
             <div class="location-experience">
                 <span><?php echo htmlspecialchars($worker->availability); ?></span>
             </div>
+            <?php if (($worker->availability)==="Available"): ?>
             <a href="<?php echo URLROOT.'/FarmerController/HireWorker/'.$worker->user_id ;?>"><button class="hire-button" onclick="hireWorker(<?php echo $worker->id; ?>)">Hire Now</button></a>
-            
+            <?php else: ?>
+    <span class="hire-button" style="background-color:grey;cursor: not-allowed;"> Hired Now</span>
+<?php endif; ?>
         </div>
     <?php endforeach; ?>
 </div>

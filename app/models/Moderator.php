@@ -110,6 +110,9 @@ class Moderator{
                 oi.price,
                 oi.supplier_confirmed,
                 oi.delivery_confirmed,
+                oi.withdraw_status,
+                oi.wallet_status,
+                oi.refund_status,
                 oi.status AS status,
                 u.name AS supplier_name,
                 sp.supplier_id,
@@ -141,6 +144,17 @@ class Moderator{
             } else {
                 return false;
             }
+        }
+
+        public function getFarmerOrderDeatails($order_id,$product_id){
+            $this->db->query('SELECT order_id,product_id,quantity,price
+            FROM order_items WHERE order_id = :order_id AND product_id = :product_id');
+            $this->db->bind(':order_id',$order_id);
+            $this->db->bind(':product_id',$product_id);
+            $row = $this->db->single();
+
+            return $row;
+         
         }
 
 

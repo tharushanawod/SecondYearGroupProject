@@ -385,3 +385,18 @@ END //
 
 DELIMITER ;
 
+DELIMITER //
+
+CREATE TRIGGER add_notification_after_job_request_for_worker
+AFTER INSERT ON job_requests
+FOR EACH ROW
+BEGIN
+  INSERT INTO notification_for_users (user_id, message)
+  VALUES (
+     NEW.worker_id,
+     CONCAT('You have a new Job request from ', NEW.farmer_id)
+  );
+END;
+//
+
+DELIMITER ;

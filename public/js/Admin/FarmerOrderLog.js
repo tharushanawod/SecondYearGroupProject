@@ -38,6 +38,16 @@ function renderTable() {
   paginatedLogs.forEach((log) => {
     const row = document.createElement("tr");
     console.log(log); // Log the log object for debugging
+    const link = `${URLROOT}/AdminController/RefundOfIngredients/${log.order_id}/${log.product_id}`;
+
+    let actionButton = "";
+    if (log.refund_status === "no" && log.wallet_status === "not_added" && log.refund_status ==="no") {
+      actionButton = `<a href="${link}"><button class="btn btn-sm btn-primary view-buyer-btn">Refund Money</button></a>`;
+    } else if (log.refund_status === "no" && log.wallet_status === "added") {
+      actionButton = `<span class="refunded-label">No Refunding</span>`;
+    } else {
+      actionButton = `<span class="refunded-label">Refunded</span>`;
+    }
 
     row.innerHTML = `
       <td data-label="Order ID">${log.order_id || "N/A"}</td>
@@ -50,7 +60,8 @@ function renderTable() {
     <td data-label="Buyer Details">
       <button class="btn btn-sm btn-primary view-buyer-btn">View</button>
     </td>
-      <td data-label="Payment Status">${log.status}</td>
+      <td data-label="Payment Status">${log.status || "N/A"}</td>
+      <td>${actionButton}</td>
     `;
     logTable.appendChild(row);
 
