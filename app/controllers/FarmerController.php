@@ -816,7 +816,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
 
     public function getNotifications($user_id) {
         $helpRequestNotifications = $this->NotificationModel->getHelpRequestNotificationsForUser($user_id);
-        $notifications = $helpRequestNotifications; 
+        $orderNotifications = $this->NotificationModel->getOrdertNotificationsForUser($user_id);
+
+        $notifications = array_merge($helpRequestNotifications, $orderNotifications);
         header('Content-Type: application/json');
         try {
             echo json_encode($notifications);
@@ -827,11 +829,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
     }
 
     public function getUnreadNotifications() {
-        $data = [
-            'notifications' => $this->NotificationModel->getHelpRequestNotificationsForUser($_SESSION['user_id']),
-            'unread_count' => $this->NotificationModel->getUnreadHelpNotificationsCountForUser($_SESSION['user_id'])->count
-        ];
-        $this->view('inc/Notification', $data);
+        $data = [];
+        $this->View('inc/Notification', $data);
     }
 
     public function markHelpNotificationAsRead($notificationId, $userId) {
@@ -906,6 +905,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
     
         redirect('CartController/viewDetails/' . $data['supplier_id']);
     }
+
+    public function processWithdrawal() {
+       
+        // Check if the request is a POST request
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Get the withdrawal amount from the request
+            $withdrawalAmount = $_POST['amount'];
+    
+            // Process the withdrawal using the model
+            $result = $this->farmerModel->processWithdrawal($withdrawalAmount);
+
+            if ($result === true) {
+                Redirect('FarmerController/Wallet');
+            } else {
+                die('Error: ' . $result); // Show the real error
+            }
+            
+        } else {
+            // If not a POST request, redirect to the wallet page
+            Redirect('FarmerController/Wallet');
+        }
+    }
+
+    
 
 
 }

@@ -26,6 +26,7 @@
         <li><a href="<?php echo URLROOT; ?>/ManufacturerController/getUnreadNotifications">
                 <i class="fa-solid fa-bell"></i>
                 <span class="menu-text">Notifications</span>
+                <span class="notification-badge"></span>
                 </a></li>         
         
         
@@ -39,6 +40,7 @@
             <li><a href="<?php echo URLROOT; ?>/BuyerController/getUnreadNotifications">
             <i class="fa-solid fa-bell"></i>
             <span class="menu-text">Notifications</span>
+            <span class="notification-badge"></span>
             </a></li>
           
           
@@ -49,7 +51,11 @@
             <li><a href="<?php echo URLROOT;?>/FarmerController/workerManagement"><i class="fa-solid fa-user"></i><span class="menu-text">Workers</span></a></li>
             <li><a href="<?php echo URLROOT;?>/CartController/browseProducts"><i class="fa-solid fa-flask"></i><span class="menu-text">Ingredients</span></a></li>
             <li><a href="<?php echo URLROOT;?>/FarmerController/orders"><i class="fa-solid fa-business-time"></i><span class="menu-text">My Orders</span></a></li>
-            <li ><a href="<?php echo URLROOT; ?>/FarmerController/getUnreadNotifications"><i class="fa-solid fa-bell"></i><span class="menu-text">Notifications</span></a></li>
+             <li><a href="<?php echo URLROOT; ?>/FarmerController/getUnreadNotifications">
+                <i class="fa-solid fa-bell"></i>
+                <span class="menu-text">Notifications</span>
+                <span class="notification-badge"></span>
+                </a></li>
             <li><a href="<?php echo URLROOT;?>/FarmerController/requestHelp"><i class="fa-solid fa-comment-dots"></i><span class="menu-text">Request Help</span></a></li>
             <li><a href="<?php echo URLROOT;?>/FarmerController/Wallet"><i class="fa-solid fa-wallet"></i><span class="menu-text">Wallet</span></a></li>
            
@@ -63,6 +69,7 @@
               <li><a href="<?php echo URLROOT; ?>/WorkerController/getUnreadNotifications">
                 <i class="fa-solid fa-bell"></i>
                 <span class="menu-text">Notifications</span>
+                <span class="notification-badge"></span>
                 </a></li>
               
               <?php elseif ($user_role === 'supplier'): ?>
@@ -75,6 +82,7 @@
                 <li><a href="<?php echo URLROOT; ?>/SupplierController/getUnreadNotifications">
                   <i class="fa-solid fa-bell"></i>
                   <span class="menu-text">Notifications</span>
+                  <span class="notification-badge"></span>
                   </a></li>
                   
                 <?php elseif ($user_role === 'moderator'): ?>
@@ -167,20 +175,85 @@
   </div>
 </div>
 
+
 <script>
+  // Function to toggle the settings menu visibility
   function toggleSettingsMenu() {
-  const menu = document.getElementById("settings-menu");
-  menu.style.display = menu.style.display === "block" ? "none" : "block";
-}
-
-document.addEventListener("click", function (e) {
-  const menu = document.getElementById("settings-menu");
-  const settingsIcon = document.querySelector(".settings i");
-  if (!menu.contains(e.target) && e.target !== settingsIcon) {
-    menu.style.display = "none";
+    const menu = document.getElementById("settings-menu");
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
   }
-});
 
+  // Close the settings menu when clicking outside of it
+  document.addEventListener("click", function (e) {
+    const menu = document.getElementById("settings-menu");
+    const settingsIcon = document.querySelector(".settings i");
+    if (!menu.contains(e.target) && e.target !== settingsIcon) {
+      menu.style.display = "none";
+    }
+  });
 
+  // Function to fetch notifications from the server
+  function fetchNotifications() {
+    const user_id = <?php echo $_SESSION['user_id']; ?>;  // Get the user ID from PHP session
+    let controller;  // Get the user role dynamically for controller
+    const URLROOT = "<?php echo URLROOT; ?>";  // Get the base URL from PHP session
+    const user_role = "<?php echo $_SESSION['user_role']; ?>";  // Get the user role from PHP session
+    // Determine the appropriate controller based on user role
+    switch(user_role) {
+        case 'farmworker':
+            controller = 'WorkerController';
+            break;
+        case 'buyer':
+            controller = 'BuyerController';
+            break;
+        case 'farmer':
+            controller = 'FarmerController';
+            break;
+        case 'manufacturer':
+            controller = 'ManufacturerController';
+            break;
+        case 'supplier':
+            controller = 'SupplierController';
+            break;
+    }
 
+    // API call to fetch notifications
+    fetch(`${URLROOT}/${controller}/getNotifications/${user_id}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();  // Parse JSON response
+      })
+      .then(notifications => {
+        if (!Array.isArray(notifications)) {
+          console.error('Invalid notifications data:', notifications);
+          return;
+        }
+        displayNotificationCount(notifications);
+      })
+      .catch(error => {
+        console.error('Error fetching notifications:', error);
+        displayNotificationCount([]);
+      });
+  }
+
+  // Function to display the count of unread notifications
+  function displayNotificationCount(notifications) {
+    const unreadCount = notifications.filter(n => !n.is_read).length;  // Count unread notifications
+    const notifCountElement = document.querySelector('.notification-badge');  // Find the element to display count
+    console.log('Unread notifications:', unreadCount);  // Log unread count for debugging
+
+    // If there are unread notifications, show the count
+    if (unreadCount > 0) {
+      notifCountElement.textContent = unreadCount;
+      notifCountElement.style.display = 'inline';  // Show the badge if there are unread notifications
+    } else {
+      notifCountElement.style.display = 'none';  // Hide the badge if there are no unread notifications
+    }
+  }
+
+  // Fetch notifications when the page loads
+  document.addEventListener('DOMContentLoaded', fetchNotifications);
 </script>
+

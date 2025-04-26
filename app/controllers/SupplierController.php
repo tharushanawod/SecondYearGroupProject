@@ -70,15 +70,16 @@ class SupplierController extends Controller {
         $completedOrderCount = $this->Supplier->getCompletedOrderCount($supplierId);
         $PendingOrderCount = $this->Supplier->PendingOrderCount($supplierId);
         $totalRevenue = $this->Supplier->getTotalRevenue($supplierId);
+        $reviews = $this->Supplier->getAverageRating($supplierId);
     
         
         $data = [
             'recentOrders' => $recentOrders,
             'CompletedOrderCount'=> $completedOrderCount,
             'PendingOrderCount'=> $PendingOrderCount,
-            'total_revenue' => $totalRevenue
+            'total_revenue' => $totalRevenue,
+            'reviews' => $reviews->avg_rating
         ];
-     
         
         $this->view('Ingredient Supplier/Supplier Dashboard', $data);
     }
@@ -669,6 +670,29 @@ public function ConfirmOrder($order_id){
        throw new Exception("Order not found or you do not have permission to confirm this order.");
     } 
     
+}
+
+
+public function processWithdrawal() {
+       
+    // Check if the request is a POST request
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Get the withdrawal amount from the request
+        $withdrawalAmount = $_POST['amount'];
+
+        // Process the withdrawal using the model
+        $result = $this->Supplier->processWithdrawal($withdrawalAmount);
+
+        if ($result === true) {
+            Redirect('SupplierController/Wallet');
+        } else {
+            die('Error: ' . $result); // Show the real error
+        }
+        
+    } else {
+        // If not a POST request, redirect to the wallet page
+        Redirect('SupplierController/Wallet');
+    }
 }
 
 }

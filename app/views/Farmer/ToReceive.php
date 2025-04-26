@@ -21,12 +21,12 @@
             </a>
         </div>
 
-        <div class="filters">
+        <!-- <div class="filters">
             <button class="filter active">All (5)</button>
             <button class="filter">Recent (3)</button>
             <button class="filter">Oldest (2)</button>
             <button class="filter">High Value (2)</button>
-        </div>
+        </div> -->
 
         <div class="cards-grid">
             <?php if(empty($data['orders'])): ?>
@@ -67,6 +67,10 @@
                     <div class="info-row">
                         <span class="info-label">Tracking Number:</span>
                         <span class="info-value"><?php echo isset($order->code) ? $order->code : 'N/A'; ?></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Tracking company :</span>
+                        <span class="info-value"><?php echo isset($order->company) ? $order->company : 'N/A'; ?></span>
                     </div>
                     </div>
                     <div class="product-action">

@@ -21,12 +21,12 @@
             </a>
         </div>
 
-        <div class="filters">
+        <!-- <div class="filters">
             <button class="filter active">All (5)</button>
             <button class="filter">Recent (3)</button>
             <button class="filter">Oldest (2)</button>
             <button class="filter">High Value (2)</button>
-        </div>
+        </div> -->
 
         <div class="cards-grid">
             <?php if(empty($data['orders'])): ?>

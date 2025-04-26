@@ -400,3 +400,77 @@ END;
 //
 
 DELIMITER ;
+
+
+DELIMITER $$
+
+CREATE EVENT auto_add_to_supplier_wallet
+ON SCHEDULE EVERY 1 DAY
+DO
+BEGIN
+  -- Step 1: Update wallet_status to 'added' after 14 days
+  UPDATE order_items oi
+  JOIN transaction t ON t.order_id = oi.order_id
+  SET oi.wallet_status = 'added'
+  WHERE oi.wallet_status != 'added'
+    AND DATE_ADD(t.payment_date, INTERVAL 14 DAY) <= NOW()
+    AND oi.refund_status = 'no'; -- Only items with refund_status = 'no'
+
+  -- Step 2: Add amount to supplier's wallet (quantity * price + 350 per supplier per order)
+  UPDATE wallets w
+  JOIN (
+    SELECT 
+      sp.supplier_id AS user_id,
+      SUM(oi.quantity * oi.price + 350.00) AS total_amount
+    FROM order_items oi
+    JOIN transaction t ON t.order_id = oi.order_id
+    JOIN supplier_products sp ON sp.product_id = oi.product_id
+    WHERE oi.wallet_status = 'added'  -- Only consider orders marked as 'added'
+      AND oi.refund_status = 'no'  -- Only items with refund_status = 'no'
+      AND oi.wallet_processed = 'no'  -- Only process items not yet added to wallet
+    GROUP BY sp.supplier_id, oi.order_id
+  ) AS updates ON updates.user_id = w.user_id
+  SET w.balance = w.balance + updates.total_amount;
+
+  -- Step 3: Mark processed items as 'wallet_processed = yes'
+  UPDATE order_items oi
+  JOIN transaction t ON t.order_id = oi.order_id
+  SET oi.wallet_processed = 'yes'
+  WHERE oi.wallet_status = 'added'
+    AND oi.refund_status = 'no'
+    AND oi.wallet_processed = 'no';
+
+END$$
+
+DELIMITER ;
+
+
+
+DELIMITER $$
+
+CREATE TRIGGER after_job_request_insert
+AFTER INSERT ON job_requests
+FOR EACH ROW
+BEGIN
+    INSERT INTO notifications_for_workers (user_id, message, is_read)
+    VALUES (NEW.worker_id, 'You have a new job request.', FALSE);
+END $$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE TRIGGER after_new_order_happens
+AFTER INSERT ON orders_from_buyers
+FOR EACH ROW
+BEGIN
+  INSERT INTO notifications_for_users (user_id, message, is_read, created_at)
+  VALUES (
+    NEW.farmer_id, 
+    CONCAT('You have a new order from Order ID: ', NEW.order_id),
+    0,
+    NOW()
+  );
+END$$
+
+DELIMITER ;

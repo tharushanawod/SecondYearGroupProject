@@ -8,16 +8,18 @@ const rowsPerPage = 10;
 let users = [];  // This will store all the fetched users
 
 // Fetch all users from the controller
-function fetchUsers() {
-    fetch(`${URLROOT}/AdminController/getAllUsers`)
-        .then(response => response.json())
-        .then(data => {
-            users=data;
-            renderTable();  // Initial table render
-            updatePagination();
-        })
-        .catch(error => console.log('Error fetching users:', error));
+async function fetchUsers() {
+    try {
+        const response = await fetch(`${URLROOT}/AdminController/getAllUsers`);
+        const data = await response.json();
+        users = data;
+        renderTable();  // Initial table render
+        updatePagination();
+    } catch (error) {
+        console.log('Error fetching users:', error);
+    }
 }
+
 
 // Render table rows for users based on current page
 function renderTable() {

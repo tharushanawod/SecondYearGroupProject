@@ -192,3 +192,29 @@
     display: none;
   }
 }
+
+
+/* Style for the notification icon */
+.menu-text {
+  position: relative;
+  display: inline-block;
+  padding-right:4px ;
+}
+
+/* Style for the notification badge */
+.notification-badge {
+
+  position: absolute;
+padding-left: 4px;
+padding-top: 2px;
+  background-color: red; /* Badge color */
+  color: white; /* Text color */
+  font-size: 12px; /* Font size of the badge */
+  width: 20px; /* Width of the badge */
+  height: 20px; /* Height of the badge */
+  border-radius: 50%; /* Round shape */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+}

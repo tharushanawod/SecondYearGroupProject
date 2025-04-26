@@ -56,10 +56,10 @@
                             <?php echo $transaction->order_id; ?>
                         </td>
                         <td>
-                            <?php echo date('M d, Y', strtotime($transaction->request_date)); ?>
+                            <?php echo date('M d, Y', strtotime($transaction->payment_date)); ?>
                         </td>
                         <td class="amount">Rs.
-                            <?php echo number_format($transaction->paid_amount); ?>
+                            <?php echo number_format($transaction->amount); ?>
                         </td>
                         <td>
                             <span class="status">
@@ -83,12 +83,29 @@
                 <h3>Withdraw Funds</h3>
                 <button class="close-modal" onclick="closeModal()">&times;</button>
             </div>
-            <form class="withdrawal-form" id="withdrawalForm">
+            <form class="withdrawal-form" id="withdrawalForm" action="<?php echo URLROOT; ?>/SupplierController/processWithdrawal" method="POST">
                 <div class="form-group">
                     <label for="amount">Amount to Withdraw</label>
-                    <input type="number" id="amount" name="amount" max="<?php echo $data['available_balance']; ?>"
+                    <input type="number" id="amount" name="amount" max="<?php echo  $data['wallet']->balance ?>"
                         min="1000" step="100" required>
                 </div>
+
+                <div class="form-group">
+                    <label for="bankName">Bank Name</label>
+                    <select id="bankName" name="bankName" required>
+                        <option value="" disabled selected>Select a bank</option>
+                        <option value="Bank of Ceylon">Bank of Ceylon</option>
+                        <option value="People's Bank">People's Bank</option>
+                        <option value="Commercial Bank">Commercial Bank</option>
+                        <option value="Sampath Bank">Sampath Bank</option>
+                        <option value="HNB">Hatton National Bank</option>
+                        <option value="NTB">Nations Trust Bank</option>
+                        <option value="NSB">National Savings Bank</option>
+                        <option value="DFCC">DFCC Bank</option>
+                            </select>
+                <div class="form-group">
+
+
                 <div class="form-group">
                     <label for="bankAccount">Bank Account Number</label>
                     <input type="text" id="bankAccount" name="bankAccount" required>
@@ -103,7 +120,6 @@
     <script>
         const modal = document.getElementById('withdrawalModal');
         const withdrawBtn = document.getElementById('withdrawBtn');
-        const withdrawalForm = document.getElementById('withdrawalForm');
 
         withdrawBtn.addEventListener('click', () => {
             modal.style.display = 'block';
@@ -112,38 +128,6 @@
         function closeModal() {
             modal.style.display = 'none';
         }
-
-        withdrawalForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const amount = document.getElementById('amount').value;
-            const bankAccount = document.getElementById('bankAccount').value;
-
-            // Add your withdrawal processing logic here
-            fetch(`${URLROOT}/FarmerController/processWithdrawal`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    amount: amount,
-                    bankAccount: bankAccount
-                })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        closeModal();
-                        // Refresh the page or update the balance
-                        window.location.reload();
-                    } else {
-                        alert(data.message || 'Withdrawal failed. Please try again.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred. Please try again.');
-                });
-        });
 
         // Close modal when clicking outside
         window.onclick = function (event) {

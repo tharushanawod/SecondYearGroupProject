@@ -128,7 +128,10 @@ class Moderator{
         }
 
         public function getFarmerTransactionLog(){
-            $this->db->query('SELECT * FROM transaction');
+            $this->db->query('SELECT transaction.*,order_items.* 
+            FROM transaction
+            INNER JOIN order_items ON transaction.order_id = order_items.order_id
+            ');
             $rows = $this->db->resultSet();
             return $rows;
         }

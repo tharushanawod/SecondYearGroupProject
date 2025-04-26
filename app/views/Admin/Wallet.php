@@ -85,6 +85,21 @@
                     <input type="number" id="amount" name="amount" max="<?php echo $data['balance']; ?>" min="1000" step="100" required>
                 </div>
                 <div class="form-group">
+                    <label for="bankName">Bank Name</label>
+                    <select id="bankName" name="bankName" required>
+                        <option value="" disabled selected>Select a bank</option>
+                        <option value="Bank of Ceylon">Bank of Ceylon</option>
+                        <option value="People's Bank">People's Bank</option>
+                        <option value="Commercial Bank">Commercial Bank</option>
+                        <option value="Sampath Bank">Sampath Bank</option>
+                        <option value="HNB">Hatton National Bank</option>
+                        <option value="NTB">Nations Trust Bank</option>
+                        <option value="NSB">National Savings Bank</option>
+                        <option value="DFCC">DFCC Bank</option>
+                        <option value="Seylan Bank">Seylan Bank</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="bankAccount">Bank Account Number</label>
                     <input type="text" id="bankAccount" name="bankAccount" required>
                 </div>

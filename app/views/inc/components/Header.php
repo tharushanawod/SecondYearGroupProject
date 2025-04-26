@@ -42,8 +42,10 @@
         }
     ?>
     <div class="buttons">
-    <a href="<?php echo URLROOT; ?>/LandingController/logout" class="sign-up-btn">Logout</a>
-    <a href="<?php echo URLROOT; ?>/<?php echo $dashboardController; ?>/Dashboard" class="sign-up-btn">Dashboard</a>
+    <a href="<?php echo URLROOT; ?>/<?php echo $dashboardController; ?>/Dashboard" class="sign-up-btn">
+    <i class="fas fa-tachometer-alt"></i> Dashboard</a>
+    <a href="<?php echo URLROOT; ?>/LandingController/logout" class="sign-up-btn"><i class="fas fa-sign-out-alt"></i>Logout</a>
+  
     </div>
     
 <?php else : ?>

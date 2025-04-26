@@ -9,7 +9,7 @@
 </head>
 <body>
 <?php require APPROOT . '/views/inc/sidebar.php'; ?> 
-<h1> Buyer Transaction Logs</h1>
+<h1> Farmer Transaction Logs</h1>
     <div class="table-container">
         <table id="logTable">
             <thead>

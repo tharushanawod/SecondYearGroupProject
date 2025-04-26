@@ -17,7 +17,7 @@
                 <div class="icon icon-3"></div>
             </div>
             <h1 class="typing"> Register As A <br>Manufacturer</h1>
-            <p>Your contributions will empower farmers with valuable pricing insights and support a fairer marketplace for all. Join Corn Cradle and make a meaningful impact on Sri Lanka’s agricultural community!</p>
+            <p>Your contributions will empower farmers with valuable pricing insights and support a fairer marketplace for all. Join Corn Cradle and make a meaningful impact on Sri Lanka's agricultural community!</p>
         </div>
         <div class="form-container">
         <form action="<?php echo URLROOT;?>/LandingController/signup" method="POST" enctype="multipart/form-data">
@@ -77,6 +77,11 @@
                     <span class="form-invalid">
                         <?php echo $data['confirm_password_err'];?>
                     </span>
+                </div>
+
+                <div class="form-group terms-checkbox">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">I agree to the <a href="<?php echo URLROOT;?>/LandingController/terms" target="_blank">Terms and Conditions</a></label>
                 </div>
 
                 <button type="submit" class="signup-btn">Sign up</button>

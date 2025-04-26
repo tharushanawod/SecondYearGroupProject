@@ -13,7 +13,7 @@
 <div class="dashboard-container">
     <div class="welcome-section">
         <h1>Welcome back,
-            <?php echo $data['user_name']; ?>!
+            <?php echo $_SESSION['user_name']; ?>!
         </h1>
         <p>Manage your ingredient supply business</p>
     </div>
@@ -63,7 +63,7 @@
                     <p>Rs.
                         <?php echo number_format($data['total_revenue'], 2); ?>
                     </p>
-                    <div class="stat-date">Since
+                    <div class="stat-date">Untill
                         <?php echo date('M d, Y'); ?>
                     </div>
                 </div>
@@ -78,10 +78,9 @@
                 <div class="stat-info">
                     <h3>Average Rating</h3>
                     <p>
-                        <?php echo number_format($data['average_rating'], 1); ?>/5.0
+                        <?php echo number_format($data['reviews'], 1); ?>/5.0
                     </p>
-                    <div class="stat-date">Based on
-                        <?php echo $data['total_ratings']; ?> reviews
+                    <div class="stat-date">Based on all reviews
                     </div>
                 </div>
             </div>

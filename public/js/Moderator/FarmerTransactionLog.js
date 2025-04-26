@@ -49,7 +49,7 @@ function renderTable() {
           log.wallet_status
         )}</td>
         <td data-label="Withdraw Status">${getWithdrawStatus(
-          log.wallet_status
+          log.withdraw_status
         )}</td>
     `;
     logTable.appendChild(row);

@@ -17,7 +17,7 @@
                 <div class="icon icon-3"></div>
             </div>
             <h1 class="typing"> Register As A Buyer</h1>
-            <p>Register today to connect directly with trusted Sri Lankan farmers, participate in fair bidding, and secure the freshest corn at competitive prices. Enjoy a seamless experience with transparent transactions and real-time updates. Don’t miss out—be a part of a smarter agricultural marketplace!</p>
+            <p>Register today to connect directly with trusted Sri Lankan farmers, participate in fair bidding, and secure the freshest corn at competitive prices. Enjoy a seamless experience with transparent transactions and real-time updates. Don't miss out—be a part of a smarter agricultural marketplace!</p>
         </div>
         <div class="form-container">
         <form action="<?php echo URLROOT;?>/LandingController/signup" method="POST" enctype="multipart/form-data">
@@ -64,6 +64,11 @@
                     <span class="form-invalid">
                         <?php echo $data['confirm_password_err'];?>
                     </span>
+                </div>
+
+                <div class="form-group terms-checkbox">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">I agree to the <a href="<?php echo URLROOT;?>/LandingController/terms" target="_blank">Terms and Conditions</a></label>
                 </div>
 
                 <button type="submit" class="signup-btn">Sign up</button>

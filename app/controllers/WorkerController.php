@@ -20,6 +20,7 @@ class WorkerController extends Controller {
              // User is logged in, now check if they are restricted
              $user_id = $_SESSION['user_id'];
              $user = $this->WorkerModel->getUserStatus($user_id);  // Fetch user status from the database
+            
  
              // If the user is restricted, prevent access to any page except "Manage Profile"
              if ($user->user_status === 'restricted') {
@@ -295,25 +296,7 @@ class WorkerController extends Controller {
         }
     }
 
-    public function getNotifications($user_id) {
-        $helpRequestNotifications = $this->NotificationModel->getHelpRequestNotificationsForUser($user_id);
-        $notifications = $helpRequestNotifications; 
-        header('Content-Type: application/json');
-        try {
-            echo json_encode($notifications);
-        } catch (Exception $e) {
-            error_log("Failed to encode notifications for user_id $user_id: " . $e->getMessage());
-            echo json_encode([]);
-        }
-    }
 
-    public function getUnreadNotifications() {
-        $data = [
-            'notifications' => $this->WorkerModel->getHelpRequestNotificationsForUser($_SESSION['user_id']),
-            'unread_count' => $this->WorkerModel->getUnreadHelpNotificationsCountForUser($_SESSION['user_id'])->count
-        ];
-        $this->view('inc/Notification', $data);
-    }
 
     public function markHelpNotificationAsRead($notificationId, $userId) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -337,31 +320,36 @@ class WorkerController extends Controller {
         }
     }
 
-    public function markNotificationAsRead($notificationId, $userId) {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Ensure the user is authorized
-            if ($userId != $_SESSION['user_id']) {
-                header('Content-Type: application/json');
-                echo json_encode(['success' => false, 'error' => 'Unauthorized']);
-                exit;
-            }
 
-            $notificationModel = $this->model('Notification');
-            $result = $notificationModel->markNotificationAsRead($notificationId, $userId);
 
-            header('Content-Type: application/json');
-            echo json_encode(['success' => $result]);
-            exit;
-        } else {
-            header('Content-Type: application/json');
-            echo json_encode(['success' => false, 'error' => 'Invalid request method']);
-            exit;
-        }
-    }    
+ 
 
-    public function getUnreadNotificationsCount($user_id) {
-        $count = $this->NotificationModel->getUnreadHelpNotificationsCountForUser($user_id)->count;
-        return $count;
+    public function getNotifications($worker_id) {
+        $jobnotifications = (array) $this->NotificationModel->getJobNotifications($worker_id);
+        $helpRequestNotifications = (array)$this->NotificationModel->getHelpRequestNotificationsForUser($worker_id);
+
+        $notifications = array_merge($jobnotifications,$helpRequestNotifications);
+
+        header('Content-Type: application/json');
+        echo json_encode($notifications);
+    }
+
+    public function getUnreadNotifications() {
+        $data = [];
+        $this->View('inc/Notification', $data);
+    }
+
+    public function markNotificationAsRead($id, $worker_id) {
+        $result = $this->NotificationModel->markJobNotificationAsRead($id, $worker_id);
+        header('Content-Type: application/json');
+        echo json_encode(['success' => $result]);
+    }
+
+    public function getUnreadNotificationsCount($worker_id) {
+       
+        $count = $this->NotificationModel->getUnreadNotificationsCount($worker_id);
+        return $count->count;
+        
     }
     
 }

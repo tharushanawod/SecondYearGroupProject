@@ -358,19 +358,22 @@ LIMIT 5
             $wallet = $this->db->single();
     
             // Get successful transactions
-            $this->db->query("
-                SELECT transaction.*
-                FROM transaction 
-                INNER JOIN orders
-                ON transaction.order_id = orders.order_id
-                INNER JOIN order_items
-                ON transaction.order_id = order_items.order_id
-                INNER JOIN supplier_products
-                ON order_items.product_id = supplier_products.product_id
-                WHERE supplier_products.supplier_id = :supplier_id
-                AND transaction.wallet_status = 'added'
-                AND transaction.withdraw_status = 'not_withdrawn'
-            ");
+            $this->db->query('
+                SELECT order_items.order_id, 
+       transaction.payment_date,
+       SUM(order_items.quantity * order_items.price) AS amount, 
+       order_items.withdraw_status
+FROM order_items
+INNER JOIN transaction ON order_items.order_id = transaction.order_id
+INNER JOIN supplier_products ON order_items.product_id = supplier_products.product_id
+WHERE supplier_products.supplier_id = :supplier_id
+  AND order_items.withdraw_status = "not_withdrawn"
+  AND wallet_status = "added"
+GROUP BY order_items.order_id, transaction.payment_date, order_items.withdraw_status
+
+
+               
+            ');
 
             $this->db->bind(':supplier_id', $supplier_id);
             $transactions = $this->db->resultSet();
@@ -455,5 +458,50 @@ return $count->order_count;
         $this->db->bind(':supplierId', $supplierId);
         return $this->db->execute();
     }   
+
+    public function processWithdrawal($withdrawalAmount){
+    
+
+
+        try {
+            // Start transaction
+            $this->db->beginTransaction();
+    
+           
+            $this->db->query('UPDATE wallets 
+            SET balance = balance - :withdrawalAmount 
+            WHERE user_id = :user_id
+            ');
+            $this->db->bind(':withdrawalAmount', $withdrawalAmount);
+            $this->db->bind(':user_id', $_SESSION['user_id']);
+            $this->db->single();
+
+            $this->db->query('UPDATE order_items
+            INNER JOIN supplier_products ON order_items.product_id = supplier_products.product_id
+            SET order_items.withdraw_status = "withdrawn"
+            WHERE supplier_products.supplier_id = :user_id AND order_items.withdraw_status = "not_withdrawn" AND order_items.status = "paid"
+            AND order_items.wallet_status = "added"
+
+            ');
+                   $this->db->bind(':user_id', $_SESSION['user_id']);
+            $this->db->single();
+    
+            // Commit transaction
+            $this->db->commit();
+    
+            // Return both results as an array
+            return true;
+        }catch (Exception $e) {
+            $this->db->rollback();
+            return $e->getMessage(); // This returns the real error
+        }
+
+       
+        
+        
+    }
+
+
+    
 }
 ?>

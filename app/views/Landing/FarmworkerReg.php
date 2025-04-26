@@ -128,6 +128,10 @@
                     </span>
                 </div>
 
+                <div class="form-group terms-checkbox">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">I agree to the <a href="<?php echo URLROOT;?>/LandingController/terms" target="_blank">Terms and Conditions</a></label>
+                </div>
         
                 <button type="submit" class="signup-btn">Sign up</button>
                 <p class="login-text">Been here before? <a href="<?php echo URLROOT;?>/LandingController/Login">Log in</a></p>

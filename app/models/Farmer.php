@@ -532,7 +532,7 @@ class Farmer {
     
 
     public function getToReceiveOrders($userId){
-        $this->db->query("SELECT orders.order_id,users.name,order_items.quantity,order_items.price,supplier_products.product_name,orders.order_date,order_items.supplier_confirmed,supplier_products.image,order_items.product_id,delivery_codes.code
+        $this->db->query("SELECT orders.order_id,users.name,order_items.quantity,order_items.price,supplier_products.product_name,orders.order_date,order_items.supplier_confirmed,supplier_products.image,order_items.product_id,delivery_codes.code,delivery_codes.company
         FROM orders
         INNER JOIN order_items ON orders.order_id = order_items.order_id
         INNER JOIN supplier_products ON order_items.product_id = supplier_products.product_id
@@ -602,6 +602,46 @@ class Farmer {
             error_log('Error in getManufacturerPrices: ' . $e->getMessage());
             return [];
         }
+    }
+
+    public function processWithdrawal($withdrawalAmount){
+    
+
+
+        try {
+            // Start transaction
+            $this->db->beginTransaction();
+    
+           
+            $this->db->query('UPDATE wallets 
+            SET balance = balance - :withdrawalAmount 
+            WHERE user_id = :user_id
+            ');
+            $this->db->bind(':withdrawalAmount', $withdrawalAmount);
+            $this->db->bind(':user_id', $_SESSION['user_id']);
+            $this->db->single();
+
+            $this->db->query('UPDATE buyer_payments 
+            INNER JOIN orders_from_buyers ON buyer_payments.order_id = orders_from_buyers.order_id
+            SET buyer_payments.withdraw_status = :withdraw_status 
+            WHERE buyer_payments.withdraw_status = "not_withdrawn"
+            AND orders_from_buyers.farmer_id = :user_id
+            ');
+            $this->db->bind(':withdraw_status', 'withdrawn');
+            $this->db->bind(':user_id', $_SESSION['user_id']);
+            $this->db->single();
+    
+            // Commit transaction
+            $this->db->commit();
+    
+            // Return both results as an array
+            return true;
+        }catch (Exception $e) {
+            $this->db->rollback();
+            return $e->getMessage(); // This returns the real error
+        }
+        
+        
     }
 }
 ?>

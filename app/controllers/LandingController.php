@@ -25,6 +25,12 @@ class LandingController extends Controller{
         $this->View('Landing/aboutus',$data);
     }
 
+    public function terms()
+    {
+        $data = [];
+        $this->View('Landing/terms',$data);
+    }
+
     public function Auction()
     {
         $data = [];
@@ -39,14 +45,12 @@ class LandingController extends Controller{
     public function signup() {
         // Sanitize data
         $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
-        
+    
         // Initialize the user type
         $user_type = $_POST['user_type'] ?? $_GET['user_type'];
-        
+    
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-           
+    
             $data = [
                 'name' => trim($_POST['name']),
                 'company_name' => isset($_POST['company_name']) ? trim($_POST['company_name']) : '',
@@ -66,6 +70,8 @@ class LandingController extends Controller{
                 'user_type' => $_POST['user_type'],
                 'password' => trim($_POST['password']),
                 'confirm_password' => trim($_POST['confirm_password']),
+                'terms' => isset($_POST['terms']) ? "accepted" :"rejected" , // NEW: terms checkbox value
+                'terms_err' => '', // NEW: error for terms
                 'name_err' => '',
                 'email_err' => '',
                 'phone_err' => '',
@@ -73,44 +79,39 @@ class LandingController extends Controller{
                 'password_err' => '',
                 'confirm_password_err' => ''
             ];
-
-           
-            
-
-         
+    
             // Validate data
             if (empty($data['name'])) $data['name_err'] = 'Please enter name';
             if ($data['user_type'] == 'manufacturer' && empty($data['company_name'])) $data['company_name_err'] = 'Please enter company name';
             if (empty($data['email'])) $data['email_err'] = 'Please enter email';
             if ($this->userModel->finduserbyemail($data['email'])) $data['email_err'] = 'Email already taken';
+            if ($this->userModel->FindUserByPhone($data['phone'])) $data['phone_err'] = 'Phone Number already taken';
             if (empty($data['phone'])) $data['phone_err'] = 'Please enter phone number';
             if ($data['user_type'] == 'farmer' && empty($data['address'])) $data['address_err'] = 'Please enter address';
             if ($data['user_type'] == 'farmer' && empty($data['district'])) $data['district_err'] = 'Please enter district';
-            if ($data['user_type']== 'manufacturer' && empty($data['company_name'])) $data['company_name_err'] = 'Please enter company name';
+            if ($data['user_type'] == 'manufacturer' && empty($data['company_name'])) $data['company_name_err'] = 'Please enter company name';
             if ($data['user_type'] == 'farmworker' && empty($data['skills'])) $data['skills_err'] = 'Please select at least one skill';
             if ($data['user_type'] == 'farmworker' && empty($data['hourly_rate'])) $data['hourly_rate_err'] = 'Please enter hourly rate';
-
+    
+            // Validate terms checkbox
+            if (empty($data['terms'])) $data['terms_err'] = 'You must agree to the terms and conditions.';
     
             // File upload validation
             if (isset($_FILES['document']) && $_FILES['document']['error'] == 0) {
-
+    
                 if($data['user_type']=='manufacturer'){
-                    $targetDir = "uploads/Manufacturer/Documents/"; // Folder to store uploads
+                    $targetDir = "uploads/Manufacturer/Documents/";
+                } else {
+                    $targetDir = "uploads/Supplier/Documents/";
                 }
-                else{
-                    $targetDir = "uploads/Supplier/Documents/"; // Folder to store uploads
-                }
-              
-               
+    
                 $fileName = basename($_FILES['document']['name']);
                 $targetFilePath = $targetDir . $fileName;
     
                 $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
                 $allowedTypes = ['jpg', 'jpeg', 'png', 'pdf'];
-
     
                 if (in_array(strtolower($fileType), $allowedTypes)) {
-                    // Move file to server
                     if (move_uploaded_file($_FILES['document']['tmp_name'], $targetFilePath)) {
                         $data['document'] = $targetFilePath;
                     } else {
@@ -121,8 +122,7 @@ class LandingController extends Controller{
                 }
             } else if(!isset($_FILES['document'])) {
                 $data['document_err'] = '';
-            }
-            else{
+            } else {
                 $data['document_err'] = 'File Not selected';
             }
     
@@ -130,18 +130,14 @@ class LandingController extends Controller{
             if (empty($data['password'])) $data['password_err'] = 'Please enter password';
             if (empty($data['confirm_password'])) $data['confirm_password_err'] = 'Please enter confirm password';
             elseif ($data['password'] != $data['confirm_password']) $data['confirm_password_err'] = 'Passwords do not match';
-
     
-            // If no errors, hash password and register user
-            if (empty($data['name_err']) && empty($data['email_err']) && empty($data['phone_err']) && empty($data['address_err']) && empty($data['district_err']) && empty($data['document_err']) && empty($data['password_err']) && empty($data['confirm_password_err']) && empty($data['skills_err']) && empty($data['hourly_rate_err'])) {
+            // If no errors
+            if (empty($data['name_err']) && empty($data['email_err']) && empty($data['phone_err']) && empty($data['address_err']) && empty($data['district_err']) && empty($data['document_err']) && empty($data['password_err']) && empty($data['confirm_password_err']) && empty($data['skills_err']) && empty($data['hourly_rate_err']) && empty($data['terms_err'])) {
+                
                 $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
                 if ($this->userModel->register($data)) {
-
-                    
-                   
                     $_SESSION['user_email'] = $data['email'];
-                    // Redirect('LandingController/Otppage');
-                    $this->View('Landing/Otppage',$data);
+                    $this->View('Landing/Otppage', $data);
                     exit;
                 } else {
                     die('Something went wrong');
@@ -151,7 +147,6 @@ class LandingController extends Controller{
                 $this->View($view, $data);
             }
         } else {
-            // Default form load with empty data
             $data = [
                 'name' => '',
                 'email' => '',
@@ -160,6 +155,7 @@ class LandingController extends Controller{
                 'password' => '',
                 'confirm_password' => '',
                 'hourly_rate' => '',
+                'terms' => '',
                 'name_err' => '',
                 'email_err' => '',
                 'phone_err' => '',
@@ -168,14 +164,15 @@ class LandingController extends Controller{
                 'confirm_password_err' => '',
                 'working_area_err' => '',
                 'skills_err' => '',
-                'hourly_rate_err' => ''
-                
+                'hourly_rate_err' => '',
+                'terms_err' => ''
             ];
     
             $view = 'Landing/' . ucfirst($user_type) . 'Reg';
             $this->View($view, $data);
         }
     }
+    
 
     public function OTP(){
         

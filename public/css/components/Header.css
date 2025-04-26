@@ -9,6 +9,7 @@ header {
 nav {
   display: flex;
   justify-content: space-evenly;
+  background-color: white;
   align-items: center;
   font-size: 1.3rem;
   padding: 1rem;

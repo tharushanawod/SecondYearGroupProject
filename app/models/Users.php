@@ -106,8 +106,8 @@ class Users {
             $this->db->beginTransaction();
         
             // Insert into the users table
-            $this->db->query('INSERT INTO users (name, email, phone, otp_status, user_status, user_type, password) 
-                              VALUES (:name, :email, :phone, :otp_status, :user_status, :user_type, :password)');
+            $this->db->query('INSERT INTO users (name, email, phone, otp_status, user_status, user_type,terms,password) 
+                              VALUES (:name, :email, :phone, :otp_status, :user_status, :user_type,:terms ,:password)');
             $this->db->bind(':name', $data['name']);
             $this->db->bind(':email', $data['email']);
             $this->db->bind(':phone', $data['phone']);
@@ -115,6 +115,7 @@ class Users {
             $this->db->bind(':password', $data['password']);
             $this->db->bind(':user_status', 'pending');
             $this->db->bind(':otp_status', 'unverified');
+            $this->db->bind(':terms', $data['terms']);
             $this->db->execute();
         
             $userId = $this->db->lastInsertId();
