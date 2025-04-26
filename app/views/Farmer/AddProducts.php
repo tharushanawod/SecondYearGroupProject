@@ -147,7 +147,7 @@
                 </div>
                 <div class="form-group">
                     <label for="media">Media (images Only)</label>
-                    <input type="file" class="form-control" id="media" name="media" accept="image/*,video/*,model/*" required>
+                    <input type="file" class="form-control" id="media" name="media" accept="image/*,video/*,model/*">
                     <img id="media-preview" src="#" alt="Current Media"
                         style="display:none; max-width: 200px; margin-top: 10px;">
                 </div>

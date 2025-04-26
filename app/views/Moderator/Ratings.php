@@ -66,10 +66,10 @@
                     "<?php echo htmlspecialchars($rating->review_text); ?>"
                 </p>
                 <div class="rating-actions">
-                <a href="<?php echo is_null($rating->buyer_id) ? URLROOT . '/ModeratorController/ApproveWorkerReview/' . $rating->id : URLROOT . '/AdminController/ApproveProductReview/' . $rating->id; ?>">
+                <a href="<?php echo is_null($rating->buyer_id) ? URLROOT . '/ModeratorController/ApproveWorkerReview/' . $rating->id : URLROOT . '/ModeratorController/ApproveProductReview/' . $rating->id; ?>">
                 <button class="btn btn-approve" >Approve</button>
                 </a>
-                <a href="<?php echo is_null($rating->buyer_id) ? URLROOT . '/ModeratorController/RejectWorkerReview/' . $rating->id : URLROOT . '/AdminController/RejectProductReview/' . $rating->id; ?>">
+                <a href="<?php echo is_null($rating->buyer_id) ? URLROOT . '/ModeratorController/RejectWorkerReview/' . $rating->id : URLROOT . '/ModeratorController/RejectProductReview/' . $rating->id; ?>">
                 <button class="btn btn-reject" ?>Reject</button>
                 </a>
                     
