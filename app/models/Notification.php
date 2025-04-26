@@ -104,6 +104,18 @@ class Notification {
         }
     }
 
+    public function markFarmerOrderNotificationAsRead($notification_id, $user_id) {
+        try {
+            $this->db->query("UPDATE notifications_for_users SET is_read = 1 WHERE id = :notification_id AND user_id = :user_id");
+            $this->db->bind(':notification_id', $notification_id);
+            $this->db->bind(':user_id', $user_id);
+            return $this->db->execute();
+        } catch (PDOException $e) {
+            error_log("Database error in markHelpNotificationAsRead: " . $e->getMessage());
+            return false;
+        }
+    }
+
     // Get count of unread help request notifications for users
     public function getUnreadHelpNotificationsCountForUser($user_id) {
         $this->db->query('SELECT COUNT(*) AS count FROM notifications 
@@ -178,6 +190,8 @@ public function getOrdertNotificationsForUser($user_id) {
 
     
 }
+
+
 
 
 }

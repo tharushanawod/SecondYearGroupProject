@@ -17,7 +17,7 @@
     <div class="overlay">
         <h2>Empowering Sri Lankan corn farmers to trade and thrive</h2>
        
-        <button class="cta-button">Join Now </button>
+        <a href="<?php echo URLROOT;?>/LandingController/Login"><button class="cta-button">Join Now </button></a>
       </div>
       <img src="<?php echo URLROOT;?>/images/CornField.jpeg" alt="test Field">
     </div>
@@ -73,9 +73,9 @@
   <div class="form-container">
     <h2>Stay Connected</h2>
     <p>Join us and give your help in the efforts to protect our green forest today so the earth may keep breathing.</p>
-    <form>
-      <input type="email" placeholder="Your email" required>
-      <textarea placeholder="Your message" required></textarea>
+    <form action="<?php echo URLROOT;?>/LandingController/SendEmail" method="POST">
+      <input type="email" placeholder="Your email" name="email" required>
+      <textarea name="message" placeholder="Your message" required></textarea>
       <button type="submit">Submit</button>
     </form>
   </div>

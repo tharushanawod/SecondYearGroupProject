@@ -14,7 +14,7 @@
 
         <div class="main-content">
             <div class="welcome-section">
-                <h1>Set Minimum Price</h1>
+                <h1>Inform Your Price To Farmers</h1>
             </div>
 
             <?php if (isset($_SESSION['price_success'])): ?>

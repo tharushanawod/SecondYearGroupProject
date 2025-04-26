@@ -51,7 +51,7 @@
             <div class="add-review">
                 <form action="<?php echo URLROOT.'/FarmerController/AddReview/'.$data->user_id?>" method="POST">
                 <h3>Add Your Review</h3>
-                <textarea class="review-input" name="review_text" placeholder="Share Your Experience" rows="4"></textarea>
+                <textarea class="review-input" name="review_text" placeholder="Share Your Experience" rows="4" ></textarea>
                 <div class="star-rating">
                     <input type="hidden" name="rating" value="0" id="ratingInput">
                     <span class="star">★</span>

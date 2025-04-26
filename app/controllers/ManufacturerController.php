@@ -594,6 +594,18 @@ class ManufacturerController extends Controller {
         return $count->count;
         
     }
+
+    public function getStockHolders(){
+        $stockHolders = $this->ManufacturerModel->getStockHolders();
+        header('Content-Type: application/json');
+        echo json_encode($stockHolders);
+    }
+
+    public function getBuyerDetails($buyer_id){
+        $buyerDetails = $this->ManufacturerModel->getBuyerDetails($buyer_id);
+        header('Content-Type: application/json');
+        echo json_encode($buyerDetails);
+    }
    
 }
 ?>

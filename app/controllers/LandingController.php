@@ -241,6 +241,46 @@ class LandingController extends Controller{
        
         
     }
+    // LandingController.php
+
+// LandingController.php
+
+public function SendEmail(){
+    // Check if the form is submitted
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // Sanitize form data
+        $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
+        $message = htmlspecialchars(trim($_POST['message']));
+
+        // Validate email
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            die('Invalid email format');
+        }
+
+        // Prepare email
+        $to = 'tharushanawod888$gmail.com'; // The recipient email address
+        $subject = 'Message from Contact Form';
+        $body = "You have received a new message.\n\n".
+                "Email: $email\n".
+                "Message: $message";
+
+        $headers = 'From: ' . $email . "\r\n" .
+                   'Reply-To: ' . $email . "\r\n" .
+                   'X-Mailer: PHP/' . phpversion();
+
+        // Send email
+        if (mail($to, $subject, $body, $headers)) {
+            // Redirect or show success message
+            header("Location: " . URLROOT . "/LandingController/Register");
+            exit();
+        } else {
+            // Show error message if email fails to send
+            die('Error sending email');
+        }
+    }
+}
+
+
 
     public function VerifyOTP() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

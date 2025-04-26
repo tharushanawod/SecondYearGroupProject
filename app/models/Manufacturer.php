@@ -632,5 +632,40 @@ AND corn_products.closing_date > NOW();
         }
     }
 
+    public function getStockHolders() {
+        try {
+            $this->db->query('
+                SELECT 
+                    u.name,
+                    u.user_id,
+                    u.email,
+                    u.phone,                    
+                    o.quantity,
+                    o.order_id
+                FROM orders_from_buyers o
+                INNER JOIN users u ON o.buyer_id = u.user_id
+                INNER JOIN buyer_payments p ON o.order_id = p.order_id
+                WHERE o.payment_status = "paid"
+                AND u.user_type = "buyer" 
+                AND p.wallet_status ="added"
+                ORDER BY quantity DESC
+            ');
+            return $this->db->resultSet();
+        } catch (Exception $e) {
+            error_log('Error in getStockHolders: ' . $e->getMessage());
+            return [];
+        }
+    }
+
+    public function getBuyerDetails($buyer_id){
+        $this->db->query('SELECT *
+        FROM users 
+        WHERE user_id = :buyer_id');
+        $this->db->bind(':buyer_id', $buyer_id);
+        $row = $this->db->single();
+        return $row;
+        
+    }
+
 }
 ?>

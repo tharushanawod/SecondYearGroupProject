@@ -82,14 +82,14 @@
           <img src="<?php echo URLROOT; ?>/images/service1.png" alt="service1" />
           <h2>All In One</h2>
           <p>Buy ingredients,Buy products,Hire Workers.</p>
-          <a href="#"><button>More</button></a>
+          <a href="<?php echo URLROOT;?>/LandingController/Login"><button>More</button></a>
         </div>
 
         <div class="service">
           <img src="<?php echo URLROOT; ?>/images/service2.png" alt="service2" />
           <h2>Bidding System</h2>
           <p>Buyers are allowed to bid for the products.</p>
-          <a href="#"><button>More</button></a>
+          <a href="<?php echo URLROOT;?>/LandingController/Login"><button>More</button></a>
         </div>
 
         <div class="service">
@@ -98,7 +98,7 @@
           <p>
             Through bidding system both farmers and buyers get fair prices.
           </p>
-          <a href="#"><button>More</button></a>
+          <a href="<?php echo URLROOT;?>/LandingController/Login"><button>More</button></a>
         </div>
       </div>
     </div>

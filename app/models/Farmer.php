@@ -219,7 +219,7 @@ class Farmer {
     INNER JOIN farmworkers ON users.user_id = farmworkers.user_id
     LEFT JOIN profile_pictures ON farmworkers.user_id = profile_pictures.user_id
     LEFT JOIN farmer_reviews_worker ON users.user_id = farmer_reviews_worker.worker_id
-    WHERE users.user_id = :id
+    WHERE users.user_id = :id AND is_verified = 1
     GROUP BY 
         users.user_id, 
         farmworkers.user_id, 
@@ -538,7 +538,9 @@ class Farmer {
         INNER JOIN supplier_products ON order_items.product_id = supplier_products.product_id
         INNER JOIN users ON supplier_products.supplier_id = users.user_id
         LEFT JOIN delivery_codes ON orders.order_id = delivery_codes.order_id
-        WHERE orders.user_id = :userId AND order_items.status = 'paid' AND order_items.supplier_confirmed = 1 AND order_items.delivery_confirmed = 0");
+        WHERE orders.user_id = :userId AND order_items.status = 'paid' AND order_items.supplier_confirmed = 1 AND order_items.delivery_confirmed = 0
+        ORDER BY orders.order_date DESC
+        ");
         $this->db->bind(':userId', $userId);
         $result = $this->db->resultSet();
         return $result;
@@ -551,7 +553,8 @@ class Farmer {
         INNER JOIN order_items ON orders.order_id = order_items.order_id
         INNER JOIN supplier_products ON order_items.product_id = supplier_products.product_id
         INNER JOIN users ON supplier_products.supplier_id = users.user_id
-        WHERE orders.user_id = :userId AND orders.status = 'paid' AND order_items.supplier_confirmed = 0");
+        WHERE orders.user_id = :userId AND orders.status = 'paid' AND order_items.supplier_confirmed = 0
+        ORDER BY orders.order_date DESC");
         $this->db->bind(':userId', $userId);
         $result = $this->db->resultSet();
         return $result;
@@ -563,7 +566,8 @@ class Farmer {
         INNER JOIN order_items ON orders.order_id = order_items.order_id
         INNER JOIN supplier_products ON order_items.product_id = supplier_products.product_id
         INNER JOIN users ON supplier_products.supplier_id = users.user_id
-        WHERE orders.user_id = :userId AND order_items.status = 'pending' AND order_items.supplier_confirmed = 0");
+        WHERE orders.user_id = :userId AND order_items.status = 'pending' AND order_items.supplier_confirmed = 0
+        ORDER BY orders.order_date DESC");
         $this->db->bind(':userId', $userId);
         $result = $this->db->resultSet();
         return $result;

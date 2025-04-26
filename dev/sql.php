@@ -474,3 +474,46 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+
+DELIMITER $$
+
+CREATE EVENT IF NOT EXISTS RestrictFailedPaymentsForBuyer
+ON SCHEDULE EVERY 1 MINUTE
+DO
+BEGIN
+    -- Update only pending orders that expired
+    UPDATE orders_from_buyers
+    SET payment_status = 'failed'
+    WHERE order_closing_date < NOW()
+      AND payment_status = 'pending';
+
+    -- Insert logs ONLY for orders not yet logged
+    INSERT INTO restriction_logs (user_id, reason)
+    SELECT DISTINCT o.buyer_id,
+           CONCAT('Order ID ', o.order_id, ' expired without payment') AS reason
+    FROM orders_from_buyers o
+    JOIN users u ON u.user_id = o.buyer_id
+    WHERE o.order_closing_date < NOW()
+      AND o.payment_status = 'failed'
+      AND o.restriction_logged = 0
+      AND u.user_status <> 'restricted';
+
+    -- Restrict users ONLY for orders not yet logged
+    UPDATE users u
+    JOIN orders_from_buyers o ON u.user_id = o.buyer_id
+    SET u.user_status = 'restricted'
+    WHERE o.order_closing_date < NOW()
+      AND o.payment_status = 'failed'
+      AND o.restriction_logged = 0;
+
+    -- Mark orders as logged
+    UPDATE orders_from_buyers
+    SET restriction_logged = 1
+    WHERE order_closing_date < NOW()
+      AND payment_status = 'failed'
+      AND restriction_logged = 0;
+    
+END $$
+
+DELIMITER ;

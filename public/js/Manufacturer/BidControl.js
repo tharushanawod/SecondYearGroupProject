@@ -44,7 +44,7 @@ if (paginatedBids.length === 0) {
 
 paginatedBids.forEach((bid) => {
 
-  const countdownId = `countdown-${bid.order_id}`;
+  const countdownId = `countdown-${bid.bid_id}`; // Unique ID for each countdown
   const row = document.createElement("tr");
   row.innerHTML = `
     <td data-label="Bid ID">${bid.bid_id}</td>

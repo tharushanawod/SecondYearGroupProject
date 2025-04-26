@@ -865,7 +865,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
             }
 
             $notificationModel = $this->model('Notification');
-            $result = $notificationModel->markNotificationAsRead($notificationId, $userId);
+            $result = $notificationModel->markFarmerOrderNotificationAsRead($notificationId, $userId);
 
             header('Content-Type: application/json');
             echo json_encode(['success' => $result]);
@@ -876,6 +876,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
             exit;
         }
     }    
+    
 
     public function getUnreadNotificationsCount($user_id) {
         $count = $this->NotificationModel->getUnreadHelpNotificationsCountForUser($user_id)->count;

@@ -15,7 +15,7 @@
     <div class="container">
         <div class="page-header">
             <h1 class="page-title">Orders Awaiting Pickup</h1>
-            <a href="orders.html" class="back-button">
+            <a href="<?php echo URLROOT;?>/FarmerController/orders" class="back-button">
                 <i class="fas fa-arrow-left"></i>
                 Back to Orders
             </a>
