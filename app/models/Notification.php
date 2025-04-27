@@ -27,8 +27,6 @@ class Notification {
         $this->db->bind(':buyer_id', $buyer_id);
         return $this->db->single();
     }
-
-    
     
 
     public function markNotificationAsRead($notification_id, $buyer_id) {
@@ -186,12 +184,5 @@ public function getOrdertNotificationsForUser($user_id) {
         error_log("Failed to fetch order notifications for user_id $user_id: " . $e->getMessage());
         return [];
     }
-
-
-    
-}
-
-
-
-
+  }
 }

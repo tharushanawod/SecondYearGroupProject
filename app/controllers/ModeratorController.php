@@ -41,11 +41,11 @@ class ModeratorController extends Controller {
 
     public function Help() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply'])) {
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-            $requestId = trim($_POST['request_id']);
-            $reply = trim($_POST['reply']);
+            $_POST = filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW);
+            $requestId = htmlspecialchars(trim($_POST['request_id']));
+            $reply = htmlspecialchars(trim($_POST['reply']));
             $moderatorId = $_SESSION['user_id'];
-
+    
             // Validate inputs
             if (!is_numeric($requestId)) {
                 $_SESSION['reply_error'] = 'Invalid request ID.';
@@ -56,7 +56,7 @@ class ModeratorController extends Controller {
                 $category = $this->notificationModel->getRequestById($requestId)->category ?? '';
                 Redirect('ModeratorController/Help?category=' . urlencode($category));
             }
-
+    
             // Check if request_id exists
             $request = $this->notificationModel->getRequestById($requestId);
             if (!$request) {
@@ -64,22 +64,47 @@ class ModeratorController extends Controller {
                 $_SESSION['reply_error'] = 'Help request not found.';
                 Redirect('ModeratorController/Help');
             }
-
+    
             $this->handleReply($requestId, $moderatorId, $reply);
         }
-
+    
         $data = [];
         $allRequests = $this->notificationModel->getHelpRequests();
         $data['categories'] = $this->getCategoryPendingCounts($allRequests);
-
+    
         if (isset($_GET['category'])) {
-            $category = $_GET['category'];
+            $category = htmlspecialchars($_GET['category']);
             $data['selected_category'] = $category;
-            $data['requests'] = $this->notificationModel->getRequestsByCategory($category);
+            $requests = $this->notificationModel->getRequestsByCategory($category);
+            // Add file type to each request
+            foreach ($requests as $request) {
+                if (!empty($request->attachment) && file_exists($request->attachment)) {
+                    $request->file_type = function_exists('mime_content_type')
+                        ? mime_content_type($request->attachment)
+                        : $this->getMimeTypeFromExtension($request->attachment);
+                } else {
+                    $request->file_type = null;
+                }
+            }
+            $data['requests'] = $requests;
         }
-
+    
         $this->view('Moderator/Help', $data);
     }
+    
+    // Helper method to get MIME type from file extension
+    private function getMimeTypeFromExtension($filePath) {
+        $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+        $extensionToMime = [
+            'jpg' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'png' => 'image/png',
+            'pdf' => 'application/pdf'
+        ];
+        return $extensionToMime[$extension] ?? 'application/octet-stream';
+    }
+
+
 
     private function getCategoryPendingCounts($requests) {
         $categories = [];
@@ -134,21 +159,49 @@ class ModeratorController extends Controller {
         Redirect('ModeratorController/Help?category=' . urlencode($category));
     }
 
+
     public function serveAttachment($requestId) {
         if (!is_numeric($requestId)) {
-            die('Invalid request ID.');
+            $_SESSION['reply_error'] = 'Invalid request ID.';
+            Redirect('ModeratorController/Help');
         }
-
+    
+        if (!$this->isloggedin()) {
+            $_SESSION['reply_error'] = 'Unauthorized access.';
+            Redirect('ModeratorController/Help');
+        }
+    
         $request = $this->notificationModel->getRequestById($requestId);
-        if ($request && !empty($request->attachment) && file_exists($request->attachment)) {
-            header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename="' . basename($request->attachment) . '"');
-            readfile($request->attachment);
-            exit;
-        } else {
-            die('File not found.');
+        if (!$request || empty($request->attachment) || !file_exists($request->attachment)) {
+            error_log("Failed to serve attachment for request_id $requestId: File not found");
+            $_SESSION['reply_error'] = 'File not found.';
+            Redirect('ModeratorController/Help');
         }
+    
+        $filePath = $request->attachment;
+        $fileType = $this->getMimeTypeFromExtension($filePath); // Use extension-based MIME type
+        $fileName = basename($filePath);
+    
+        switch ($fileType) {
+            case 'image/jpeg':
+            case 'image/png':
+                header('Content-Type: ' . $fileType);
+                header('Content-Disposition: inline; filename="' . $fileName . '"');
+                break;
+            case 'application/pdf':
+                header('Content-Type: application/pdf');
+                header('Content-Disposition: inline; filename="' . $fileName . '"');
+                break;
+            default:
+                header('Content-Type: application/octet-stream');
+                header('Content-Disposition: attachment; filename="' . $fileName . '"');
+        }
+    
+        header('Content-Length: ' . filesize($filePath));
+        readfile($filePath);
+        exit;
     }
+
 
     public function submitReply() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {

@@ -206,65 +206,9 @@ class SupplierController extends Controller {
         exit();
     }
 
-    public function shop() {
-        $supplier_id = $_SESSION['user_id'];
-        $products = $this->Product->getProducts($supplier_id);
-        $fertilizerProducts = $this->Product->getProductsByCategory('1', $supplier_id);
-        $seedsProducts = $this->Product->getProductsByCategory('2', $supplier_id);
-        $pestControlProducts = $this->Product->getProductsByCategory('3', $supplier_id);
-        $this->view('Ingredient Supplier/shop', [
-            'products' => $products,
-            'fertilizerProducts' => $fertilizerProducts,
-            'seedsProducts' => $seedsProducts,
-            'pestControlProducts' => $pestControlProducts
-        ]);
-    }
-
-    public function fertilizer() {
-        $supplier_id = $_SESSION['user_id'];
-        $products = $this->Product->getProductsByCategory('1', $supplier_id);
-        $seedsProducts = $this->Product->getProductsByCategory('2', $supplier_id);
-        $pestControlProducts = $this->Product->getProductsByCategory('3', $supplier_id);
-        $this->view('Ingredient Supplier/Fertilizer', [
-            'products' => $products,
-            'seedsProducts' => $seedsProducts,
-            'pestControlProducts' => $pestControlProducts
-        ]);
-    }
-
-    public function seeds() {
-        $supplier_id = $_SESSION['user_id'];
-        $products = $this->Product->getProductsByCategory('2', $supplier_id);
-        $fertilizerProducts = $this->Product->getProductsByCategory('1', $supplier_id);
-        $pestControlProducts = $this->Product->getProductsByCategory('3', $supplier_id);
-        $this->view('Ingredient Supplier/Seeds', [
-            'products' => $products,
-            'fertilizerProducts' => $fertilizerProducts,
-            'pestControlProducts' => $pestControlProducts
-        ]);
-    }
-
-    public function pestControl() {
-        $supplier_id = $_SESSION['user_id'];
-        $products = $this->Product->getProductsByCategory('3', $supplier_id);
-        $seedsProducts = $this->Product->getProductsByCategory('2', $supplier_id);
-        $fertilizerProducts = $this->Product->getProductsByCategory('1', $supplier_id);
-        $this->view('Ingredient Supplier/PestControl', [
-            'products' => $products,
-            'seedsProducts' => $seedsProducts,
-            'fertilizerProducts' => $fertilizerProducts
-        ]);
-    }
 
     public function viewOrders() {
-        // $status = $_GET['status'] ?? 'all';
-        // $supplierId = $_SESSION['user_id'];
-        // if ($status === 'all') {
-        //     $orders = $this->Supplier->getOrdersBySupplierId($supplierId);
-        // } else {
-        //     $orders = $this->Supplier->getOrdersByStatusAndSupplierId($status, $supplierId);
-        // }
-        // $data = ['orders' => $orders];
+        
         $this->view('Ingredient Supplier/OrdersManagement');
     }
 
@@ -325,7 +269,7 @@ class SupplierController extends Controller {
         echo json_encode($order);
     }
 
-       public function manageProfile() {
+    public function manageProfile() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
             $data = [
@@ -475,42 +419,64 @@ public function showForm($category) {
 
 public function submitRequest() {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+        $_POST = filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW);
         $data = [
             'user_id' => $_SESSION['user_id'],
             'user_role' => $_SESSION['user_role'],
-            'category' => trim($_POST['category']),
-            'subject' => trim($_POST['subject']),
-            'description' => trim($_POST['description']),
+            'category' => htmlspecialchars(trim($_POST['category'])),
+            'subject' => htmlspecialchars(trim($_POST['subject'])),
+            'description' => htmlspecialchars(trim($_POST['description'])),
             'attachment' => null,
             'status' => 'pending',
-            'created_at' => date('Y-m-d H:i:s')
+            'created_at' => date('Y-m-d H:i:s'),
+            'request_error' => ''
         ];
 
+        // Handle file upload
         if (isset($_FILES['attachment']) && $_FILES['attachment']['error'] == UPLOAD_ERR_OK) {
             $uploadDir = 'Uploads/help_requests/';
             if (!file_exists($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
-            $attachmentName = basename($_FILES['attachment']['name']);
-            $uploadFile = $uploadDir . $attachmentName;
-            if (move_uploaded_file($_FILES['attachment']['tmp_name'], $uploadFile)) {
-                $data['attachment'] = $uploadFile;
+
+            // Validate file extension
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf'];
+            $fileExtension = strtolower(pathinfo($_FILES['attachment']['name'], PATHINFO_EXTENSION));
+            $maxFileSize = 5 * 1024 * 1024; // 5MB limit
+
+            if (!in_array($fileExtension, $allowedExtensions)) {
+                $data['request_error'] = 'Only JPEG, PNG, or PDF files are allowed.';
+            } elseif ($_FILES['attachment']['size'] > $maxFileSize) {
+                $data['request_error'] = 'File size exceeds 5MB limit.';
             } else {
-                error_log("Failed to upload attachment: " . $attachmentName);
+                // Generate unique file name
+                $uniqueName = uniqid('attachment_') . '.' . $fileExtension;
+                $uploadFile = $uploadDir . $uniqueName;
+
+                if (move_uploaded_file($_FILES['attachment']['tmp_name'], $uploadFile)) {
+                    $data['attachment'] = $uploadFile;
+                } else {
+                    error_log("Failed to upload attachment: " . $_FILES['attachment']['name']);
+                    $data['request_error'] = 'Failed to upload attachment. Please try again.';
+                }
             }
         }
 
-        if ($this->Supplier->saveHelpRequest($data)) {
-            $_SESSION['request_success'] = 'Your request has been submitted successfully!';
-            Redirect('SupplierController/RequestHelp');
-        } else {
-            error_log("Failed to save help request: " . json_encode($data));
-            $_SESSION['request_error'] = 'Failed to submit your request. Please try again.';
-            Redirect('SupplierController/RequestHelp');
+        if (empty($data['request_error'])) {
+            if ($this->Supplier->saveHelpRequest($data)) {
+                $_SESSION['request_success'] = 'Your request has been submitted successfully!';
+                Redirect('SupplierController/RequestHelp');
+            } else {
+                error_log("Failed to save help request: " . json_encode($data));
+                $data['request_error'] = 'Failed to submit your request. Please try again.';
+            }
         }
+
+        $_SESSION['request_error'] = $data['request_error'];
+        Redirect('SupplierController/RequestHelp');
     }
 }
+
 
 public function getAllOrders($userId) {
     $orders = $this->Supplier->getAllOrders($userId);
@@ -539,7 +505,6 @@ public function getDeliveryConfirmationStatus($orderId) {
 }
 
 public function sendDeliveryCode($orderId) {
-
   
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
@@ -564,18 +529,13 @@ public function sendDeliveryCode($orderId) {
             
         ];
         $this->view('Ingredient Supplier/DeliveryCode', $data);
-    }
-
-
-
+   }
 }
 
-
-
-        public function Wallet(){
-            $data=$this->Supplier->getWalletDetails($_SESSION['user_id']);
-            $this->View('Ingredient Supplier/Wallet',$data);
-        }
+public function Wallet(){
+    $data=$this->Supplier->getWalletDetails($_SESSION['user_id']);
+    $this->View('Ingredient Supplier/Wallet',$data);
+}
 
 public function getNotifications($user_id) {
     $helpRequestNotifications = $this->NotificationModel->getHelpRequestNotificationsForUser($user_id);
