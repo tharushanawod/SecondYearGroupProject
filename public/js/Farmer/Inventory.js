@@ -8,15 +8,16 @@ const rowsPerPage = 10;
 let inventoryItems = []; // This will store all the fetched inventory items
 
 // Fetch all inventory items from the controller
-function fetchInventory() {
-    fetch(`${URLROOT}/FarmerController/getIngredientInventory/${USERID}`)
-        .then((response) => response.json())
-        .then((data) => {
-                inventoryItems = data; // Store all inventory items in the array
-                renderTable(); // Initial table render
-                updatePagination();
-        })
-        .catch((error) => console.log("Error fetching inventory:", error));
+async function fetchInventory() {
+    try {
+        const response = await fetch(`${URLROOT}/FarmerController/getIngredientInventory/${USERID}`);
+        const data = await response.json();
+        inventoryItems = data; // Store all inventory items in the array
+        renderTable(); // Initial table render
+        updatePagination();
+    } catch (error) {
+        console.log("Error fetching inventory:", error);
+    }
 }
 
 // Render table rows for inventory items based on current page

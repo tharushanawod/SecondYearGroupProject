@@ -25,7 +25,9 @@ background-color: var(--bg-color);
 background-size: cover;
 background-position: center;
 }
-
+button#resetFilters {
+    margin-top: 35px;
+}
 /* Enhanced Header */
 .header-content {
 background: linear-gradient(135deg, rgba(41, 146, 51, 0.1), rgba(91, 145, 98, 0.2));

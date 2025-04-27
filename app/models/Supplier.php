@@ -416,7 +416,7 @@ return $count->order_count;
         LEFT JOIN delivery_codes ON orders.order_id = delivery_codes.order_id
         INNER JOIN order_items ON orders.order_id = order_items.order_id
         INNER JOIN supplier_products ON order_items.product_id = supplier_products.product_id
-        WHERE supplier_products.supplier_id = :supplierId AND order_items.supplier_confirmed = 0
+        WHERE supplier_products.supplier_id = :supplierId AND order_items.supplier_confirmed = 0 AND
         ORDER BY orders.order_date DESC');
         $this->db->bind(':supplierId', $supplierId);
         return $this->db->resultSet();

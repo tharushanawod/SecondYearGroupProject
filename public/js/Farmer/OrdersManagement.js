@@ -7,17 +7,51 @@ let currentPage = 1;
 const rowsPerPage = 10;
 let orders = []; // This will store all the fetched orders
 
+// Render table rows for orders based on current page
+// Reference to the search input field
+const orderIdSearch = document.getElementById("orderIdSearch");
+
+// Store the original orders (to reset search)
+let allOrders = []; // This will store the unfiltered list of orders
+
 // Fetch all orders from the controller
-function fetchOrders() {
-  fetch(`${URLROOT}/FarmerController/getAllOrders/${USERID}`)
-    .then((response) => response.json())
-    .then((data) => {
-      orders = data; // Store all orders in the array
-      renderTable(); // Initial table render
-      updatePagination();
-    })
-    .catch((error) => console.log("Error fetching orders:", error));
+async function fetchOrders() {
+  try {
+    const response = await fetch(`${URLROOT}/FarmerController/getAllOrders/${USERID}`);
+    const data = await response.json();
+    allOrders = [...data]; // Store the original list of orders
+    orders = [...data]; // Initialize the filtered list with all orders
+    renderTable(); // Initial table render
+    updatePagination();
+  } catch (error) {
+    console.log("Error fetching orders:", error);
+  }
 }
+
+// Add an event listener for the search box
+orderIdSearch.addEventListener("input", () => {
+  const searchTerm = orderIdSearch.value.trim().toLowerCase();
+
+  // Filter the orders based on the search term
+  if (searchTerm === "") {
+    // If the search box is empty, reset to the original list
+    orders = [...allOrders];
+  } else {
+    // Filter orders where the order ID matches the search term
+    orders = allOrders.filter(
+      (order) =>
+        order.quantity.toString().toLowerCase().includes(searchTerm) 
+        
+    );
+  }
+
+  // Reset pagination to the first page after filtering
+  currentPage = 1;
+
+  // Re-render the table and update pagination
+  renderTable();
+  updatePagination();
+});
 
 // Render table rows for orders based on current page
 function renderTable() {
@@ -30,7 +64,7 @@ function renderTable() {
   paginatedOrders.forEach((order) => {
     const row = document.createElement("tr");
     const totalAmount = order.bid_price * order.quantity;
-    const paymenttoreceive = totalAmount * 0.7; // Assuming paid amount is 30% as advance order
+    const paymenttoreceive = totalAmount * 0.8; // Assuming paid amount is 30% as advance order
     row.innerHTML = `
       <td data-label="Order ID">${order.order_id}</td>
        <td data-label="Quantity">${order.quantity}</td>
@@ -106,26 +140,30 @@ nextBtn.addEventListener("click", () => {
   }
 });
 
-function confirmOrder(orderId) {
-  console.log("Confirming order with ID:", orderId);
-  fetch(`${URLROOT}/FarmerController/confirmOrder/${orderId}`, {
-    method: "POST",
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      fetchOrders(); // Refresh data after confirmation
-    })
-    .catch((error) => console.error("Error confirming payment:", error));
+async function confirmOrder(orderId) {
+  try {
+    const response = await fetch(`${URLROOT}/FarmerController/confirmOrder/${orderId}`, {
+      method: "POST",
+    });
+    const data = await response.json();
+    fetchOrders(); // Refresh data after confirmation
+  } catch (error) {
+    console.error("Error confirming payment:", error);
+  }
 }
 
-function viewBuyerDetails(buyerId) {
-  fetch(`${URLROOT}/FarmerController/getBuyerDetails/${buyerId}`)
-    .then((response) => response.json())
-    .then((data) => {
-      const modal = document.getElementById("buyerModal");
-      const content = document.getElementById("buyerDetailsContent");
 
-      content.innerHTML = `
+async function viewBuyerDetails(buyerId) {
+  console.log("Fetching buyer details for ID:", buyerId);
+  
+  try {
+    const response = await fetch(`${URLROOT}/FarmerController/getBuyerDetails/${buyerId}`);
+    const data = await response.json();
+    
+    const modal = document.getElementById("buyerModal");
+    const content = document.getElementById("buyerDetailsContent");
+    
+    content.innerHTML = `
                 <div class="buyer-detail">
                     <div class="detail-icon">
                         <i class="fas fa-user"></i>
@@ -146,10 +184,12 @@ function viewBuyerDetails(buyerId) {
                 </div>
             `;
 
-      modal.style.display = "block";
-      document.body.style.overflow = "hidden"; // Prevent scrolling when modal is open
-    })
-    .catch((error) => console.error("Error fetching buyer details:", error));
+    console.log("Buyer details:", content); // Log the fetched data for debugging
+    modal.style.display = "block";
+    document.body.style.overflow = "hidden"; // Prevent scrolling when modal is open
+  } catch (error) {
+    console.error("Error fetching buyer details:", error);
+  }
 }
 
 function closeBuyerModal() {
