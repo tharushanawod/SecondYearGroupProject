@@ -466,6 +466,11 @@ public function SendEmail(){
                         $this->View('Landing/Login', $data);  // Show the error in the login page
                         return;  // Stop further execution
                     }
+                    else if ($loggedInUser->user_status == 'pending') {
+                        $data['verified_err'] = 'Your account is not verified. Please wait Until Admin Verify Your Account';
+                        $this->View('Landing/Login', $data);  // Show the error in the login page
+                        return; 
+                    }
 
                     // If the user is verified, create session
                     $this->CreateUserSession($loggedInUser);
