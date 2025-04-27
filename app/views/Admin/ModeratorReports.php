@@ -14,6 +14,7 @@
         <table id="logTable">
             <thead>
                 <tr>
+                    <?php echo date('Y-m-d H:i:s'); ?>
                     <th>User ID</th>
                     <th>Moderator ID</th>
                     <th>Comments</th>
