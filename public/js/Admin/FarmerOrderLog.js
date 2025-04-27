@@ -41,12 +41,12 @@ function renderTable() {
     const link = `${URLROOT}/AdminController/RefundOfIngredients/${log.order_id}/${log.product_id}`;
 
     let actionButton = "";
-    if (log.refund_status === "no" && log.wallet_status === "not_added" && log.refund_status ==="no") {
+    if (log.refund_status === "no" && log.wallet_status === "not_added" && log.status ==="paid") {
       actionButton = `<a href="${link}"><button class="btn btn-sm btn-primary view-buyer-btn">Refund Money</button></a>`;
-    } else if (log.refund_status === "no" && log.wallet_status === "added") {
-      actionButton = `<span class="refunded-label">No Refunding</span>`;
-    } else {
+    } else if (log.refund_status === "yes") {
       actionButton = `<span class="refunded-label">Refunded</span>`;
+    } else {
+      actionButton = `<span class="refunded-label">No Refunding</span>`;
     }
 
     row.innerHTML = `

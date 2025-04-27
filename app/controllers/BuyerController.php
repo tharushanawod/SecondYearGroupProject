@@ -547,8 +547,10 @@ class BuyerController extends Controller {
         $productsnotifications = (array) $this->NotificationModel->getNotifications($buyer_id);
 $winningnotifications = (array) $this->NotificationModel->getWinningNotifications($buyer_id);
 $helpRequestNotifications = (array)$this->NotificationModel->getHelpRequestNotificationsForUser($buyer_id);
+$refundNotifications = (array)$this->NotificationModel->getRefundNotifications($buyer_id);
 
-$notifications = array_merge($productsnotifications, $winningnotifications,$helpRequestNotifications);
+        // Merge all notifications into a single array
+$notifications = array_merge($productsnotifications, $winningnotifications,$helpRequestNotifications,$refundNotifications);
 
         header('Content-Type: application/json');
         echo json_encode($notifications);

@@ -192,6 +192,23 @@ public function getOrdertNotificationsForUser($user_id) {
 }
 
 
+public function getRefundNotifications($user_id) {
+    $this->db->query('SELECT * FROM notifications_for_users 
+                      WHERE user_id = :user_id 
+                      AND is_read = 0 
+                      ORDER BY created_at DESC');
+    $this->db->bind(':user_id', $user_id);
+    try {
+        return $this->db->resultSet();
+    } catch (Exception $e) {
+        error_log("Failed to fetch order notifications for user_id $user_id: " . $e->getMessage());
+        return [];
+    }
+
+
+    
+}
+
 
 
 }

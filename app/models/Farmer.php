@@ -37,6 +37,13 @@ class Farmer {
         return $result;
     }
 
+    public function getProductDetails($id){
+        $this->db->query('SELECT * FROM corn_products WHERE product_id = :id');
+        $this->db->bind(':id', $id);
+        $result = $this->db->single();
+        return $result;
+    }
+
     public function getCornProductDetails($id){
         $this->db->query('SELECT * FROM corn_products WHERE product_id = :id');
         $this->db->bind(':id', $id);
@@ -459,11 +466,24 @@ class Farmer {
                 AND buyer_payments.farmer_confirmed = 1
                 AND buyer_payments.buyer_confirmed = 1
                 AND buyer_payments.wallet_status = 'added'
-                AND buyer_payments.withdraw_status = 'not_withdrawn'
+            ");
+            $this->db->bind(':farmer_id', $farmer_id);
+            $transactions = $this->db->resultSet();
+
+            // Also get refund history
+            $this->db->query("
+                SELECT farmer_refund_logs.order_id,farmer_refund_logs.created_at as request_date,farmer_refund_logs.refund_amount as paid_amount,order_items.refund_status
+                 FROM farmer_refund_logs
+                 INNER JOIN order_items
+                    ON farmer_refund_logs.order_id = order_items.order_id
+                    INNER JOIN orders
+                    ON order_items.order_id = orders.order_id
+                WHERE orders.user_id = :farmer_id
+                ORDER BY farmer_refund_logs.created_at DESC
             ");
 
             $this->db->bind(':farmer_id', $farmer_id);
-            $transactions = $this->db->resultSet();
+            $refunds = $this->db->resultSet();
     
             // Commit transaction
             $this->db->commit();
@@ -471,7 +491,8 @@ class Farmer {
             // Return both
             return [
                 'wallet' => $wallet,
-                'transactions' => $transactions
+                'transactions' => $transactions,
+                'refunds' => $refunds
             ];
     
         } catch (Exception $e) {

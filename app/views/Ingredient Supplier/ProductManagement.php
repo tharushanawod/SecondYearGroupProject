@@ -126,6 +126,11 @@
                         <textarea name="description" required></textarea>
                     </div>
 
+                    <div class="fee-notice">
+                        <i class="fas fa-info-circle"></i>
+                        <p>Note: A 2% service fee will be charged for each successful sale.</p>
+                    </div>
+
                     <div class="form-group">
                         <label for="image">Product Image:</label>
                         <input type="file" name="image" accept="image/*" required
@@ -179,6 +184,11 @@
                     <div class="form-group">
                         <label for="description">Description:</label>
                         <textarea name="description" id="updateDescription" required></textarea>
+                    </div>
+
+                    <div class="fee-notice">
+                        <i class="fas fa-info-circle"></i>
+                        <p>Note: A 2% service fee will be charged for each successful sale.</p>
                     </div>
 
                     <div class="form-group">

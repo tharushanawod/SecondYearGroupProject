@@ -359,17 +359,17 @@ LIMIT 5
     
             // Get successful transactions
             $this->db->query('
-                SELECT order_items.order_id, 
+               SELECT order_items.order_id, 
        transaction.payment_date,
-       SUM(order_items.quantity * order_items.price) AS amount, 
+       (SUM(order_items.quantity * order_items.price) / 100 * 98) AS amount, 
        order_items.withdraw_status
 FROM order_items
 INNER JOIN transaction ON order_items.order_id = transaction.order_id
 INNER JOIN supplier_products ON order_items.product_id = supplier_products.product_id
 WHERE supplier_products.supplier_id = :supplier_id
-  AND order_items.withdraw_status = "not_withdrawn"
   AND wallet_status = "added"
-GROUP BY order_items.order_id, transaction.payment_date, order_items.withdraw_status
+GROUP BY order_items.order_id, transaction.payment_date, order_items.withdraw_status;
+
 
 
                

@@ -38,7 +38,7 @@
 
         <div class="transactions-section">
             <div class="section-header">
-                <h2>Recent Transactions For Current Withdrawable balance</h2>
+                <h2>Recent Transactions</h2>
             </div>
             <table class="transaction-table">
                 <thead>
@@ -65,6 +65,12 @@
                             <span class="status">
                             <?php if ($transaction->withdraw_status == 'not_withdrawn'): ?>
     <p>Not withdrawn</p>
+                            <?php elseif ($transaction->withdraw_status == 'withdrawn'): ?>
+    <p>Withdrawn</p>
+                            <?php elseif ($transaction->refund_status == 'yes'): ?>
+    <p>Refunded</p>
+                            <?php else: ?>
+    <p>Unknown</p>   
 <?php endif; ?>
 
                             </span>

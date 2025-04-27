@@ -21,25 +21,25 @@
         <?php endif; ?>
 
         <div class="category-boxes">
-            <a href="<?php echo URLROOT;?>/ManufacturerController/showForm/payment" class="category-box payment-category">
+            <a href="<?php echo URLROOT;?>/SupplierController/showForm/payment" class="category-box payment-category">
                 <i class="fas fa-money-bill-wave"></i>
                 <h3>Payment Issues</h3>
                 <p>Problems with payments, refunds, or billing</p>
             </a>
             
-            <a href="<?php echo URLROOT;?>/ManufacturerController/showForm/system" class="category-box system-category">
+            <a href="<?php echo URLROOT;?>/SupplierController/showForm/system" class="category-box system-category">
                 <i class="fas fa-cogs"></i>
                 <h3>System Issues</h3>
                 <p>Technical issues, bugs, or errors</p>
             </a>
             
-            <a href="<?php echo URLROOT;?>/ManufacturerController/showForm/account" class="category-box account-category">
+            <a href="<?php echo URLROOT;?>/SupplierController/showForm/account" class="category-box account-category">
                 <i class="fas fa-user"></i>
                 <h3>Account Issues</h3>
                 <p>Login problems, profile updates, or account settings</p>
             </a>
             
-            <a href="<?php echo URLROOT;?>/ManufacturerController/showForm/other" class="category-box other-category">
+            <a href="<?php echo URLROOT;?>/SupplierController/showForm/other" class="category-box other-category">
                 <i class="fas fa-question-circle"></i>
                 <h3>Other Issues</h3>
                 <p>Any other questions or concerns</p>
@@ -49,7 +49,7 @@
         <?php if (isset($data['category'])): ?>
             <div class="help-form">
                 <h2><?php echo ucfirst($data['category']); ?> Issue</h2>
-                <form action="<?php echo URLROOT; ?>/ManufacturerController/submitRequest" method="POST" enctype="multipart/form-data">
+                <form action="<?php echo URLROOT; ?>/SupplierController/submitRequest" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="category" value="<?php echo $data['category']; ?>">
                     <div class="form-group">
                         <label for="<?php echo $data['category']; ?>-subject">Subject</label>
@@ -65,7 +65,7 @@
                     </div>
                     <div class="form-buttons">
                         <button type="submit" class="submit-btn">Submit Request</button>
-                        <button type="button" class="cancel-btn" onclick="window.location.href='<?php echo URLROOT; ?>/ManufacturerController/requestHelp'">Cancel</button>
+                        <button type="button" class="cancel-btn" onclick="window.location.href='<?php echo URLROOT; ?>/SupplierController/requestHelp'">Cancel</button>
                     </div>
                 </form>
             </div>
