@@ -113,12 +113,12 @@
 
                     <div class="form-group">
                         <label for="price">Price (LKR):</label>
-                        <input type="number" name="price" step="0.01" required>
+                        <input type="number" name="price" step="0.01" min=0 required>
                     </div>
 
                     <div class="form-group">
                         <label for="stock">Stock:</label>
-                        <input type="number" name="stock" required>
+                        <input type="number" name="stock" min=0 required>
                     </div>
 
                     <div class="form-group">
