@@ -362,21 +362,21 @@ class Users {
             $this->db->beginTransaction();
     
             // Query 1: Get data from farmer_reviews_worker
-            $this->db->query('SELECT id,worker_id,review_text FROM farmer_reviews_worker
+            $this->db->query('SELECT id,worker_id,review_text,rating FROM farmer_reviews_worker
             WHERE is_verified =0
             ');
             $farmerReviews = $this->db->resultSet();
     
             // Query 2: Get data from buyer_reviews_farmer
-            $this->db->query('SELECT id,buyer_id,review_text FROM buyer_reviews_farmer
+            $this->db->query('SELECT id,buyer_id,review_text,rating FROM buyer_reviews_farmer
              WHERE is_verified =0
              ');
             $buyerReviews = $this->db->resultSet();
 
-            $this->db->query('SELECT rating_id as id,supplier_id,review_text FROM supplier_ratings
+            $this->db->query('SELECT rating_id as id,supplier_id,review_text,rating FROM supplier_ratings
             WHERE is_verified =0
             ');
-           $buyerReviews = $this->db->resultSet();
+           $supplierReviews = $this->db->resultSet();
     
             // Commit transaction
             $this->db->commit();
@@ -385,12 +385,11 @@ class Users {
             return [
                 'farmer_reviews_worker' => $farmerReviews,
                 'buyer_reviews_farmer' => $buyerReviews,
-                'supplier_ratings' => $buyerReviews
+                'supplier_ratings' => $supplierReviews
             ];
         } catch (Exception $e) {
             // Rollback on error
-            $this->db->rollback(); // Rollback if any fails
-            return false;
+            $this->db->rollback(); // Rollback if any fails        
         }
     }
 
