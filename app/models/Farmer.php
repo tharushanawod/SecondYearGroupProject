@@ -553,7 +553,7 @@ class Farmer {
         INNER JOIN order_items ON orders.order_id = order_items.order_id
         INNER JOIN supplier_products ON order_items.product_id = supplier_products.product_id
         INNER JOIN users ON supplier_products.supplier_id = users.user_id
-        WHERE orders.user_id = :userId AND orders.status = 'paid' AND order_items.supplier_confirmed = 0
+        WHERE orders.user_id = :userId AND order_items.status = 'paid' AND order_items.supplier_confirmed = 0
         ORDER BY orders.order_date DESC");
         $this->db->bind(':userId', $userId);
         $result = $this->db->resultSet();
