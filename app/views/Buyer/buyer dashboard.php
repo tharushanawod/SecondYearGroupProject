@@ -66,7 +66,7 @@
                         <?php echo number_format($data['total_spent'], 2); ?>
                     </p>
                     <div class="stat-date">Since
-                        <?php echo date('M d, Y'); ?>
+                        Account Creation
                     </div>
                 </div>
             </div>

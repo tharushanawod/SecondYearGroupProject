@@ -462,35 +462,53 @@ class ManufacturerController extends Controller {
     }
 
     public function Notify() {
-        error_log("Notify function triggered");
-        $merchant_id = $_POST['merchant_id'];
+       
+        $this->ManufacturerModel = $this->model('Manufacturer');
+        
+        $hash = $_POST['md5sig'];
         $order_id = $_POST['order_id'];
+        $amount = $_POST['payhere_amount'];
         $payment_id = $_POST['payment_id'];
-        $status = $_POST['status'];
-        $currency = $_POST['currency'];
-        $amount = $_POST['amount'];
-        $hash = $_POST['hash'];
+        $status_code = $_POST['status_code'];
+        $currency = $_POST['payhere_currency'];
 
+
+        // Your merchant secret key
         $merchant_secret = $_ENV['MERCHANT_SECRET'];
+
+        // Verify the received hash
         $generated_hash = strtoupper(md5(
-            $merchant_id .
-            $order_id .
-            number_format($amount, 2, '.', '') .
-            $currency .
+            $_POST['merchant_id'] .
+            $_POST['order_id'] .
+            $_POST['payhere_amount'] .
+            $_POST['payhere_currency'] .
+            $_POST['status_code'] .
             strtoupper(md5($merchant_secret))
         ));
 
         if ($hash === $generated_hash) {
-            if ($status == 1) {
-                $payment_status = 'paid';
-                $this->ManufacturerModel->updatePaymentStatus($order_id, $payment_status);
-            } else {
-                $payment_status = 'failed';
-                $this->ManufacturerModel->updatePaymentStatus($order_id, $payment_status);
-            }
-        } else {
-            echo "Invalid payment notification.";
-        }
+            error_log("tharusha".var_export($_POST, true));
+              // Hash matches, it's a valid notification
+              if ($status_code == 2) {
+                  // Payment successful
+                  // Update your database, notify the user, etc.
+                  $payment_status = 'paid';
+                  // $details=$this->BuyerModel->getPaymentDetailsForOrder($_POST['order_id']);
+                  $paid_amount_for_buyer =$amount/22*20;
+                  $paid_service_charge = $amount/22*2;
+
+
+                  $this->ManufacturerModel->updatePaymentStatus($order_id, $payment_status);
+                  $this->ManufacturerModel->TransactionComplete($order_id, $paid_amount_for_buyer,$paid_service_charge,$payment_id);
+              } else {
+                  // Payment failed
+                  $payment_status = 'failed';
+                  $this->ManufacturerModel->updatePaymentStatus($order_id, $payment_status);
+              }
+          } else {
+              // Invalid hash
+              echo "Invalid payment notification.";
+          }
     }
 
     public function Success() {

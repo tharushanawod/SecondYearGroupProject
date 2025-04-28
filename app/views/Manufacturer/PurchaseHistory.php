@@ -64,6 +64,32 @@
         padding: 25px;
     }
 
+    .modal-body p {
+        margin-bottom: 15px;
+        line-height: 1.5;
+    }
+
+    .modal-body p:last-child {
+        margin-bottom: 0;
+    }
+
+    /* Warning text styling */
+    .warning-text {
+        background-color: #fff3f3;
+        border-left: 4px solid #ff4444;
+        padding: 12px 15px;
+        margin: 15px 0;
+        border-radius: 4px;
+        color: #d32f2f;
+        font-weight: 500;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .warning-text i {
+        margin-right: 8px;
+        color: #ff4444;
+    }
+
     .farmer-detail {
         display: flex;
         margin-bottom: 20px;
@@ -167,7 +193,6 @@
                     <th>Paid Amount</th>
                     <th>Total Amount</th>
                     <th>Farmer's Details</th>
-                    <th>Farmer Confirmation</th>
                     <th>Your Confirmation</th>  
                 </tr>
             </thead>
@@ -197,6 +222,28 @@
         </div>
     </div>
 </div>
+
+
+    <!-- Add confirmation modal -->
+    <div class="modal-overlay" id="confirmationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Confirm Order</h3>
+                <button class="close-modal" onclick="closeConfirmationModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to confirm this order?</p>
+                <p class="warning-text">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Please ensure the product is received in good condition. Once both you and the farmer confirm, the order is final, and no refunds will be possible.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn" onclick="closeConfirmationModal()">Cancel</button>
+                <button class="modal-btn modal-btn-primary" id="confirmOrderBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         const URLROOT = "<?php echo URLROOT; ?>";

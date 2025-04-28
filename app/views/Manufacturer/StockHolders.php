@@ -150,32 +150,97 @@
 .modal-btn-primary:hover {
     background: #246c44;
     transform: translateY(-1px);
-}</style>
+}
+
+.info-box {
+    background-color: #f0f9ff;
+    border-left: 4px solid #2e8b57;
+    padding: 20px;
+    margin-left: 260px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.info-icon {
+    color: #2e8b57;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.info-content h3 {
+    color: #2e8b57;
+    margin: 0 0 10px 0;
+    font-size: 18px;
+}
+
+.info-content p {
+    color: #1e293b;
+    margin: 10px 0;
+    line-height: 1.5;
+}
+
+.info-content ul {
+    margin: 10px 0;
+    padding-left: 20px;
+}
+
+.info-content li {
+    color: #1e293b;
+    margin: 5px 0;
+    line-height: 1.5;
+}
+
+.info-content .note {
+    font-style: italic;
+    color: #64748b;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #e2e8f0;
+}
+</style>
 </head>
 <body>
 <?php require APPROOT . '/views/inc/sidebar.php'; ?> 
 <h1>Stock Holders</h1>
-    <div class="table-container">
-        <table id="orderTable">
-            <thead>
-                <tr>
-                    
-                    <th>Order ID</th>
-                    <th>Name</th>
-                    <th>Quantity</th>
-                    <th>Contact</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Rows will be dynamically inserted here -->
-            </tbody>
-        </table>
-        <div class="pagination">
-            <button id="prevBtn">Previous</button>
-            <span id="pageInfo"></span>
-            <button id="nextBtn">Next</button>
-        </div>
+
+<div class="info-box">
+    <div class="info-icon">
+        <i class="fas fa-info-circle"></i>
     </div>
+    <div class="info-content">
+        <h3>About Stock Holders</h3>
+        <p>This section displays buyers who have purchased products from farmers. As a manufacturer, you can:</p>
+        <ul>
+            <li>View contact details of stock holders</li>
+            <li>Contact them directly to discuss potential purchases</li>
+            <li>View their order history and quantities purchased</li>
+        </ul>
+        <p class="note">Note: Stock holders are buyers who have successfully completed transactions with farmers and are holding inventory.</p>
+    </div>
+</div>
+
+<div class="table-container">
+    <table id="orderTable">
+        <thead>
+            <tr>
+                
+                <th>Order ID</th>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Contact</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Rows will be dynamically inserted here -->
+        </tbody>
+    </table>
+    <div class="pagination">
+        <button id="prevBtn">Previous</button>
+        <span id="pageInfo"></span>
+        <button id="nextBtn">Next</button>
+    </div>
+</div>
+
 
     <div class="modal-overlay" id="farmerModal">
     <div class="modal-content">

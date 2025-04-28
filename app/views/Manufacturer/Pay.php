@@ -81,9 +81,9 @@ $hash = strtoupper(md5(
 
         <form method="POST" action="https://sandbox.payhere.lk/pay/checkout" >
             <input type="hidden" name="merchant_id" value="<?php echo $merchant_id;?>">    <!-- Replace your Merchant ID -->
-            <input type="hidden" name="return_url" value="<?php echo URLROOT;?>/BuyerController/Success?amount=<?php echo $amount; ?>"> <!-- Correct URL -->
+            <input type="hidden" name="return_url" value="<?php echo URLROOT;?>/ManufacturerController/Success?amount=<?php echo $amount; ?>"> <!-- Correct URL -->
     <input type="hidden" name="cancel_url" value="http://sample.com/cancel">
-    <input type="hidden" name="notify_url" value="https://be29-209-38-92-166.ngrok-free.app/GroupProject/ManufacturerController/Notify">
+    <input type="hidden" name="notify_url" value="https://afa9-112-134-216-212.ngrok-free.app/GroupProject/ManufacturerController/Notify">
     <input type="hidden" name="order_id" value="<?php echo $data['order_id'];?>">
     <input type="hidden" name="items" value="Corn">
     <input type="hidden" name="currency" value="LKR">

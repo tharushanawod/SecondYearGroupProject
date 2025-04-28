@@ -135,7 +135,7 @@
                         <label for="image">Product Image:</label>
                         <input type="file" name="image" accept="image/*" required
                             onchange="previewImage(this, 'imagePreview')">
-                        <img id="imagePreview" class="preview-image" src="" alt="">
+                       
                     </div>
 
                     <div class="form-actions">
