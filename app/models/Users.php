@@ -632,6 +632,22 @@ class Users {
             $this->db->bind(':refund_status', 'yes');
             $this->db->bind(':transaction_id', $data['transaction_id']);
             $this->db->execute();
+
+            // Add the refund amount to the buyer's wallet
+            // $this->db->query('UPDATE wallets SET balance = balance + :refund_amount WHERE user_id = (SELECT buyer_id FROM buyer_payments WHERE transaction_id = :transaction_id)');
+            // $this->db->bind(':refund_amount', $data['refund_amount']);
+            // $this->db->bind(':transaction_id', $data['transaction_id']);
+            // $this->db->execute();
+
+            // Insert notification for the buyer about the refund
+            $this->db->query('INSERT INTO notifications_for_users (user_id, message, created_at) 
+                             SELECT orders_from_buyers.buyer_id, CONCAT("Transaction #", :transaction_id, " has been refunded to your account."), NOW() 
+                             FROM buyer_payments 
+                             INNER JOIN orders_from_buyers ON buyer_payments.order_id = orders_from_buyers.order_id
+                             WHERE buyer_payments.transaction_id = :transaction_id
+                           ');
+            $this->db->bind(':transaction_id', $data['transaction_id']);
+            $this->db->execute();
             
             // Commit the transaction
             $this->db->commit();
@@ -667,6 +683,24 @@ class Users {
             // Update the buyer_payments table to mark the transaction as refunded
             $this->db->query('UPDATE order_items SET refund_status = :refund_status WHERE order_id = :order_id AND product_id = :product_id');
             $this->db->bind(':refund_status', 'yes');
+            $this->db->bind(':order_id', $data['order_id']);
+            $this->db->bind(':product_id', $data['product_id']);
+            $this->db->execute();
+
+            // Add the refund amount to the farmer's wallet
+            $this->db->query('UPDATE wallets SET balance = balance + :refund_amount WHERE user_id = (SELECT user_id FROM orders WHERE order_id = :order_id)');
+            $this->db->bind(':refund_amount', $data['refund_amount']);
+            $this->db->bind(':order_id', $data['order_id']);
+            $this->db->execute();
+            
+            
+            // Insert notification for the farmer
+            $this->db->query('INSERT INTO notifications_for_users (user_id, message, created_at) 
+                             SELECT orders.user_id, CONCAT("Order #", :order_id, " - Your product has been refunded to your wallet."), NOW() 
+                             FROM order_items 
+                             INNER JOIN orders ON order_items.order_id = orders.order_id
+                             WHERE order_items.order_id = :order_id AND order_items.product_id = :product_id
+                             ');
             $this->db->bind(':order_id', $data['order_id']);
             $this->db->bind(':product_id', $data['product_id']);
             $this->db->execute();

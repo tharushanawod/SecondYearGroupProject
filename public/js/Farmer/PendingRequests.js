@@ -8,15 +8,16 @@ const rowsPerPage = 10;
 let jobRequests = [];  // This will store all the fetched job requests
 
 // Fetch all pending job requests from the controller
-function fetchJobRequests() {
-    fetch(`${URLROOT}/FarmerController/getPendingJobRequests`)
-        .then(response => response.json())
-        .then(data => {
-            jobRequests = data;  // Store all job requests in the array
-            renderTable();  // Initial table render
-            updatePagination();
-        })
-        .catch(error => console.log('Error fetching job requests:', error));
+async function fetchJobRequests() {
+  try {
+    const response = await fetch(`${URLROOT}/FarmerController/getPendingJobRequests`);
+    const data = await response.json();
+    jobRequests = data;  // Store all job requests in the array
+    renderTable();  // Initial table render
+    updatePagination();
+  } catch (error) {
+    console.log('Error fetching job requests:', error);
+  }
 }
 
 // Render table rows for job requests based on current page

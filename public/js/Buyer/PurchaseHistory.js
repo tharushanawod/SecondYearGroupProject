@@ -44,9 +44,6 @@ function renderTable() {
                     View Details
                 </button>
             </td>
-            <td data-label="Farmer Confirmation">${getFarmerConfirmationStatus(
-              payment
-            )}</td>
             <td data-label="Your Confirmation">${getBuyerConfirmationStatus(
               payment
             )}</td>

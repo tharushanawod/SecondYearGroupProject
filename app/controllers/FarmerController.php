@@ -154,15 +154,16 @@ class FarmerController extends Controller {
 
     public function UpdateProducts($id) {
     
-        $product = $this->farmerModel->getCornProductDetails($id);
+       
       
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
+         
     
             // $expiryPeriod = trim($_POST['closing_date']); // Example: "2025-03-10T14:30"
             // $expiryDate = new DateTime($expiryPeriod); 
             // $formattedExpiryDate = $expiryDate->format('Y-m-d H:i:s'); // Convert to SQL format
-
+            $product = $this->farmerModel->getCornProductDetails($id);
     
             $data = [
                 'id' => $id,
@@ -173,7 +174,6 @@ class FarmerController extends Controller {
                 'price_err' => '',
                 'quantity_err' => '',
                 'expiry_err' => '',
-                'product' => $product,
                 'userid' => $_SESSION['user_id']
             ];
            
@@ -220,8 +220,7 @@ class FarmerController extends Controller {
     
             // Check for no errors
             if (empty($data['price_err']) && empty($data['quantity_err'])  && empty($data['expiry_err'])) {
-              
-                var_dump($data);
+             
                 if ($this->farmerModel->UpdateCornProducts($data)) {
                     
                      // Call update function
@@ -237,22 +236,22 @@ class FarmerController extends Controller {
         } 
         else {
 
-            $product = $this->farmerModel->getProducts($id);
-            $products = $this->farmerModel->getProductsByFarmerId($_SESSION['user_id']);
+            $product = $this->farmerModel->getCornProductDetails($id);
+
+            
 
             $data = [
-                'id' => $product->id,
-                'price' => $product->price,
+                'id' => $product->product_id,
+                'price' => $product->starting_price,
                 'quantity' => $product->quantity,
-                'type' => $product->type,
                 'media' => $product->media,
+                'closing_date' => $product->closing_date,
                 'price_err' => '',
                 'quantity_err' => '',
-                'type_err' => '',
-                'product' => $products,
-                'show_popup' => true
+                'type_err' => ''
             ];
-            $this->view('Farmer/AddProducts', $data);
+           
+            $this->view('Farmer/UpdateProduct', $data);
         }
     }
 
@@ -337,6 +336,74 @@ class FarmerController extends Controller {
             ];
             $this->view('Farmer/AddProducts', $data);
         }
+    }
+
+    public function AddNewProduct(){
+        // $products = $this->farmerModel->getProductsByFarmerId($_SESSION['user_id']);
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
+
+            $data = [
+                'price' => trim($_POST['price']),
+                'quantity' => trim($_POST['quantity']),
+                'closing_date' => trim($_POST['closing_date']),
+                'media' => '',
+                'type_err' => '',
+                'user_id' => $_SESSION['user_id']
+            ];
+    
+           
+            
+            // Validate and upload file
+            if (isset($_FILES['media']) && $_FILES['media']['error'] == 0) {
+
+                $targetDir = "uploads/Farmer/Products/"; // Folder to store uploads
+                $fileName = basename($_FILES['media']['name']);
+                $targetFilePath = $targetDir . $fileName;
+    
+                $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+                $allowedTypes = ['jpg', 'jpeg', 'png', 'gif', 'mp4', 'mov', 'obj'];
+    
+                if (in_array(strtolower($fileType), $allowedTypes)) {
+                    // Move file to server
+                    if (move_uploaded_file($_FILES['media']['tmp_name'], $targetFilePath)) {
+                        $data['media'] = $targetFilePath;
+                    } else {
+                        $data['type_err'] = 'Failed to upload the file';
+                    }
+                } else {
+                    $data['type_err'] = 'Invalid file type';
+                }
+            } else {
+                $data['type_err'] = 'Please upload a media file';
+            }
+    
+            // Check for no errors
+            if (empty($data['type_err']) ) {
+                if ($this->farmerModel->AddProduct($data)) {
+                    Redirect('FarmerController/AddProduct');
+                } else {
+                    die('Something went wrong');
+                }
+            } else {
+               
+                $this->view('Farmer/AddProducts', $data);
+            }
+        } else {
+          
+         
+            $data = [
+                'price' => '',
+                'quantity' => '',
+                'media' => '',
+                'price_err' => '',
+                'quantity_err' => '',
+                'type_err' => ''
+                
+            ];
+            $this->view('Farmer/AddNewProduct', $data);
+        }
+      
     }
     
 
@@ -700,7 +767,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
     }
 
     public function Wallet(){
-        $data=$this->farmerModel->getWalletDetails($_SESSION['user_id']);
+        $result=$this->farmerModel->getWalletDetails($_SESSION['user_id']);
+        $transactions = array_merge($result['transactions'], $result['refunds']);
+        $data = [
+            'wallet' => $result['wallet'],
+            'transactions' =>$transactions
+        ];
         $this->View('Farmer/Wallet',$data);
     }
 

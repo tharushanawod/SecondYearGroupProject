@@ -15,16 +15,17 @@ const confirmCancel = document.getElementById("confirmCancel");
 let cancelBidId = null; // Store the bid ID to be canceled
 
 // Fetch all bids from the controller
-function fetchBids() {
-  fetch(`${URLROOT}/BuyerController/getAllActiveBidsForBuyer/${USERID}`)
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      bids = data; // Store all bids in the array
-      renderTable(); // Initial table render
-      updatePagination();
-    })
-    .catch((error) => console.log("Error fetching bids:", error));
+async function fetchBids() {
+  try {
+    const response = await fetch(`${URLROOT}/BuyerController/getAllActiveBidsForBuyer/${USERID}`);
+    const data = await response.json();
+    console.log(data);
+    bids = data; // Store all bids in the array
+    renderTable(); // Initial table render
+    updatePagination();
+  } catch (error) {
+    console.log("Error fetching bids:", error);
+  }
 }
 
 // Render table rows for bids based on current page

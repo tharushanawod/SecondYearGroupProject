@@ -126,6 +126,11 @@
                         <textarea name="description" required></textarea>
                     </div>
 
+                    <div class="fee-notice">
+                        <i class="fas fa-info-circle"></i>
+                        <p>Note: A 2% service fee will be charged for each successful sale.</p>
+                    </div>
+
                     <div class="form-group">
                         <label for="image">Product Image:</label>
                         <input type="file" name="image" accept="image/*" required
@@ -179,6 +184,11 @@
                     <div class="form-group">
                         <label for="description">Description:</label>
                         <textarea name="description" id="updateDescription" required></textarea>
+                    </div>
+
+                    <div class="fee-notice">
+                        <i class="fas fa-info-circle"></i>
+                        <p>Note: A 2% service fee will be charged for each successful sale.</p>
                     </div>
 
                     <div class="form-group">
@@ -262,6 +272,16 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
+
+//         function filterProducts() {
+//     const filter = document.querySelector('.search-box').value.toUpperCase();
+//     const rows = document.getElementById('productTable').getElementsByTagName('tr');
+
+//     for (let i = 1; i < rows.length; i++) {
+//         const td = rows[i].getElementsByTagName('td')[1];
+//         rows[i].style.display = td && td.textContent.toUpperCase().includes(filter) ? '' : 'none';
+//     }
+// }
 
         function filterProducts() {
             const input = document.querySelector('.search-box');

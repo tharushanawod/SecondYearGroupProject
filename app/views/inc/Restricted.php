@@ -67,7 +67,7 @@
                     <div class="detail-content">
                         <h4>Contact Number</h4>
                         <p>
-                            +94784563330
+                            +94 256 789 1234
                         </p>
                     </div>
                 </div>

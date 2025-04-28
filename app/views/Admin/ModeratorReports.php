@@ -9,11 +9,14 @@
 </head>
 <body>
 <?php require APPROOT . '/views/inc/sidebar.php'; ?> 
-<h1> Buyer Order Logs</h1>
+<h1>Moderator Reports</h1>
     <div class="table-container">
         <table id="logTable">
             <thead>
+                <?php echo date('Y-m-d H:i:s');
+?>
                 <tr>
+                    <?php echo date('Y-m-d H:i:s'); ?>
                     <th>User ID</th>
                     <th>Moderator ID</th>
                     <th>Comments</th>
