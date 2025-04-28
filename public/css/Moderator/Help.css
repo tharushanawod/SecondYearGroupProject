@@ -205,6 +205,38 @@
     color: var(--primary-color);
   }
   
+  /* Attachment Image Styling */
+.request img {
+  display: block;
+  max-width: 300px;
+  height: auto;
+  margin-top: 10px;
+  border: 1px solid #e2e8f0;
+  transition: transform 0.3s ease;
+}
+
+.request img:hover {
+  transform: scale(1.05);
+}
+
+/* Attachment Link for PDFs */
+.attachment-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.attachment-link::before {
+  content: '\f15b'; /* FontAwesome file icon */
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  font-size: 0.9rem;
+  color: var(--secondary-color);
+}
+
+.attachment-link:hover::before {
+  color: var(--primary-color);
+}
   /* Animations */
   @keyframes fadeIn {
     from {

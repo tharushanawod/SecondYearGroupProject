@@ -167,7 +167,6 @@
                     <th>Paid Amount</th>
                     <th>Total Amount</th>
                     <th>Farmer's Details</th>
-                    <th>Farmer Confirmation</th>
                     <th>Your Confirmation</th>  
                 </tr>
             </thead>

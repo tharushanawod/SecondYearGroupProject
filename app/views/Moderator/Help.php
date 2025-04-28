@@ -32,16 +32,25 @@
                             <p><strong>User ID:</strong> <?php echo htmlspecialchars($request->user_id); ?> (<?php echo htmlspecialchars($request->user_role); ?>)</p>
                             <p><strong>Created:</strong> <?php echo htmlspecialchars($request->created_at); ?></p>
                             <p><strong>Status:</strong> <?php echo htmlspecialchars($request->status); ?></p>
-                            <?php if (!empty($request->attachment)): ?>
-                                <p><strong>Attachment:</strong> 
+                            <?php if (!empty($request->attachment) && !empty($request->file_type)): ?>
+                                <p><strong>Attachment:</strong>
                                     <?php
-                                    $attachmentPath = trim($request->attachment, '/');
-                                    $fullAttachmentUrl = URLROOT . '/uploads/' . htmlspecialchars($attachmentPath);
-                                    $fileName = basename($attachmentPath);
+                                    $fileName = basename($request->attachment);
+                                    $attachmentUrl = URLROOT . '/ModeratorController/serveAttachment/' . $request->id;
                                     ?>
-                                    <a href="<?php echo $fullAttachmentUrl; ?>" target="_blank" class="attachment-link">
-                                        View <?php echo htmlspecialchars($fileName); ?>
-                                    </a>
+                                    <?php if (in_array($request->file_type, ['image/jpeg', 'image/png'])): ?>
+                                        <a href="<?php echo $attachmentUrl; ?>" target="_blank" class="attachment-link">
+                                            <img src="<?php echo $attachmentUrl; ?>" alt="Attachment for request #<?php echo $request->id; ?>" style="max-width: 300px; border-radius: 8px; margin-top: 10px;">
+                                        </a>
+                                    <?php elseif ($request->file_type === 'application/pdf'): ?>
+                                        <a href="<?php echo $attachmentUrl; ?>" target="_blank" class="attachment-link">
+                                            View <?php echo htmlspecialchars($fileName); ?> (PDF)
+                                        </a>
+                                    <?php else: ?>
+                                        <a href="<?php echo $attachmentUrl; ?>" download class="attachment-link">
+                                            Download <?php echo htmlspecialchars($fileName); ?>
+                                        </a>
+                                    <?php endif; ?>
                                 </p>
                             <?php endif; ?>
                             <?php if ($request->status !== 'responded' && $request->status !== 'resolved' && $request->status !== 'closed'): ?>
@@ -92,7 +101,6 @@
                         </div>
                     </div>
                     <div class="log-content">
-                        
                         <a href="<?php echo URLROOT;?>/ModeratorController/AccountLog" class="view-all-link">View All Account Logs <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
@@ -109,7 +117,6 @@
                         </div>
                     </div>
                     <div class="log-content">
-                    
                         <a href="<?php echo URLROOT;?>/ModeratorController/BuyerTransactionLog" class="view-all-link">View All Transaction Logs <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
@@ -126,7 +133,6 @@
                         </div>
                     </div>
                     <div class="log-content">
-                       
                         <a href="<?php echo URLROOT;?>/ModeratorController/FarmerTransactionLog" class="view-all-link">View All Transaction Logs <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
@@ -137,12 +143,11 @@
                             <i class="fas fa-shopping-cart"></i>
                         </div>
                         <div class="log-info">
-                            <h3>Buyer Order log</h3>
+                            <h3>Buyer Order Log</h3>
                             <span class="log-count">12 pending issues</span>
                         </div>
                     </div>
                     <div class="log-content">
-                    
                         <a href="<?php echo URLROOT;?>/ModeratorController/BuyerOrderLog" class="view-all-link">View All Order Logs <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
@@ -158,13 +163,11 @@
                         </div>
                     </div>
                     <div class="log-content">
-                       
-                        <a href="<?php echo URLROOT;?>/ModeratorController/FarmerOrderLog" class="view-all-link">View All  Order Logs <i class="fas fa-arrow-right"></i></a>
+                        <a href="<?php echo URLROOT;?>/ModeratorController/FarmerOrderLog" class="view-all-link">View All Order Logs <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
         <?php endif; ?>
     </div>
-
 </body>
 </html>

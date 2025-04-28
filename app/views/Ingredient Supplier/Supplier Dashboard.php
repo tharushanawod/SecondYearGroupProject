@@ -90,7 +90,7 @@
     <div class="recent-section">
         <div class="section-header">
             <h2>Recent Orders</h2>
-            <a href="<?php echo URLROOT; ?>/IngredientSupplierController/orders" class="view-all">
+            <a href="<?php echo URLROOT; ?>/SupplierController/viewOrders" class="view-all">
                 View All <i class="fas fa-arrow-right"></i>
             </a>
         </div>

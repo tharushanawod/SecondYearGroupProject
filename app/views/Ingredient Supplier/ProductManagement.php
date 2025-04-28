@@ -273,6 +273,16 @@
             }
         }
 
+//         function filterProducts() {
+//     const filter = document.querySelector('.search-box').value.toUpperCase();
+//     const rows = document.getElementById('productTable').getElementsByTagName('tr');
+
+//     for (let i = 1; i < rows.length; i++) {
+//         const td = rows[i].getElementsByTagName('td')[1];
+//         rows[i].style.display = td && td.textContent.toUpperCase().includes(filter) ? '' : 'none';
+//     }
+// }
+
         function filterProducts() {
             const input = document.querySelector('.search-box');
             const filter = input.value.toUpperCase();

@@ -27,8 +27,6 @@ class Notification {
         $this->db->bind(':buyer_id', $buyer_id);
         return $this->db->single();
     }
-
-    
     
 
     public function markNotificationAsRead($notification_id, $buyer_id) {

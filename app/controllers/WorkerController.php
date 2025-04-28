@@ -256,43 +256,64 @@ class WorkerController extends Controller {
         $data = ['category' => $category];
         $this->view('FarmWorker/RequestHelp', $data);
     }
-
+    
     public function submitRequest() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            $_POST = filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW);
             $data = [
                 'user_id' => $_SESSION['user_id'],
                 'user_role' => $_SESSION['user_role'],
-                'category' => trim($_POST['category']),
-                'subject' => trim($_POST['subject']),
-                'description' => trim($_POST['description']),
+                'category' => htmlspecialchars(trim($_POST['category'])),
+                'subject' => htmlspecialchars(trim($_POST['subject'])),
+                'description' => htmlspecialchars(trim($_POST['description'])),
                 'attachment' => null,
                 'status' => 'pending',
-                'created_at' => date('Y-m-d H:i:s')
+                'created_at' => date('Y-m-d H:i:s'),
+                'request_error' => ''
             ];
-
+    
+            // Handle file upload
             if (isset($_FILES['attachment']) && $_FILES['attachment']['error'] == UPLOAD_ERR_OK) {
                 $uploadDir = 'Uploads/help_requests/';
                 if (!file_exists($uploadDir)) {
                     mkdir($uploadDir, 0777, true);
                 }
-                $attachmentName = basename($_FILES['attachment']['name']);
-                $uploadFile = $uploadDir . $attachmentName;
-                if (move_uploaded_file($_FILES['attachment']['tmp_name'], $uploadFile)) {
-                    $data['attachment'] = $uploadFile;
+    
+                // Validate file extension
+                $allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf'];
+                $fileExtension = strtolower(pathinfo($_FILES['attachment']['name'], PATHINFO_EXTENSION));
+                $maxFileSize = 5 * 1024 * 1024; // 5MB limit
+    
+                if (!in_array($fileExtension, $allowedExtensions)) {
+                    $data['request_error'] = 'Only JPEG, PNG, or PDF files are allowed.';
+                } elseif ($_FILES['attachment']['size'] > $maxFileSize) {
+                    $data['request_error'] = 'File size exceeds 5MB limit.';
                 } else {
-                    error_log("Failed to upload attachment: " . $attachmentName);
+                    // Generate unique file name
+                    $uniqueName = uniqid('attachment_') . '.' . $fileExtension;
+                    $uploadFile = $uploadDir . $uniqueName;
+    
+                    if (move_uploaded_file($_FILES['attachment']['tmp_name'], $uploadFile)) {
+                        $data['attachment'] = $uploadFile;
+                    } else {
+                        error_log("Failed to upload attachment: " . $_FILES['attachment']['name']);
+                        $data['request_error'] = 'Failed to upload attachment. Please try again.';
+                    }
                 }
             }
-
-            if ($this->WorkerModel->saveHelpRequest($data)) {
-                $_SESSION['request_success'] = 'Your request has been submitted successfully!';
-                Redirect('WorkerController/RequestHelp');
-            } else {
-                error_log("Failed to save help request: " . json_encode($data));
-                $_SESSION['request_error'] = 'Failed to submit your request. Please try again.';
-                Redirect('WorkerController/RequestHelp');
+    
+            if (empty($data['request_error'])) {
+                if ($this->WorkerModel->saveHelpRequest($data)) {
+                    $_SESSION['request_success'] = 'Your request has been submitted successfully!';
+                    Redirect('WorkerController/RequestHelp');
+                } else {
+                    error_log("Failed to save help request: " . json_encode($data));
+                    $data['request_error'] = 'Failed to submit your request. Please try again.';
+                }
             }
+    
+            $_SESSION['request_error'] = $data['request_error'];
+            Redirect('WorkerController/RequestHelp');
         }
     }
 
@@ -319,9 +340,6 @@ class WorkerController extends Controller {
             exit;
         }
     }
-
-
-
  
 
     public function getNotifications($worker_id) {
