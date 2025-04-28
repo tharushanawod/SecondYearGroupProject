@@ -35,14 +35,19 @@
                         <?php echo isset($data['quantity_err']) ? $data['quantity_err'] : ''; ?>
                     </span>
                 </div>
+
+                
                 
                 <div class="form-group">
-                    <label for="closing_date">Closing Date & Time</label>
-                    <input type="datetime-local" id="closing_date" name="closing_date" class="form-control" required>
-                    <span class="form-invalid">
-                        <?php echo isset($data['closing_date_err']) ? $data['closing_date_err'] : ''; ?>
-                    </span>
-                </div>
+    <label for="closing_date">Closing Date & Time</label>
+    <input type="datetime-local" id="closing_date" name="closing_date" class="form-control" required
+        min="<?php echo date('Y-m-d\TH:i'); ?>"
+        max="<?php echo date('Y-m-d\TH:i', strtotime('+1 week')); ?>">
+    <span class="form-invalid">
+        <?php echo isset($data['closing_date_err']) ? $data['closing_date_err'] : ''; ?>
+    </span>
+</div>
+
                 
                 <div class="form-group">
                     <label for="media">Product Image</label>

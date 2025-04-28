@@ -223,10 +223,10 @@ class Farmer {
         profile_pictures.file_path, 
         AVG(farmer_reviews_worker.rating) AS average_rating
     FROM users
-    INNER JOIN farmworkers ON users.user_id = farmworkers.user_id
+    LEFT JOIN farmworkers ON users.user_id = farmworkers.user_id
     LEFT JOIN profile_pictures ON farmworkers.user_id = profile_pictures.user_id
     LEFT JOIN farmer_reviews_worker ON users.user_id = farmer_reviews_worker.worker_id
-    WHERE users.user_id = :id AND is_verified = 1
+    WHERE users.user_id = :id
     GROUP BY 
         users.user_id, 
         farmworkers.user_id, 

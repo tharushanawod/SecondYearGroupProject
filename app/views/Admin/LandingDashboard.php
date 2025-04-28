@@ -95,13 +95,7 @@
             <p>View and manage user accounts</p>
               </div>
           </a>
-          <a href="<?php echo URLROOT; ?>/AdminController/Ratings" class="action-button-link">
-              <div class="action-button">
-            <i class="fas fa-star"></i>
-            <h4>View Feedback & Ratings</h4>
-            <p>Check user feedback and ratings</p>
-              </div>
-          </a>
+          
           <a href="<?php echo URLROOT; ?>/AdminController/ModeratorReports" class="action-button-link">
               <div class="action-button">
               <i class="fas fa-flag"></i>

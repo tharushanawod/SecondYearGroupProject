@@ -126,12 +126,18 @@ body {
   gap: 15px;
 }
 
-.action-button-link{
+.quick-actions .action-buttons {
+  display: flex;
+  gap: 15px;
+  /* Allows wrapping of the action buttons */
+}
+
+.action-button-link {
   display: block;
   list-style: none;
   text-decoration: none;
-  color:black;
-  width:33%;
+  color: black;
+  width: 50%; /* Set the width of each action link to 50% of the container */
 }
 
 .action-button {
@@ -142,9 +148,9 @@ body {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   cursor: pointer;
-  flex: 1;
   text-align: center;
 }
+
 
 .action-button:hover {
   transform: translateY(-5px);

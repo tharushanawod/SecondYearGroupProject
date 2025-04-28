@@ -13,8 +13,6 @@
     <div class="table-container">
         <table id="logTable">
             <thead>
-                <?php echo date('Y-m-d H:i:s');
-?>
                 <tr>
                     <th>User ID</th>
                     <th>Moderator ID</th>

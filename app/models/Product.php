@@ -7,10 +7,17 @@ class Product {
     }
 
     public function getProducts($supplier_id) {
-        $this->db->query("SELECT p.*, c.category_name 
-                         FROM supplier_products p 
-                         LEFT JOIN categories c ON p.category_id = c.category_id 
-                         WHERE p.supplier_id = :supplier_id");
+        $this->db->query("
+SELECT 
+  p.*, 
+  c.category_name,
+  (SELECT oi.order_id FROM order_items oi WHERE oi.product_id = p.product_id LIMIT 1) AS order_id
+FROM supplier_products p
+LEFT JOIN categories c ON p.category_id = c.category_id
+WHERE p.supplier_id = :supplier_id
+
+
+                         ");
         $this->db->bind(':supplier_id', $supplier_id);
         return $this->db->resultSet();
     }

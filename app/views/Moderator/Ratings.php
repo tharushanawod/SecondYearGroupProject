@@ -37,16 +37,22 @@
                 <div class="rating-card">
                 <div class="rating-header">
                     <span class="rating-type 
-                    <?php if (is_null($rating->buyer_id)){
-                        echo 'worker-rating'; 
-                    } else { 
-                        echo 'product-rating'; 
-                    } ?>">
-                    <?php if (is_null($rating->buyer_id)){
-                        echo 'worker-rating'; 
-                    } else { 
-                        echo 'product-rating'; 
-                    } ?>
+                    <?php if (isset($rating->buyer_id)) {
+    echo 'farmer-rating'; 
+} else if (isset($rating->supplier_id)) { 
+    echo 'product-rating'; 
+} else { 
+    echo 'farmer-rating'; 
+}
+?>">
+                    <?php if (isset($rating->buyer_id)) {
+    echo 'farmer-rating'; 
+} else if (isset($rating->supplier_id)) { 
+    echo 'product-rating'; 
+} else { 
+    echo 'farmer-rating'; 
+}
+?>
                     </span>
                     <span class="rating-meta">Submitted: <?php echo $rating->created_at; ?></span>
                 </div>
@@ -65,15 +71,32 @@
                 <p class="rating-content">
                     "<?php echo htmlspecialchars($rating->review_text); ?>"
                 </p>
-                <div class="rating-actions">
-                <a href="<?php echo is_null($rating->buyer_id) ? URLROOT . '/ModeratorController/ApproveWorkerReview/' . $rating->id : URLROOT . '/AdminController/ApproveProductReview/' . $rating->id; ?>">
-                <button class="btn btn-approve" >Approve</button>
-                </a>
-                <a href="<?php echo is_null($rating->buyer_id) ? URLROOT . '/ModeratorController/RejectWorkerReview/' . $rating->id : URLROOT . '/AdminController/RejectProductReview/' . $rating->id; ?>">
-                <button class="btn btn-reject" ?>Reject</button>
-                </a>
-                    
-                </div>
+                                        <div class="rating-actions">
+                            <a href="<?php 
+                                if (isset($rating->buyer_id)) {
+                                    echo URLROOT . '/ModeratorController/ApproveFarmerReview/' . $rating->id; 
+                                } else if (isset($rating->supplier_id)) {
+                                    echo URLROOT . '/ModeratorController/ApproveProductReview/' . $rating->id; 
+                                } else { 
+                                    echo URLROOT . '/ModeratorController/ApproveWorkerReview/' . $rating->id; 
+                                }
+                            ?>">
+                                <button class="btn btn-approve">Approve</button>
+                            </a>
+                            
+                            <a href="<?php 
+                                if (isset($rating->buyer_id)) {
+                                    echo URLROOT . '/ModeratorController/RejectFarmerReview/' . $rating->id; 
+                                } else if (isset($rating->supplier_id)) {
+                                    echo URLROOT . '/ModeratorController/RejectProductReview/' . $rating->id; 
+                                } else { 
+                                    echo URLROOT . '/ModeratorController/RejectWorkerReview/' . $rating->id; 
+                                }
+                            ?>">
+                                <button class="btn btn-reject">Reject</button>
+                            </a>
+                        </div>
+
                 </div>
             <?php endforeach; ?>
             <?php else : ?>

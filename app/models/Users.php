@@ -362,16 +362,21 @@ class Users {
             $this->db->beginTransaction();
     
             // Query 1: Get data from farmer_reviews_worker
-            $this->db->query('SELECT * FROM farmer_reviews_worker
+            $this->db->query('SELECT id,worker_id,review_text FROM farmer_reviews_worker
             WHERE is_verified =0
             ');
             $farmerReviews = $this->db->resultSet();
     
             // Query 2: Get data from buyer_reviews_farmer
-            $this->db->query('SELECT * FROM buyer_reviews_farmer
+            $this->db->query('SELECT id,buyer_id,review_text FROM buyer_reviews_farmer
              WHERE is_verified =0
              ');
             $buyerReviews = $this->db->resultSet();
+
+            $this->db->query('SELECT rating_id as id,supplier_id,review_text FROM supplier_ratings
+            WHERE is_verified =0
+            ');
+           $buyerReviews = $this->db->resultSet();
     
             // Commit transaction
             $this->db->commit();
@@ -379,7 +384,8 @@ class Users {
             // Return both results as an array
             return [
                 'farmer_reviews_worker' => $farmerReviews,
-                'buyer_reviews_farmer' => $buyerReviews
+                'buyer_reviews_farmer' => $buyerReviews,
+                'supplier_ratings' => $buyerReviews
             ];
         } catch (Exception $e) {
             // Rollback on error
@@ -399,7 +405,7 @@ class Users {
         }
     }
 
-    public function ApproveProductReview($id){
+    public function ApproveFarmerReview($id){
         $this->db->query('UPDATE buyer_reviews_farmer SET is_verified = :is_verified WHERE id = :id');
         $this->db->bind(':is_verified',1);
         $this->db->bind(':id',$id);
@@ -420,8 +426,29 @@ class Users {
         }
     }
 
-    public function RejectProductReview($id){
+    public function RejectFarmerReview($id){
         $this->db->query('DELETE FROM buyer_reviews_farmer  WHERE id = :id');
+        $this->db->bind(':id',$id);
+        if($this->db->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function ApproveProductReview($id){
+        $this->db->query('UPDATE supplier_ratings SET is_verified = :is_verified WHERE rating_id = :id');
+        $this->db->bind(':is_verified',1);
+        $this->db->bind(':id',$id);
+        if($this->db->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function RejectProductReview($id){
+        $this->db->query('DELETE from supplier_ratings WHERE rating_id = :id');
         $this->db->bind(':id',$id);
         if($this->db->execute()){
             return true;

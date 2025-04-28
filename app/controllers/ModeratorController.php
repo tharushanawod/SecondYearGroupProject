@@ -353,10 +353,9 @@ class ModeratorController extends Controller {
         // Fetch ratings from the model
         $ratings = $this->userModel->getRatings();
         
-        $rating_merged = array_merge($ratings['farmer_reviews_worker'], $ratings['buyer_reviews_farmer']);
+        $rating_merged = array_merge($ratings['farmer_reviews_worker'], $ratings['buyer_reviews_farmer'], $ratings['supplier_ratings']);
         // Pass the ratings data to the view
         $data = ['ratings' => $rating_merged];
-
         $this->View('Moderator/Ratings',$data);
     }
 
@@ -391,6 +390,25 @@ class ModeratorController extends Controller {
             die('Something went wrong');
         }
     }
+    
+
+    public function ApproveFarmerReview($id){
+        if($this->userModel->ApproveFarmerReview($id)){
+            Redirect('ModeratorController/Ratings');
+        }else{
+            die('Something went wrong');
+        }
+    }
+
+    public function RejectFarmerReview($id){
+        if($this->userModel->RejectFarmerReview($id)){
+            Redirect('ModeratorController/Ratings');
+        }else{
+            die('Something went wrong');
+        }
+    }
+
+
 }
 
 ?>

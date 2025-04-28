@@ -44,7 +44,7 @@
     </div>
     <div class="button-group">
         <button type="submit">Create Account</button>
-        <button type="button" class="cancel-btn">Cancel</button>
+        <a href="<?php echo URLROOT;?>/AdminController/ModeratorControl"><button type="button" class="cancel-btn">Cancel</button></a>
     </div>
 </form>
 

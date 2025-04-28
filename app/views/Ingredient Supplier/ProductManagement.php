@@ -72,7 +72,7 @@
                                     <i class="fas fa-edit"></i>
                                 </button>
                                 <button class="delete-btn"
-                                    onclick="showModal('deleteProductModal', <?= htmlspecialchars(json_encode($product)) ?>, '<?php echo URLROOT; ?>')">
+                                    onclick="showModal('deleteProductModal', <?= htmlspecialchars(json_encode($product)) ?>, '<?php echo URLROOT; ?>')" <?php if ($product->order_id) : ?> disabled <?php endif; ?>>
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>

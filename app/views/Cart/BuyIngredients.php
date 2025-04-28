@@ -11,12 +11,13 @@
     <?php require APPROOT . '/views/inc/sidebar.php'; ?>
     <div class="container">
         <div class="filters">
+            <h2>Product Store</h2>
             <div class="filter-dropdown">
-                <button class="filter-btn">
+                <!-- <button class="filter-btn">
                     <span>Grouped by:</span>
                     <span>Category</span>
                     <span>▼</span>
-                </button>
+                </button> -->
                 <div class="filter-menu">
                     <a href="<?php echo URLROOT; ?>/CartController/browseProducts">All</a>
                     <?php if(isset($data['categories']) && !empty($data['categories'])): ?>

@@ -128,6 +128,7 @@ class FarmerController extends Controller {
         $this->View('Farmer/WorkerManagement', $data);
     }
 
+    
     public function WorkerProfile($id) {
         $data = $this->farmerModel->getFarmworkerById($id);
        
@@ -565,10 +566,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
     
     public function fetchReviews($id) {
         $reviews = $this->farmerModel->fetchReviews($id);
+    
+        if (!$reviews) {
+            $reviews = []; // make sure it's an empty array if no data
+        }
+    
         header('Content-Type: application/json');
         echo json_encode($reviews);
-       
     }
+    
 
     public function HireWorker($workerid){
         // Get the worker's confirmed job dates from model
