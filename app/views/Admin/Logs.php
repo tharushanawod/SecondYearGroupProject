@@ -88,7 +88,7 @@
                         </div>
                         <div class="log-info">
                             <h3>Account Log</h3>
-                            <span class="log-count">24 new entries</span>
+                            <span class="log-count">24 logs</span>
                         </div>
                     </div>
                     <div class="log-content">
@@ -105,7 +105,7 @@
                         </div>
                         <div class="log-info">
                             <h3>Buyer Transaction Log</h3>
-                            <span class="log-count">12 pending issues</span>
+                            <span class="log-count">11 logs</span>
                         </div>
                     </div>
                     <div class="log-content">
@@ -122,7 +122,7 @@
                         </div>
                         <div class="log-info">
                             <h3>Farmer Transaction Log</h3>
-                            <span class="log-count">8 issues to review</span>
+                            <span class="log-count">8 logs</span>
                         </div>
                     </div>
                     <div class="log-content">
@@ -138,7 +138,7 @@
                         </div>
                         <div class="log-info">
                             <h3>Buyer Order log</h3>
-                            <span class="log-count">12 pending issues</span>
+                            <span class="log-count">12 logs</span>
                         </div>
                     </div>
                     <div class="log-content">
@@ -154,7 +154,7 @@
                         </div>
                         <div class="log-info">
                             <h3>Farmer Order Log</h3>
-                            <span class="log-count">8 issues to review</span>
+                            <span class="log-count">8 logs</span>
                         </div>
                     </div>
                     <div class="log-content">

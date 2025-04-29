@@ -17,7 +17,7 @@
                 <div class="input-group">
                     <input type="text" id="search" placeholder="Search by name or skills...">
                 </div>
-                <div class="input-group">
+                <!-- <div class="input-group">
                     <select id="location-filter">
                         <option value="">All locations</option>
                         <option value="California">California</option>
@@ -32,7 +32,7 @@
                         <option value="5+ years">5+ years</option>
                         <option value="7+ years">7+ years</option>
                     </select>
-                </div>
+                </div> -->
                 <div class="input-group">
                     <a href="<?php echo URLROOT . '/FarmerController/ViewPendingJobRequests'; ?>">
                         <button class="pending-requests-button"><i class="fas fa-clock"></i> Pending Requests</button>

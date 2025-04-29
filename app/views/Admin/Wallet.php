@@ -37,7 +37,7 @@
 
         <div class="transactions-section">
             <div class="section-header">
-                <h2>Transactions For Current Withdrawable balance</h2>
+                <h2>Recent Transactions</h2>
             </div>
             <table class="transaction-table">
                 <thead>

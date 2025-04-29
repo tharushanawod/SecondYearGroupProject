@@ -411,7 +411,7 @@ GROUP BY order_items.order_id, transaction.payment_date, order_items.withdraw_st
         $this->db->query('SELECT COUNT(DISTINCT order_items.order_id) as order_count FROM order_items
         INNER JOIN supplier_products
         ON order_items.product_id = supplier_products.product_id
-        WHERE supplier_products.supplier_id = :supplier_id AND order_items.status = "pending"
+        WHERE supplier_products.supplier_id = :supplier_id AND order_items.supplier_confirmed = 0 AND (order_items.status = "pending" OR order_items.status = "paid")
         ');
 
 $this->db->bind(':supplier_id', $user_id);
@@ -433,7 +433,7 @@ LEFT JOIN delivery_codes ON orders.order_id = delivery_codes.order_id
 INNER JOIN order_items ON orders.order_id = order_items.order_id
 INNER JOIN supplier_products ON order_items.product_id = supplier_products.product_id
 WHERE supplier_products.supplier_id = :supplierId 
-  AND order_items.supplier_confirmed = 0 AND order_items.status = "pending"
+  AND order_items.supplier_confirmed = 0 AND (order_items.status = "pending" OR order_items.status = "paid")
 GROUP BY orders.order_id, transaction.transaction_id, delivery_codes.code_id, order_items.status, order_items.delivery_confirmed
 ORDER BY orders.order_date DESC;
 ');

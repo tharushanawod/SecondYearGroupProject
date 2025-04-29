@@ -201,7 +201,7 @@ class Farmer {
             // Query the database to fetch all farmworkers
             $this->db->query(' SELECT users.name,farmworkers.*, profile_pictures.file_path
                                 FROM users
-                                INNER JOIN farmworkers ON users.user_id = farmworkers.user_id
+                                LEFT JOIN farmworkers ON users.user_id = farmworkers.user_id
                                 LEFT JOIN profile_pictures ON farmworkers.user_id = profile_pictures.user_id
                                 WHERE users.otp_status = :otp_status AND users.user_status = :user_status AND users.user_type = :user_type;
                                 ');

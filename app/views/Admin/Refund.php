@@ -33,16 +33,19 @@
         
         <form action="<?php echo URLROOT;?>/AdminController/Refund/<?php echo $data['transaction_id']?>" method="post" id="refund-form">
             <div class="form-group">
+            <label for="admin_notes">Transaction ID:</label>
             <input type="text" id="transaction_id" name="transaction_id" required 
     value="<?php echo isset($data['transaction_id']) ? $data['transaction_id'] : ''; ?>" readonly>
             </div>
             
             <div class="form-group">
+            <label for="admin_notes">Order Id :</label>
             <input type="text" id="order_id" name="order_id" required 
             value="<?php echo isset($data['order_id']) ? $data['order_id'] : ''; ?>" readonly>
             </div>
             
-            <div class="form-group">        
+            <div class="form-group"> 
+            <label for="admin_notes">Refund Amount:</label>       
          <input type="number" id="refund_amount" name="refund_amount" step="0.01" required 
              value="<?php echo isset($data['refund_amount']) ? $data['refund_amount'] : ''; ?>" readonly>
             </div>

@@ -26,7 +26,7 @@
                         echo $roundedRating;?>
                     </div>
                     <div class="stat-box hires">
-                        1000+ Hires
+                       42  Hires
                     </div>
                 </div>
             </div>

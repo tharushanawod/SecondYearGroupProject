@@ -4,7 +4,6 @@ const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 const pageInfo = document.getElementById("pageInfo");
 
-
 // Variables
 let currentPage = 1;
 const rowsPerPage = 10;
@@ -61,16 +60,14 @@ function getPaymentStatusHTML(order) {
 }
 
 function getActionButtons(order) {
-    if (order.payment_status === "paid") {
-      return `<button onclick="AcceptOrder(${order.order_id})">Accept Order</button>
-      <button onclick="cancelOrder(${order.order_id})">Reject Order</button>`;
-    } else if (order.payment_status === "pending") {
-      return `<span class="confirmed"><i class="fa-solid fa-clock"></i> Wait till payment </span>`;
-    } else {
-      return `<span class="rejected"><i class="fa-solid fa-xmark"></i> Cancelled</span>`;
-    }
+  if (order.payment_status === "paid") {
+    return `<button onclick="AcceptOrder(${order.order_id})">Accept Order</button>`;
+  } else if (order.payment_status === "pending") {
+    return `<span class="confirmed"><i class="fa-solid fa-clock"></i> Wait till payment </span>`;
+  } else {
+    return `<span class="rejected"><i class="fa-solid fa-xmark"></i> Cancelled</span>`;
   }
-
+}
 
 // Update pagination info
 function updatePagination() {
@@ -110,7 +107,6 @@ async function AcceptOrder(orderId) {
     console.error("Error confirming order:", error);
   }
 }
-
 
 // View buyer details
 function viewBuyerDetails(orderId) {
@@ -226,4 +222,3 @@ window.onclick = function (event) {
 
 // Initial fetch and render
 fetchOrders();
-

@@ -36,15 +36,17 @@
            
             
             <div class="form-group">
+            <label for="admin_notes">Order ID:</label>
             <input type="text" id="order_id" name="order_id" required 
             value="<?php echo isset($data['order_id']) ? $data['order_id'] : ''; ?>" readonly>
             </div>
-
+            <label for="admin_notes">Product ID:</label>
             <input type="text" id="product_id" name="product_id" required 
     value="<?php echo isset($data['product_id']) ? $data['product_id'] : ''; ?>" readonly>
             </div>
             
-            <div class="form-group">        
+            <div class="form-group"> 
+            <label for="admin_notes">Refund Amount:</label>       
          <input type="number" id="refund_amount" name="refund_amount" step="0.01" required 
              value="<?php echo isset($data['refund_amount']) ? $data['refund_amount'] : ''; ?>" readonly>
             </div>
