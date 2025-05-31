@@ -11,9 +11,11 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="<?php echo URLROOT;?>/css/Auction.css">
+    <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/components/ModernHeader.css?v=<?php echo time(); ?>" />
+  <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/components/ModernFooter.css?v=<?php echo time(); ?>" />
+
     <style>
-      @import url("./components/Header.css");
-@import url("./components/Footer.css");
+
 :root {
   --color-primary: #1f6246;
   --color-secondary: #f4d03f;

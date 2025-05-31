@@ -1,0 +1,213 @@
+/* Modern Footer Styles - Matches React Footer Design */
+
+.modern-footer {
+  background-color: #1f2937; /* bg-gray-900 */
+  color: white;
+  padding: 3rem 0; /* py-12 */
+}
+
+.footer-container {
+  max-width: 1280px; /* max-w-7xl */
+  margin: 0 auto;
+  padding: 0 1rem; /* px-4 */
+}
+
+/* Footer Grid Layout */
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* grid-cols-1 */
+  gap: 2rem; /* gap-8 */
+}
+
+/* Brand Section */
+.footer-brand {
+  margin-bottom: 1rem;
+}
+
+.brand-logo {
+  font-size: 1.5rem; /* text-2xl */
+  font-weight: bold;
+  margin-bottom: 1rem; /* mb-4 */
+  display: inline-block;
+}
+
+.brand-corn {
+  color: #ff9c00; /* Orange color from React inline style */
+}
+
+.brand-cradle {
+  color: white;
+}
+
+.brand-description {
+  color: #9ca3af; /* text-gray-400 */
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Footer Columns */
+.footer-column {
+  margin-bottom: 1rem;
+}
+
+.footer-heading {
+  font-size: 1.125rem; /* text-lg */
+  font-weight: 600; /* font-semibold */
+  margin-bottom: 1rem; /* mb-4 */
+  color: white;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* space-y-2 */
+}
+
+.footer-links li {
+  margin: 0;
+}
+
+.footer-link {
+  color: #9ca3af; /* text-gray-400 */
+  text-decoration: none;
+  transition: color 0.2s ease; /* transition duration-200 */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer-link:hover {
+  color: white; /* hover:text-white */
+}
+
+.footer-link i {
+  font-size: 1rem;
+  width: 1.2rem;
+}
+
+/* Footer Bottom Section */
+.footer-bottom {
+  border-top: 1px solid #374151; /* border-gray-800 */
+  margin-top: 2rem; /* mt-8 */
+  padding-top: 2rem; /* pt-8 */
+  text-align: center;
+}
+
+.copyright-text {
+  color: #9ca3af; /* text-gray-400 */
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+/* Responsive Design */
+@media (min-width: 640px) {
+  .footer-container {
+    padding: 0 1.5rem; /* sm:px-6 */
+  }
+}
+
+@media (min-width: 768px) {
+  .footer-grid {
+    grid-template-columns: repeat(4, 1fr); /* md:grid-cols-4 */
+  }
+
+  .footer-brand {
+    margin-bottom: 0;
+  }
+
+  .footer-column {
+    margin-bottom: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .footer-container {
+    padding: 0 2rem; /* lg:px-8 */
+  }
+}
+
+/* Hover Effects and Transitions */
+.footer-link {
+  position: relative;
+}
+
+.footer-link::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: white;
+  transition: width 0.3s ease;
+}
+
+.footer-link:hover::after {
+  width: 100%;
+}
+
+/* Social Media Icons Spacing */
+.footer-link i.fab {
+  margin-right: 0.5rem;
+}
+
+/* Focus States for Accessibility */
+.footer-link:focus {
+  outline: 2px solid #059669;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Brand Logo Hover Effect */
+.brand-logo {
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.brand-logo:hover {
+  transform: scale(1.05);
+}
+
+/* Smooth Animations */
+* {
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+/* Additional Styling for Better Visual Hierarchy */
+.footer-heading {
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.footer-heading::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 2rem;
+  height: 2px;
+  background: #ff9c00;
+  border-radius: 1px;
+}
+
+/* Enhanced Mobile Responsiveness */
+@media (max-width: 767px) {
+  .modern-footer {
+    padding: 2rem 0;
+  }
+
+  .footer-grid {
+    gap: 1.5rem;
+  }
+
+  .brand-logo {
+    font-size: 1.25rem;
+  }
+
+  .footer-heading {
+    font-size: 1rem;
+  }
+}

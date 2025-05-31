@@ -19,6 +19,12 @@ class LandingController extends Controller{
         $this->View('Landing/index',$data);
     }
 
+    public function newlanding()
+    {
+        $data = [];
+        $this->View('Landing/new_index',$data);
+    }
+
     public function aboutus()
     {
         $data = [];
