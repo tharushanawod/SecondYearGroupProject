@@ -130,7 +130,7 @@
                            } elseif ($bid->closing_date < date('Y-m-d H:i:s') && is_null($bid->order_id)) {
                                echo 'Lost';
                            } else {
-                               echo 'Unknown';
+                               echo 'Lost';
                            }
                            ?>
                        

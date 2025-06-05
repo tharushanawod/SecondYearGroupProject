@@ -39,7 +39,7 @@
 
                 if($days==0){
                     echo "Today";
-                }else if($days==1){
+                }else if($days===1){
                     echo "Tomorrow";
                 }else{
                     echo "after".$days."after days ";

@@ -14,6 +14,10 @@
     <div class="container">
         <div class="header">
             <h1>ADD NEW PRODUCT</h1>
+            <?php
+echo "Current PHP time is: " . date("Y-m-d H:i:s");
+?>
+
         </div>
         
         <div class="product-form-container">
@@ -40,9 +44,10 @@
                 
                 <div class="form-group">
     <label for="closing_date">Closing Date & Time</label>
-    <input type="datetime-local" id="closing_date" name="closing_date" class="form-control" required
-        min="<?php echo date('Y-m-d\TH:i'); ?>"
-        max="<?php echo date('Y-m-d\TH:i', strtotime('+1 week')); ?>">
+  <input type="datetime-local" id="closing_date" name="closing_date" class="form-control" required
+    min="<?php echo date('Y-m-d\TH:i'); ?>"
+    max="<?php echo date('Y-m-d\TH:i', strtotime('+1 week')); ?>">
+
     <span class="form-invalid">
         <?php echo isset($data['closing_date_err']) ? $data['closing_date_err'] : ''; ?>
     </span>

@@ -101,7 +101,7 @@ error_log("testing".var_export($hash, true));
                 <input type="hidden" name="merchant_id" value="<?php echo $_ENV['MERCHANT_ID']; ?>">
                 <input type="hidden" name="return_url" value="<?php echo URLROOT; ?>/CartController/paymentSuccess?amount=<?php echo $amount; ?>">
                 <input type="hidden" name="cancel_url" value="<?php echo URLROOT; ?>/CartController/paymentCancel">
-                <input type="hidden" name="notify_url" value="https://6afc-192-248-16-125.ngrok-free.app/GroupProject/CartController/paymentNotify">
+                <input type="hidden" name="notify_url" value="https://0092-192-248-22-102.ngrok-free.app/GroupProject/CartController/paymentNotify">
                 <input type="hidden" name="order_id" value="<?php echo $data['order_details']->order_id; ?>">
                 <input type="hidden" name="items" value="Order_Items">
                 <input type="hidden" name="currency" value="LKR">
